@@ -1,0 +1,192 @@
+@charset "UTF-8";
+.login {
+  width: 100%;
+}
+
+/* LOGIN BOX */
+.loginBox {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  min-height: 576px;
+  background-color: rgb(249, 249, 249);
+  padding-top: 24px;
+}
+
+.login-container {
+  display: flex;
+  box-shadow: rgba(44, 44, 44, 0.08) 0px 4px 16px;
+  border-radius: 8px;
+}
+
+.login-container .left-wrapper {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-color: rgb(255, 236, 235);
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+  width: 336px;
+  overflow-x: hidden;
+}
+
+.login-container .left-wrapper img {
+  padding-top: 100px;
+}
+
+.login-container .right-wrapper {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: rgb(255, 255, 255);
+  min-width: 325px;
+  width: 464px;
+}
+
+.login-container .right-wrapper .form-wrapper {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.login-container .right-wrapper .form-wrapper h5 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: rgb(44, 44, 44);
+}
+
+.login-container .right-wrapper .form-wrapper h3 {
+  margin-top: 4px;
+  margin-bottom: 24px;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: rgb(44, 44, 44);
+}
+
+.login-container .right-wrapper .form-wrapper .input-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.login-container .right-wrapper .form-wrapper .input-wrapper > i {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  height: 24px;
+  font-size: 22px;
+}
+
+.login-container .right-wrapper .form-wrapper .input-wrapper button {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  color: rgb(153, 153, 153);
+  cursor: pointer;
+}
+
+.login-container .right-wrapper .form-wrapper .input-wrapper .clear-button {
+  display: none;
+}
+
+.login-container .right-wrapper .form-wrapper .input-wrapper .show-pass {
+  background-color: #fff;
+  font-size: 18px;
+}
+
+.login-container .right-wrapper .form-wrapper .input-wrapper input {
+  appearance: none;
+  flex: 1 1 0%;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 8px;
+  padding: 13px 43px;
+  caret-color: rgb(0, 0, 0);
+  color: rgb(44, 44, 44);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.login-container .right-wrapper .form-wrapper .input-wrapper input:hover {
+  border: 1px solid rgb(44, 44, 44);
+  cursor: initial;
+}
+
+.login-container .right-wrapper .form-wrapper button {
+  position: relative;
+  height: 48px;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
+  padding: 14px 16px;
+  color: rgb(255, 255, 255);
+  background-color: rgb(224, 60, 49);
+  opacity: 1;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.login-container .right-wrapper .form-wrapper .signin-button {
+}
+
+.login-container .right-wrapper .form-wrapper .signup-button {
+  opacity: 0.4;
+}
+
+.login-container .right-wrapper .form-wrapper .nav-wrapper {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.login-container .right-wrapper .form-wrapper .nav-wrapper div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-container .right-wrapper .form-wrapper .nav-wrapper div input {
+  margin: 0;
+}
+
+.login-container .right-wrapper .form-wrapper .nav-wrapper div label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.login-container .right-wrapper .form-wrapper .nav-wrapper span {
+  color: rgb(224, 60, 49);
+  cursor: pointer;
+}
+
+.login-container .right-wrapper .form-wrapper .form-footer {
+  text-align: center;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.login-container .right-wrapper .form-wrapper .form-footer span {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: rgb(44, 44, 44);
+}
+
+.login-container .right-wrapper .form-wrapper .form-footer span a {
+  color: rgb(224, 60, 49);
+  cursor: pointer;
+}
+

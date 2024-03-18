@@ -1,0 +1,56 @@
+@charset "UTF-8";
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: none;
+  list-style: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6rem;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.line {
+  border: 0;
+  display: inline-block;
+  width: 1px;
+  height: 16px;
+  background: #e5e5e5;
+  margin: 15px 0.5px;
+}
+
+.main-button {
+  color: #2c2c2c;
+  background: rgba(0, 0, 0, 0);
+  border: solid 1px rgba(0, 0, 0, 0);
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.2px;
+  padding: 13px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.main-button:hover {
+  background: #fafafa;
+}
+
+.tooltip {
+  font-size: 14px;
+}
+
