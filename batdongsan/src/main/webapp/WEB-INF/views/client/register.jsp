@@ -4,7 +4,8 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="css/login.css" type="text/css">
+<link rel="stylesheet" href="css/client/header.css" type="text/css">
+<link rel="stylesheet" href="css/client/login.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>

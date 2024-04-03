@@ -4,7 +4,8 @@
 <head>
 <meta charset="utf-8">
 <title>Spring MVC</title>
-<link rel="stylesheet" href="css/sell.css" type="text/css">
+<link rel="stylesheet" href="css/client/header.css" type="text/css">
+<link rel="stylesheet" href="css/client/sell.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>

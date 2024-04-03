@@ -1,0 +1,409 @@
+@charset "UTF-8";
+.sellernet {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.sellernet .sidebar {
+  background-color: white;
+  height: 100vh;
+  box-shadow: rgba(182, 182, 182, 0.18) 0px 4px 8px;
+  z-index: 99;
+}
+
+.sellernet .sidebar .sidebar-wrapper {
+  position: fixed;
+  top: 89px;
+  width: 280px;
+  height: 100%;
+  overflow-y: scroll;
+  max-height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(204, 204, 204) transparent;
+  background-color: #fff;
+}
+
+.sellernet .sidebar-wrapper .user-info-wrapper {
+  display: flex;
+  padding: 16px 15px;
+  position: relative;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.sellernet .sidebar-wrapper .user-info-wrapper .avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  text-transform: uppercase;
+  background-color: rgb(255, 236, 235);
+  color: rgb(116, 21, 15);
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.sellernet .sidebar-wrapper .user-info-wrapper .avatar h3 {
+  color: rgb(116, 21, 15);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+.sellernet .sidebar-wrapper .user-info-wrapper .user-name {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: rgb(44, 44, 44);
+}
+
+.sellernet .sidebar-wrapper .user-money-wrapper {
+  margin: 0px 15px 16px;
+  background: rgb(242, 242, 242);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.sellernet .user-money-wrapper .user-money-item {
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sellernet .user-money-wrapper .user-money-item h5 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.2px;
+  color: rgb(44, 44, 44);
+}
+
+.sellernet .user-money-wrapper .user-money-item .money {
+  font-weight: 600;
+}
+
+.sellernet .user-money-wrapper a {
+  width: 100%;
+  display: block;
+}
+
+.sellernet .user-money-wrapper button {
+  height: 32px;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
+  background-color: rgb(255, 255, 255);
+  padding: 6px 12px;
+  color: rgb(224, 60, 49);
+  opacity: 1;
+  border: 1px solid rgb(224, 60, 49);
+  font-weight: 600;
+}
+
+.sellernet .user-money-wrapper button i {
+  padding-right: 8px;
+}
+
+.sellernet .panel-group {
+  margin: 0;
+}
+
+.sellernet .panel-group .panel {
+  border-radius: 0;
+  border: none;
+}
+
+.sellernet .panel-default > .panel-heading {
+  background-color: #fff;
+  border-radius: 0;
+  padding: 0;
+  height: 48px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sellernet .panel-default > .panel-heading:hover {
+  background-color: rgb(242, 242, 242);
+}
+
+.sellernet .panel-title {
+  height: 100%;
+}
+
+.sellernet .panel-title a {
+  padding: 10px 15px;
+  height: 48px;
+  width: 100%;
+  display: block;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  justify-content: space-between;
+  font-size: 15px;
+}
+
+.sellernet .panel-title a span {
+  margin-left: 8px;
+}
+
+.sellernet .panel-group .panel-heading + .panel-collapse > .list-group,
+.sellernet .panel-group .panel-heading + .panel-collapse > .panel-body {
+  border: none;
+}
+
+.sellernet .panel > .panel-collapse > .list-group .list-group-item {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: 45px;
+  border: none;
+}
+
+.sellernet .panel > .panel-collapse > .list-group .list-group-item:hover {
+  cursor: pointer;
+  background-color: rgb(242, 242, 242);
+}
+
+/* POST */
+.post {
+  margin-left: 280px;
+  background-color: #f9f9f9;
+  width: calc(100% - 280px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.post .input-wrapper {
+  width: 696px;
+  margin: 24px;
+  padding: 24px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 4px;
+  border-radius: 4px;
+}
+
+.post .input-wrapper ul {
+	padding-left: 15px;
+}
+
+.post .input-wrapper ul li {
+	list-style-type: circle;
+	font-size: 12px;
+}
+
+.post .input-wrapper h3 {
+  margin: 0;
+  margin-bottom: 16px;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: rgb(44, 44, 44);
+}
+
+.post .nav-tabs {
+  border: none;
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.post .nav-tabs > li {
+  flex: 1;
+  font-weight: 600;
+}
+
+.post .nav-tabs > li > a {
+  border: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 0;
+  padding: 6px 13px;
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.post .nav-tabs > li:first-child > a {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.post .nav-tabs > li:nth-child(2) > a {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.post .nav-tabs > li.active > a {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: 1px solid rgb(0, 0, 0, 0.1);
+}
+
+.post .input-wrapper .address-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.post .input-wrapper .input-image-wrapper label {
+  border: 1px dotted #ccc;
+  border-radius: 4px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.post .input-wrapper .input-image-wrapper label p {
+  font-size: 14x;
+  font-weight: normal;
+}
+
+.post .input-wrapper .input-image-wrapper #file {
+  display: none;
+}
+
+.post .input-wrapper .input-image-wrapper .img-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.post .input-wrapper .input-image-wrapper .img-container .img-wrapper {
+  position: relative;
+  width: calc((100% / 3) - 10px);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.post .input-wrapper .input-image-wrapper .img-container .img-wrapper img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.post .input-wrapper .input-image-wrapper .img-container .img-wrapper i {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 4px 6px;
+  border-radius: 999px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.post .form-item {
+  flex: 1;
+  margin-bottom: 10px;
+}
+
+.post .form-item p {
+  margin-bottom: 6px;
+  color: rgb(44, 44, 44);
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.post .form-item p span {
+  margin-left: 2px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: rgb(224, 60, 49);
+}
+
+.post .form-item select {
+  color: rgb(44, 44, 44);
+  padding: 5px 28px 5px 11px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.post .form-item textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: none;
+  padding: 10px;
+}
+
+.post .form-item .input-container {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 30px 6px 10px;
+}
+
+.post .form-item .input-container input {
+  width: 100%;
+}
+
+.post .form-item .input-container span {
+  position: absolute;
+  right: 6px;
+}
+
+.post input::-webkit-outer-spin-button,
+.post input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.post .money-wrapper {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 8fr 4fr;
+  grid-gap: 10px;
+}
+
+.post .contact-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.post .button-wrapper {
+  background-color: white;
+  width: calc(100% - 280px);
+  padding: 8px 24px;
+  box-shadow: rgba(182, 182, 182, 0.18) 0px -2px 8px;
+  position: fixed;
+  bottom: 0px;
+  left: 280px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post .button-wrapper .continue-button {
+  position: relative;
+  height: 48px;
+  border-radius: 8px;
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  width: fit-content;
+  letter-spacing: -0.2px;
+  background-color: rgb(224, 60, 49);
+  padding: 12px 16px;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+}
+
+.post .button-wrapper .continue-button span {
+  margin-right: 6px;
+}

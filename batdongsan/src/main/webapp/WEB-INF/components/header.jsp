@@ -1,5 +1,4 @@
 <%@ page pageEncoding="utf-8"%>
-<link rel="stylesheet" href="css/header.css" type="text/css">
 
 <header class='header'>
 	<div class='header-container'>
