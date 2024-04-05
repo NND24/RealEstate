@@ -1,52 +1,48 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="batdongsan.models.RealEstateModel"%>
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
+<link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css" type="text/css">
 <link rel="stylesheet" href="css/client/detail.css" type="text/css">
+<link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
 	<%@ include file="../../components/header.jsp"%>
 	<div class="detail">
 		<div class='container '>
+			<%
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			RealEstateModel realEstate = (RealEstateModel) request.getAttribute("realEstate");
+			if (realEstate != null) {
+				String imageString = (String) realEstate.getImages();
+				if (imageString != null && !imageString.isEmpty()) {
+					imageString = imageString.substring(1, imageString.length() - 1);
+					String[] imagePaths = imageString.split(", ");
+					
+					 String formattedDate = sdf.format(realEstate.getUpdatedDate());
+			%>
 			<div class='row'>
+
 				<!-- Content -->
 				<div class='detail-content col-lg-9'>
+
 					<div class='swiper mySwiper2'>
 						<div class='swiper-wrapper'>
+							<%
+							for (String imagePath : imagePaths) {
+							%>
 							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-1.jpg' />
+								<img src='<%=imagePath%>' />
 							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-2.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-3.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-4.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-5.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-6.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-7.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-8.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-9.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-10.jpg' />
-							</div>
+							<%
+							}
+							%>
 						</div>
 						<div class='swiper-button-next'></div>
 						<div class='swiper-button-prev'></div>
@@ -54,36 +50,15 @@
 					</div>
 					<div thumbsSlider='' class='swiper mySwiper'>
 						<div class='swiper-wrapper'>
+							<%
+							for (String imagePath : imagePaths) {
+							%>
 							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-1.jpg' />
+								<img src='<%=imagePath%>' />
 							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-2.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-3.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-4.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-5.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-6.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-7.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-8.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-9.jpg' />
-							</div>
-							<div class='swiper-slide'>
-								<img src='https://swiperjs.com/demos/images/nature-10.jpg' />
-							</div>
+							<%
+							}
+							%>
 						</div>
 					</div>
 
@@ -91,19 +66,15 @@
 						<a href=''>Cho thuê</a> <span> / </span> <a href=''>Hồ Chí
 							Minh</a> <span> / </span> <a href=''>Tất cả BĐS trên toàn quốc</a>
 					</div>
-					<h3 class='detail-content__title'>Phòng trọ full nội thất
-						đường Gò Cẩm Đệm, P. 10, Q. Tân Bình, gần ngã tư Âu Cơ - Lạc Long
-						Quân</h3>
-					<p class='detail-content__address'>13/1C, Đường Gò Cẩm Đệm,
-						Phường 10, Tân Bình, Hồ Chí Minh</p>
+					<h3 class='detail-content__title'><%=realEstate.getTitle()%></h3>
+					<p class='detail-content__address'><%=realEstate.getAddress()%></p>
 					<div class='short-info-container'>
 						<div>
 							<div class='short-info__item'>
-								<span class='title'>Mức giá</span> <span class='value'>4
-									triệu/tháng</span>
+								<span class='title'>Mức giá</span> <span class='value'><%=realEstate.getPrice()%> <%=realEstate.getUnit()%></span>
 							</div>
 							<div class='short-info__item'>
-								<span class='title'>Diện tích</span> <span class='value'>14
+								<span class='title'>Diện tích</span> <span class='value'><%=realEstate.getArea()%>
 									m²</span>
 							</div>
 						</div>
@@ -120,9 +91,7 @@
 					<div class='description-container'>
 						<div class='section-title'>Thông tin mô tả</div>
 						<div class='description-body'>
-							Căn hộ mini 14m², tầng đất không phải leo cầu thang với trang
-							thiết bị đầy đủ: <br />- Máy lạnh - định kỳ vệ sinh 4 tháng 1
-							lần miễn phí.
+							<%=realEstate.getDescription()%>
 						</div>
 					</div>
 					<div class='spec-container'>
@@ -131,52 +100,58 @@
 							<div class='spec-content-item col-lg-6'>
 								<i class='fa-regular fa-square spec-content-item__icon'></i>
 								<div class='spec-content-item__title'>Diện tích</div>
-								<div class='spec-content-item__value'>14 m²</div>
+								<div class='spec-content-item__value'><%=realEstate.getArea()%> m²</div>
 							</div>
 							<div class='spec-content-item col-lg-6'>
 								<i class='fa-solid fa-dong-sign spec-content-item__icon'></i>
 								<div class='spec-content-item__title'>Mức giá</div>
-								<div class='spec-content-item__value'>4 triệu/tháng</div>
+								<div class='spec-content-item__value'><%=realEstate.getPrice()%> <%=realEstate.getUnit()%></div>
 							</div>
+							<%
+							if(realEstate.getNumberOfToilets() > 0) {
+							%>
 							<div class='spec-content-item col-lg-6'>
 								<i class='fa-solid fa-bath spec-content-item__icon'></i>
 								<div class='spec-content-item__title'>Số toilet</div>
-								<div class='spec-content-item__value'>1 phòng</div>
+								<div class='spec-content-item__value'><%=realEstate.getNumberOfToilets()%> phòng</div>
 							</div>
+							<% } %>
+							<%
+							if(realEstate.getNumberOfBedrooms() > 0) {
+							%>
 							<div class='spec-content-item col-lg-6'>
 								<i class='fa-solid fa-couch spec-content-item__icon'></i>
-								<div class='spec-content-item__title'>Nội thất</div>
-								<div class='spec-content-item__value'>1 phòng</div>
+								<div class='spec-content-item__title'>Số phòng ngủ</div>
+								<div class='spec-content-item__value'><%=realEstate.getNumberOfBedrooms()%> phòng</div>
 							</div>
+							<% } %>
 						</div>
 					</div>
 					<div class='search-tag-container'>
 						<div class='section-title'>Tìm kiếm theo từ khóa</div>
 						<div class='search-tag-list'>
-							<a href='' class='search-tag-item'> Thuê trọ phường 10
-								Tân Bình </a> <a href='' class='search-tag-item'> Thuê trọ
-								Gò Cẩm Đệm Tân Bình </a> <a href='' class='search-tag-item'>
-								Thuê trọ Tân Bình Hồ Chí Minh </a> <a href=''
-								class='search-tag-item'> Thuê trọ Hồ Chí Minh </a> <a
-								href='' class='search-tag-item'> Thuê căn hộ mini Hồ Chí
-								Minh </a>
+							<a href='' class='search-tag-item'> Thuê trọ phường 10 Tân
+								Bình </a> <a href='' class='search-tag-item'> Thuê trọ Gò Cẩm
+								Đệm Tân Bình </a> <a href='' class='search-tag-item'> Thuê trọ
+								Tân Bình Hồ Chí Minh </a> <a href='' class='search-tag-item'>
+								Thuê trọ Hồ Chí Minh </a> <a href='' class='search-tag-item'>
+								Thuê căn hộ mini Hồ Chí Minh </a>
 						</div>
 					</div>
 					<div class='short-info-container'>
 						<div>
 							<div class='short-info__item'>
-								<span class='title'>Ngày đăng</span> <span class='value'>23/02/2024</span>
+								<span class='title'>Ngày đăng</span> <span class='value'><%=formattedDate%></span>
 							</div>
 							<div class='short-info__item'>
-								<span class='title'>Ngày hết hạn</span> <span
-									class='value'>09/03/2024</span>
+								<span class='title'>Ngày hết hạn</span> <span class='value'><%=formattedDate%></span>
 							</div>
 							<div class='short-info__item'>
 								<span class='title'>Loại tin</span> <span class='value'>Tin
 									VIP Bạc</span>
 							</div>
 							<div class='short-info__item'>
-								<span class='title'>Mã tin</span> <span class='value'>38842695</span>
+								<span class='title'>Mã tin</span> <span class='value'><%=realEstate.getRealEstateId()%></span>
 							</div>
 						</div>
 					</div>
@@ -195,9 +170,9 @@
 											</div>
 										</div>
 										<div class='card-info-container'>
-											<div class='card-info__title'>Thuê phòng trọ mới
-												xây đường Lý Thường Kiệt, gần ĐH Bách Khoa, giờ giấc tự do,
-												giá 2tr5/th</div>
+											<div class='card-info__title'>Thuê phòng trọ mới xây
+												đường Lý Thường Kiệt, gần ĐH Bách Khoa, giờ giấc tự do, giá
+												2tr5/th</div>
 											<div class='card-info__config'>
 												<span class='card-config__item card-config__price'>3,6
 													tỷ</span> <span class='card-config__item card-config__dot'>·</span>
@@ -229,7 +204,7 @@
 					<div class='sidebar-box-contact'>
 						<img class='contact-avatar' src="" alt='' />
 						<p>Được đăng bởi</p>
-						<h5 class='contact-name'>Vu Thi Kim Diep</h5>
+						<h5 class='contact-name'><%=realEstate.getContactName()%></h5>
 						<div class='contact-button contact-button__phonenumber'>
 							<span>0912 345 679</span> <span
 								class='contact-button__phonenumber__dot'>·</span> <span>Hiện
@@ -249,8 +224,7 @@
 					<div class='sidebar-box'>
 						<h5 class='sidebar-box__title'>Lọc theo diện tích</h5>
 						<ul class='sidebar-box__content'>
-							<li class='sidebar-box__item'><a href='#'>Thỏa thuận</a>
-							</li>
+							<li class='sidebar-box__item'><a href='#'>Thỏa thuận</a></li>
 							<li class='sidebar-box__item'><a>Dưới 500 triệu</a></li>
 							<li class='sidebar-box__item'><a>500 - 800 triệu</a></li>
 							<li class='sidebar-box__item'><a>800 triệu - 1 tỷ</a></li>
@@ -259,8 +233,43 @@
 					</div>
 				</div>
 			</div>
+			<%
+			}
+			}
+			%>
 		</div>
 	</div>
 	<%@ include file="../../components/footer.jsp"%>
+
+	<script type="text/javascript">
+		var swiper = new Swiper(".mySwiper", {
+			spaceBetween : 10,
+			slidesPerView : 6,
+			freeMode : true,
+			watchSlidesProgress : true,
+		});
+		var swiper2 = new Swiper(".mySwiper2", {
+			spaceBetween : 10,
+			navigation : {
+				nextEl : ".swiper-button-next",
+				prevEl : ".swiper-button-prev",
+			},
+			thumbs : {
+				swiper : swiper,
+			},
+			pagination : {
+				el : ".swiper-pagination",
+				type : "fraction",
+			},
+		});
+		var swiper3 = new Swiper(".mySwiper3", {
+			slidesPerView : 3,
+			spaceBetween : 15,
+			navigation : {
+				nextEl : ".swiper-button-next",
+				prevEl : ".swiper-button-prev",
+			},
+		});
+	</script>
 </body>
 </html>

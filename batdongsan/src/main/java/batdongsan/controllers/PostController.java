@@ -3,6 +3,7 @@ package batdongsan.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -88,9 +89,22 @@ public class PostController {
 
 	        // Chuyển đổi danh sách các đường dẫn ảnh thành chuỗi
 	        String images = Arrays.toString(imagePaths.toArray());
+	        
+	        LocalDateTime currentDateTime = LocalDateTime.now();
+	        
+	        // Chuyển đổi LocalDateTime thành java.sql.Timestamp
+	        java.sql.Timestamp currentTimestamp = java.sql.Timestamp.valueOf(currentDateTime);
+	        
+	        // Chuyển đổi java.sql.Timestamp thành java.sql.Date
+	        java.sql.Date currentDate = new java.sql.Date(currentTimestamp.getTime());
+	        
+	        ProvincesModel province = session.find(ProvincesModel.class, realEstate.getProvince());
+	        DistrictsModel district = session.find(DistrictsModel.class, realEstate.getDistrict());
+	        WardsModel ward = session.find(WardsModel.class, realEstate.getWard());
+
 
 	        // Commit transaction và gán thông báo thành công
-	        RealEstateModel newRealEstate = new RealEstateModel(realEstate.getRealEstateId(), realEstate.getType(), realEstate.getProvinceId(), realEstate.getDistrictId(), realEstate.getWardId(), realEstate.getAddress(), realEstate.getTitle(), realEstate.getDescription(), realEstate.getArea(), realEstate.getPrice(), realEstate.getUnit(), realEstate.getInterior(), realEstate.getNumberOfBedrooms(), realEstate.getNumberOfToilets(), images, realEstate.getContactName(), realEstate.getPhoneNumber(), realEstate.getEmail());
+	        RealEstateModel newRealEstate = new RealEstateModel(realEstate.getRealEstateId(), realEstate.getType(), province, district, ward, realEstate.getAddress(), realEstate.getTitle(), realEstate.getDescription(), realEstate.getArea(), realEstate.getPrice(), realEstate.getUnit(), realEstate.getInterior(), realEstate.getNumberOfBedrooms(), realEstate.getNumberOfToilets(), images, realEstate.getContactName(), realEstate.getPhoneNumber(), realEstate.getEmail(), currentDate,currentDate);
 
 	        session.save(newRealEstate);
 	        t.commit();

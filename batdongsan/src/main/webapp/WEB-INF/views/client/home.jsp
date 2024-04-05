@@ -1,11 +1,16 @@
+<%@page import="batdongsan.models.RealEstateModel"%>
+<%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
+<link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css" type="text/css">
 <link rel="stylesheet" href="css/client/home.css" type="text/css">
+<link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
@@ -304,22 +309,36 @@
 				</div>
 				<div class='product-container '>
 					<div class='row'>
+						<%
+						// Lấy danh sách bất động sản từ phía server
+						List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
+
+						// Kiểm tra và hiển thị danh sách bất động sản
+						if (realEstates != null) {
+							for (RealEstateModel r : realEstates) {
+								String imageString = (String) r.getImages(); // Lưu ý ép kiểu sang String
+
+								// Kiểm tra xem chuỗi hình ảnh có rỗng không
+								if (imageString != null && !imageString.isEmpty()) {
+							// Xóa dấu ngoặc vuông ở hai đầu chuỗi
+							imageString = imageString.substring(1, imageString.length() - 1);
+
+							// Tách chuỗi theo dấu phẩy và khoảng trắng
+							String[] imagePaths = imageString.split(", ");
+						%>
 						<div class='col-lg-3'>
 							<div class='card'>
-								<img class='card-img-top'
-									src='https://file4.batdongsan.com.vn/crop/393x222/2022/05/06/20220506085231-29df_wm.jpg'
-									alt='' />
+								<img class='card-img-top' src="<%=imagePaths[0]%>" alt='' />
 								<div class='card-info-container'>
-									<h3 class='card-title'>HXT Nguyễn Trãi Quận 5, xây 2 tầng
-										4x20m -(80m2), sổ riêng vuông vức, giá chỉ 11,5 tỷ</h3>
+									<h3 class='card-title'><%=r.getTitle()%></h3>
 									<div class='card-config'>
-										<span class='card-config-price'>11,5 tỷ</span> <i
-											class='fa-solid fa-circle'></i> <span
-											class='card-config-area'>80 m²</span>
+										<span class='card-config-price'><%=r.getPrice()%> <%=r.getUnit()%></span>
+										<i class='fa-solid fa-circle'></i> <span
+											class='card-config-area'><%=r.getArea()%> m²</span>
 									</div>
 									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span>Quận 5,
-											Hồ Chí Minh</span>
+										<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>,
+											<%=r.getProvince().getName()%></span>
 									</div>
 									<div class='card-contact'>
 										<span class='card-published-info' data-toggle='tooltip2'
@@ -333,209 +352,12 @@
 								</div>
 							</div>
 						</div>
-						<div class='col-lg-3'>
-							<div class='card'>
-								<img class='card-img-top'
-									src='https://file4.batdongsan.com.vn/crop/393x222/2022/05/06/20220506085231-29df_wm.jpg'
-									alt='' />
-								<div class='card-info-container'>
-									<h3 class='card-title'>HXT Nguyễn Trãi Quận 5, xây 2 tầng
-										4x20m -(80m2), sổ riêng vuông vức, giá chỉ 11,5 tỷ</h3>
-									<div class='card-config'>
-										<span class='card-config-price'>11,5 tỷ</span> <i
-											class='fa-solid fa-circle'></i> <span
-											class='card-config-area'>80 m²</span>
-									</div>
-									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span>Quận 5,
-											Hồ Chí Minh</span>
-									</div>
-									<div class='card-contact'>
-										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước </span>
-										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin'>
-											<i class='fa-regular fa-heart'></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='col-lg-3'>
-							<div class='card'>
-								<img class='card-img-top'
-									src='https://file4.batdongsan.com.vn/crop/393x222/2022/05/06/20220506085231-29df_wm.jpg'
-									alt='' />
-								<div class='card-info-container'>
-									<h3 class='card-title'>HXT Nguyễn Trãi Quận 5, xây 2 tầng
-										4x20m -(80m2), sổ riêng vuông vức, giá chỉ 11,5 tỷ</h3>
-									<div class='card-config'>
-										<span class='card-config-price'>11,5 tỷ</span> <i
-											class='fa-solid fa-circle'></i> <span
-											class='card-config-area'>80 m²</span>
-									</div>
-									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span>Quận 5,
-											Hồ Chí Minh</span>
-									</div>
-									<div class='card-contact'>
-										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước </span>
-										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin'>
-											<i class='fa-regular fa-heart'></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='col-lg-3'>
-							<div class='card'>
-								<img class='card-img-top'
-									src='https://file4.batdongsan.com.vn/crop/393x222/2022/05/06/20220506085231-29df_wm.jpg'
-									alt='' />
-								<div class='card-info-container'>
-									<h3 class='card-title'>HXT Nguyễn Trãi Quận 5, xây 2 tầng
-										4x20m -(80m2), sổ riêng vuông vức, giá chỉ 11,5 tỷ</h3>
-									<div class='card-config'>
-										<span class='card-config-price'>11,5 tỷ</span> <i
-											class='fa-solid fa-circle'></i> <span
-											class='card-config-area'>80 m²</span>
-									</div>
-									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span>Quận 5,
-											Hồ Chí Minh</span>
-									</div>
-									<div class='card-contact'>
-										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước </span>
-										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin'>
-											<i class='fa-regular fa-heart'></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='col-lg-3'>
-							<div class='card'>
-								<img class='card-img-top'
-									src='https://file4.batdongsan.com.vn/crop/393x222/2022/05/06/20220506085231-29df_wm.jpg'
-									alt='' />
-								<div class='card-info-container'>
-									<h3 class='card-title'>HXT Nguyễn Trãi Quận 5, xây 2 tầng
-										4x20m -(80m2), sổ riêng vuông vức, giá chỉ 11,5 tỷ</h3>
-									<div class='card-config'>
-										<span class='card-config-price'>11,5 tỷ</span> <i
-											class='fa-solid fa-circle'></i> <span
-											class='card-config-area'>80 m²</span>
-									</div>
-									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span>Quận 5,
-											Hồ Chí Minh</span>
-									</div>
-									<div class='card-contact'>
-										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước </span>
-										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin'>
-											<i class='fa-regular fa-heart'></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='col-lg-3'>
-							<div class='card'>
-								<img class='card-img-top'
-									src='https://file4.batdongsan.com.vn/crop/393x222/2022/05/06/20220506085231-29df_wm.jpg'
-									alt='' />
-								<div class='card-info-container'>
-									<h3 class='card-title'>HXT Nguyễn Trãi Quận 5, xây 2 tầng
-										4x20m -(80m2), sổ riêng vuông vức, giá chỉ 11,5 tỷ</h3>
-									<div class='card-config'>
-										<span class='card-config-price'>11,5 tỷ</span> <i
-											class='fa-solid fa-circle'></i> <span
-											class='card-config-area'>80 m²</span>
-									</div>
-									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span>Quận 5,
-											Hồ Chí Minh</span>
-									</div>
-									<div class='card-contact'>
-										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước </span>
-										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin'>
-											<i class='fa-regular fa-heart'></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='col-lg-3'>
-							<div class='card'>
-								<img class='card-img-top'
-									src='https://file4.batdongsan.com.vn/crop/393x222/2022/05/06/20220506085231-29df_wm.jpg'
-									alt='' />
-								<div class='card-info-container'>
-									<h3 class='card-title'>HXT Nguyễn Trãi Quận 5, xây 2 tầng
-										4x20m -(80m2), sổ riêng vuông vức, giá chỉ 11,5 tỷ</h3>
-									<div class='card-config'>
-										<span class='card-config-price'>11,5 tỷ</span> <i
-											class='fa-solid fa-circle'></i> <span
-											class='card-config-area'>80 m²</span>
-									</div>
-									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span>Quận 5,
-											Hồ Chí Minh</span>
-									</div>
-									<div class='card-contact'>
-										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước </span>
-										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin'>
-											<i class='fa-regular fa-heart'></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='col-lg-3'>
-							<div class='card'>
-								<img class='card-img-top'
-									src='https://file4.batdongsan.com.vn/crop/393x222/2022/05/06/20220506085231-29df_wm.jpg'
-									alt='' />
-								<div class='card-info-container'>
-									<h3 class='card-title'>HXT Nguyễn Trãi Quận 5, xây 2 tầng
-										4x20m -(80m2), sổ riêng vuông vức, giá chỉ 11,5 tỷ</h3>
-									<div class='card-config'>
-										<span class='card-config-price'>11,5 tỷ</span> <i
-											class='fa-solid fa-circle'></i> <span
-											class='card-config-area'>80 m²</span>
-									</div>
-									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span>Quận 5,
-											Hồ Chí Minh</span>
-									</div>
-									<div class='card-contact'>
-										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước </span>
-										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin'>
-											<i class='fa-regular fa-heart'></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
+						<%
+						}
+						}
+						}
+						%>
+
 					</div>
 				</div>
 				<div class='product-view-container'>

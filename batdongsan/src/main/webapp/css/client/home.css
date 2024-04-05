@@ -310,8 +310,9 @@
 }
 
 .content-container .card-img-top {
-  width: calc(100% + 1px);
-  height: calc(100% - 142px - 12px - 16px);
+  width: 265px;
+  height: 145px;
+  object-fit: cover;
 }
 
 .content-container .card-info-container {
@@ -378,6 +379,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.content-container .card-location span {
+	-webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
 }
 
 .content-container .card-contact {

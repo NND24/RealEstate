@@ -1,5 +1,4 @@
 <%@ page pageEncoding="utf-8"%>
-<link rel="stylesheet" href="css/footer.css" type="text/css">
 
 <footer class='footer_area section_padding_130_0'>
       <div class='container'>
