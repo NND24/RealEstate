@@ -20,7 +20,7 @@ public class RealEstateModel {
 	private String title;
 	private String description;
 	private int area;
-	private int price;
+	private float price;
 	private String unit;
 	private String interior;
 	private int numberOfBedrooms;
@@ -30,6 +30,34 @@ public class RealEstateModel {
 	private String phoneNumber;
 	private String email;
 	
+	
+	
+	public RealEstateModel() {
+		super();
+	}
+	public RealEstateModel(int realEstateId, String type, int provinceId, int districtId, int wardId, String address,
+			String title, String description, int area, float price, String unit, String interior, int numberOfBedrooms,
+			int numberOfToilets, String images, String contactName, String phoneNumber, String email) {
+		super();
+		this.realEstateId = realEstateId;
+		this.type = type;
+		this.provinceId = provinceId;
+		this.districtId = districtId;
+		this.wardId = wardId;
+		this.address = address;
+		this.title = title;
+		this.description = description;
+		this.area = area;
+		this.price = price;
+		this.unit = unit;
+		this.interior = interior;
+		this.numberOfBedrooms = numberOfBedrooms;
+		this.numberOfToilets = numberOfToilets;
+		this.images = images;
+		this.contactName = contactName;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+	}
 	public int getRealEstateId() {
 		return realEstateId;
 	}
@@ -84,10 +112,10 @@ public class RealEstateModel {
 	public void setArea(int area) {
 		this.area = area;
 	}
-	public int getPrice() {
+	public float getPrice() {
 		return price;
 	}
-	public void setPrice(int price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 	public String getUnit() {

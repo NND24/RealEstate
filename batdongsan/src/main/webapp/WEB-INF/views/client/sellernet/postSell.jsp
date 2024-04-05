@@ -6,10 +6,13 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../css/index.css" type="text/css">
-<link rel="stylesheet" href="../css/header.css" type="text/css">
-<link rel="stylesheet" href="../css/post.css" type="text/css">
+<link rel="stylesheet" href="../../css/client/index.css" type="text/css">
+<link rel="stylesheet" href="../../css/client/header.css" type="text/css">
+<link rel="stylesheet" href="../../css/client/post.css" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+
+
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
 <body>
@@ -138,16 +141,22 @@
 
 		<!-- Post -->
 		<div class='post'>
-			<form:form action="sellernet/insert.html" modelAttribute="realEstate"
-				method="POST">
+			<form:form action="sellernet/insert.html" modelAttribute="realEstate" method="POST" enctype="multipart/form-data">
+
+
 				<div class='input-wrapper'>
 
 					<h3>Thông tin cơ bản</h3>
 
 					<ul class='nav nav-tabs'>
-						<li class='active'><a data-toggle='tab' href='#menu1'>
-								Bán </a></li>
-						<li><a data-toggle='tab' href='#menu2'> Cho thuê </a></li>
+						<li class='active'>
+							<a href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>
+								Bán 
+							</a>
+						</li>
+						<li>
+							<a href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/chothue.html'> Cho thuê </a>
+						</li>
 					</ul>
 
 					<div class='tab-content'>
@@ -159,14 +168,6 @@
 								<form:select path='type' items='${typesSell}' />
 							</div>
 						</div>
-						<!-- 	<div id='menu2' class='tab-pane fade'>
-							<div class='form-item'>
-								<p>
-									Loại bất động sản <span>*</span>
-								</p>
-								<form:select path='type' items='${typesRent}' />
-							</div>
-						</div>  -->
 					</div>
 
 					<div class='address-container'>
@@ -174,17 +175,15 @@
 							<p>
 								Tỉnh, thành phố <span>*</span>
 							</p>
-							<form:select path='provinceId' items='${provinces}' itemLabel='name' itemValue='provinceId' />
+							<form:select path='provinceId' id="provinceId" items='${provinces}' itemLabel='name' itemValue='provinceId' />
 						</div>
 
 						<div class='form-item'>
 							<p>
 								Quận, huyện <span>*</span>
 							</p>
-							<select name='districtId'>
-								<option value='1'>Thủ Đức</option>
-								<option value='2'>Quận 1</option>
-								<option value='3'>Quận 2</option>
+							<select name='districtId' id="districtId">
+								<option>---Quận, huyện---</option>
 							</select>
 						</div>
 					</div>
@@ -194,10 +193,8 @@
 							<p>
 								Phường, xã <span>*</span>
 							</p>
-							<select name='wardId'>
-								<option value='1'>Tân Lập 1</option>
-								<option value='2'>Tân Lập 2</option>
-								<option value='3'>Tân Lập 3</option>
+							<select name='wardId' id="wardId">
+								<option>---Phường, xã---</option>
 							</select>
 						</div>
 						<div class='form-item'></div>
@@ -209,7 +206,7 @@
 						</p>
 						<div class='input-container'>
 							<form:input path='address'
-								placeholder='Bạn có thể bổ sung hẻm, nghách, ngõ...' />
+								placeholder='Bạn có thể bổ sung hẻm, nghách, ngõ...' id="detail-address" />
 						</div>
 					</div>
 				</div>
@@ -220,13 +217,14 @@
 						<p>
 							Tiêu đề <span>*</span>
 						</p>
-						<form:textarea path='title' cols='30' rows='3'></form:textarea>
+						<form:textarea path='title' cols='30' rows='2'></form:textarea>
 					</div>
 					<div class='form-item'>
 						<p>
 							Mô tả <span>*</span>
 						</p>
-						<form:textarea path='description' cols='30' rows='7'></form:textarea>
+						<form:textarea id="editor" path='description' cols='30' rows='7'></form:textarea>
+						
 					</div>
 				</div>
 
@@ -266,10 +264,10 @@
 					<div class='form-item'>
 						<p>Nội thất</p>
 						<select path='interior'>
-							<option value=''></option>
-							<option value=''>Đầy đủ</option>
-							<option value=''>Cơ bản</option>
-							<option value=''>Không nột thất</option>
+							<option value=''>---Nội thất---</option>
+							<option value='Đầy đủ'>Đầy đủ</option>
+							<option value='Cơ bản'>Cơ bản</option>
+							<option value='Không nột thất'>Không nột thất</option>
 						</select>
 					</div>
 
@@ -300,7 +298,8 @@
 						<li>Mỗi ảnh kích thước tối thiểu 100x100 px, tối đa 15 MB</li>
 					</ul>
 					<div class='input-image-wrapper'>
-						<label htmlFor='file'> <svg width='80' height='80'
+						<label htmlFor='file-input' onclick="document.getElementById('image').click()"> 
+						<svg width='80' height='80'
 								viewBox='0 0 130 130' fill='none'
 								xmlns='http://www.w3.org/2000/svg'>
                   <path
@@ -341,14 +340,17 @@
 									stroke='#63666A' strokeWidth='1' strokeMiterlimit='10'></path>
                 </svg>
 							<p>Bấm để chọn ảnh cần tải lên</p>
-						</label> <input type='file' id='file' />
-						<!--  
-							<div class='img-container'>
-								<div class='img-wrapper'>
-									<img src="" alt='' /> <i class='fa-solid fa-xmark'></i>
-								</div>
+						</label> 
+						<input type='file' id='image' name='image' multiple onchange="image_select()" class="d-none" style="display: none;" />
+						
+						  
+							<div class='img-container' id="container">
+						<!--		<div class='img-wrapper'>
+									<img src="images/FB_IMG_1666110816291.jpg" alt='' /> 
+									<i class='fa-solid fa-xmark' onclick="delete_image(`+images.indexOf(i)+`)"></i>
+								</div> -->
 							</div>
-							-->
+							
 					</div>
 
 				</div>
@@ -392,5 +394,130 @@
 			</form:form>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+	var images = [];
+	function image_select() {
+		var image = document.getElementById("image").files;
+		 for (var i = 0; i < image.length; i++) {
+			 if(check_duplicate(image[i].name)) {
+				images.push({
+					"name": image[i].name,
+					"url": URL.createObjectURL(image[i]),
+					"file": image[i],
+				})
+		 	}
+		}
+		document.getElementById("container").innerHTML = image_show();
+	}
+	function image_show() {
+		var image = "";
+		images.forEach((i) => {
+			image += `
+				<div class='img-wrapper'>
+					<img src="`+i.url+`" alt='' /> 
+					<i class='fa-solid fa-xmark' onclick="delete_image(`+images.indexOf(i)+`)"></i>
+				</div>
+			`
+		})
+		return image;
+	}
+	function delete_image(e) {
+		images.splice(e, 1);
+		document.getElementById("container").innerHTML = image_show();
+	}
+	function check_duplicate(name) {
+		var image = true;
+		if(images.length > 0) {
+			for(e = 0; e < images.length; e++) {
+				if(images[e].name == name) {
+					image = false;
+					break;
+				}
+			}
+		}
+		return image
+	}
+	
+	$(document).ready(function() {
+		ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+		
+		
+		
+		$('#provinceId').change(function() {
+		    var provinceId = $(this).val();
+		    $.ajax({
+		        type: 'GET',
+		        url: '${pageContext.servletContext.contextPath}/sellernet/getDistrictsByProvince.html',
+		        data: { provinceId: provinceId },
+		        dataType: 'text',
+		        success: function(data) {
+		            $('#districtId').empty();
+		            $('#wardId').empty(); // Empty the wardId select element
+		            $('#wardId').append('<option value="">---Phường, xã---</option>'); // Append the default option
+		            $("#detail-address").val("");
+		            var lines = data.split('\n');
+		            $.each(lines, function(index, line) {
+		                if (index < lines.length - 1) {
+		                    var parts = line.split(':');
+		                    $('#districtId').append('<option value="' + parts[0] + '">' + parts[1] + '</option>');
+		                }
+		            });
+		        },
+		        error: function(data) {
+		            $('#districtId').empty();
+		            $('#districtId').append('<option value="">Error occurred while fetching districts</option>');
+		        }
+		    });
+		});
+
+	    
+	    $('#districtId').change(function() {
+	        var districtId = $(this).val();
+	        $.ajax({
+	            type: 'GET',
+	            url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
+	            data: { districtId: districtId },
+	            dataType: 'text',
+	            success: function(data) {
+	                $('#wardId').empty();
+	                var lines = data.split('\n');
+	                $.each(lines, function(index, line) {
+	                    if (index < lines.length - 1) {
+	                        var parts = line.split(':');
+	                        $('#wardId').append('<option value="' + parts[0] + '">' + parts[1] + '</option>');
+	                    }
+	                });
+	            },
+	            error: function(data) {
+	                $('#wardId').empty();
+	                $('#wardId').append('<option value="">Error occurred while fetching districts</option>');
+	            }
+	        });
+	    });
+	    
+        $('#wardId').change(function() {
+        	$("#detail-address").val("");
+            var province = $("#provinceId").children("option:selected").text();
+            var district = $("#districtId").children("option:selected").text();
+            var ward = $(this).children("option:selected").text();
+
+            if(district !== "---Quận, huyện---" && ward !== "---Phường, xã---") {
+            	// Construct the address
+	            var address = ward.trim() + ", " + district.trim() + ", " + province.trim();           
+	            
+	            // Update the detail-address element
+	            $("#detail-address").val($("#detail-address").val() + address);
+            }
+        });
+
+	});
+
+
+	</script>
 </body>
 </html>

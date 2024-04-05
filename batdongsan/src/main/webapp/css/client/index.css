@@ -25,6 +25,10 @@ a:hover {
   color: inherit;
 }
 
+.d-none {
+	display: none;
+}
+
 .line {
   border: 0;
   display: inline-block;

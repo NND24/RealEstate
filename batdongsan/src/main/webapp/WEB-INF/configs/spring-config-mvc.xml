@@ -40,16 +40,25 @@
 		</property>
 		<property name="packagesToScan" value="batdongsan.models" />
 	</bean>
+	
 	<!-- Kết nối CSDL -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		p:url="jdbc:sqlserver://localhost:1433;DatabaseName=BatDongSan;encrypt=true;trustServerCertificate=true"
 		p:username="sa" p:password="123456789" />
+		
 	<!-- Transaction Manager -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
 		p:sessionFactory-ref="sessionFactory" />
 	<tx:annotation-driven
 		transaction-manager="transactionManager" />
+		
+	<!-- Cấu hình upload ảnh -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <!-- Max upload size -->
+    <property name="maxUploadSize" value="10000000" /> <!-- Specify maximum file size here -->
+</bean>
+
 </beans>
