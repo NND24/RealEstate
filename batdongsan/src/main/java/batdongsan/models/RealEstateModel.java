@@ -21,7 +21,9 @@ public class RealEstateModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int realEstateId;
 
-	private String type;
+	@ManyToOne
+	@JoinColumn(name = "categoryId")
+	private CategoryModel category;
 
 	@ManyToOne
 	@JoinColumn(name = "provinceId")
@@ -38,7 +40,7 @@ public class RealEstateModel {
 	private String address;
 	private String title;
 	private String description;
-	private int area;
+	private float area;
 	private float price;
 	private String unit;
 	private String interior;
@@ -61,13 +63,13 @@ public class RealEstateModel {
 		super();
 	}
 
-	public RealEstateModel(int realEstateId, String type, ProvincesModel province, DistrictsModel district,
-			WardsModel ward, String address, String title, String description, int area, float price, String unit,
+	public RealEstateModel(int realEstateId, CategoryModel category, ProvincesModel province, DistrictsModel district,
+			WardsModel ward, String address, String title, String description, float area, float price, String unit,
 			String interior, int numberOfBedrooms, int numberOfToilets, String images, String contactName,
 			String phoneNumber, String email, Date createdDate, Date updatedDate) {
 		super();
 		this.realEstateId = realEstateId;
-		this.type = type;
+		this.category = category;
 		this.province = province;
 		this.district = district;
 		this.ward = ward;
@@ -96,12 +98,14 @@ public class RealEstateModel {
 		this.realEstateId = realEstateId;
 	}
 
-	public String getType() {
-		return type;
+	
+
+	public CategoryModel getCategory() {
+		return category;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setCategory(CategoryModel category) {
+		this.category = category;
 	}
 
 	public String getAddress() {
@@ -128,11 +132,11 @@ public class RealEstateModel {
 		this.description = description;
 	}
 
-	public int getArea() {
+	public float getArea() {
 		return area;
 	}
 
-	public void setArea(int area) {
+	public void setArea(float area) {
 		this.area = area;
 	}
 

@@ -165,7 +165,7 @@
 								<p>
 									Loại bất động sản <span>*</span>
 								</p>
-								<form:select path='type' items='${typesRent}' />
+								<form:select path='type' items='${categoriesRent}' itemLabel='name' itemValue='categoryId' />
 							</div>
 						</div>
 					</div>
@@ -445,9 +445,7 @@
         .catch( error => {
             console.error( error );
         } );
-		
-		
-		
+			
 		$('#provinceId').change(function() {
 		    var provinceId = $(this).val();
 		    $.ajax({

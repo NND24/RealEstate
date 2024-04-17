@@ -13,7 +13,7 @@
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/header.jsp"%>
+	<%@ include file="../../components/headerWithFilter.jsp"%>
 	<div class="sell">
 		<div class='container '>
 			<div class='row'>
@@ -44,23 +44,17 @@
 
 					<!-- CARD -->
 					<%
-					// Lấy danh sách bất động sản từ phía server
 					List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
 
-					// Kiểm tra và hiển thị danh sách bất động sản
 					if (realEstates != null) {
 						for (RealEstateModel r : realEstates) {
-							String imageString = (String) r.getImages(); // Lưu ý ép kiểu sang String
+							String imageString = (String) r.getImages();
 
-							// Kiểm tra xem chuỗi hình ảnh có rỗng không
 							if (imageString != null && !imageString.isEmpty()) {
-						// Xóa dấu ngoặc vuông ở hai đầu chuỗi
 						imageString = imageString.substring(1, imageString.length() - 1);
-
-						// Tách chuỗi theo dấu phẩy và khoảng trắng
 						String[] imagePaths = imageString.split(", ");
 					%>
-					<div class='product-card'>
+					<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='product-card'>
 						<div class='card-img-container'>
 							<img src="<%=imagePaths[0]%>" alt='' class='image-1' /> <img
 								src="<%=imagePaths[0]%>" alt='' class='image-2' /> <img
@@ -104,8 +98,8 @@
 										%>
 										<span class='card-config__item card-config__dot'>·</span>
 									</div>
-									<span class='card-location'><%=r.getWard().getName()%>, <%=r.getDistrict().getName()%>,
-										<%=r.getProvince().getName()%></span>
+									<span class='card-location'><%=r.getWard().getName()%>,
+										<%=r.getDistrict().getName()%>, <%=r.getProvince().getName()%></span>
 								</div>
 								<div class='card-description'></div>
 							</div>
@@ -131,7 +125,7 @@
 							</div>
 						</div>
 						<div class='card-label-img'></div>
-					</div>
+					</a>
 					<%
 					}
 					}

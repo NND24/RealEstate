@@ -310,31 +310,31 @@
 				<div class='product-container '>
 					<div class='row'>
 						<%
-						// Lấy danh sách bất động sản từ phía server
 						List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
 
-						// Kiểm tra và hiển thị danh sách bất động sản
 						if (realEstates != null) {
 							for (RealEstateModel r : realEstates) {
-								String imageString = (String) r.getImages(); // Lưu ý ép kiểu sang String
+								String imageString = (String) r.getImages();
 
-								// Kiểm tra xem chuỗi hình ảnh có rỗng không
 								if (imageString != null && !imageString.isEmpty()) {
-							// Xóa dấu ngoặc vuông ở hai đầu chuỗi
 							imageString = imageString.substring(1, imageString.length() - 1);
-
-							// Tách chuỗi theo dấu phẩy và khoảng trắng
 							String[] imagePaths = imageString.split(", ");
 						%>
 						<div class='col-lg-3'>
 							<div class='card'>
-								<img class='card-img-top' src="<%=imagePaths[0]%>" alt='' />
+								<a
+									href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
+									<img class='card-img-top' src="<%=imagePaths[0]%>" alt='' />
+								</a>
 								<div class='card-info-container'>
-									<h3 class='card-title'><%=r.getTitle()%></h3>
+									<a
+										href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
+										<h3 class='card-title'><%=r.getTitle()%></h3>
+									</a>
 									<div class='card-config'>
 										<span class='card-config-price'><%=r.getPrice()%> <%=r.getUnit()%></span>
 										<i class='fa-solid fa-circle'></i> <span
-											class='card-config-area'><%=r.getArea()%> m²</span>
+											class='card-config-area'><%= r.getArea()%> m²</span>
 									</div>
 									<div class='card-location'>
 										<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>,

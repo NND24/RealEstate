@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import batdongsan.models.CategoryModel;
 import batdongsan.models.DistrictsModel;
 import batdongsan.models.ProvincesModel;
 import batdongsan.models.RealEstateModel;
@@ -45,7 +46,7 @@ public class PostController {
 		model.addAttribute("realEstate", new RealEstateModel());
 		return "client/sellernet/postSell";
 	}
-	
+
 	@RequestMapping(value = "dang-tin/chothue", method = RequestMethod.GET)
 	public String indexRent(ModelMap model) {
 		model.addAttribute("realEstate", new RealEstateModel());
@@ -53,92 +54,113 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
-	public String insert(ModelMap model, @ModelAttribute("realEstate") RealEstateModel realEstate, @RequestParam("image") MultipartFile[] files) {
-	    Session session = factory.openSession();
-	    Transaction t = session.beginTransaction();
-	    try {
-	        List<String> imagePaths = new ArrayList<>();
+	public String insert(ModelMap model, @ModelAttribute("realEstate") RealEstateModel realEstate,
+			@RequestParam("image") MultipartFile[] files) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		try {
+			List<String> imagePaths = new ArrayList<>();
 
-	        for (MultipartFile file : files) {
-	            try {
-	                // Lưu file ảnh vào máy chủ
-	                LocalTime currentTime = LocalTime.now();
-	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm-ss");
-	                String formattedTime = currentTime.format(formatter);
+			for (MultipartFile file : files) {
+				try {
+					// Lưu file ảnh vào máy chủ
+					LocalTime currentTime = LocalTime.now();
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm-ss");
+					String formattedTime = currentTime.format(formatter);
 
-	                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-	                String uploadDir = "D:/Workspace Java/DoAnLTW/batdongsan/src/main/webapp/images/";
-	                String filePath = uploadDir + formattedTime + "-" + fileName;
+					String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+					String uploadDir = "D:/Workspace Java/DoAnLTW/batdongsan/src/main/webapp/images/";
+					String filePath = uploadDir + formattedTime + "-" + fileName;
 
-	                // Tạo thư mục nếu thư mục không tồn tại
-	                File directory = new File(uploadDir);
-	                if (!directory.exists()) {
-	                    directory.mkdirs();
-	                }
+					// Tạo thư mục nếu thư mục không tồn tại
+					File directory = new File(uploadDir);
+					if (!directory.exists()) {
+						directory.mkdirs();
+					}
 
-	                // Lưu file
-	                file.transferTo(new File(filePath));
+					// Lưu file
+					file.transferTo(new File(filePath));
 
-	                // Thêm đường dẫn tương đối của ảnh vào danh sách
-	                String relativePath = "images/" + formattedTime + "-" + fileName;
-	                imagePaths.add(relativePath);
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
+					// Thêm đường dẫn tương đối của ảnh vào danh sách
+					String relativePath = "images/" + formattedTime + "-" + fileName;
+					imagePaths.add(relativePath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 
-	        // Chuyển đổi danh sách các đường dẫn ảnh thành chuỗi
-	        String images = Arrays.toString(imagePaths.toArray());
-	        
-	        LocalDateTime currentDateTime = LocalDateTime.now();
-	        
-	        // Chuyển đổi LocalDateTime thành java.sql.Timestamp
-	        java.sql.Timestamp currentTimestamp = java.sql.Timestamp.valueOf(currentDateTime);
-	        
-	        // Chuyển đổi java.sql.Timestamp thành java.sql.Date
-	        java.sql.Date currentDate = new java.sql.Date(currentTimestamp.getTime());
-	        
-	        ProvincesModel province = session.find(ProvincesModel.class, realEstate.getProvince());
-	        DistrictsModel district = session.find(DistrictsModel.class, realEstate.getDistrict());
-	        WardsModel ward = session.find(WardsModel.class, realEstate.getWard());
+			// Chuyển đổi danh sách các đường dẫn ảnh thành chuỗi
+			String images = Arrays.toString(imagePaths.toArray());
 
+			LocalDateTime currentDateTime = LocalDateTime.now();
 
-	        // Commit transaction và gán thông báo thành công
-	        RealEstateModel newRealEstate = new RealEstateModel(realEstate.getRealEstateId(), realEstate.getType(), province, district, ward, realEstate.getAddress(), realEstate.getTitle(), realEstate.getDescription(), realEstate.getArea(), realEstate.getPrice(), realEstate.getUnit(), realEstate.getInterior(), realEstate.getNumberOfBedrooms(), realEstate.getNumberOfToilets(), images, realEstate.getContactName(), realEstate.getPhoneNumber(), realEstate.getEmail(), currentDate,currentDate);
+			// Chuyển đổi LocalDateTime thành java.sql.Timestamp
+			java.sql.Timestamp currentTimestamp = java.sql.Timestamp.valueOf(currentDateTime);
 
-	        session.save(newRealEstate);
-	        t.commit();
-	        model.addAttribute("message", "Thêm mới thành công!");
-	        return "redirect:/sellernet/dang-tin.html";
-	    } catch (Exception e) {
-	        t.rollback();
-	        model.addAttribute("message", "Thêm mới thất bại! ");
-	        System.out.println(e);
-	    } finally {
-	        session.close();
-	    }
-	    return "redirect:/sellernet/dang-tin.html";
+			// Chuyển đổi java.sql.Timestamp thành java.sql.Date
+			java.sql.Date currentDate = new java.sql.Date(currentTimestamp.getTime());
+
+			CategoryModel category = session.find(CategoryModel.class, realEstate.getCategory());
+			ProvincesModel province = session.find(ProvincesModel.class, realEstate.getProvince());
+			DistrictsModel district = session.find(DistrictsModel.class, realEstate.getDistrict());
+			WardsModel ward = session.find(WardsModel.class, realEstate.getWard());
+
+			// Commit transaction và gán thông báo thành công
+			RealEstateModel newRealEstate = new RealEstateModel(realEstate.getRealEstateId(), category, province,
+					district, ward, realEstate.getAddress(), realEstate.getTitle(), realEstate.getDescription(),
+					realEstate.getArea(), realEstate.getPrice(), realEstate.getUnit(), realEstate.getInterior(),
+					realEstate.getNumberOfBedrooms(), realEstate.getNumberOfToilets(), images,
+					realEstate.getContactName(), realEstate.getPhoneNumber(), realEstate.getEmail(), currentDate,
+					currentDate);
+
+			session.save(newRealEstate);
+			t.commit();
+			model.addAttribute("message", "Thêm mới thành công!");
+			return "redirect:/sellernet/dang-tin.html";
+		} catch (Exception e) {
+			t.rollback();
+			model.addAttribute("message", "Thêm mới thất bại! ");
+			System.out.println(e);
+		} finally {
+			session.close();
+		}
+		return "redirect:/sellernet/dang-tin.html";
 	}
 
+	@ModelAttribute("categoriesSell")
+	public List<CategoryModel> getTypesSell() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất bán");
+			List<CategoryModel> categories = query.list();
 
-	@ModelAttribute("typesSell")
-	public List<String> getTypesSell() {
-		List<String> types = new ArrayList<>();
-		types.add("Bán căn hộ chung cư");
-		types.add("Bán nhà riêng");
-		types.add("Bán nhà biệt thự, liền kề");
-		types.add("Bán nhà mặt phố");
-		return types;
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			session.close();
+		}
 	}
 
-	@ModelAttribute("typesRent")
-	public List<String> getTypesRent() {
-		List<String> types = new ArrayList<>();
-		types.add("Cho thuê căn hộ chung cư");
-		types.add("Cho thuê nhà riêng");
-		types.add("Cho thuê nhà biệt thự, liền kề");
-		types.add("Cho thuê nhà mặt phố");
-		return types;
+	@ModelAttribute("categoriesRent")
+	public List<CategoryModel> getTypesRent() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất cho thuê");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			session.close();
+		}
 	}
 
 	@ModelAttribute("provinces")
@@ -193,7 +215,7 @@ public class PostController {
 			// Tạo một chuỗi text từ danh sách district
 			StringBuilder result = new StringBuilder();
 			for (WardsModel ward : list) {
-				result.append(ward.getDistrictId()).append(":").append(ward.getName()).append("\n");
+				result.append(ward.getWardId()).append(":").append(ward.getName()).append("\n");
 			}
 
 			// Chuyển đổi chuỗi thành mảng byte sử dụng encoding UTF-8

@@ -1,82 +1,54 @@
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ page pageEncoding="utf-8"%>
 
 <header class='header'>
 	<div class='header-container'>
 		<div class='header-menu'>
 			<div class='left-menu'>
-				<a href='#'> <img
+				<a href='http://localhost:9999/batdongsan/trang-chu.html'> <img
 					src='https://staticfile.batdongsan.com.vn/images/logo/standard/red/logo.svg'
 					alt='' />
 				</a>
 			</div>
 			<div class='right-menu'>
 				<ul class='menu-container'>
-					<li class='menu__item'>Nhà đất bán
+					<li class='menu__item'><a
+						href="http://localhost:9999/batdongsan/nha-dat-ban.html">Nhà
+							đất bán</a>
 						<ul class='list-container'>
-							<li>Bán căn hộ chung cư</li>
-							<li>Bán nhà riêng</li>
-							<li>Bán nhà, biệt thự liền kề</li>
-							<li>Bán nhà mặt phố</li>
-							<li>Bán shophouse, nhà phố thương mại</li>
-							<li>Bán đất nền dự án</li>
-						</ul>
-					</li>
-					<li class='menu__item'>Nhà đất cho thuê
+							<c:forEach var="c" items="${categoriesSell}">
+								<a
+									href="http://localhost:9999/batdongsan/nha-dat-ban.html?categoryId=${c.categoryId}"><li>
+										${c.name}</li> </a>
+							</c:forEach>
+						</ul></li>
+					<li class='menu__item'><a
+						href="http://localhost:9999/batdongsan/nha-dat-cho-thue.html">Nhà
+							đất cho thuê</a>
 						<ul class='list-container'>
-							<li>Bán căn hộ chung cư</li>
-							<li>Bán nhà riêng</li>
-							<li>Bán nhà, biệt thự liền kề</li>
-							<li>Bán nhà mặt phố</li>
-							<li>Bán shophouse, nhà phố thương mại</li>
-							<li>Bán đất nền dự án</li>
-						</ul>
-					</li>
-					<li class='menu__item'>Dự án
-						<ul class='list-container'>
-							<li>Bán căn hộ chung cư</li>
-							<li>Bán nhà riêng</li>
-							<li>Bán nhà, biệt thự liền kề</li>
-							<li>Bán nhà mặt phố</li>
-							<li>Bán shophouse, nhà phố thương mại</li>
-							<li>Bán đất nền dự án</li>
-						</ul>
-					</li>
+							<c:forEach var="c" items="${categoriesRent}">
+								<a
+									href="http://localhost:9999/batdongsan/nha-dat-ban.html?categoryId=${c.categoryId}"><li>
+										${c.name}</li> </a>
+							</c:forEach>
+						</ul></li>
 					<li class='menu__item'>Tin tức</li>
-					<li class='menu__item'>Wiki BDS
-						<ul class='list-container'>
-							<li>Bán căn hộ chung cư</li>
-							<li>Bán nhà riêng</li>
-							<li>Bán nhà, biệt thự liền kề</li>
-							<li>Bán nhà mặt phố</li>
-							<li>Bán shophouse, nhà phố thương mại</li>
-							<li>Bán đất nền dự án</li>
-						</ul>
-					</li>
 				</ul>
 			</div>
 		</div>
-		
+
 		<div class='control-menu'>
-          <i
-            class='fa-regular fa-heart'
-            data-toggle='tooltip'
-            data-placement='bottom'
-            title='Danh sách tin đã lưu'
-          ></i>
-          <div class='user-option-container'>
-            <a href='#' class='main-button'>
-              Đăng nhập
-            </a>
-            <span class='line'></span>
-            <a href='#' class='main-button'>
-              Đăng ký
-            </a>
-          </div>
-          <div class='postProduct__button main-button'>
-            <a href='#'>Đăng tin</a>
-          </div>
-        </div>
-		
+			<i class='fa-regular fa-heart' data-toggle='tooltip'
+				data-placement='bottom' title='Danh sách tin đã lưu'></i>
+			<div class='user-option-container'>
+				<a href='#' class='main-button'> Đăng nhập </a> <span class='line'></span>
+				<a href='#' class='main-button'> Đăng ký </a>
+			</div>
+			<div class='postProduct__button main-button'>
+				<a href='#'>Đăng tin</a>
+			</div>
+		</div>
+
 		<!-- <div class='control-menu logined'>
 			<i class='fa-regular fa-heart'></i> <i class='fa-regular fa-bell'>
 			</i>

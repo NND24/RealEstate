@@ -165,7 +165,7 @@
 								<p>
 									Loại bất động sản <span>*</span>
 								</p>
-								<form:select path='type' items='${typesSell}' />
+								<form:select path='type' items='${categoriesSell}' itemLabel='name' itemValue='categoryId' />
 							</div>
 						</div>
 					</div>
