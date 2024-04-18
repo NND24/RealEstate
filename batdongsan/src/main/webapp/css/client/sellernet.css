@@ -1,0 +1,176 @@
+@charset "UTF-8";
+.sellernet {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.sellernet .sidebar {
+  background-color: white;
+  height: 100vh;
+  box-shadow: rgba(182, 182, 182, 0.18) 0px 4px 8px;
+  z-index: 99;
+}
+
+.sellernet .sidebar .sidebar-wrapper {
+  position: fixed;
+  top: 89px;
+  width: 280px;
+  height: 100%;
+  overflow-y: scroll;
+  max-height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(204, 204, 204) transparent;
+  background-color: #fff;
+}
+
+.sellernet .sidebar-wrapper .user-info-wrapper {
+  display: flex;
+  padding: 16px 15px;
+  position: relative;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.sellernet .sidebar-wrapper .user-info-wrapper .avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  text-transform: uppercase;
+  background-color: rgb(255, 236, 235);
+  color: rgb(116, 21, 15);
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.sellernet .sidebar-wrapper .user-info-wrapper .avatar h3 {
+  color: rgb(116, 21, 15);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+.sellernet .sidebar-wrapper .user-info-wrapper .user-name {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: rgb(44, 44, 44);
+}
+
+.sellernet .sidebar-wrapper .user-money-wrapper {
+  margin: 0px 15px 16px;
+  background: rgb(242, 242, 242);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.sellernet .user-money-wrapper .user-money-item {
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sellernet .user-money-wrapper .user-money-item h5 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.2px;
+  color: rgb(44, 44, 44);
+}
+
+.sellernet .user-money-wrapper .user-money-item .money {
+  font-weight: 600;
+}
+
+.sellernet .user-money-wrapper a {
+  width: 100%;
+  display: block;
+}
+
+.sellernet .user-money-wrapper button {
+  height: 32px;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
+  background-color: rgb(255, 255, 255);
+  padding: 6px 12px;
+  color: rgb(224, 60, 49);
+  opacity: 1;
+  border: 1px solid rgb(224, 60, 49);
+  font-weight: 600;
+}
+
+.sellernet .user-money-wrapper button i {
+  padding-right: 8px;
+}
+
+.sellernet .panel-group {
+  margin: 0;
+}
+
+.sellernet .panel-group .panel {
+  border-radius: 0;
+  border: none;
+}
+
+.sellernet .panel-default > .panel-heading {
+  background-color: #fff;
+  border-radius: 0;
+  padding: 0;
+  height: 48px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sellernet .panel-default > .panel-heading:hover {
+  background-color: rgb(242, 242, 242);
+}
+
+.sellernet .panel-title {
+  height: 100%;
+}
+
+.sellernet .panel-title a {
+  padding: 10px 15px;
+  height: 48px;
+  width: 100%;
+  display: block;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  justify-content: space-between;
+  font-size: 15px;
+}
+
+.sellernet .panel-title a span {
+  margin-left: 8px;
+}
+
+.sellernet .panel-group .panel-heading + .panel-collapse > .list-group,
+.sellernet .panel-group .panel-heading + .panel-collapse > .panel-body {
+  border: none;
+}
+
+.sellernet .panel > .panel-collapse > .list-group .list-group-item {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: 45px;
+  border: none;
+}
+
+.sellernet .panel > .panel-collapse > .list-group .list-group-item:hover {
+  cursor: pointer;
+  background-color: rgb(242, 242, 242);
+}

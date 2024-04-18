@@ -41,8 +41,11 @@
 		</div>
 
 		<div class="control-menu">
-			<i class="fa-regular fa-heart" data-toggle="tooltip"
+			<a href="${pageContext.servletContext.contextPath}/tin-da-luu.html">
+				<i class="fa-regular fa-heart" data-toggle="tooltip"
 				data-placement="bottom" title="Danh sách tin đã lưu"></i>
+			</a>
+			
 			<div class="user-option-container">
 				<a href="#" class="main-button"> Đăng nhập </a> <span class="line"></span>
 				<a href="#" class="main-button"> Đăng ký </a>
@@ -115,7 +118,7 @@
 								<i class="fa-solid fa-house"></i> <span>Tất cả nhà đất </span>
 							</div> <input type="checkbox" id="check-all"
 							<%List<Integer> categoryIdsList = (List<Integer>) request.getAttribute("categoryIds");
-if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {%>
+							if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {%>
 							checked <%}%> /> <span class="checkmark"> </span>
 						</label>
 						<div class="separate"></div>
@@ -1201,150 +1204,9 @@ $(document).ready(function() {
 
 	// HANDLE SEARCH
 	$(".list-search-select__search-button").click(() => {
-    let listCategoryId = [];
-    if (typeAll.checked) {
-        listCategoryId.push(1, 2, 3, 4, 5);
-    } else {
-        if (type1.checked) {
-            listCategoryId.push(1);
-        }
-        if (type3.checked) {
-            listCategoryId.push(2);
-        }
-        if (type4.checked) {
-            listCategoryId.push(3);
-        }
-        if (type5.checked) {
-            listCategoryId.push(4);
-        }
-        if (type6.checked) {
-            listCategoryId.push(5);
-        }
-        if (type8.checked) {
-            listCategoryId.push(5);
-        }
-        if (type9.checked) {
-            listCategoryId.push(5);
-        }
-        if (type10.checked) {
-            listCategoryId.push(5);
-        }
-        if (type11.checked) {
-            listCategoryId.push(5);
-        }
-        if (type12.checked) {
-            listCategoryId.push(5);
-        }
-        if (type13.checked) {
-            listCategoryId.push(5);
-        }
-    }
-
-    let listNumberOfBedrooms = [];
-    $(".list__items.number-of-bedrooms .item.active").each((index, element) => {
-        listNumberOfBedrooms.push(parseInt($(element).text()));
-    });
-
-    let listNumberOfToilets = [];
-    $(".list__items.number-of-toilets .item.active").each((index, element) => {
-        listNumberOfToilets.push(parseInt($(element).text()));
-    });
-    
-    let minPrice;
-    let maxPrice;
-    
-    if(priceInput[0].value==="" || priceInput[1].value==="") {
-    	minPrice = -1;
-    	maxPrice = -1;
-    } else {
-        minPrice = priceInput[0].value * 1000000;
-        maxPrice = priceInput[1].value * 1000000;
-    }
-
-    let minArea;
-    let maxArea;
-    
-    if(areaInput[0].value==="" || areaInput[1].value==="") {
-    	minArea = -1;
-    	maxArea = -1;
-    } else {
-    	minArea = areaInput[0].value;
-        maxArea = areaInput[1].value;
-    }
-
-    let searchInput = $(".search-bar__input input").val();
-
-    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
-
-    let hasParameters = false; // Biến kiểm tra xem đã có tham số nào trong URL chưa
-
-    if (listCategoryId.length > 0) {
-        url += hasParameters ? "&" : "?";
-        url += "categoryIds=" + listCategoryId.join(",");
-        hasParameters = true;
-    }
-
-    if (minPrice >= 0 && maxPrice >= 0) {
-        url += hasParameters ? "&" : "?";
-        url += "minPrice=" + minPrice + "&maxPrice=" + maxPrice;
-        hasParameters = true;
-    }
-
-    if (minArea >= 0 && maxArea >= 0) {
-        url += hasParameters ? "&" : "?";
-        url += "minArea=" + minArea + "&maxArea=" + maxArea;
-        hasParameters = true;
-    }
-
-    if (listNumberOfBedrooms.length > 0) {
-        url += hasParameters ? "&" : "?";
-        url += "numberOfBedrooms=" + listNumberOfBedrooms.join(",");
-        hasParameters = true;
-    }
-
-    if (listNumberOfToilets.length > 0) {
-        url += hasParameters ? "&" : "?";
-        url += "numberOfToilets=" + listNumberOfToilets.join(",");
-        hasParameters = true;
-    }
-    
-    if(provinceId !== null) {
-        url += hasParameters ? "&" : "?";
-        url += "provinceId=" + provinceId;
-        hasParameters = true;
-    }
-    
-    if(districtId !== null) {
-        url += hasParameters ? "&" : "?";
-        url += "districtId=" + districtId;
-        hasParameters = true;
-    }
-    
-    if(wardId !== null) {
-        url += hasParameters ? "&" : "?";
-        url += "wardId=" + wardId;
-        hasParameters = true;
-    }
-    
-    if(searchInput !== "") {
-        url += hasParameters ? "&" : "?";
-        url += "searchInput=" + searchInput;
-    }
-
-    window.location.href = url;
-});
-
-
-	$("#reset-all-button").click(() => {
-		let url;
-		url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
-		window.location.href = url;
-	})
-
-	$(".menu-price label").click((e) => {
-		let listCategoryId = [];
-		if (typeAll.checked) {
-			listCategoryId.push(1, 2, 3, 4, 5);
+	    let listCategoryId = [];
+	    if (typeAll.checked) {
+			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 		} else {
 			if (type1.checked) {
 				listCategoryId.push(1);
@@ -1362,22 +1224,163 @@ $(document).ready(function() {
 				listCategoryId.push(5);
 			}
 			if (type8.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(6);
 			}
 			if (type9.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(7);
 			}
 			if (type10.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(8);
 			}
 			if (type11.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(9);
 			}
 			if (type12.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(10);
 			}
 			if (type13.checked) {
+				listCategoryId.push(11);
+			}
+		}
+	
+	    let listNumberOfBedrooms = [];
+	    $(".list__items.number-of-bedrooms .item.active").each((index, element) => {
+	        listNumberOfBedrooms.push(parseInt($(element).text()));
+	    });
+	
+	    let listNumberOfToilets = [];
+	    $(".list__items.number-of-toilets .item.active").each((index, element) => {
+	        listNumberOfToilets.push(parseInt($(element).text()));
+	    });
+	    
+	    let minPrice;
+	    let maxPrice;
+	    
+	    if(priceInput[0].value==="" || priceInput[1].value==="") {
+	    	minPrice = -1;
+	    	maxPrice = -1;
+	    } else {
+	        minPrice = priceInput[0].value * 1000000;
+	        maxPrice = priceInput[1].value * 1000000;
+	    }
+	
+	    let minArea;
+	    let maxArea;
+	    
+	    if(areaInput[0].value==="" || areaInput[1].value==="") {
+	    	minArea = -1;
+	    	maxArea = -1;
+	    } else {
+	    	minArea = areaInput[0].value;
+	        maxArea = areaInput[1].value;
+	    }
+	
+	    let searchInput = $(".search-bar__input input").val();
+	
+	    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+	
+	    let hasParameters = false; // Biến kiểm tra xem đã có tham số nào trong URL chưa
+	
+	    if (listCategoryId.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "categoryIds=" + listCategoryId.join(",");
+	        hasParameters = true;
+	    }
+	
+	    if (minPrice >= 0 && maxPrice >= 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "minPrice=" + minPrice + "&maxPrice=" + maxPrice;
+	        hasParameters = true;
+	    }
+	
+	    if (minArea >= 0 && maxArea >= 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "minArea=" + minArea + "&maxArea=" + maxArea;
+	        hasParameters = true;
+	    }
+	
+	    if (listNumberOfBedrooms.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "numberOfBedrooms=" + listNumberOfBedrooms.join(",");
+	        hasParameters = true;
+	    }
+	
+	    if (listNumberOfToilets.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "numberOfToilets=" + listNumberOfToilets.join(",");
+	        hasParameters = true;
+	    }
+	    
+	    if(provinceId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "provinceId=" + provinceId;
+	        hasParameters = true;
+	    }
+	    
+	    if(districtId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "districtId=" + districtId;
+	        hasParameters = true;
+	    }
+	    
+	    if(wardId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "wardId=" + wardId;
+	        hasParameters = true;
+	    }
+	    
+	    if(searchInput !== "") {
+	        url += hasParameters ? "&" : "?";
+	        url += "searchInput=" + searchInput;
+	    }
+	
+	    window.location.href = url;
+	});
+
+
+	$("#reset-all-button").click(() => {
+		let url;
+		url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+		window.location.href = url;
+	})
+
+	$(".menu-price label").click((e) => {
+		let listCategoryId = [];
+		if (typeAll.checked) {
+			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+		} else {
+			if (type1.checked) {
+				listCategoryId.push(1);
+			}
+			if (type3.checked) {
+				listCategoryId.push(2);
+			}
+			if (type4.checked) {
+				listCategoryId.push(3);
+			}
+			if (type5.checked) {
+				listCategoryId.push(4);
+			}
+			if (type6.checked) {
 				listCategoryId.push(5);
+			}
+			if (type8.checked) {
+				listCategoryId.push(6);
+			}
+			if (type9.checked) {
+				listCategoryId.push(7);
+			}
+			if (type10.checked) {
+				listCategoryId.push(8);
+			}
+			if (type11.checked) {
+				listCategoryId.push(9);
+			}
+			if (type12.checked) {
+				listCategoryId.push(10);
+			}
+			if (type13.checked) {
+				listCategoryId.push(11);
 			}
 		}
 
@@ -1454,7 +1457,7 @@ $(document).ready(function() {
 	$(".menu-area label").click((e) => {
 		let listCategoryId = [];
 		if (typeAll.checked) {
-			listCategoryId.push(1, 2, 3, 4, 5);
+			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 		} else {
 			if (type1.checked) {
 				listCategoryId.push(1);
@@ -1472,22 +1475,22 @@ $(document).ready(function() {
 				listCategoryId.push(5);
 			}
 			if (type8.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(6);
 			}
 			if (type9.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(7);
 			}
 			if (type10.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(8);
 			}
 			if (type11.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(9);
 			}
 			if (type12.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(10);
 			}
 			if (type13.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(11);
 			}
 		}
 
@@ -1595,11 +1598,7 @@ $(document).ready(function() {
 		    pairs.forEach(pair => {
 		        const [key, value] = pair.split("=");
 		        if (key && value) {
-		            if (key === "categoryIds") {
-		                result[key] = value.split(",").map(Number);
-		            } else {
-		                result[key] = decodeURIComponent(value);
-		            }
+	                result[key] = decodeURIComponent(value);
 		        }
 		    });
 

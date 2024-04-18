@@ -38,8 +38,10 @@
 		</div>
 
 		<div class='control-menu'>
-			<i class='fa-regular fa-heart' data-toggle='tooltip'
-				data-placement='bottom' title='Danh sách tin đã lưu'></i>
+			<a href="${pageContext.servletContext.contextPath}/tin-da-luu.html">
+				<i class='fa-regular fa-heart' data-toggle='tooltip'
+					data-placement='bottom' title='Danh sách tin đã lưu'></i>
+			</a>
 			<div class='user-option-container'>
 				<a href='#' class='main-button'> Đăng nhập </a> <span class='line'></span>
 				<a href='#' class='main-button'> Đăng ký </a>

@@ -19,92 +19,12 @@
 		<div class='container '>
 			<div class='row'>
 				<div class='sell-content col-lg-9'>
-					<div class='breadcrumb'>
-						<a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html'><%if ("sell".equals(request.getAttribute("page"))) {%> Bán <%} else {%> Cho thuê <%}%></a> <span> / </span> 
-						<a id="refresh-page">
-						<%
-						List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
-						if (categoryIdsList1 != null) {
-						    if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {
-						%>
-						    Tất cả BĐS trên toàn quốc
-						<%
-						    }
-						    else if (categoryIdsList1.contains(1)) {
-						%>
-						    Căn hộ chung cư 
-						<%
-						    }
-						    else if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
-						%>
-						    Các loại nhà bán 
-						<%
-						    }
-						    else if (categoryIdsList1.contains(2)) {
-						%>
-						    Nhà riêng 
-						<%
-						    }
-						    else if (categoryIdsList1.contains(3)) {
-						%>
-						    Nhà biệt thự, liền kề 
-						<%
-						    }
-						    else if (categoryIdsList1.contains(4)) {
-						%>
-						    Nhà mặt phố 
-						<%
-						    }
-						    else if (categoryIdsList1.contains(5)) {
-						%>
-						    Shophouse, nhà phố thương mại
-						<%
-						    }
-						    else if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
-						%>
-						    Các loại đất bán
-						<%
-						    }
-						    else if (categoryIdsList1.contains(6)) {
-						%>
-						    Đất nền dự án
-						<%
-						    }
-						    else if (categoryIdsList1.contains(7)) {
-						%>
-						    Bán đất
-						<%
-						    }
-						    else if (categoryIdsList1.contains(8)) {
-						%>
-						    Trang trại, khu nghỉ dưỡng
-						<%
-						    }
-						    else if (categoryIdsList1.contains(9)) {
-						%>
-						    Condotel
-						<%
-						    }
-						    else if (categoryIdsList1.contains(10)) {
-						%>
-						    Kho, nhà xưởng
-						<%
-						    }
-						    else if (categoryIdsList1.contains(11)) {
-						%>
-						    Bất động sản khác
-						<%
-						    }
-						}
-						%>
-						</a>
-					</div>
-					<h3 class='sell-content__title'>Nhà đất <%if ("sell".equals(request.getAttribute("page"))) {%> bán <%} else {%> cho thuê <%}%></h3>
+					<h3 class='sell-content__title'>Tin đăng đã lưu</h3>
 					<div class='sell-content__navbar'>
-						<span class='total-count'>Hiện có ${amountRealEstate } bất động sản.</span>
+						<span class='total-count'>Tổng số ${amountRealEstate } tin đăng</span>
 						<div class='navbar-filter dropdown'>
 							<div class=' dropdown-toggle' data-toggle='dropdown'>
-								<span id="filter-title">Thông thường</span> <i class='fa-solid fa-chevron-down'></i>
+								<span id="filter-title">Lưu mới nhất</span> <i class='fa-solid fa-chevron-down'></i>
 							</div>
 							<ul class='dropdown-menu list-filter'>
 								
@@ -352,8 +272,7 @@
 		        var hasQueryString = url.indexOf('?') !== -1;
 		        
 		        $('.list-filter').append(
-		            "<a href='" + url + "'><li><span>Thông thường</span></li></a>" +
-		            "<a href='" + url + (hasQueryString ? "&" : "?") + "verify=Tin xác thực xếp trước'><li><span>Tin xác thực xếp trước</span></li></a>" +
+		            "<a href='" + url + (hasQueryString ? "&" : "?") + "verify=Lưu mới nhất'><li><span>Lưu mới nhất</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "newPost=Tin mới nhất'><li><span>Tin mới nhất</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "priceLowToHigh=Giá thấp đến cao'><li><span>Giá thấp đến cao</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "priceHighToLow=Giá cao đến thấp'><li><span>Giá cao đến thấp</span></li></a>" +

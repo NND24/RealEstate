@@ -332,7 +332,22 @@
 										<h3 class='card-title'><%=r.getTitle()%></h3>
 									</a>
 									<div class='card-config'>
-										<span class='card-config-price'><%=r.getPrice()%> <%=r.getUnit()%></span>
+										<span class='card-config-price'>
+										<%
+										if(r.getPrice() < 1000000000) {
+										    out.print((int)(r.getPrice() / 1000000) + " triệu");
+										} else {
+										    out.print(r.getPrice() / 1000000000 + " tỷ");
+										}
+										%>
+										<%
+										if(r.getUnit().equals("triệu")) {
+										    out.print("");
+										} else {
+										    out.print(r.getUnit());
+										}
+										%>
+										</span>
 										<i class='fa-solid fa-circle'></i> <span
 											class='card-config-area'><%= r.getArea()%> m²</span>
 									</div>
