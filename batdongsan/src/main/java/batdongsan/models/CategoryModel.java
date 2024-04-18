@@ -18,7 +18,7 @@ public class CategoryModel {
 	private int categoryId;
 	private String type;
 	private String name;
-	private int status;
+	private boolean status;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
 	private Collection<RealEstateModel> realEstates;
@@ -47,11 +47,11 @@ public class CategoryModel {
 		this.name = name;
 	}
 
-	public int getStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 
