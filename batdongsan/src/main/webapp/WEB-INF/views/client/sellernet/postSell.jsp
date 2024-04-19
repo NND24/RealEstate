@@ -211,6 +211,7 @@
 					</div>
 				</div>
 
+				<!-- Copy -->
 				<div class='input-wrapper'>
 					<h3>Thông tin bài viết</h3>
 					<div class='form-item'>
@@ -438,7 +439,7 @@
 		}
 		return image
 	}
-	
+	//
 	$(document).ready(function() {
 		ClassicEditor
         .create( document.querySelector( '#editor' ) )

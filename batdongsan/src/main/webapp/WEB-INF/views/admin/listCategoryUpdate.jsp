@@ -5,21 +5,24 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listCategory.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/headerAdmin.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listTag.css" type="text/css">
+<title>Chỉnh sửa danh mục</title>
+<link rel="stylesheet" href="../../css/client/index.css" type="text/css">
+
+<link rel="stylesheet" href="../../css/admin/listCategory.css"
+	type="text/css">
+<link rel="stylesheet" href="../../css/admin/headerAdmin.css"
+	type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
 	<%@ include file="../../components/headerAdmin.jsp"%>
+	
 	<div class='admin active'>
 		<%@ include file="../../components/sidebarAdmin.jsp"%>
 		<!-- ListCategory -->
 		<div class='list-category'>
 			<div class='header-wrapper'>
-				<h3>Quản lý danh mục</h3>
+				<h3>Chỉnh sửa danh mục</h3>
 				<button class='add-new-button' id="addCategoryButton">Thêm mới</button>
 			</div>
 			<div class='search-wrapper'>
@@ -64,19 +67,19 @@
 			</div>
 		</div>
 		
-		<!-- ADDMODAL -->
-		<div class='add-modal' style="display: none;" id="addModelForm">
+		<!-- UPDATEMODEL -->
+		<div class='add-modal' id="updateModelForm">
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
-					<h1>Thêm danh mục</h1>
+					<h1>Chỉnh sửa danh mục</h1>
 					${message}
-					<form:form action="listCategory/add.html" modelAttribute="category"
-						method="post">
+					<form:form action="listCategory/update.html"
+						modelAttribute="category" method="post">
 						<div class='input-container'>
 							<div class='form-item'>
 								<p>Mã danh mục</p>
 								<div class='input-wrapper'>
-									<form:input path="categoryId" placeholder="Nhập tên" />
+									<form:input path="categoryId" readonly = "true"/>
 								</div>
 							</div>
 							<div class='form-item'>
@@ -115,31 +118,13 @@
 
 				</div>
 			</div>
-			<button class='close-btn' id="closeAddModelButton">
+			<button class='close-btn' id="closeUpdateModelButton" onclick="window.location.href='/batdongsan/admin/update/cancel.html'">
 				<i class='fa-solid fa-xmark'></i>
 			</button>
 		</div>
 		<!-- END -->
-
-
-
+	
 	</div>
-	<script>
-		$(document).ready(function() {
-			// Xử lý sự kiện Add Model
-			$("#addCategoryButton").click(function() {
-				$("#addModelForm").show();
-			});
-
-			// Xử lý sự kiện click vào nút đóng modal
-			$("#closeAddModelButton").click(function() {
-				$("#addModelForm").hide();
-			});
-			// End Add Model
-
-
-
-		});
-	</script>
+	
 </body>
 </html>
