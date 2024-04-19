@@ -1,3 +1,4 @@
+<%@page import="batdongsan.models.UsersModel"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Arrays"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
@@ -40,52 +41,64 @@
 			</div>
 		</div>
 
+		<%
+		UsersModel user = (UsersModel) request.getAttribute("user");
+
+		if (user == null) {
+		%>
 		<div class="control-menu">
 			<a href="${pageContext.servletContext.contextPath}/tin-da-luu.html">
 				<i class="fa-regular fa-heart" data-toggle="tooltip"
 				data-placement="bottom" title="Danh sách tin đã lưu"></i>
 			</a>
-			
+
 			<div class="user-option-container">
-				<a href="#" class="main-button"> Đăng nhập </a> <span class="line"></span>
-				<a href="#" class="main-button"> Đăng ký </a>
+				<a href="${pageContext.servletContext.contextPath}/dang-nhap.html" class="main-button"> Đăng nhập </a> <span class="line"></span>
+				<a href="${pageContext.servletContext.contextPath}/dang-ky.html" class="main-button"> Đăng ký </a>
 			</div>
 			<div class="postProduct__button main-button">
 				<a href="#">Đăng tin</a>
 			</div>
 		</div>
+		<%
+		} else {
+		%>
+		<div class='control-menu logined'>
+			<i class='fa-regular fa-heart'></i> <i class='fa-regular fa-bell'>
+			</i>
+			<div class='user-option-container'>
+			<!-- <span class='avatar'>
+					<h3>U</h3>
+				 </span> -->
+				<img class="avatar" alt="" src="<%= user.getAvatar() %>" />
+				<span><%= user.getName() %></span> <i class='fa-solid fa-angle-down'></i>
 
-		<!-- <div class='control-menu logined'>
-                <i class='fa-regular fa-heart'></i> <i class='fa-regular fa-bell'>
-                </i>
-                <div class='user-option-container'>
-                    <span class='avatar'>
-                        <h3>U</h3>
-                    </span> <span>user2699702</span> <i class='fa-solid fa-angle-down'></i>
-    
-                    <div class='model-container'>
-                        <div class='model-item'>
-                            <i class='fa-solid fa-list-ul'></i> <span>Quản lý tin đăng</span>
-                        </div>
-                        <div class='model-item'>
-                            <i class='fa-solid fa-list-ul'></i> <span>Thay đổi thông
-                                tin cá nhân</span>
-                        </div>
-                        <div class='model-item'>
-                            <i class='fa-solid fa-list-ul'></i> <span>Thay đổi mật khẩu</span>
-                        </div>
-                        <div class='model-item'>
-                            <i class='fa-solid fa-list-ul'></i> <span>Nạp tiền</span>
-                        </div>
-                        <div class='model-item'>
-                            <i class='fa-solid fa-list-ul'></i> <span>Đăng xuất</span>
-                        </div>
-                    </div>
-                </div>
-                <div class='postProduct__button main-button'>
-                    <a href='#'>Đăng tin</a>
-                </div>
-            </div> -->
+				<div class='model-container'>
+					<div class='model-item'>
+						<i class='fa-solid fa-list-ul'></i> <span>Quản lý tin đăng</span>
+					</div>
+					<div class='model-item'>
+						<i class='fa-solid fa-list-ul'></i> <span>Thay đổi thông
+							tin cá nhân</span>
+					</div>
+					<div class='model-item'>
+						<i class='fa-solid fa-list-ul'></i> <span>Thay đổi mật khẩu</span>
+					</div>
+					<div class='model-item'>
+						<i class='fa-solid fa-list-ul'></i> <span>Nạp tiền</span>
+					</div>
+					<div class='model-item'>
+						<i class='fa-solid fa-list-ul'></i> <span>Đăng xuất</span>
+					</div>
+				</div>
+			</div>
+			<div class='postProduct__button main-button'>
+				<a href='#'>Đăng tin</a>
+			</div>
+		</div>
+		<%
+		}
+		%>
 	</div>
 
 	<form action="#">
@@ -100,7 +113,9 @@
 
 			</div>
 			<div class="search-bar__input">
-				<i class="fa-solid fa-magnifying-glass list-search-select__search-button"></i> <input type="text" />
+				<i
+					class="fa-solid fa-magnifying-glass list-search-select__search-button"></i>
+				<input type="text" />
 			</div>
 			<div class="filter-wall"></div>
 
@@ -118,7 +133,7 @@
 								<i class="fa-solid fa-house"></i> <span>Tất cả nhà đất </span>
 							</div> <input type="checkbox" id="check-all"
 							<%List<Integer> categoryIdsList = (List<Integer>) request.getAttribute("categoryIds");
-							if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {%>
+if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {%>
 							checked <%}%> /> <span class="checkmark"> </span>
 						</label>
 						<div class="separate"></div>
@@ -243,8 +258,7 @@
 				</div>
 				<div class="dropdown-menu menu-address">
 					<div class="menu-list">
-						<div class="listing-search-button"
-							id="button-choose-province">
+						<div class="listing-search-button" id="button-choose-province">
 							<div class="listing-search-title">Tỉnh/Thành</div>
 							<div class="listing-search-current-text"></div>
 							<i class="fa-solid fa-angle-right"></i> <i
@@ -279,12 +293,10 @@
 					<i class="fa-solid fa-xmark close-menu-button"
 						id="close-province-menu"></i>
 					<div class="menu-list list-provinces">
-						<label provinceId="all"> 
-							<span>Tất cả Tỉnh/Thành</span>
-						</label> 
+						<label provinceId="all"> <span>Tất cả Tỉnh/Thành</span>
+						</label>
 						<c:forEach var="p" items="${provinces}">
-							<label provinceId="${p.provinceId}"> 
-								<span>${p.name}</span> 
+							<label provinceId="${p.provinceId}"> <span>${p.name}</span>
 								<i class="fa-solid fa-angle-right"></i>
 							</label>
 						</c:forEach>
@@ -294,14 +306,12 @@
 					<p class="menu-title">Chọn Quận/Huyện</p>
 					<i class="fa-solid fa-xmark close-menu-button"
 						id="close-district-menu"></i>
-					<div class="menu-list list-districts">
-					</div>
+					<div class="menu-list list-districts"></div>
 				</div>
 				<div class="dropdown-menu" id="ward-menu">
 					<p class="menu-title">Chọn Phường/Xã</p>
 					<i class="fa-solid fa-xmark close-menu-button" id="close-ward-menu"></i>
-					<div class="menu-list list-wards">
-					</div>
+					<div class="menu-list list-wards"></div>
 				</div>
 			</div>
 
@@ -314,14 +324,14 @@
 					<p id="list-price">Tất cả</p>
 				</div>
 				<%
-				Float minPriceFloat = (Float) request.getAttribute("minPrice") ;
-			    Float maxPriceFloat = (Float) request.getAttribute("maxPrice") ;
+				Float minPriceFloat = (Float) request.getAttribute("minPrice");
+				Float maxPriceFloat = (Float) request.getAttribute("maxPrice");
 				String unit = (String) request.getAttribute("unit");
 				int minPrice = -1;
 				int maxPrice = -1;
-				if(minPriceFloat!=null && maxPriceFloat!=null) {
-				     minPrice = (int) Math.round(minPriceFloat) / 1000000;
-				     maxPrice = (int) Math.round(maxPriceFloat) / 1000000;
+				if (minPriceFloat != null && maxPriceFloat != null) {
+					minPrice = (int) Math.round(minPriceFloat) / 1000000;
+					maxPrice = (int) Math.round(maxPriceFloat) / 1000000;
 				}
 				%>
 				<div class="dropdown-menu menu-price">
@@ -329,12 +339,14 @@
 						<div class="range-slider-container price-range-slider">
 							<div class="price-input">
 								<div class="field">
-									<input type="number" class="input-min" value="<%= (minPriceFloat != null && maxPriceFloat != null) ? minPrice : "Từ"  %>"
+									<input type="number" class="input-min"
+										value="<%=(minPriceFloat != null && maxPriceFloat != null) ? minPrice : "Từ"%>"
 										placeholder="Từ" />
 								</div>
 								<i class="fa-solid fa-arrow-right"></i>
 								<div class="field">
-									<input type="number" class="input-max" value="<%= (maxPriceFloat != null && maxPriceFloat != null) ? maxPrice : "Đến"  %>"
+									<input type="number" class="input-max"
+										value="<%=(maxPriceFloat != null && maxPriceFloat != null) ? maxPrice : "Đến"%>"
 										placeholder="Đến" />
 								</div>
 							</div>
@@ -343,56 +355,59 @@
 							</div>
 							<div class="range-input">
 								<input type="range" class="range-min" min="0" max="59900"
-									value="<%= (minPriceFloat != null && maxPriceFloat != null) ? minPrice : 0 %>" step="100" /> 
-								<input type="range" class="range-max" min="100" max="60000" 
-									value="<%= (maxPriceFloat != null && maxPriceFloat != null) ? maxPrice : 60000 %>" step="100" />
+									value="<%=(minPriceFloat != null && maxPriceFloat != null) ? minPrice : 0%>"
+									step="100" /> <input type="range" class="range-max" min="100"
+									max="60000"
+									value="<%=(maxPriceFloat != null && maxPriceFloat != null) ? maxPrice : 60000%>"
+									step="100" />
 							</div>
 						</div>
 						<div class="separate"></div>
-						<label value="all"> 
-							<span <% if(minPriceFloat == null && maxPriceFloat == null) { %>class="active"<% } %>>Tất cả mức giá</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 0 && maxPrice == 500) { %>class="active"<% } %>>Dưới 500 triệu</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 500 && maxPrice == 800) { %>class="active"<% } %>>500 - 800 triệu</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 800 && maxPrice == 1000) { %>class="active"<% } %>>800 triệu - 1 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 1000 && maxPrice == 2000) { %>class="active"<% } %>>1 - 2 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 2000 && maxPrice == 3000) { %>class="active"<% } %>>2 - 3 tỷ</span>
-						</label>
-						 <label> 
-						 	<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 3000 && maxPrice == 5000) { %>class="active"<% } %>>3 - 5 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 5000 && maxPrice == 7000) { %>class="active"<% } %>>5 - 7 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 7000 && maxPrice == 10000) { %>class="active"<% } %>>7 - 10 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 10000 && maxPrice == 20000) { %>class="active"<% } %>>10 - 20 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 20000 && maxPrice == 30000) { %>class="active"<% } %>>20 - 30 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 30000 && maxPrice == 40000) { %>class="active"<% } %>>30 - 40 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 40000 && maxPrice == 60000) { %>class="active"<% } %>>40 - 60 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(minPriceFloat != null && maxPriceFloat != null && minPrice == 60000 && maxPrice == 600000) { %>class="active"<% } %>>Trên 60 tỷ</span>
-						</label> 
-						<label> 
-							<span <% if(unit != null && unit.equals("thoa-thuan")) { %>class="active"<% } %>>Thỏa thuận</span>
+						<label value="all"> <span
+							<%if (minPriceFloat == null && maxPriceFloat == null) {%>
+							class="active" <%}%>>Tất cả mức giá</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 0 && maxPrice == 500) {%>
+							class="active" <%}%>>Dưới 500 triệu</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 500 && maxPrice == 800) {%>
+							class="active" <%}%>>500 - 800 triệu</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 800 && maxPrice == 1000) {%>
+							class="active" <%}%>>800 triệu - 1 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 1000 && maxPrice == 2000) {%>
+							class="active" <%}%>>1 - 2 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 2000 && maxPrice == 3000) {%>
+							class="active" <%}%>>2 - 3 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 3000 && maxPrice == 5000) {%>
+							class="active" <%}%>>3 - 5 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 5000 && maxPrice == 7000) {%>
+							class="active" <%}%>>5 - 7 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 7000 && maxPrice == 10000) {%>
+							class="active" <%}%>>7 - 10 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 10000 && maxPrice == 20000) {%>
+							class="active" <%}%>>10 - 20 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 20000 && maxPrice == 30000) {%>
+							class="active" <%}%>>20 - 30 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 30000 && maxPrice == 40000) {%>
+							class="active" <%}%>>30 - 40 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 40000 && maxPrice == 60000) {%>
+							class="active" <%}%>>40 - 60 tỷ</span>
+						</label> <label> <span
+							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 60000 && maxPrice == 600000) {%>
+							class="active" <%}%>>Trên 60 tỷ</span>
+						</label> <label> <span
+							<%if (unit != null && unit.equals("thoa-thuan")) {%>
+							class="active" <%}%>>Thỏa thuận</span>
 						</label>
 					</div>
 					<div class="list-search-select-footer">
@@ -417,26 +432,28 @@
 					<p id="list-area">Tất cả</p>
 				</div>
 				<%
-				  Float minAreaFloat = (Float) request.getAttribute("minArea");
-				  Float maxAreaFloat = (Float) request.getAttribute("maxArea");
-				  int minArea = -1;
-				  int maxArea = -1;
-				  if(minAreaFloat!=null && maxAreaFloat!=null) {
-					 minArea = (int) Math.round(minAreaFloat);
-					 maxArea = (int) Math.round(maxAreaFloat);
-				  }
+				Float minAreaFloat = (Float) request.getAttribute("minArea");
+				Float maxAreaFloat = (Float) request.getAttribute("maxArea");
+				int minArea = -1;
+				int maxArea = -1;
+				if (minAreaFloat != null && maxAreaFloat != null) {
+					minArea = (int) Math.round(minAreaFloat);
+					maxArea = (int) Math.round(maxAreaFloat);
+				}
 				%>
 				<div class="dropdown-menu menu-area">
 					<div class="menu-list">
 						<div class="range-slider-container area-range-slider">
 							<div class="area-input">
 								<div class="field">
-									<input type="number" class="input-min" value="<%= (minAreaFloat == null || minArea < 0) ? "Từ" : minArea  %>"
+									<input type="number" class="input-min"
+										value="<%=(minAreaFloat == null || minArea < 0) ? "Từ" : minArea%>"
 										placeholder="Từ" />
 								</div>
 								<i class="fa-solid fa-arrow-right"></i>
 								<div class="field">
-									<input type="number" class="input-max" value="<%= (maxAreaFloat == null || maxArea < 0) ? "Đến" : maxArea  %>"
+									<input type="number" class="input-max"
+										value="<%=(maxAreaFloat == null || maxArea < 0) ? "Đến" : maxArea%>"
 										placeholder="Đến" />
 								</div>
 							</div>
@@ -445,42 +462,45 @@
 							</div>
 							<div class="range-input">
 								<input type="range" class="range-min" min="0" max="455"
-									value="<%= (minAreaFloat == null || minArea < 0) ? 0 : minArea %>" step="1" /> 
-									<input type="range" class="range-max" min="5" max="500" 
-									value="<%= (maxAreaFloat == null || maxArea < 0) ? 500 : maxArea %>" step="1" />
+									value="<%=(minAreaFloat == null || minArea < 0) ? 0 : minArea%>"
+									step="1" /> <input type="range" class="range-max" min="5"
+									max="500"
+									value="<%=(maxAreaFloat == null || maxArea < 0) ? 500 : maxArea%>"
+									step="1" />
 							</div>
 						</div>
 
 						<div class="separate"></div>
-						<label> 
-							<span <% if(minAreaFloat == null && maxAreaFloat == null) { %>class="active"<% } %>>Tất cả diện tích</span>
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 0 && maxArea == 30) { %>class="active"<% } %>>Dưới 30 m²</span>
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 30 && maxArea == 50) { %>class="active"<% } %>>30 - 50 m²</span>
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 50 && maxArea == 100) { %>class="active"<% } %>>50 - 100 m²</span>
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 100 && maxArea == 150) { %>class="active"<% } %>>100 - 150 m²</span>
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 150 && maxArea == 200) { %>class="active"<% } %>>150 - 200 m²</span>
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 200 && maxArea == 250) { %>class="active"<% } %>>200 - 250 m²</span>
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 250 && maxArea == 300) { %>class="active"<% } %>>250 - 300 m²</span> 
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 300 && maxArea == 500) { %>class="active"<% } %>>300 - 500 m²</span>
-						</label> 
-						<label> 
-							<span <% if(minAreaFloat != null && maxAreaFloat != null && minArea == 500 && maxArea == 10000) { %>class="active"<% } %>>Trên 500 m²</span>
+						<label> <span
+							<%if (minAreaFloat == null && maxAreaFloat == null) {%>
+							class="active" <%}%>>Tất cả diện tích</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 0 && maxArea == 30) {%>
+							class="active" <%}%>>Dưới 30 m²</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 30 && maxArea == 50) {%>
+							class="active" <%}%>>30 - 50 m²</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 50 && maxArea == 100) {%>
+							class="active" <%}%>>50 - 100 m²</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 100 && maxArea == 150) {%>
+							class="active" <%}%>>100 - 150 m²</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 150 && maxArea == 200) {%>
+							class="active" <%}%>>150 - 200 m²</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 200 && maxArea == 250) {%>
+							class="active" <%}%>>200 - 250 m²</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 250 && maxArea == 300) {%>
+							class="active" <%}%>>250 - 300 m²</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 300 && maxArea == 500) {%>
+							class="active" <%}%>>300 - 500 m²</span>
+						</label> <label> <span
+							<%if (minAreaFloat != null && maxAreaFloat != null && minArea == 500 && maxArea == 10000) {%>
+							class="active" <%}%>>Trên 500 m²</span>
 						</label>
 					</div>
 					<div class="list-search-select-footer">
@@ -567,6 +587,18 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$(".user-option-container").on("click", () => {
+	    var modelContainer = $(".user-option-container .model-container");
+	    
+	    // Kiểm tra nếu hiển thị là block thì chuyển thành none, ngược lại chuyển thành block
+	    if (modelContainer.css("display") === "block") {
+	        modelContainer.css("display", "none");
+	    } else {
+	        modelContainer.css("display", "block");
+	    }
+	});
+
+	
 	// PRICE RANGE SLIDER
 	const priceRangeInput = document.querySelectorAll(".price-range-slider .range-input input"),
 		priceInput = document.querySelectorAll(".price-range-slider .price-input input"),
@@ -664,7 +696,7 @@ $(document).ready(function() {
 	});
 
 	window.addEventListener('load', () => {
-    	  <% if (minPriceFloat != null && maxPriceFloat != null) { %>
+    	  <%if (minPriceFloat != null && maxPriceFloat != null) {%>
 			let minVal,
 				maxVal;
 
@@ -674,7 +706,7 @@ $(document).ready(function() {
 			priceRange.style.right = 100 - (maxVal / priceRangeInput[1].max) * 100 + "%";
 
 			updateListPrice(minVal, maxVal);
-        <% } %>
+        <%}%>
         });
 
 	// AREA RANGE SLIDER
@@ -736,7 +768,7 @@ $(document).ready(function() {
 	});
 
 	document.getElementById("reset-search-area").addEventListener("click", () => {
-    	  <% if (minAreaFloat != null && maxAreaFloat != null) { %>
+    	  <%if (minAreaFloat != null && maxAreaFloat != null) {%>
 			let minVal = 0,
 				maxVal = 500;
 
@@ -746,7 +778,7 @@ $(document).ready(function() {
 			areaRange.style.right = 100 - (maxVal / areaRangeInput[1].max) * 100 + "%";
 
 			updateListArea(minVal, maxVal);
-        <% } %>
+        <%}%>
       });
 
 	window.addEventListener('load', () => {

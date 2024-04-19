@@ -43,8 +43,8 @@
 					data-placement='bottom' title='Danh sách tin đã lưu'></i>
 			</a>
 			<div class='user-option-container'>
-				<a href='#' class='main-button'> Đăng nhập </a> <span class='line'></span>
-				<a href='#' class='main-button'> Đăng ký </a>
+				<a href='${pageContext.servletContext.contextPath}/dang-nhap.html' class='main-button'> Đăng nhập </a> <span class='line'></span>
+				<a href='${pageContext.servletContext.contextPath}/dang-ky.html' class='main-button'> Đăng ký </a>
 			</div>
 			<div class='postProduct__button main-button'>
 				<a href='#'>Đăng tin</a>

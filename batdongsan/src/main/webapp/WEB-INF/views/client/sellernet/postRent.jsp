@@ -11,9 +11,6 @@
 <link rel="stylesheet" href="../css/client/sellernet.css" type="text/css">
 <link rel="stylesheet" href="../css/client/post.css" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
-<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
-
-
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
 <body>
