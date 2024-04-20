@@ -437,8 +437,30 @@ public class SellController {
 			request.setAttribute("unit", unit);
 			request.setAttribute("minArea", minArea);
 			request.setAttribute("maxArea", maxArea);
-
 			request.setAttribute("amountRealEstate", listRealEstate.size());
+			
+			Cookie[] cookies = request.getCookies();
+			String userId = null;
+
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("userId")) {
+						userId = cookie.getValue();
+						break;
+					}
+				}
+			}
+
+			if (userId != null) {
+				String hqlUser = "FROM UsersModel WHERE userId = :userId";
+				Query<UsersModel> queryUser = session.createQuery(hqlUser);
+				queryUser.setParameter("userId", Integer.parseInt(userId));
+				UsersModel user = queryUser.uniqueResult();
+				request.setAttribute("user", user);
+			} else {
+				UsersModel user = null;
+				request.setAttribute("user", user);
+			}
 
 			return "client/sell";
 		} finally {

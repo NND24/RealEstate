@@ -47,17 +47,9 @@
 		if (user == null) {
 		%>
 		<div class="control-menu">
-			<a href="${pageContext.servletContext.contextPath}/tin-da-luu.html">
-				<i class="fa-regular fa-heart" data-toggle="tooltip"
-				data-placement="bottom" title="Danh sách tin đã lưu"></i>
-			</a>
-
 			<div class="user-option-container">
 				<a href="${pageContext.servletContext.contextPath}/dang-nhap.html" class="main-button"> Đăng nhập </a> <span class="line"></span>
 				<a href="${pageContext.servletContext.contextPath}/dang-ky.html" class="main-button"> Đăng ký </a>
-			</div>
-			<div class="postProduct__button main-button">
-				<a href="#">Đăng tin</a>
 			</div>
 		</div>
 		<%
@@ -75,25 +67,31 @@
 
 				<div class='model-container'>
 					<div class='model-item'>
-						<i class='fa-solid fa-list-ul'></i> <span>Quản lý tin đăng</span>
+						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
+							<i class='fa-solid fa-list-ul'></i> <span>Quản lý tin đăng</span>
+						</a>
 					</div>
 					<div class='model-item'>
+					<a href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?edit=true">
 						<i class='fa-solid fa-list-ul'></i> <span>Thay đổi thông
 							tin cá nhân</span>
+							</a>
 					</div>
 					<div class='model-item'>
+					<a href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?setting=true">
 						<i class='fa-solid fa-list-ul'></i> <span>Thay đổi mật khẩu</span>
+							</a>
 					</div>
 					<div class='model-item'>
 						<i class='fa-solid fa-list-ul'></i> <span>Nạp tiền</span>
 					</div>
-					<div class='model-item'>
+					<div class='model-item logout'>
 						<i class='fa-solid fa-list-ul'></i> <span>Đăng xuất</span>
 					</div>
 				</div>
 			</div>
 			<div class='postProduct__button main-button'>
-				<a href='#'>Đăng tin</a>
+				<a href='${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html'>Đăng tin</a>
 			</div>
 		</div>
 		<%
@@ -597,6 +595,21 @@ $(document).ready(function() {
 	        modelContainer.css("display", "block");
 	    }
 	});
+	
+	// HANDLE LOGOUT
+	$(".logout").on("click", () => {
+		$.ajax({
+			type: 'GET',
+			url: '${pageContext.servletContext.contextPath}/logout.html',
+			dataType: 'text',
+			success: function(data) {
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				location.reload();
+			}
+		});
+	})
 
 	
 	// PRICE RANGE SLIDER

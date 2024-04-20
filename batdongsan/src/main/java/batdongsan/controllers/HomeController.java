@@ -2,6 +2,7 @@ package batdongsan.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.query.Query;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.RealEstateModel;
+import batdongsan.models.UsersModel;
 
 @Controller
 @RequestMapping("/")
@@ -31,6 +33,30 @@ public class HomeController {
 			List<RealEstateModel> listRealEsate = query.list();
 			
 			request.setAttribute("realEstates", listRealEsate);
+			
+			Cookie[] cookies = request.getCookies();
+			String userId = null;
+
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("userId")) {
+						userId = cookie.getValue();
+						break;
+					}
+				}
+			}
+
+			if (userId != null) {
+				String hqlUser = "FROM UsersModel WHERE userId = :userId";
+				Query<UsersModel> queryUser = session.createQuery(hqlUser);
+				queryUser.setParameter("userId", Integer.parseInt(userId));
+				UsersModel user = queryUser.uniqueResult();
+				request.setAttribute("user", user);
+			} else {
+				UsersModel user = null;
+				request.setAttribute("user", user);
+			}
+			
 			return "client/home";
 		} finally {
 			session.close();

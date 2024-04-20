@@ -22,6 +22,9 @@ public class UsersModel {
 	private String avatar;
 	private String taxCode;
 	private String phonenumber;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	private Collection<FavouriteModel> favourite;
 
 	public UsersModel() {
 		super();
@@ -93,4 +96,15 @@ public class UsersModel {
 		this.phonenumber = phonenumber;
 	}
 
+	public Collection<FavouriteModel> getFavourite() {
+		return favourite;
+	}
+
+	public void setFavourite(Collection<FavouriteModel> favourite) {
+		this.favourite = favourite;
+	}
+
+	
+
+	
 }
