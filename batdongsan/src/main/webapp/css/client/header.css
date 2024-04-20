@@ -135,6 +135,7 @@
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   display: none;
+  z-index: 1;
 }
 
 .control-menu.logined .user-option-container .model-container .model-item {
@@ -174,7 +175,7 @@
 }
 
 .control-menu .user-option-container span {
-  margin-right: 6px;
+  margin: 6px;
   font-size: 14px;
 }
 

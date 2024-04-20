@@ -332,7 +332,22 @@
 										<h3 class='card-title'><%=r.getTitle()%></h3>
 									</a>
 									<div class='card-config'>
-										<span class='card-config-price'><%=r.getPrice()%> <%=r.getUnit()%></span>
+										<span class='card-config-price'>
+										<%
+										if(r.getPrice() < 1000000000) {
+										    out.print((int)(r.getPrice() / 1000000) + " triệu");
+										} else {
+										    out.print(r.getPrice() / 1000000000 + " tỷ");
+										}
+										%>
+										<%
+										if(r.getUnit().equals("triệu")) {
+										    out.print("");
+										} else {
+										    out.print(r.getUnit());
+										}
+										%>
+										</span>
 										<i class='fa-solid fa-circle'></i> <span
 											class='card-config-area'><%= r.getArea()%> m²</span>
 									</div>
@@ -345,8 +360,9 @@
 											data-placement='right' title='13/01/2024'> Đăng 3 ngày
 											trước </span>
 										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin'>
+											data-placement='bottom' title='Bấm để lưu tin' value="<%= r.getRealEstateId()%>">
 											<i class='fa-regular fa-heart'></i>
+											<i class="fa-solid fa-heart" style="color: #e03c31;display: none;"></i>
 										</button>
 									</div>
 								</div>
@@ -545,5 +561,40 @@
 		</div>
 	</div>
 	<%@ include file="../../components/footer.jsp"%>
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		<%
+		if (user != null) {
+		%>
+		// HANDLE ADD TO FAVOURITE
+	    $(".card-contact-button").on("click", function() {
+	        var regularHeartIcon = $(this).find(".fa-regular.fa-heart");
+	        var solidHeartIcon = $(this).find(".fa-solid.fa-heart");
+	        if (regularHeartIcon.css("display") === "block") {
+	        	regularHeartIcon.css("display", "none");
+	        	solidHeartIcon.css("display", "block");
+	        } else {
+	        	regularHeartIcon.css("display", "block");
+	        	solidHeartIcon.css("display", "none");
+	        }
+	        
+	        var realEstateId = $(this).attr("value");
+	        $.ajax({
+				type: 'GET',
+				url: '${pageContext.servletContext.contextPath}/favourite.html',
+				data: {realEstateId: realEstateId},
+				dataType: 'text',
+				success: function(data) {
+					console.log("Thêm thành công");
+				},
+				error: function(xhr, status, error) {
+					console.log("Thêm thất bại")
+				}
+			});
+	    });
+		<% } %>
+	});
+	</script>
 </body>
 </html>

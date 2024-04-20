@@ -1,13 +1,16 @@
 package batdongsan.models;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,6 +61,9 @@ public class RealEstateModel {
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date updatedDate;
+	
+	@OneToMany(mappedBy = "realEstate", fetch = FetchType.EAGER)
+	private Collection<FavouriteModel> favourite;
 
 	public RealEstateModel() {
 		super();
@@ -252,4 +258,13 @@ public class RealEstateModel {
 		this.updatedDate = updatedDate;
 	}
 
+	public Collection<FavouriteModel> getFavourite() {
+		return favourite;
+	}
+
+	public void setFavourite(Collection<FavouriteModel> favourite) {
+		this.favourite = favourite;
+	}
+	
+	
 }

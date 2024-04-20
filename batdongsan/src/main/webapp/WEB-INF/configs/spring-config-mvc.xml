@@ -30,15 +30,15 @@
 
 	<!-- Cấu hình Hibernate -->
 	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
-				<prop key="hibernate.show_sql">false</prop>
-			</props>
-		</property>
-		<property name="packagesToScan" value="batdongsan.models" />
+	    class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+	    <property name="dataSource" ref="dataSource" />
+	    <property name="hibernateProperties">
+	        <props>
+	            <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+	            <prop key="hibernate.show_sql">false</prop>
+	        </props>
+	    </property>
+	    <property name="packagesToScan" value="batdongsan.models" />
 	</bean>
 	
 	<!-- Kết nối CSDL -->
@@ -47,18 +47,40 @@
 		p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		p:url="jdbc:sqlserver://localhost:1433;DatabaseName=BatDongSan;encrypt=true;trustServerCertificate=true"
 		p:username="sa" p:password="123456789" />
-		
+	
 	<!-- Transaction Manager -->
 	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
-		p:sessionFactory-ref="sessionFactory" />
-	<tx:annotation-driven
-		transaction-manager="transactionManager" />
-		
+	    class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
 	<!-- Cấu hình upload ảnh -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-    <!-- Max upload size -->
-    <property name="maxUploadSize" value="10000000" /> <!-- Specify maximum file size here -->
-</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- Max upload size -->
+		<property name="maxUploadSize" value="10000000" /> <!-- Specify maximum file size here -->
+	</bean>
+
+	<!-- Cấu hình gửi mail -->
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username"
+			value="n21dccn013@student.ptithcm.edu.vn" />
+		<property name="password" value="mmay jfmj dgrc qxpq" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.socketFactory.port">587</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">false</prop>
+			</props>
+		</property>
+	</bean>
 
 </beans>

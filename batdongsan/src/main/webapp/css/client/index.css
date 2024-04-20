@@ -17,12 +17,13 @@ html {
 }
 
 a {
-  color: inherit;
+  color: #2c2c2c !important;
+  text-decoration: none !important;
 }
 
 a:hover {
-  text-decoration: none;
-  color: inherit;
+  color: #2c2c2c !important;
+  text-decoration: none !important;
 }
 
 .d-none {
