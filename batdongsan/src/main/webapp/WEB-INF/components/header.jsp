@@ -6,7 +6,8 @@
 	<div class='header-container'>
 		<div class='header-menu'>
 			<div class='left-menu'>
-				<a href='${pageContext.servletContext.contextPath}/trang-chu.html'> <img
+				<a href='${pageContext.servletContext.contextPath}/trang-chu.html'>
+					<img
 					src='https://staticfile.batdongsan.com.vn/images/logo/standard/red/logo.svg'
 					alt='' />
 				</a>
@@ -56,9 +57,8 @@
 		%>
 		<div class='control-menu logined'>
 			<a href="${pageContext.servletContext.contextPath}/tin-da-luu.html">
-				<i class='fa-regular fa-heart'></i> 
-			</a>
-			<i class='fa-regular fa-bell'></i>
+				<i class='fa-regular fa-heart'></i>
+			</a> <i class='fa-regular fa-bell'></i>
 			<div class='user-option-container'>
 				<!-- <span class='avatar'>
 					<h3>U</h3>
@@ -67,33 +67,39 @@
 				<i class='fa-solid fa-angle-down'></i>
 
 				<div class='model-container'>
-					<div class='model-item'>
-						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
-							<i class='fa-solid fa-list-ul'></i> <span>Quản lý tin đăng</span>
-						</a>
-					</div>
-					<div class='model-item'>
-					<a href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?edit=true">
-						<i class="fa-regular fa-user"></i> <span>Thay đổi thông
-							tin cá nhân</span>
-							</a>
-					</div>
-					<div class='model-item'>
-					<a href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?setting=true">
-						<i class="fa-solid fa-lock"></i> <span>Thay đổi mật khẩu</span>
-							</a>
-					</div>
-					<div class='model-item'>
-						<i class="fa-regular fa-credit-card"></i> <span>Nạp tiền</span>
-					</div>
+					<a class='model-item' href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
+							<i class='fa-solid fa-list-ul'></i>
+							<span>Quản lý tin đăng</span>
+					</a>
+				
+					<a class='model-item' href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?edit=true">
+							<i class="fa-regular fa-user"></i>
+							<span>Thay đổi thông tin cá nhân</span>
+					</a>
+				
+					<a class='model-item' href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?setting=true">
+							<i class="fa-solid fa-lock"></i>
+							<span>Thay đổi mật khẩu</span>
+					</a>
+				
+					<a class='model-item' href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?setting=true">
+						<i class="fa-regular fa-credit-card"></i>
+						<span>Nạp tiền</span>
+					</a>
+				
 					<hr />
+				
 					<div class='model-item logout'>
-						<i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Đăng xuất</span>
+						<i class="fa-solid fa-arrow-right-from-bracket"></i>
+						<span>Đăng xuất</span>
 					</div>
 				</div>
+
 			</div>
 			<div class='postProduct__button main-button'>
-				<a href='${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html'>Đăng tin</a>
+				<a
+					href='${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html'>Đăng
+					tin</a>
 			</div>
 		</div>
 		<%

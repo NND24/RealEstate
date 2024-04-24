@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/client/header.css" type="text/css">
+<link rel="stylesheet" href="../css/client/header.css?version=62" type="text/css">
 <link rel="stylesheet" href="../css/client/sellernet.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/client/manageAccount.css?version=60"
+<link rel="stylesheet" href="../css/client/manageAccount.css?version=63"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
@@ -104,15 +104,29 @@
 								</button>
 							</div>
 						</form:form>
-						<form:form id='setting' class='tab-pane fade'>
+						<form:form action="sellernet/updatePassword.html" method="post" id='setting' class='tab-pane fade'>
 							<div class='input-wrapper'>
 								<h3>Đổi mật khẩu</h3>
 								<div class='input-container'>
+									<%
+									String passwordError = (String) request.getAttribute("passwordError");
+									String newPasswordError = (String) request.getAttribute("newPasswordError");
+									%>
 									<div class='form-item'>
 										<p>Mật khẩu hiện tại</p>
 										<div class='input-wrapper'>
-											<input type='password' /> <i class='fa-regular fa-eye'></i>
+											<input name="password" type='password' />
+											<div class='button show-pass password'>
+												<i class='fa-solid fa-eye-slash'></i>
+												<i class="fa-solid fa-eye"></i>
+											</div>
 										</div>
+										<%
+										if(passwordError != null && !passwordError.isEmpty()) {
+										%>
+										<p class="errorMessage errorCtrlMessage"><%= passwordError %></p>
+										<% } %>
+										<p class="errorMessage password" style="display: none"></p>
 									</div>
 
 									<div class='form-item'>
@@ -123,8 +137,13 @@
 									<div class='form-item'>
 										<p>Mật khẩu mới</p>
 										<div class='input-wrapper'>
-											<input type='password' /> <i class='fa-regular fa-eye'></i>
+											<input name="newPassword" type='password' /> 
+											<div class='button show-pass newPassword'>
+												<i class='fa-solid fa-eye-slash'></i>
+												<i class="fa-solid fa-eye"></i>
+											</div>
 										</div>
+										<p class="errorMessage newPassword" style="display: none"></p>
 									</div>
 
 									<div class='form-item'>
@@ -134,19 +153,24 @@
 									<div class='form-item'>
 										<p>Nhập lại mật khẩu mới</p>
 										<div class='input-wrapper'>
-											<input type='password' /> <i class='fa-regular fa-eye'></i>
+											<input name="reNewPassword" type='password' /> 
+											<div class='button show-pass reNewPassword'>
+												<i class='fa-solid fa-eye-slash'></i>
+												<i class="fa-solid fa-eye"></i>
+											</div>
 										</div>
+										<p class="errorMessage reNewPassword" style="display: none"></p>
 									</div>
 
 									<div class='form-item'>
 										<p></p>
-										<button>Lưu thay đổi</button>
+										<button class="update-pass-btn" disabled="disabled">Lưu thay đổi</button>
 									</div>
 								</div>
 								<ul>
-									<li>Mật khẩu tối thiểu 8 ký tự</li>
-									<li>Chứa ít nhất 1 ký tự viết hoa</li>
-									<li>Chứa ít nhất 1 ký tự số</li>
+									<li class="check1">Mật khẩu tối thiểu 8 ký tự</li>
+									<li class="check2">Chứa ít nhất 1 ký tự viết hoa</li>
+									<li class="check3">Chứa ít nhất 1 ký tự số</li>
 								</ul>
 							</div>
 						</form:form>
@@ -190,11 +214,83 @@
 			        // Đọc dữ liệu của tệp hình ảnh
 			        reader.readAsDataURL(this.files[0]);
 			        
-
 				    $(".image-wrapper").css("display", "block");
 				    $(".avatar__label").css("display", "none");
 			    }
 			});
+			
+			$(".show-pass").on("click", function() {
+			    $(this).toggleClass("show");
+			    
+			    if ($(this).hasClass("password")) {
+			        var passwordField = $('input[name="password"]');
+			        var currentType = passwordField.attr("type");
+			        var newType = currentType === "password" ? "text" : "password";
+			        passwordField.attr("type", newType);
+			    } else if ($(this).hasClass("newPassword")) {
+			        var passwordField = $('input[name="newPassword"]');
+			        var currentType = passwordField.attr("type");
+			        var newType = currentType === "password" ? "text" : "password";
+			        passwordField.attr("type", newType);
+			    } else if ($(this).hasClass("reNewPassword")) {
+			        var passwordField = $('input[name="reNewPassword"]');
+			        var currentType = passwordField.attr("type");
+			        var newType = currentType === "password" ? "text" : "password";
+			        passwordField.attr("type", newType);
+			    }
+			});
+
+			var password = $('input[name="password"]');
+			var newPassword = $('input[name="newPassword"]');
+			var reNewPassword = $('input[name="reNewPassword"]');
+
+			$('input[type="password"]').on("mouseout", function() {
+			    
+			    
+			    if (newPassword.val() !== "" && reNewPassword.val() !== newPassword.val()) {
+			        $(".errorMessage.reNewPassword").css("display", "block").text("Mật khẩu không trùng khớp");
+			    } else {
+			        $(".errorMessage.reNewPassword").css("display", "none").text("");
+			    }
+			    
+			    var containsUppercase = /[A-Z]/.test(newPassword.val());
+			    var containsNumber = /\d/.test(newPassword.val());
+			    
+			    if(newPassword.val().length >= 8 && containsUppercase && containsNumber && password.val().trim() !== "" 
+			    		&& newPassword.val().trim() !== "" && reNewPassword.val().trim() !== "" && reNewPassword.val() === newPassword.val()) {
+			    	 $(".update-pass-btn").css("opacity", "1").prop('disabled', false);
+			    } else {
+		            $(".update-pass-btn").css("opacity", "0.4").prop('disabled', true);
+			    }
+			});
+			
+			newPassword.on("input", function() {
+			    if (newPassword.val().length >= 8) {
+			        $(".check1").css("color", "rgb(7, 163, 93)");
+			    } else {
+			        $(".check1").css("color", "rgb(153, 153, 153)");
+			    }
+
+			    var containsUppercase = /[A-Z]/.test(newPassword.val());
+
+			    if (containsUppercase) {
+			        $(".check2").css("color", "rgb(7, 163, 93)");
+			    } else {
+			        $(".check2").css("color", "rgb(153, 153, 153)");
+			    }
+
+			    var containsNumber = /\d/.test(newPassword.val());
+
+			    if (containsNumber) {
+			        $(".check3").css("color", "rgb(7, 163, 93)");
+			    } else {
+			        $(".check3").css("color", "rgb(153, 153, 153)");
+			    }
+			});
+			
+			password.on("input", function() {
+				$(".errorCtrlMessage").css("display", "none")
+			})
 
 		})
 	</script>

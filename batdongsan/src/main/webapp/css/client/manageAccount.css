@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+
+
 .manage-account {
 	margin-left: 280px;
 	width: calc(100% - 280px);
@@ -49,7 +51,7 @@
 
 /* áda */
 .manage-account .input-wrapper {
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 }
 
 .manage-account .input-wrapper h3 {
@@ -168,6 +170,11 @@
 	font-weight: 600;
 }
 
+.manage-account .form-item p.errorMessage {
+	font-size: 12px;
+	color: #e34f46;
+}
+
 .manage-account .form-item>button {
 	position: relative;
 	height: 32px;
@@ -183,6 +190,7 @@
 	opacity: 1;
 	border: none;
 	font-weight: 600;
+	opacity: 0.4;
 }
 
 .manage-account .form-item>span {
@@ -207,10 +215,36 @@
 
 .manage-account .form-item .input-wrapper i {
 	position: absolute;
-	top: 25%;
-	right: 6px;
-	color: rgb(153, 153, 153);
-	cursor: pointer;
+    top: 25%;
+    right: 6px;
+    color: #cdcdcd;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.manage-account .form-item .input-wrapper .button .fa-eye {
+	display: none;
+}
+
+.manage-account .form-item .input-wrapper .show-pass {
+	background-color: #fff;
+	font-size: 18px;
+}
+
+.manage-account .form-item .input-wrapper .show-pass .fa-eye-slash {
+	display: block;
+}
+
+.manage-account .form-item .input-wrapper .show-pass .fa-eye {
+	display: none;
+}
+
+.manage-account .form-item .input-wrapper .show-pass.show .fa-eye {
+	display: block;
+}
+
+.manage-account .form-item .input-wrapper .show-pass.show .fa-eye-slash {
+	display: none;
 }
 
 .manage-account .form-item .input-wrapper input {

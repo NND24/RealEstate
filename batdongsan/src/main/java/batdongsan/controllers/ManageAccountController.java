@@ -14,6 +14,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -119,6 +120,57 @@ public class ManageAccountController {
 			t.rollback();
 			System.out.println(e);
 			return "redirect:/sellernet/thong-tin-ca-nhan.html?edit=true";
+		} finally {
+			session.close();
+		}
+	}
+
+	@RequestMapping(value = { "updatePassword" }, method = RequestMethod.POST)
+	public String updatePassword(ModelMap model, HttpServletRequest request, @ModelAttribute("user") UsersModel user,
+	        BindingResult errors, @RequestParam("password") String password, @RequestParam("newPassword") String newPassword,
+	        @RequestParam("reNewPassword") String reNewPassword) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		String relativePath;
+		try {
+			Cookie[] cookies = request.getCookies();
+			UsersModel currentUser = null;
+
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("userId")) {
+						String userId = cookie.getValue();
+						String hqlUser = "FROM UsersModel WHERE userId = :userId";
+						Query<UsersModel> queryUser = session.createQuery(hqlUser);
+						queryUser.setParameter("userId", Integer.parseInt(userId));
+						currentUser = queryUser.uniqueResult();
+						break;
+					}
+				}
+			}
+
+			Boolean isError = false;
+
+			if (!password.equals(currentUser.getPassword())) {
+				request.setAttribute("passwordError", "Mật khẩu không khớp với mật khẩu cũ");
+				isError = true;
+			}
+
+			if (!isError) {
+				currentUser.setPassword(newPassword);
+				session.update(currentUser);
+				t.commit();
+			} 
+			
+			request.setAttribute("user", currentUser);
+			model.addAttribute("user", currentUser);
+			request.setAttribute("setting", "setting");
+			request.setAttribute("edit", null);
+			return "client/sellernet/manageAccount";
+		} catch (Exception e) {
+			t.rollback();
+			System.out.println(e);
+			return "client/sellernet/manageAccount";
 		} finally {
 			session.close();
 		}

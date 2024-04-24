@@ -129,7 +129,7 @@
   position: absolute;
   bottom: -175px;
   right: -40px;
-  width: 230px;
+  width: 300px;
   background-color: #fff;
   padding: 10px 0;
   border-radius: 6px;
@@ -144,8 +144,9 @@
 }
 
 .control-menu.logined .user-option-container .model-container .model-item {
-  padding: 4px 10px;
+  padding: 4px 15px;
   font-size: 15px;
+  display: block;
 }
 
 .control-menu.logined .user-option-container .model-container .model-item:hover {
