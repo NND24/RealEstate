@@ -116,15 +116,14 @@ public class PostController {
 			session.save(newRealEstate);
 			t.commit();
 			model.addAttribute("message", "Thêm mới thành công!");
-			return "redirect:/sellernet/dang-tin.html";
 		} catch (Exception e) {
 			t.rollback();
 			model.addAttribute("message", "Thêm mới thất bại! ");
 			System.out.println(e);
 		} finally {
 			session.close();
+			return "redirect:/sellernet/dang-tin.html";
 		}
-		return "redirect:/sellernet/dang-tin.html";
 	}
 
 	@ModelAttribute("categoriesSell")

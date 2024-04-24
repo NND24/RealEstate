@@ -26,8 +26,6 @@ public class FavouriteModel {
 	@ManyToOne
 	@JoinColumn(name = "realEstateId")
 	private RealEstateModel realEstate;
-	
-	
 
 	public FavouriteModel() {
 		super();

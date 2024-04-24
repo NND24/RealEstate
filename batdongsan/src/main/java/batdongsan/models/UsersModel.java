@@ -22,12 +22,22 @@ public class UsersModel {
 	private String avatar;
 	private String taxCode;
 	private String phonenumber;
-	
+	private int accountBalance;
+
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private Collection<FavouriteModel> favourite;
 
 	public UsersModel() {
 		super();
+	}
+
+	public UsersModel(int userId, String name, String avatar, String taxCode, String phonenumber) {
+		super();
+		this.userId = userId;
+		this.name = name;
+		this.avatar = avatar;
+		this.taxCode = taxCode;
+		this.phonenumber = phonenumber;
 	}
 
 	public UsersModel(String name, String email, String password, String avatar, String taxCode, String phonenumber) {
@@ -104,7 +114,12 @@ public class UsersModel {
 		this.favourite = favourite;
 	}
 
-	
+	public int getAccountBalance() {
+		return accountBalance;
+	}
 
-	
+	public void setAccountBalance(int accountBalance) {
+		this.accountBalance = accountBalance;
+	}
+
 }

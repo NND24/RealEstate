@@ -138,6 +138,11 @@
   z-index: 1;
 }
 
+.control-menu.logined .user-option-container .model-container hr {
+	margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 .control-menu.logined .user-option-container .model-container .model-item {
   padding: 4px 10px;
   font-size: 15px;
@@ -233,7 +238,7 @@
 }
 
 .search-bar__tab .tab-box.tab-box--actived {
-  color: #fff;
+  color: #fff !important;
   background: #505050;
   border-color: #505050;
 }

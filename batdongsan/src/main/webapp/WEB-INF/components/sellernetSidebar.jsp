@@ -1,13 +1,15 @@
+<%@page import="batdongsan.models.UsersModel"%>
 <%@ page pageEncoding="utf-8"%>
 
 <div class='sidebar'>
 	<div class='sidebar-wrapper'>
 		<div class='user-info-wrapper'>
-			<a href='' class='avatar'>
-				<h3>U</h3>
-			</a>
+			<%
+			UsersModel user1 = (UsersModel) request.getAttribute("user");
+			%>
+			<img class="avatar" alt="" src="<%=user1.getAvatar()%>" /> 
 			<div>
-				<a href='' class='user-name'> user2699702 </a>
+				<a href='' class='user-name'> <%=user1.getName()%> </a>
 				<p>0 điểm</p>
 			</div>
 		</div>
@@ -17,8 +19,8 @@
 				<h5>Số dư tài khoản</h5>
 			</div>
 			<div class='user-money-item'>
-				<div>Tài khoản tin đăng</div>
-				<div class='money'>0</div>
+				<div>Tài khoản chính</div>
+				<div class='money'><%=user1.getAccountBalance()%></div>
 			</div>
 
 			<a href=''>

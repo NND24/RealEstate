@@ -10,13 +10,9 @@
 <link rel="stylesheet" href="../css/client/header.css" type="text/css">
 <link rel="stylesheet" href="../css/client/sellernet.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/client/manageAccount.css"
+<link rel="stylesheet" href="../css/client/manageAccount.css?version=60"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
-<script
-	src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
-
-
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
 <body>
@@ -30,51 +26,51 @@
 				<h1>Quản lý tài khoản</h1>
 				<div class='post-container'>
 					<%
-						String edit = (String) request.getAttribute("edit");
-						String setting = (String) request.getAttribute("setting");
+					String edit = (String) request.getAttribute("edit");
+					String setting = (String) request.getAttribute("setting");
 					%>
 					<ul class='nav nav-tabs'>
-						<li 
-						<% if(edit != null && !edit.isEmpty()) { %>
-						class='active'
-						<% } %>
-						>
-							<a data-toggle='tab' href='#home'>Chỉnh sửa thông tin </a>
-						</li>
-						<li
-						<% if(setting != null && !setting.isEmpty()) { %>
-						class='active'
-						<% } %>
-						>
-							<a data-toggle='tab' href='#menu1'> Cài đặt tài khoảns</a>
-						</li>
+						<li <%if (edit != null && !edit.isEmpty()) {%> class='active'
+							<%}%>><a data-toggle='tab' href='#edit'>Chỉnh
+								sửa thông tin </a></li>
+						<li <%if (setting != null && !setting.isEmpty()) {%>
+							class='active' <%}%>><a data-toggle='tab'
+							href='#setting'> Cài đặt tài khoản</a></li>
 					</ul>
 
 					<div class='tab-content'>
-						<div id='home' class='tab-pane fade
-						<% if(edit != null && !edit.isEmpty()) { %>
-						 in active
-						<% } %>			 
-						 '>
+						<form:form action="sellernet/updateAccount.html" modelAttribute="user"
+							method="post" enctype="multipart/form-data" id='edit'
+							class='tab-pane fade'>
 							<div class='input-wrapper'>
 								<h3>Thông tin cá nhân</h3>
 								<div class='avatar-container'>
-									<div class='avatar'>
-										<i class='fa-solid fa-camera'></i> <span>Tải ảnh</span>
+									<div class="image-wrapper">
+										<img src="<%=user.getAvatar()%>" />
+										<i class="fa-solid fa-xmark remove-img"></i>
 									</div>
+									<label class='avatar__label' for="avatarInput" style="display: none;">
+										<div style="transform: translate(15px, 40px);">
+											<i class='fa-solid fa-camera'></i> 
+										<span>Tải ảnh</span>
+										</div>
+										
+									</label>
+									<input type='file' id='avatarInput' name='userAvatar' style="display: none;" />
 								</div>
 								<div class='input-container'>
 									<div class='form-item'>
 										<p>Họ và tên</p>
 										<div class='input-wrapper'>
-											<input type='text' placeholder='Nhập tên' />
+											<form:input path='name' type='text' placeholder='Nhập tên' />
 										</div>
 									</div>
 
 									<div class='form-item'>
 										<p>Mã số thuế cá nhân</p>
 										<div class='input-wrapper'>
-											<input type='text' placeholder='Nhập số đã đăng ký' />
+											<form:input path='taxCode' type='text'
+												placeholder='Nhập số đã đăng ký' />
 										</div>
 									</div>
 								</div>
@@ -86,14 +82,16 @@
 									<div class='form-item'>
 										<p>Số điện thoại</p>
 										<div class='input-wrapper'>
-											<input type='text' placeholder='Nhập tên' />
+											<form:input path='phonenumber' type='text'
+												placeholder='Nhập số điện thoại' />
 										</div>
 									</div>
 
 									<div class='form-item'>
 										<p>Email</p>
 										<div class='input-wrapper'>
-											<input type='text' placeholder='Nhập số đã đăng ký' />
+											<form:input path='email' type='email'
+												placeholder='Nhập email' readonly="true" />
 										</div>
 									</div>
 								</div>
@@ -102,16 +100,11 @@
 							<div class='button-wrapper'>
 								<div></div>
 								<button class='continue-button'>
-									<span>Lưu thay đổi</span> <i
-										class='fa-solid fa-angle-right'></i>
+									<span>Lưu thay đổi</span> <i class='fa-solid fa-angle-right'></i>
 								</button>
 							</div>
-						</div>
-						<div id='menu1' class='tab-pane fade
-						<% if(setting != null && !setting.isEmpty()) { %>
-						 in active
-						<% } %>	
-						'>
+						</form:form>
+						<form:form id='setting' class='tab-pane fade'>
 							<div class='input-wrapper'>
 								<h3>Đổi mật khẩu</h3>
 								<div class='input-container'>
@@ -156,7 +149,7 @@
 									<li>Chứa ít nhất 1 ký tự số</li>
 								</ul>
 							</div>
-						</div>
+						</form:form>
 					</div>
 				</div>
 			</div>
@@ -164,7 +157,46 @@
 	</div>
 
 	<script type="text/javascript">
-		
+		$(document).ready(function() {
+			<%if (edit != null && !edit.isEmpty()) {%>
+				$("#edit").addClass("active in")
+			<%}%>
+				
+			<%if (setting != null && !setting.isEmpty()) {%>
+				$("#setting").addClass("active in")
+			<%}%>
+			
+			$(".remove-img").on("click", () => {
+			    $(".image-wrapper").css("display", "none");
+			    $(".avatar__label").css("display", "block");
+			    
+			    $(".remove-img").on("click", () => {
+				    $(".image-wrapper").css("display", "none");
+				    $(".avatar__label").css("display", "block");
+				});
+			});
+			
+			$("#avatarInput").on("change", function() {
+			    // Kiểm tra nếu đã chọn một tệp
+			    if (this.files && this.files[0]) {
+			        var reader = new FileReader();
+			        
+			        // Đọc tệp hình ảnh và hiển thị nó trong thẻ <img>
+			        reader.onload = function(e) {
+			            $('.image-wrapper img').attr('src', e.target.result);
+			            $('.image-wrapper').show(); // Hiển thị phần tử image-wrapper nếu đang ẩn
+			        };
+			        
+			        // Đọc dữ liệu của tệp hình ảnh
+			        reader.readAsDataURL(this.files[0]);
+			        
+
+				    $(".image-wrapper").css("display", "block");
+				    $(".avatar__label").css("display", "none");
+			    }
+			});
+
+		})
 	</script>
 </body>
 </html>

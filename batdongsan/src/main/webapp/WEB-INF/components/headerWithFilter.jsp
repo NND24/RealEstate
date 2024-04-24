@@ -56,8 +56,10 @@
 		} else {
 		%>
 		<div class='control-menu logined'>
-			<i class='fa-regular fa-heart'></i> <i class='fa-regular fa-bell'>
-			</i>
+			<a href="${pageContext.servletContext.contextPath}/tin-da-luu.html">
+				<i class='fa-regular fa-heart'></i> 
+			</a>
+			<i class='fa-regular fa-bell'></i>
 			<div class='user-option-container'>
 			<!-- <span class='avatar'>
 					<h3>U</h3>
@@ -73,20 +75,21 @@
 					</div>
 					<div class='model-item'>
 					<a href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?edit=true">
-						<i class='fa-solid fa-list-ul'></i> <span>Thay đổi thông
+						<i class="fa-regular fa-user"></i> <span>Thay đổi thông
 							tin cá nhân</span>
 							</a>
 					</div>
 					<div class='model-item'>
 					<a href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?setting=true">
-						<i class='fa-solid fa-list-ul'></i> <span>Thay đổi mật khẩu</span>
+						<i class="fa-solid fa-lock"></i> <span>Thay đổi mật khẩu</span>
 							</a>
 					</div>
 					<div class='model-item'>
-						<i class='fa-solid fa-list-ul'></i> <span>Nạp tiền</span>
+						<i class="fa-regular fa-credit-card"></i> <span>Nạp tiền</span>
 					</div>
+					<hr />
 					<div class='model-item logout'>
-						<i class='fa-solid fa-list-ul'></i> <span>Đăng xuất</span>
+						<i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Đăng xuất</span>
 					</div>
 				</div>
 			</div>

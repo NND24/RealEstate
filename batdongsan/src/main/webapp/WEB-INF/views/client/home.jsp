@@ -1,3 +1,4 @@
+<%@page import="batdongsan.models.FavouriteModel"%>
 <%@page import="batdongsan.models.RealEstateModel"%>
 <%@page import="java.util.List"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
@@ -358,11 +359,26 @@
 									<div class='card-contact'>
 										<span class='card-published-info' data-toggle='tooltip2'
 											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước </span>
+											trước  </span>
 										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin' value="<%= r.getRealEstateId()%>">
-											<i class='fa-regular fa-heart'></i>
-											<i class="fa-solid fa-heart" style="color: #e03c31;display: none;"></i>
+											data-placement='bottom' title='Bấm để lưu tin ' value="<%= r.getRealEstateId()%>">
+											<% 
+											if (user != null) {
+												Boolean showHeart = false;
+												for(FavouriteModel fa : r.getFavourite()) {
+													 if(fa.getUser() == user) {
+														 showHeart = true;
+														 break;
+													 }
+												}
+											%>
+											<i class='fa-regular fa-heart' style="display: <%= showHeart ? "none" : "block" %>;"></i>
+											<i class="fa-solid fa-heart" style="color: #e03c31;display: <%= showHeart ? "block" : "none" %>;"></i>
+											<%
+											} else {
+											%>
+											<i class='fa-regular fa-heart' style="display:"block";"></i>
+											<% } %>
 										</button>
 									</div>
 								</div>
@@ -582,7 +598,7 @@
 	        var realEstateId = $(this).attr("value");
 	        $.ajax({
 				type: 'GET',
-				url: '${pageContext.servletContext.contextPath}/favourite.html',
+				url: '${pageContext.servletContext.contextPath}/addToFavourite.html',
 				data: {realEstateId: realEstateId},
 				dataType: 'text',
 				success: function(data) {

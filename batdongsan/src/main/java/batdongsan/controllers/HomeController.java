@@ -24,45 +24,45 @@ public class HomeController {
 	@Autowired
 	SessionFactory factory;
 
-	@RequestMapping(value= {"/", "/trang-chu"}, method = RequestMethod.GET)
-	public String index(HttpServletRequest request) {
+	@RequestMapping(value = { "/", "/trang-chu" }, method = RequestMethod.GET)
+	public String getHomePage(HttpServletRequest request) {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM RealEstateModel";
-			Query<RealEstateModel> query = session.createQuery(hql);
-			List<RealEstateModel> listRealEsate = query.list();
-			
-			request.setAttribute("realEstates", listRealEsate);
-			
 			Cookie[] cookies = request.getCookies();
-			String userId = null;
+			UsersModel user = null;
 
 			if (cookies != null) {
 				for (Cookie cookie : cookies) {
 					if (cookie.getName().equals("userId")) {
-						userId = cookie.getValue();
+						String userId = cookie.getValue();
+						String hqlUser = "FROM UsersModel WHERE userId = :userId";
+						Query<UsersModel> queryUser = session.createQuery(hqlUser);
+						queryUser.setParameter("userId", Integer.parseInt(userId));
+						user = queryUser.uniqueResult();
 						break;
 					}
 				}
 			}
 
-			if (userId != null) {
-				String hqlUser = "FROM UsersModel WHERE userId = :userId";
-				Query<UsersModel> queryUser = session.createQuery(hqlUser);
-				queryUser.setParameter("userId", Integer.parseInt(userId));
-				UsersModel user = queryUser.uniqueResult();
-				request.setAttribute("user", user);
-			} else {
-				UsersModel user = null;
-				request.setAttribute("user", user);
+			String hql = "FROM RealEstateModel";
+			if (user != null) {
+				hql += " WHERE NOT EXISTS (SELECT 1 FROM FavouriteModel fa WHERE fa.realEstate = id AND fa.user = :user)";
 			}
-			
+			Query<RealEstateModel> query = session.createQuery(hql);
+			if (user != null) {
+				query.setParameter("user", user);
+			}
+			List<RealEstateModel> listRealEstate = query.list();
+
+			request.setAttribute("realEstates", listRealEstate);
+			request.setAttribute("user", user);
+
 			return "client/home";
 		} finally {
 			session.close();
 		}
 	}
-	
+
 	@ModelAttribute("categoriesSell")
 	public List<CategoryModel> getTypesSell() {
 		Session session = factory.openSession();

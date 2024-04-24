@@ -2,6 +2,7 @@ package batdongsan.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.RealEstateModel;
+import batdongsan.models.UsersModel;
 
 @Controller
 public class DetailController {
@@ -217,6 +219,29 @@ public class DetailController {
 	        request.setAttribute("maxArea", maxArea);
 	        
 	        request.setAttribute("amountRealEstate", realEstates.size());
+	        
+	        Cookie[] cookies = request.getCookies();
+			String userId = null;
+
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("userId")) {
+						userId = cookie.getValue();
+						break;
+					}
+				}
+			}
+
+			if (userId != null) {
+				String hqlUser = "FROM UsersModel WHERE userId = :userId";
+				Query<UsersModel> queryUser = session.createQuery(hqlUser);
+				queryUser.setParameter("userId", Integer.parseInt(userId));
+				UsersModel user = queryUser.uniqueResult();
+				request.setAttribute("user", user);
+			} else {
+				UsersModel user = null;
+				request.setAttribute("user", user);
+			}
 			
 			return "client/detail";
 		} finally {

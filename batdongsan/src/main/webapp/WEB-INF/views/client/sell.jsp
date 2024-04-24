@@ -1,7 +1,7 @@
 <%@page import="batdongsan.models.RealEstateModel"%>
 <%@page import="java.util.List"%>
 <%@ page pageEncoding="utf-8"%>
-<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="javax.servlet.http.HttpServletRequest"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,94 +20,76 @@
 			<div class='row'>
 				<div class='sell-content col-lg-9'>
 					<div class='breadcrumb'>
-						<a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html'><%if ("sell".equals(request.getAttribute("page"))) {%> Bán <%} else {%> Cho thuê <%}%></a> <span> / </span> 
-						<a id="refresh-page">
-						<%
-						List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
-						if (categoryIdsList1 != null) {
-						    if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {
-						%>
-						    Tất cả BĐS trên toàn quốc
-						<%
-						    }
-						    else if (categoryIdsList1.contains(1)) {
-						%>
-						    Căn hộ chung cư 
-						<%
-						    }
-						    else if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
-						%>
-						    Các loại nhà bán 
-						<%
-						    }
-						    else if (categoryIdsList1.contains(2)) {
-						%>
-						    Nhà riêng 
-						<%
-						    }
-						    else if (categoryIdsList1.contains(3)) {
-						%>
-						    Nhà biệt thự, liền kề 
-						<%
-						    }
-						    else if (categoryIdsList1.contains(4)) {
-						%>
-						    Nhà mặt phố 
-						<%
-						    }
-						    else if (categoryIdsList1.contains(5)) {
-						%>
-						    Shophouse, nhà phố thương mại
-						<%
-						    }
-						    else if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
-						%>
-						    Các loại đất bán
-						<%
-						    }
-						    else if (categoryIdsList1.contains(6)) {
-						%>
-						    Đất nền dự án
-						<%
-						    }
-						    else if (categoryIdsList1.contains(7)) {
-						%>
-						    Bán đất
-						<%
-						    }
-						    else if (categoryIdsList1.contains(8)) {
-						%>
-						    Trang trại, khu nghỉ dưỡng
-						<%
-						    }
-						    else if (categoryIdsList1.contains(9)) {
-						%>
-						    Condotel
-						<%
-						    }
-						    else if (categoryIdsList1.contains(10)) {
-						%>
-						    Kho, nhà xưởng
-						<%
-						    }
-						    else if (categoryIdsList1.contains(11)) {
-						%>
-						    Bất động sản khác
-						<%
-						    }
-						}
-						%>
+						<a
+							href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html'>
+							<%
+							if ("sell".equals(request.getAttribute("page"))) {
+							%> Bán <%
+							} else {
+							%>
+							Cho thuê <%
+							}
+							%>
+						</a> <span> / </span> <a id="refresh-page"> <%
+ List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
+ if (categoryIdsList1 != null) {
+ 	if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {
+ %> Tất cả BĐS trên toàn quốc <%
+ } else if (categoryIdsList1.contains(1)) {
+ %> Căn hộ chung cư <%
+ } else if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
+ %> Các loại nhà bán <%
+ } else if (categoryIdsList1.contains(2)) {
+ %> Nhà riêng <%
+ } else if (categoryIdsList1.contains(3)) {
+ %> Nhà biệt thự, liền kề <%
+ } else if (categoryIdsList1.contains(4)) {
+ %> Nhà mặt phố <%
+ } else if (categoryIdsList1.contains(5)) {
+ %> Shophouse, nhà phố thương mại <%
+ } else if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
+ %> Các loại đất bán <%
+ } else if (categoryIdsList1.contains(6)) {
+ %> Đất nền dự án <%
+ } else if (categoryIdsList1.contains(7)) {
+ %> Bán đất <%
+ } else if (categoryIdsList1.contains(8)) {
+ %> Trang trại, khu nghỉ dưỡng <%
+ } else if (categoryIdsList1.contains(9)) {
+ %> Condotel <%
+ } else if (categoryIdsList1.contains(10)) {
+ %> Kho, nhà xưởng <%
+ } else if (categoryIdsList1.contains(11)) {
+ %> Bất động sản khác <%
+ }
+ }
+ %>
 						</a>
 					</div>
-					<h3 class='sell-content__title'>Nhà đất <%if ("sell".equals(request.getAttribute("page"))) {%> bán <%} else {%> cho thuê <%}%></h3>
+					<h3 class='sell-content__title'>
+						Nhà đất
+						<%
+					if ("sell".equals(request.getAttribute("page"))) {
+					%>
+						bán
+						<%
+					} else {
+					%>
+						cho thuê
+						<%
+					}
+					%>
+					</h3>
 					<div class='sell-content__navbar'>
-						<span class='total-count'>Hiện có ${amountRealEstate } bất động sản.</span>
+						<span class='total-count'>Hiện có ${amountRealEstate } bất
+							động sản.</span>
 						<div class='navbar-filter dropdown'>
 							<div class=' dropdown-toggle' data-toggle='dropdown'>
-								<span id="filter-title">Thông thường</span> <i class='fa-solid fa-chevron-down'></i>
+								<span id="filter-title">Thông thường</span> <i
+									class='fa-solid fa-chevron-down'></i>
 							</div>
 							<ul class='dropdown-menu list-filter'>
-								
+
 							</ul>
 						</div>
 					</div>
@@ -124,7 +106,9 @@
 						imageString = imageString.substring(1, imageString.length() - 1);
 						String[] imagePaths = imageString.split(", ");
 					%>
-					<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='product-card'>
+					<a
+						href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>"
+						class='product-card'>
 						<div class='card-img-container'>
 							<img src="<%=imagePaths[0]%>" alt='' class='image-1' /> <img
 								src="<%=imagePaths[0]%>" alt='' class='image-2' /> <img
@@ -141,23 +125,20 @@
 								<h3 class='card-info__title'><%=r.getTitle()%></h3>
 								<div class='card-info__detail'>
 									<div class='card-config'>
-										<span class='card-config__item card-config__price'>
-											<%
-											if(r.getPrice() < 1000000000) {
-											    out.print((int)(r.getPrice() / 1000000) + " triệu");
-											} else {
-											    out.print(r.getPrice() / 1000000000 + " tỷ");
-											}
-											%>
-											<%
-											if(r.getUnit().equals("triệu")) {
-											    out.print("");
-											} else {
-											    out.print(r.getUnit());
-											}
-											%>
-										</span> <span
-											class='card-config__item card-config__dot'>·</span> <span
+										<span class='card-config__item card-config__price'> <%
+ if (r.getPrice() < 1000000000) {
+ 	out.print((int) (r.getPrice() / 1000000) + " triệu");
+ } else {
+ 	out.print(r.getPrice() / 1000000000 + " tỷ");
+ }
+ %> <%
+ if (r.getUnit().equals("triệu")) {
+ 	out.print("");
+ } else {
+ 	out.print(r.getUnit());
+ }
+ %>
+										</span> <span class='card-config__item card-config__dot'>·</span> <span
 											class='card-config__item card-config__area'><%=r.getArea()%>
 											m²</span>
 										<%
@@ -203,8 +184,12 @@
 										679</span> <span class='card-contact-button__phonenumber__dot'>·</span>
 									<span>Hiện số</span>
 								</div>
-								<div class='card-contact-button__favorite'>
-									<i class='fa-regular fa-heart'></i>
+								<div class='card-contact-button__favorite'
+									value="<%=r.getRealEstateId()%>">
+									<i class='fa-regular fa-heart'
+										style="display: <%=r.getFavourite().size() > 0 ? "none" : "block"%>;"></i>
+									<i class="fa-solid fa-heart"
+										style="color: #e03c31;display: <%=r.getFavourite().size() > 0 ? "block" : "none"%>;"></i>
 								</div>
 							</div>
 						</div>
@@ -221,36 +206,84 @@
 					<div class='sidebar-box'>
 						<h5 class='sidebar-box__title'>Lọc theo khỏa giá</h5>
 						<ul class='sidebar-box__content'>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?unit=thoa-thuan'>Thỏa thuận</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=0&maxPrice=500000000'>Dưới 500 triệu</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=500000000&maxPrice=800000000'>500 - 800 triệu</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=800000000&maxPrice=1000000000'>800 triệu - 1 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=1000000000&maxPrice=2000000000'>1 - 2 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=2000000000&maxPrice=3000000000'>2 - 3 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=3000000000&maxPrice=5000000000'>3 - 5 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=5000000000&maxPrice=7000000000l'>5 - 7 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=7000000000&maxPrice=10000000000'>7 - 10 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=10000000000&maxPrice=20000000000'>10 - 20 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=20000000000&maxPrice=30000000000'>20 - 30 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=30000000000&maxPrice=40000000000'>30 - 40 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=40000000000&maxPrice=60000000000'>40 - 60 tỷ</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=60000000000&maxPrice=600000000000'>Trên 60 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?unit=thoa-thuan'>Thỏa
+									thuận</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=0&maxPrice=500000000'>Dưới
+									500 triệu</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=500000000&maxPrice=800000000'>500
+									- 800 triệu</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=800000000&maxPrice=1000000000'>800
+									triệu - 1 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=1000000000&maxPrice=2000000000'>1
+									- 2 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=2000000000&maxPrice=3000000000'>2
+									- 3 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=3000000000&maxPrice=5000000000'>3
+									- 5 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=5000000000&maxPrice=7000000000l'>5
+									- 7 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=7000000000&maxPrice=10000000000'>7
+									- 10 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=10000000000&maxPrice=20000000000'>10
+									- 20 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=20000000000&maxPrice=30000000000'>20
+									- 30 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=30000000000&maxPrice=40000000000'>30
+									- 40 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=40000000000&maxPrice=60000000000'>40
+									- 60 tỷ</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minPrice=60000000000&maxPrice=600000000000'>Trên
+									60 tỷ</a></li>
 						</ul>
 					</div>
 
 					<div class='sidebar-box'>
 						<h5 class='sidebar-box__title'>Lọc theo diện tích</h5>
 						<ul class='sidebar-box__content'>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=0&maxArea=30'>Dưới 30 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=30&maxArea=50'>30 - 50 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=50&maxArea=80'>50 - 80 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=80&maxArea=100'>80 - 100 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=100&maxArea=150'>100 - 150 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=150&maxArea=200'>150 - 200 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=200&maxArea=250'>200 - 250 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=250&maxArea=300'>250 - 300 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=300&maxArea=500'>300 - 500 m²</a></li>
-							<li class='sidebar-box__item'><a href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=5000&maxArea=10000'>Trên 500 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=0&maxArea=30'>Dưới
+									30 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=30&maxArea=50'>30
+									- 50 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=50&maxArea=80'>50
+									- 80 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=80&maxArea=100'>80
+									- 100 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=100&maxArea=150'>100
+									- 150 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=150&maxArea=200'>150
+									- 200 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=200&maxArea=250'>200
+									- 250 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=250&maxArea=300'>250
+									- 300 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=300&maxArea=500'>300
+									- 500 m²</a></li>
+							<li class='sidebar-box__item'><a
+								href='${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html?minArea=5000&maxArea=10000'>Trên
+									500 m²</a></li>
 						</ul>
 					</div>
 				</div>
@@ -258,9 +291,41 @@
 		</div>
 	</div>
 	<%@ include file="../../components/footer.jsp"%>
-	
+
 	<script type="text/javascript">
 		$(document).ready(function() {
+			<%
+			if (user != null) {
+			%>
+			// HANDLE ADD TO FAVOURITE
+		    $(".card-contact-button__favorite").on("click", function(e) {
+		    	e.preventDefault();
+		        var regularHeartIcon = $(this).find(".fa-regular.fa-heart");
+		        var solidHeartIcon = $(this).find(".fa-solid.fa-heart");
+		        if (regularHeartIcon.css("display") === "block") {
+		        	regularHeartIcon.css("display", "none");
+		        	solidHeartIcon.css("display", "block");
+		        } else {
+		        	regularHeartIcon.css("display", "block");
+		        	solidHeartIcon.css("display", "none");
+		        }
+		        
+		        var realEstateId = $(this).attr("value");
+		        $.ajax({
+					type: 'GET',
+					url: '${pageContext.servletContext.contextPath}/addToFavourite.html',
+					data: {realEstateId: realEstateId},
+					dataType: 'text',
+					success: function(data) {
+						console.log("Thêm thành công");
+					},
+					error: function(xhr, status, error) {
+						console.log("Thêm thất bại")
+					}
+				});
+		    });
+			<% } %>
+			
 		    window.addEventListener('load', () => {
 		    	let currentURL = decodeURIComponent(window.location.href);
 				let firstQuestionMarkIndex = currentURL.indexOf("?");

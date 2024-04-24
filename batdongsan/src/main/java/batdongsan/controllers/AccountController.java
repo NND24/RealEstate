@@ -1,6 +1,5 @@
 package batdongsan.controllers;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -17,21 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import batdongsan.models.CategoryModel;
-import batdongsan.models.FavouriteModel;
-import batdongsan.models.ProvincesModel;
-import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
 
 @Controller
-@Transactional
 public class AccountController {
 	@Autowired
 	SessionFactory factory;
@@ -187,47 +180,6 @@ public class AccountController {
 		return "Thành công";
 	}
 
-	@ResponseBody
-	@RequestMapping("favourite")
-	public String favourite(HttpServletRequest request, HttpServletResponse response,
-	        @RequestParam(name = "realEstateId") String realEstateId) {
-	    try {
-	        Cookie[] cookies = request.getCookies();
-	        String userId = null;
-
-	        if (cookies != null) {
-	            for (Cookie cookie : cookies) {
-	                if (cookie.getName().equals("userId")) {
-	                    userId = cookie.getValue();
-	                    break;
-	                }
-	            }
-	        }
-
-	        if (userId != null) {
-	            Session session = factory.getCurrentSession();
-
-	            UsersModel user = session.get(UsersModel.class, Integer.parseInt(userId));
-
-	            RealEstateModel realEstate = session.get(RealEstateModel.class, Integer.parseInt(realEstateId));
-
-	            if (user != null && realEstate != null) {
-	                FavouriteModel favourite = new FavouriteModel(user, realEstate);
-
-	                session.save(favourite);
-	                return "Thành công"; // Or any other success indicator
-	            } else {
-	                System.out.println("User or real estate not found");
-	                return "redirect:/tao-mat-khau.html"; // Redirect to error page or handle as appropriate
-	            }
-	        } else {
-	            System.out.println("User ID not found in cookies");
-	            return "redirect:/dang-nhap.html"; // Redirect to login page or handle as appropriate
-	        }
-	    } catch (Exception e) {
-	        System.out.println("Exception occurred: " + e.getMessage());
-	        return "redirect:/tao-mat-khau.html"; // Redirect to error page or handle as appropriate
-	    }
-	}
+	
 
 }

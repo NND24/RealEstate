@@ -14,7 +14,7 @@
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerWithFilter.jsp"%>
+	<%@ include file="../../components/header.jsp"%>
 	<div class="sell">
 		<div class='container '>
 			<div class='row'>
@@ -123,8 +123,12 @@
 										679</span> <span class='card-contact-button__phonenumber__dot'>·</span>
 									<span>Hiện số</span>
 								</div>
-								<div class='card-contact-button__favorite'>
-									<i class='fa-regular fa-heart'></i>
+								<div class='card-contact-button__favorite'
+									value="<%=r.getRealEstateId()%>">
+									<i class='fa-regular fa-heart'
+										style="display: <%=r.getFavourite().size() > 0 ? "none" : "block"%>;"></i>
+									<i class="fa-solid fa-heart"
+										style="color: #e03c31;display: <%=r.getFavourite().size() > 0 ? "block" : "none"%>;"></i>
 								</div>
 							</div>
 						</div>
@@ -181,6 +185,38 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
+			<%
+			if (user != null) {
+			%>
+			// HANDLE ADD TO FAVOURITE
+		    $(".card-contact-button__favorite").on("click", function(e) {
+		    	e.preventDefault();
+		        var regularHeartIcon = $(this).find(".fa-regular.fa-heart");
+		        var solidHeartIcon = $(this).find(".fa-solid.fa-heart");
+		        if (regularHeartIcon.css("display") === "block") {
+		        	regularHeartIcon.css("display", "none");
+		        	solidHeartIcon.css("display", "block");
+		        } else {
+		        	regularHeartIcon.css("display", "block");
+		        	solidHeartIcon.css("display", "none");
+		        }
+		        
+		        var realEstateId = $(this).attr("value");
+		        $.ajax({
+					type: 'GET',
+					url: '${pageContext.servletContext.contextPath}/addToFavourite.html',
+					data: {realEstateId: realEstateId},
+					dataType: 'text',
+					success: function(data) {
+						console.log("Thêm thành công");
+					},
+					error: function(xhr, status, error) {
+						console.log("Thêm thất bại")
+					}
+				});
+		    });
+			<% } %>
+			
 		    window.addEventListener('load', () => {
 		    	let currentURL = decodeURIComponent(window.location.href);
 				let firstQuestionMarkIndex = currentURL.indexOf("?");
