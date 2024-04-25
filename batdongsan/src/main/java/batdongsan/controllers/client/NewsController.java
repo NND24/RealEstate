@@ -1,4 +1,4 @@
-package batdongsan.controllers;
+package batdongsan.controllers.client;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;

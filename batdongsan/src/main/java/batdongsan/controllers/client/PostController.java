@@ -1,4 +1,4 @@
-package batdongsan.controllers;
+package batdongsan.controllers.client;
 
 import java.io.File;
 import java.io.IOException;

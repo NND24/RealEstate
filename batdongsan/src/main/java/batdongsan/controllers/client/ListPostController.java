@@ -1,4 +1,4 @@
-package batdongsan.controllers;
+package batdongsan.controllers.client;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

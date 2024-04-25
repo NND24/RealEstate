@@ -1,4 +1,4 @@
-package batdongsan.controllers;
+package batdongsan.controllers.client;
 
 import java.util.List;
 import java.util.Random;

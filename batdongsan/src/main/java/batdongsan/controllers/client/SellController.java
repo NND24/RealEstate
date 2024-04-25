@@ -1,4 +1,4 @@
-package batdongsan.controllers;
+package batdongsan.controllers.client;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
