@@ -1,5 +1,6 @@
 package batdongsan.controllers;
 
+import java.util.List;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -16,18 +17,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
 
 @Controller
-public class AccountController {
+@Transactional
+public class LoginController {
 	@Autowired
 	SessionFactory factory;
+	
+	String page;
 
 	@RequestMapping(value = { "/dang-nhap" }, method = RequestMethod.GET)
 	public String index() {
@@ -35,7 +41,16 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = { "/dang-ky" }, method = RequestMethod.GET)
-	public String getRegisterPage() {
+	public String getRegisterPage(HttpServletRequest request) {
+		request.setAttribute("currentPage", "register");
+		page = "register";
+		return "client/login/register";
+	}
+	
+	@RequestMapping(value = { "/khoi-phuc-mat-khau" }, method = RequestMethod.GET)
+	public String getForgotPasswordPage(HttpServletRequest request) {
+		request.setAttribute("currentPage", "forgotPassword");
+		page = "forgotPassword";
 		return "client/login/register";
 	}
 
@@ -48,7 +63,12 @@ public class AccountController {
 	public String getCreatePasswordPage() {
 		return "client/login/createPassword";
 	}
-
+	
+	@RequestMapping(value = { "/doi-mat-khau-moi" }, method = RequestMethod.GET)
+	public String getChangePasswordPage() {
+		return "client/login/changePassword";
+	}
+	
 	@Autowired
 	JavaMailSender mailer;
 
@@ -95,7 +115,11 @@ public class AccountController {
 		Integer verifyCode = (Integer) session.getAttribute("verifyCode");
 		if (verifyCode != null && code.equals(verifyCode)) {
 			model.addAttribute("verifyCode", verifyCode);
-			return "redirect:/tao-mat-khau.html";
+			 if (page.equals("register")) { 
+				 return "redirect:/tao-mat-khau.html";
+			 } else {
+				 return "redirect:/doi-mat-khau-moi.html";
+			 }
 		} else {
 			System.out.println("Không tìm thấy randomNumber trong session");
 			return "redirect:/xac-nhan.html";
@@ -135,6 +159,46 @@ public class AccountController {
 			return "redirect:/tao-mat-khau.html";
 		}
 	}
+	
+	@RequestMapping("changePassword")
+	public String changePassword(ModelMap model, HttpServletRequest request, @RequestParam("password") String password,
+	        @RequestParam("rePassword") String rePassword) {
+	    Session session = factory.openSession();
+	    Transaction t = session.beginTransaction();
+
+	    HttpSession httpSession = request.getSession();
+	    String email = (String) httpSession.getAttribute("registerEmail");
+
+	    if (email != null) {
+	        try {
+	        	String hql = "FROM UsersModel WHERE email = :email";
+	        	Query<UsersModel> query = session.createQuery(hql);
+	        	query.setParameter("email", email);
+	        	UsersModel currentUser = query.uniqueResult();
+	            
+	            if (!password.equals(rePassword)) {
+	                return "redirect:/doi-mat-khau-moi.html";
+	            }
+	            
+	            currentUser.setPassword(password);
+	            session.update(currentUser);
+	            t.commit();
+
+	            httpSession.removeAttribute("verifyCode");
+	            httpSession.removeAttribute("registerEmail");
+
+	            return "redirect:/dang-nhap.html";
+	        } catch (Exception e) {
+	            t.rollback();
+	            return "redirect:/doi-mat-khau-moi.html";
+	        } finally {
+	            session.close();
+	        }
+	    } else {
+	        return "redirect:/doi-mat-khau-moi.html";
+	    }
+	}
+
 
 	@RequestMapping("login")
 	public String login(ModelMap model, HttpServletRequest request, HttpServletResponse response,
@@ -155,7 +219,8 @@ public class AccountController {
 				userCookie.setMaxAge(30 * 24 * 60 * 60);
 				response.addCookie(userCookie);
 			} else {
-				return "redirect:/dang-nhap.html?error=true";
+				request.setAttribute("error", "Tài khoản không tồn tại!");
+				return "client/login/login";
 			}
 		} finally {
 			session.close();
@@ -177,7 +242,7 @@ public class AccountController {
 			}
 		}
 
-		return "Thành công";
+		return "redirect:/trang-chu.html";
 	}
 
 	

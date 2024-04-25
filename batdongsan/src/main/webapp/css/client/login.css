@@ -70,9 +70,18 @@
 	color: rgb(44, 44, 44);
 }
 
+.errorMessage {
+	font-size: 12px;
+	color: #e34f46;
+}
+
+.login-container .right-wrapper .form-wrapper .form-item {
+	margin-bottom: 12px;
+}
+
 .login-container .right-wrapper .form-wrapper .input-wrapper {
 	position: relative;
-	margin-bottom: 16px;
+	margin-bottom: 8px;
 }
 
 .login-container .right-wrapper .form-wrapper .input-wrapper>i {
@@ -90,7 +99,7 @@
 	height: 24px;
 	width: 24px;
 	border-radius: 50%;
-	color: rgb(153, 153, 153);
+	color: #cdcdcd;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -113,10 +122,12 @@
 
 .login-container .right-wrapper .form-wrapper .input-wrapper .show-pass .fa-eye {
 	display: none;
+	transform: translate(2px, 4px);
 }
 
 .login-container .right-wrapper .form-wrapper .input-wrapper .show-pass.show .fa-eye {
 	display: block;
+	transform: translate(2px, 4px);
 }
 
 .login-container .right-wrapper .form-wrapper .input-wrapper .show-pass.show .fa-eye-slash {
@@ -156,6 +167,7 @@
 	opacity: 1;
 	font-weight: 600;
 	margin-top: 8px;
+	opacity: 0.4;
 }
 
 .login-container .right-wrapper .form-wrapper .signin-button {}
@@ -206,15 +218,16 @@
 }
 
 .login-container .right-wrapper .form-wrapper .form-footer span a {
-	color: rgb(224, 60, 49);
+	color: rgb(224, 60, 49) !important;
 	cursor: pointer;
 }
 
 .login-container .right-wrapper .form-wrapper
 
-.login-container .right-wrapper .form-wrapper ul {
+ ul {
   padding-left: 15px;
-  margin-top: 5px;
+    margin-top: 15px;
+    margin-bottom: 30px;
 }
 
 .login-container .right-wrapper .form-wrapper ul li {

@@ -84,9 +84,9 @@
 						<i class="fa-solid fa-lock"></i> <span>Thay đổi mật khẩu</span>
 							</a>
 					</div>
-					<div class='model-item'>
+					<a class='model-item' href="${pageContext.servletContext.contextPath}/sellernet/nap-tien.html">
 						<i class="fa-regular fa-credit-card"></i> <span>Nạp tiền</span>
-					</div>
+					</a>
 					<hr />
 					<div class='model-item logout'>
 						<i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Đăng xuất</span>
@@ -606,10 +606,10 @@ $(document).ready(function() {
 			url: '${pageContext.servletContext.contextPath}/logout.html',
 			dataType: 'text',
 			success: function(data) {
-				location.reload();
+				window.location.href = '${pageContext.servletContext.contextPath}/trang-chu.html'
 			},
 			error: function(xhr, status, error) {
-				location.reload();
+				window.location.href = '${pageContext.servletContext.contextPath}/trang-chu.html'
 			}
 		});
 	})

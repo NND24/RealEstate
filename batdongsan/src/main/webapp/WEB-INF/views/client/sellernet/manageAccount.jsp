@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="../css/client/header.css?version=62" type="text/css">
 <link rel="stylesheet" href="../css/client/sellernet.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/client/manageAccount.css?version=63"
+<link rel="stylesheet" href="../css/client/manageAccount.css?version=64"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
@@ -112,11 +112,11 @@
 									String passwordError = (String) request.getAttribute("passwordError");
 									String newPasswordError = (String) request.getAttribute("newPasswordError");
 									%>
-									<div class='form-item'>
+									<div class='form-item password'>
 										<p>Mật khẩu hiện tại</p>
 										<div class='input-wrapper'>
 											<input name="password" type='password' />
-											<div class='button show-pass password'>
+											<div class='button show-pass'>
 												<i class='fa-solid fa-eye-slash'></i>
 												<i class="fa-solid fa-eye"></i>
 											</div>
@@ -131,35 +131,35 @@
 
 									<div class='form-item'>
 										<p></p>
-										<span>Bạn quên mật khẩu</span>
+										<a href='${pageContext.servletContext.contextPath}/khoi-phuc-mat-khau.html'>Bạn quên mật khẩu</a>
 									</div>
 
-									<div class='form-item'>
+									<div class='form-item newPassword'>
 										<p>Mật khẩu mới</p>
 										<div class='input-wrapper'>
 											<input name="newPassword" type='password' /> 
-											<div class='button show-pass newPassword'>
+											<div class='button show-pass'>
 												<i class='fa-solid fa-eye-slash'></i>
 												<i class="fa-solid fa-eye"></i>
 											</div>
 										</div>
-										<p class="errorMessage newPassword" style="display: none"></p>
+										<p class="errorMessage" style="display: none"></p>
 									</div>
 
 									<div class='form-item'>
 										<span></span>
 									</div>
 
-									<div class='form-item'>
+									<div class='form-item reNewPassword'>
 										<p>Nhập lại mật khẩu mới</p>
 										<div class='input-wrapper'>
 											<input name="reNewPassword" type='password' /> 
-											<div class='button show-pass reNewPassword'>
+											<div class='button show-pass'>
 												<i class='fa-solid fa-eye-slash'></i>
 												<i class="fa-solid fa-eye"></i>
 											</div>
 										</div>
-										<p class="errorMessage reNewPassword" style="display: none"></p>
+										<p class="errorMessage" style="display: none"></p>
 									</div>
 
 									<div class='form-item'>
@@ -222,35 +222,33 @@
 			$(".show-pass").on("click", function() {
 			    $(this).toggleClass("show");
 			    
-			    if ($(this).hasClass("password")) {
-			        var passwordField = $('input[name="password"]');
-			        var currentType = passwordField.attr("type");
-			        var newType = currentType === "password" ? "text" : "password";
-			        passwordField.attr("type", newType);
-			    } else if ($(this).hasClass("newPassword")) {
-			        var passwordField = $('input[name="newPassword"]');
-			        var currentType = passwordField.attr("type");
-			        var newType = currentType === "password" ? "text" : "password";
-			        passwordField.attr("type", newType);
-			    } else if ($(this).hasClass("reNewPassword")) {
-			        var passwordField = $('input[name="reNewPassword"]');
-			        var currentType = passwordField.attr("type");
-			        var newType = currentType === "password" ? "text" : "password";
-			        passwordField.attr("type", newType);
+			    var passwordField;
+
+			    if ($(this).closest(".form-item").find("input[name='password']").length > 0) {
+			        passwordField = $('input[name="password"]');
+			    } else if ($(this).closest(".form-item").find("input[name='newPassword']").length > 0) {
+			        passwordField = $('input[name="newPassword"]');
+			    } else {
+			        passwordField = $('input[name="reNewPassword"]');
 			    }
+
+			    var currentType = passwordField.attr("type");
+			    var newType = currentType === "password" ? "text" : "password";
+			    passwordField.attr("type", newType);
 			});
+
 
 			var password = $('input[name="password"]');
 			var newPassword = $('input[name="newPassword"]');
 			var reNewPassword = $('input[name="reNewPassword"]');
 
-			$('input[type="password"]').on("mouseout", function() {
-			    
-			    
+			$('input[type="password"]').on("mouseout", function() {		    
 			    if (newPassword.val() !== "" && reNewPassword.val() !== newPassword.val()) {
-			        $(".errorMessage.reNewPassword").css("display", "block").text("Mật khẩu không trùng khớp");
+			        $(".reNewPassword .errorMessage").css("display", "block").text("Mật khẩu không trùng khớp");
+			        $(".reNewPassword .input-wrapper").css("border-color", "rgb(224, 60, 49)")
 			    } else {
-			        $(".errorMessage.reNewPassword").css("display", "none").text("");
+			        $(".reNewPassword .errorMessage").css("display", "none").text("");
+			        $(".reNewPassword .input-wrapper").css("border-color", "#ccc")
 			    }
 			    
 			    var containsUppercase = /[A-Z]/.test(newPassword.val());

@@ -71,13 +71,7 @@
 				</div>
 				<div id='collapse2' class='panel-collapse collapse'>
 					<ul class='list-group'>
-						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
-							<li class='list-group-item'>Thông tin số dư</li>
-						</a>
-						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
-							<li class='list-group-item'>Lịch sử giao dịch</li>
-						</a>
-						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
+						<a href="${pageContext.servletContext.contextPath}/sellernet/nap-tien.html">
 							<li class='list-group-item'>Nạp tiền vào tài khoản</li>
 						</a>
 					</ul>

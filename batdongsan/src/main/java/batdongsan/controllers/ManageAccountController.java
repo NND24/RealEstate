@@ -155,6 +155,9 @@ public class ManageAccountController {
 				request.setAttribute("passwordError", "Mật khẩu không khớp với mật khẩu cũ");
 				isError = true;
 			}
+			if (!newPassword.equals(reNewPassword)) {
+				isError = true;
+			}
 
 			if (!isError) {
 				currentUser.setPassword(newPassword);
@@ -163,7 +166,6 @@ public class ManageAccountController {
 			} 
 			
 			request.setAttribute("user", currentUser);
-			model.addAttribute("user", currentUser);
 			request.setAttribute("setting", "setting");
 			request.setAttribute("edit", null);
 			return "client/sellernet/manageAccount";

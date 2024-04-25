@@ -1,7 +1,5 @@
 @charset "UTF-8";
 
-
-
 .manage-account {
 	margin-left: 280px;
 	width: calc(100% - 280px);
@@ -72,7 +70,7 @@
 	width: 100px;
 	height: 100px;
 	border-radius: 100%;
-	
+
 }
 
 .manage-account .input-wrapper .avatar-container .image-wrapper img {
@@ -84,27 +82,25 @@
 
 .manage-account .input-wrapper .avatar-container .image-wrapper i {
 	position: absolute;
-    top: 0px;
-    right: 0px;
-    background-color: #fff;
-    color: #e34f46;
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
+	top: 0px;
+	right: 0px;
+	background-color: #fff;
+	color: #e34f46;
+	width: 28px;
+	height: 28px;
+	border-radius: 999px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 20px;
 }
 
 .manage-account .input-wrapper .avatar-container .image-wrapper i:hover {
 	background-color: #eee;
 }
 
-.manage-account .input-wrapper .avatar-container .image-wrapper
-
-.manage-account .input-wrapper .avatar-container .asd {
+.manage-account .input-wrapper .avatar-container .image-wrapper .manage-account .input-wrapper .avatar-container .asd {
 	border: 1px dashed rgb(242, 242, 242);
 	border-radius: 100%;
 	width: 100px;
@@ -193,8 +189,8 @@
 	opacity: 0.4;
 }
 
-.manage-account .form-item>span {
-	color: rgb(224, 60, 49);
+.manage-account .form-item > a {
+	color: rgb(224, 60, 49) !important;
 	cursor: pointer;
 }
 
@@ -215,11 +211,11 @@
 
 .manage-account .form-item .input-wrapper i {
 	position: absolute;
-    top: 25%;
-    right: 6px;
-    color: #cdcdcd;
-    cursor: pointer;
-    font-size: 15px;
+	top: 25%;
+	right: 6px;
+	color: #cdcdcd;
+	cursor: pointer;
+	font-size: 15px;
 }
 
 .manage-account .form-item .input-wrapper .button .fa-eye {

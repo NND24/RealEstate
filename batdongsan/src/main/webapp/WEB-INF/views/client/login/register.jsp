@@ -22,8 +22,16 @@
 				<div class='right-wrapper'>
 					<div class='form-wrapper'>
 						<div>
-							<h5>Xin chào bạn</h5>
-							<h3>Đăng ký tài khoản mới</h3>
+							<% 
+							    String currentPage = (String) request.getAttribute("currentPage"); 
+							    
+							    if (currentPage.equals("register")) { 
+							%>
+							    <h5>Xin chào bạn</h5>
+							    <h3>Đăng ký tài khoản mới</h3>
+							<% } else { %>
+							    <h3>Khôi phục mật khẩu</h3>
+							<% } %>
 							<form action='mailer/send.html' method="POST">
 								<div class='input-wrapper'>
 									<i class="fa-regular fa-envelope"></i> <input type="email"

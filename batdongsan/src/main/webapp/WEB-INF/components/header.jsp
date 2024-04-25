@@ -82,7 +82,7 @@
 							<span>Thay đổi mật khẩu</span>
 					</a>
 				
-					<a class='model-item' href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?setting=true">
+					<a class='model-item' href="${pageContext.servletContext.contextPath}/sellernet/nap-tien.html">
 						<i class="fa-regular fa-credit-card"></i>
 						<span>Nạp tiền</span>
 					</a>
@@ -126,12 +126,12 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'GET',
 			url: '${pageContext.servletContext.contextPath}/logout.html',
-			dataType: 'text',
+			dataType: 'text', 
 			success: function(data) {
-				location.reload();
+				window.location.href = '${pageContext.servletContext.contextPath}/trang-chu.html'
 			},
 			error: function(xhr, status, error) {
-				location.reload();
+				window.location.href = '${pageContext.servletContext.contextPath}/trang-chu.html'
 			}
 		});
 	})
