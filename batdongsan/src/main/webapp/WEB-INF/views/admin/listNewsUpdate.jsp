@@ -6,13 +6,18 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../css/admin/listNews.css" type="text/css">
-<link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listCategory.css"
+<link rel="stylesheet" href="../../../css/admin/listNews.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/headerAdmin.css"
+<link rel="stylesheet" href="../../../css/client/index.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listTag.css" type="text/css">
+<link rel="stylesheet" href="../../../css/admin/listCategory.css"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/admin/headerAdmin.css"
+	type="text/css">
+<link rel="stylesheet" href="../../css/admin/listTag.css"
+	type="text/css">
+<script
+	src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
@@ -48,11 +53,13 @@
 
 				<div class='post-container'>
 					<div class='tab-content'>
-					
+
 						<c:forEach var="n" items="${listOfNews}">
 							<div class='admin-post-card'>
 								<div>
-									<img src="http://localhost:8080/batdongsan/images/admin/News/dowsssssnload.png" alt="Image">
+									<img
+										src="${pageContext.servletContext.contextPath}/${n.thumbnail}"
+										alt='Image' />
 									<div class='post-content-container'>
 										<div>
 											<h4 class='header'>${n.title}</h4>
@@ -92,8 +99,8 @@
 												class='fa-regular fa-flag'></i> <span>Duyệt tin</span></a>
 										</div>
 										<div class='button-item'>
-											<a href="listNews/detail/${n.newsId}.html"><i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span></a>
-											
+											<i class='fa-solid fa-ranking-star'></i> <span>Chi
+												tiết</span>
 										</div>
 										<div class='button-item'>
 											<a href='listNews/hide/${n.newsId}.html'><i
@@ -110,8 +117,8 @@
 												<i class='fa-solid fa-ellipsis'></i> <span>Thao tác</span>
 											</div>
 											<ul class='dropdown-menu'>
-												<li><a href='listNews/update/${n.newsId}.html'> <i class='fa-solid fa-pencil'></i>
-														<span>Sửa tin</span>
+												<li><a href='listNews/update/${n.newsId}.html'> <i
+														class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 												</a></li>
 												<li><a href='#'>CSS</a></li>
 												<li><a href='#'>JavaScript</a></li>
@@ -128,13 +135,21 @@
 			</div>
 		</div>
 
-		<!-- ADD NEWS -->
-		<div class='add-modal' id='addNewsForm'>
+		<!-- UPDATE NEWS -->
+		<div class='add-modal' id='updateNewsForm'>
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
-					<h1>Thêm tin tức</h1>
-					<form:form action="listNews/addNews.html" modelAttribute="news"
+					<h1>Chỉnh sửa tin tức</h1>
+					<form:form action="listNews/udpate.html" modelAttribute="news"
 						method="post" enctype="multipart/form-data">
+						<div class='input-container'>
+							<div class='form-item'>
+								<p>Mã tin tức</p>
+								<div class='input-wrapper'>
+									<form:input path="newsId" readonly="true" />
+								</div>
+							</div>
+						</div>
 						<div class='input-container'>
 							<div class='form-item'>
 								<p>Tiêu đề</p>
@@ -165,58 +180,43 @@
 							<div class='form-item full-width'>
 								<p>Nội dung</p>
 								<div class='input-wrapper'>
-									<form:textarea id="editor" path='description' cols='30' rows='7'></form:textarea>
-								</div>
-							</div>
-						</div>
-						
-						<div class='input-container'>
-							<div class='form-item full-width'>
-								<p>Ảnh tiêu đề</p>
-								<div class='input-wrapper'>
-									
+									<form:textarea id="editor" path='description' cols='30'
+										rows='50'></form:textarea>
 								</div>
 							</div>
 						</div>
 
+
 						<div class='button-wrapper'>
 							<div></div>
 							<button class='continue-button'>
-								<span>Lưu</span>
+								<span>Xác nhận</span>
 							</button>
 						</div>
 					</form:form>
 
 				</div>
 			</div>
-			<button class='close-btn' id='closeAddModelButton'>
+			<button class='close-btn' id='closeAddModelButton'
+				onclick="window.location.href='/batdongsan/admin/updateNews/cancel.html'">
 				<i class='fa-solid fa-xmark'></i>
 			</button>
 		</div>
 		<!-- END -->
-
-
-
 	</div>
 	<script>
-		$(document).ready(function() {
-			ClassicEditor
-	        .create( document.querySelector( '#editor' ) )
-	        .catch( error => {
-	            console.error( error );
-	        } );
-			
-			// Xử lý sự kiện Add Model
-			$("#addNewsButton").click(function() {
-				$("#addNewsForm").show();
-			});
-
-			// Xử lý sự kiện click vào nút đóng modal
-			$("#closeAddModelButton").click(function() {
-				$("#addNewsForm").hide();
-			});
-			// End Add Model
-		});
+	var editor = '';
+    $(document).ready(function() {
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+		
+        editor = CKEDITOR.replace('editor')
+         
+    });
 	</script>
+
 </body>
 </html>

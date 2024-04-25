@@ -663,6 +663,12 @@
   background-color: #43999f;
   padding: 2px 4px;
   border-radius: 3px;
+  text-align: center;
+}
+
+.admin-post-card .detail-container .detail-item .status[data-status="false"]{
+	background-color: #ff4d4d;
+	
 }
 
 .admin-post-card .button-container {
