@@ -39,14 +39,20 @@ public class RealEstateModel {
 	@ManyToOne
 	@JoinColumn(name = "wardId")
 	private WardsModel ward;
+	
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private UsersModel user;
 
 	private String address;
 	private String title;
 	private String description;
+	private String typePost;
 	private float area;
 	private float price;
 	private String unit;
 	private String interior;
+	private String direction;
 	private int numberOfBedrooms;
 	private int numberOfToilets;
 	private String images;
@@ -56,44 +62,20 @@ public class RealEstateModel {
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
-	private Date createdDate;
+	private Date submittedDate;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
-	private Date updatedDate;
+	private Date expirationDate;
 	
+	private String status;
+	private int totalMoney;
+
 	@OneToMany(mappedBy = "realEstate", fetch = FetchType.EAGER)
 	private Collection<FavouriteModel> favourite;
 
 	public RealEstateModel() {
 		super();
-	}
-
-	public RealEstateModel(int realEstateId, CategoryModel category, ProvincesModel province, DistrictsModel district,
-			WardsModel ward, String address, String title, String description, float area, float price, String unit,
-			String interior, int numberOfBedrooms, int numberOfToilets, String images, String contactName,
-			String phoneNumber, String email, Date createdDate, Date updatedDate) {
-		super();
-		this.realEstateId = realEstateId;
-		this.category = category;
-		this.province = province;
-		this.district = district;
-		this.ward = ward;
-		this.address = address;
-		this.title = title;
-		this.description = description;
-		this.area = area;
-		this.price = price;
-		this.unit = unit;
-		this.interior = interior;
-		this.numberOfBedrooms = numberOfBedrooms;
-		this.numberOfToilets = numberOfToilets;
-		this.images = images;
-		this.contactName = contactName;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
 	}
 
 	public int getRealEstateId() {
@@ -103,8 +85,6 @@ public class RealEstateModel {
 	public void setRealEstateId(int realEstateId) {
 		this.realEstateId = realEstateId;
 	}
-
-	
 
 	public CategoryModel getCategory() {
 		return category;
@@ -242,20 +222,52 @@ public class RealEstateModel {
 		this.ward = ward;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public String getTypePost() {
+		return typePost;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setTypePost(String typePost) {
+		this.typePost = typePost;
 	}
 
-	public Date getUpdatedDate() {
-		return updatedDate;
+	public String getDirection() {
+		return direction;
 	}
 
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
+	public Date getSubmittedDate() {
+		return submittedDate;
+	}
+
+	public void setSubmittedDate(Date submittedDate) {
+		this.submittedDate = submittedDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(int totalMoney) {
+		this.totalMoney = totalMoney;
+	}
+
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 
 	public Collection<FavouriteModel> getFavourite() {
@@ -264,6 +276,14 @@ public class RealEstateModel {
 
 	public void setFavourite(Collection<FavouriteModel> favourite) {
 		this.favourite = favourite;
+	}
+
+	public UsersModel getUser() {
+		return user;
+	}
+
+	public void setUser(UsersModel user) {
+		this.user = user;
 	}
 	
 	

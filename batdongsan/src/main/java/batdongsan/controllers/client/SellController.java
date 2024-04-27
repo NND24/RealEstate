@@ -374,7 +374,7 @@ public class SellController {
 			Query<RealEstateModel> query = session.createQuery(hql);
 
 			// Search by type
-			query.setParameter("type", "Nhà đất bán");
+			query.setParameter("type", "Nhà đất cho thuê");
 
 			// Search by input
 			if (searchInput != null && !searchInput.isEmpty()) {

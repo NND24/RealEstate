@@ -26,6 +26,9 @@ public class UsersModel {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private Collection<FavouriteModel> favourite;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	private Collection<RealEstateModel> realEstate;
 
 	public UsersModel() {
 		super();

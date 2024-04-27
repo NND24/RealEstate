@@ -23,9 +23,10 @@
 				String imageString = (String) realEstate.getImages();
 				if (imageString != null && !imageString.isEmpty()) {
 					imageString = imageString.substring(1, imageString.length() - 1);
-					String[] imagePaths = imageString.split(", ");
+					String[] imagePaths = imageString.split(",");
 					
-					 String formattedDate = sdf.format(realEstate.getUpdatedDate());
+					 String submittedDate = sdf.format(realEstate.getSubmittedDate());
+					 String expirationDate = sdf.format(realEstate.getExpirationDate());
 			%>
 			<div class='row'>
 
@@ -175,14 +176,13 @@
 					<div class='short-info-container'>
 						<div>
 							<div class='short-info__item'>
-								<span class='title'>Ngày đăng</span> <span class='value'><%=formattedDate%></span>
+								<span class='title'>Ngày đăng</span> <span class='value'><%=submittedDate%></span>
 							</div>
 							<div class='short-info__item'>
-								<span class='title'>Ngày hết hạn</span> <span class='value'><%=formattedDate%></span>
+								<span class='title'>Ngày hết hạn</span> <span class='value'><%=expirationDate%></span>
 							</div>
 							<div class='short-info__item'>
-								<span class='title'>Loại tin</span> <span class='value'>Tin
-									VIP Bạc</span>
+								<span class='title'>Loại tin</span> <span class='value'><%= realEstate.getTypePost() %></span>
 							</div>
 							<div class='short-info__item'>
 								<span class='title'>Mã tin</span> <span class='value'><%=realEstate.getRealEstateId()%></span>
@@ -206,7 +206,7 @@
 			
 											if (imageStr != null && !imageStr.isEmpty()) {
 												imageStr = imageStr.substring(1, imageStr.length() - 1);
-												String[] imgPaths = imageStr.split(", ");
+												String[] imgPaths = imageStr.split(",");
 									%>
 									<div class='recommend-card'>
 										<div class='card-image'>
@@ -248,8 +248,12 @@
 											</div>
 											<div class='card-info__contact'>
 												<div class='card-published-info'>Đăng 5 ngày trước</div>
-												<div class='card-contact-button'>
-													<i class='fa-regular fa-heart'></i>
+												<div class='card-contact-button__favorite'
+													value="<%=r.getRealEstateId()%>">
+													<i class='fa-regular fa-heart'
+														style="display: <%=r.getFavourite().size() > 0 ? "none" : "block"%>;"></i>
+													<i class="fa-solid fa-heart"
+														style="color: #e03c31;display: <%=r.getFavourite().size() > 0 ? "block" : "none"%>;"></i>
 												</div>
 											</div>
 										</div>
@@ -271,7 +275,7 @@
 				<!-- Sidebar -->
 				<div class='detail-sidebar col-lg-3'>
 					<div class='sidebar-box-contact'>
-						<img class='contact-avatar' src="" alt='' />
+						<img class='contact-avatar' src="<%=realEstate.getUser().getAvatar() %>" alt='' />
 						<p>Được đăng bởi</p>
 						<h5 class='contact-name'><%=realEstate.getContactName()%></h5>
 						<div class='contact-button contact-button__phonenumber'>

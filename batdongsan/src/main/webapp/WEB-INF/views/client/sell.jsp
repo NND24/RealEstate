@@ -30,40 +30,41 @@
 							Cho thuê <%
 							}
 							%>
-						</a> <span> / </span> <a id="refresh-page"> <%
- List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
- if (categoryIdsList1 != null) {
- 	if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {
- %> Tất cả BĐS trên toàn quốc <%
- } else if (categoryIdsList1.contains(1)) {
- %> Căn hộ chung cư <%
- } else if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
- %> Các loại nhà bán <%
- } else if (categoryIdsList1.contains(2)) {
- %> Nhà riêng <%
- } else if (categoryIdsList1.contains(3)) {
- %> Nhà biệt thự, liền kề <%
- } else if (categoryIdsList1.contains(4)) {
- %> Nhà mặt phố <%
- } else if (categoryIdsList1.contains(5)) {
- %> Shophouse, nhà phố thương mại <%
- } else if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
- %> Các loại đất bán <%
- } else if (categoryIdsList1.contains(6)) {
- %> Đất nền dự án <%
- } else if (categoryIdsList1.contains(7)) {
- %> Bán đất <%
- } else if (categoryIdsList1.contains(8)) {
- %> Trang trại, khu nghỉ dưỡng <%
- } else if (categoryIdsList1.contains(9)) {
- %> Condotel <%
- } else if (categoryIdsList1.contains(10)) {
- %> Kho, nhà xưởng <%
- } else if (categoryIdsList1.contains(11)) {
- %> Bất động sản khác <%
- }
- }
- %>
+						</a> <span> / </span> <a id="refresh-page"> 
+						 <%
+						 List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
+						 if (categoryIdsList1 != null) {
+						 	if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {
+						 %> Tất cả BĐS trên toàn quốc <%
+						 } else if (categoryIdsList1.contains(1)) {
+						 %> Căn hộ chung cư <%
+						 } else if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
+						 %> Các loại nhà bán <%
+						 } else if (categoryIdsList1.contains(2)) {
+						 %> Nhà riêng <%
+						 } else if (categoryIdsList1.contains(3)) {
+						 %> Nhà biệt thự, liền kề <%
+						 } else if (categoryIdsList1.contains(4)) {
+						 %> Nhà mặt phố <%
+						 } else if (categoryIdsList1.contains(5)) {
+						 %> Shophouse, nhà phố thương mại <%
+						 } else if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
+						 %> Các loại đất bán <%
+						 } else if (categoryIdsList1.contains(6)) {
+						 %> Đất nền dự án <%
+						 } else if (categoryIdsList1.contains(7)) {
+						 %> Bán đất <%
+						 } else if (categoryIdsList1.contains(8)) {
+						 %> Trang trại, khu nghỉ dưỡng <%
+						 } else if (categoryIdsList1.contains(9)) {
+						 %> Condotel <%
+						 } else if (categoryIdsList1.contains(10)) {
+						 %> Kho, nhà xưởng <%
+						 } else if (categoryIdsList1.contains(11)) {
+						 %> Bất động sản khác <%
+						 }
+						 }
+						 %>
 						</a>
 					</div>
 					<h3 class='sell-content__title'>
@@ -103,18 +104,25 @@
 							String imageString = (String) r.getImages();
 
 							if (imageString != null && !imageString.isEmpty()) {
-						imageString = imageString.substring(1, imageString.length() - 1);
-						String[] imagePaths = imageString.split(", ");
+								imageString = imageString.substring(1, imageString.length() - 1);
+								String[] imagePaths = imageString.split(",");
 					%>
 					<a
 						href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>"
 						class='product-card'>
 						<div class='card-img-container'>
-							<img src="<%=imagePaths[0]%>" alt='' class='image-1' /> <img
-								src="<%=imagePaths[0]%>" alt='' class='image-2' /> <img
-								src="<%=imagePaths[0]%>" alt='' class='image-3' /> <img
-								src="<%=imagePaths[0]%>" alt='' class='image-4' />
-
+							<% 
+							int i = 0;
+							for (String imagePath : imagePaths) {
+								i++;
+							%>
+								<img src='<%=imagePath%>' class='image-<%=i%>' />
+							<%
+								if(i==4) {
+									break;
+								}
+							}
+							%>					
 							<div class='card-image-feature'>
 								<i class='fa-regular fa-image'></i> <span><%=imagePaths.length%></span>
 							</div>
@@ -125,19 +133,20 @@
 								<h3 class='card-info__title'><%=r.getTitle()%></h3>
 								<div class='card-info__detail'>
 									<div class='card-config'>
-										<span class='card-config__item card-config__price'> <%
- if (r.getPrice() < 1000000000) {
- 	out.print((int) (r.getPrice() / 1000000) + " triệu");
- } else {
- 	out.print(r.getPrice() / 1000000000 + " tỷ");
- }
- %> <%
- if (r.getUnit().equals("triệu")) {
- 	out.print("");
- } else {
- 	out.print(r.getUnit());
- }
- %>
+										<span class='card-config__item card-config__price'> 
+										 <%
+										 if (r.getPrice() < 1000000000) {
+										 	out.print((int) (r.getPrice() / 1000000) + " triệu");
+										 } else {
+										 	out.print(r.getPrice() / 1000000000 + " tỷ");
+										 }
+										 %> <%
+										 if (r.getUnit().equals("triệu")) {
+										 	out.print("");
+										 } else {
+										 	out.print(r.getUnit());
+										 }
+										 %>
 										</span> <span class='card-config__item card-config__dot'>·</span> <span
 											class='card-config__item card-config__area'><%=r.getArea()%>
 											m²</span>
@@ -171,7 +180,7 @@
 						</div>
 						<div class='card-contact-container'>
 							<div class='card-published-info'>
-								<img src="" alt='' class='card-published-info__avatar' />
+								<img src="<%= r.getUser().getAvatar() %>" alt='' class='card-published-info__avatar' />
 								<div>
 									<div class='card-published-info__name'><%=r.getContactName()%></div>
 									<div class='card-published-info__update-time'>Đăng hôm
@@ -180,8 +189,8 @@
 							</div>
 							<div class='card-contact-button-container'>
 								<div class='card-contact-button__phonenumber'>
-									<i class='fa-solid fa-phone-volume'></i> <span>0912 345
-										679</span> <span class='card-contact-button__phonenumber__dot'>·</span>
+									<i class='fa-solid fa-phone-volume'></i> <span><%=r.getPhoneNumber()%></span> 
+										<span class='card-contact-button__phonenumber__dot'>·</span>
 									<span>Hiện số</span>
 								</div>
 								<div class='card-contact-button__favorite'

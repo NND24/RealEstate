@@ -23,7 +23,7 @@
 				<div class='money'><%=user1.getAccountBalance()%></div>
 			</div>
 
-			<a href=''>
+			<a href='${pageContext.servletContext.contextPath}/sellernet/nap-tien.html'>
 				<button type='border' color='primary'>
 					<i class='fa-regular fa-credit-card'></i> <span>Nạp tiền</span>
 				</button>
@@ -43,7 +43,7 @@
 				</div>
 				<div id='collapse1' class='panel-collapse collapse'>
 					<ul class='list-group'>
-						<a href="${pageContext.servletContext.contextPath}/sellernet/dang-tin.html">
+						<a href="${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html">
 							<li class='list-group-item'>Đăng mới</li>
 						</a>
 						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">

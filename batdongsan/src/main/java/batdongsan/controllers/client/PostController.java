@@ -3,12 +3,17 @@ package batdongsan.controllers.client;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.query.Query;
 import org.hibernate.Session;
@@ -19,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,29 +39,103 @@ import batdongsan.models.CategoryModel;
 import batdongsan.models.DistrictsModel;
 import batdongsan.models.ProvincesModel;
 import batdongsan.models.RealEstateModel;
+import batdongsan.models.UsersModel;
 import batdongsan.models.WardsModel;
 
 @Controller
+@Transactional
 @RequestMapping("/sellernet/")
 public class PostController {
 	@Autowired
 	SessionFactory factory;
 
 	@RequestMapping(value = "dang-tin/ban", method = RequestMethod.GET)
-	public String indexSell(ModelMap model) {
+	public String indexSell(ModelMap model, HttpServletRequest request) {
+		Session session = factory.openSession();
+		Cookie[] cookies = request.getCookies();
+		UsersModel user = null;
+
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("userId")) {
+					String userId = cookie.getValue();
+					String hqlUser = "FROM UsersModel WHERE userId = :userId";
+					Query<UsersModel> queryUser = session.createQuery(hqlUser);
+					queryUser.setParameter("userId", Integer.parseInt(userId));
+					user = queryUser.uniqueResult();
+					break;
+				}
+			}
+		}
+
+		String hqlCat = "FROM CategoryModel WHERE type = :type";
+		Query<CategoryModel> queryCat = session.createQuery(hqlCat);
+		queryCat.setParameter("type", "Nhà đất bán");
+		List<CategoryModel> categories = queryCat.list();
+
+		String hqlPro = "FROM ProvincesModel";
+		Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
+		List<ProvincesModel> provinces = queryPro.list();
+
+		request.setAttribute("categories", categories);
+		request.setAttribute("provinces", provinces);
+		request.setAttribute("user", user);
 		model.addAttribute("realEstate", new RealEstateModel());
 		return "client/sellernet/postSell";
 	}
 
-	@RequestMapping(value = "dang-tin/chothue", method = RequestMethod.GET)
-	public String indexRent(ModelMap model) {
+	@RequestMapping(value = "dang-tin/cho-thue", method = RequestMethod.GET)
+	public String indexRent(ModelMap model, HttpServletRequest request) {
+		Session session = factory.openSession();
+		Cookie[] cookies = request.getCookies();
+		UsersModel user = null;
+
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("userId")) {
+					String userId = cookie.getValue();
+					String hqlUser = "FROM UsersModel WHERE userId = :userId";
+					Query<UsersModel> queryUser = session.createQuery(hqlUser);
+					queryUser.setParameter("userId", Integer.parseInt(userId));
+					user = queryUser.uniqueResult();
+					break;
+				}
+			}
+		}
+
+		String hqlCat = "FROM CategoryModel WHERE type = :type";
+		Query<CategoryModel> queryCat = session.createQuery(hqlCat);
+		queryCat.setParameter("type", "Nhà đất cho thuê");
+		List<CategoryModel> categories = queryCat.list();
+
+		String hqlPro = "FROM ProvincesModel";
+		Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
+		List<ProvincesModel> provinces = queryPro.list();
+
+		request.setAttribute("categories", categories);
+		request.setAttribute("provinces", provinces);
+		request.setAttribute("user", user);
 		model.addAttribute("realEstate", new RealEstateModel());
 		return "client/sellernet/postRent";
 	}
 
-	@RequestMapping(value = "insert", method = RequestMethod.POST)
-	public String insert(ModelMap model, @ModelAttribute("realEstate") RealEstateModel realEstate,
-			@RequestParam("image") MultipartFile[] files) {
+	@RequestMapping(value = "addNewRealEstate", method = RequestMethod.POST)
+	public String addNewRealEstate(ModelMap model, HttpServletRequest request,
+			@RequestParam("image") MultipartFile[] files,
+			@RequestParam(name = "categoryId") Integer categoryId,
+			@RequestParam(name = "provinceId") Integer provinceId,
+			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
+			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
+			@RequestParam(name = "description") String description, @RequestParam(name = "typePost") String typePost,
+			@RequestParam(name = "area") Float area, @RequestParam(name = "price") Float price,
+			@RequestParam(name = "unit") String unit, @RequestParam(name = "interior") String interior,
+			@RequestParam(name = "numberOfBedrooms") int numberOfBedrooms,
+			@RequestParam(name = "numberOfToilets") int numberOfToilets,
+			@RequestParam(name = "direction") String direction, @RequestParam(name = "contactName") String contactName,
+			@RequestParam(name = "phoneNumber") String phoneNumber, @RequestParam(name = "email") String email,
+			@RequestParam(name = "submittedDate") String submittedDateString,
+			@RequestParam(name = "expirationDate") String expirationDateString,
+			@RequestParam(name = "totalMoney") int totalMoney) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
@@ -63,7 +143,7 @@ public class PostController {
 
 			for (MultipartFile file : files) {
 				try {
-					// Lưu file ảnh vào máy chủ
+					// Save image file to the server
 					LocalTime currentTime = LocalTime.now();
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm-ss");
 					String formattedTime = currentTime.format(formatter);
@@ -72,16 +152,16 @@ public class PostController {
 					String uploadDir = "D:/Workspace Java/DoAnLTW/batdongsan/src/main/webapp/images/";
 					String filePath = uploadDir + formattedTime + "-" + fileName;
 
-					// Tạo thư mục nếu thư mục không tồn tại
+					// Create directory if not exists
 					File directory = new File(uploadDir);
 					if (!directory.exists()) {
 						directory.mkdirs();
 					}
 
-					// Lưu file
+					// Save file
 					file.transferTo(new File(filePath));
 
-					// Thêm đường dẫn tương đối của ảnh vào danh sách
+					// Add relative image path to the list
 					String relativePath = "images/" + formattedTime + "-" + fileName;
 					imagePaths.add(relativePath);
 				} catch (IOException e) {
@@ -89,87 +169,75 @@ public class PostController {
 				}
 			}
 
-			// Chuyển đổi danh sách các đường dẫn ảnh thành chuỗi
+			// Convert list of image paths to string
 			String images = Arrays.toString(imagePaths.toArray());
 
-			LocalDateTime currentDateTime = LocalDateTime.now();
+			Session currentSession = factory.getCurrentSession();
 
-			// Chuyển đổi LocalDateTime thành java.sql.Timestamp
-			java.sql.Timestamp currentTimestamp = java.sql.Timestamp.valueOf(currentDateTime);
+			CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
+			ProvincesModel province = currentSession.find(ProvincesModel.class, provinceId);
+			DistrictsModel district = currentSession.find(DistrictsModel.class, districtId);
+			WardsModel ward = currentSession.find(WardsModel.class, wardId);
+			
+			Cookie[] cookies = request.getCookies();
+			UsersModel user = null;
 
-			// Chuyển đổi java.sql.Timestamp thành java.sql.Date
-			java.sql.Date currentDate = new java.sql.Date(currentTimestamp.getTime());
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("userId")) {
+						String userId = cookie.getValue();
+						String hqlUser = "FROM UsersModel WHERE userId = :userId";
+						Query<UsersModel> queryUser = session.createQuery(hqlUser);
+						queryUser.setParameter("userId", Integer.parseInt(userId));
+						user = queryUser.uniqueResult();
+						break;
+					}
+				}
+			}
 
-			CategoryModel category = session.find(CategoryModel.class, realEstate.getCategory());
-			ProvincesModel province = session.find(ProvincesModel.class, realEstate.getProvince());
-			DistrictsModel district = session.find(DistrictsModel.class, realEstate.getDistrict());
-			WardsModel ward = session.find(WardsModel.class, realEstate.getWard());
+			// Commit transaction and set success message
+			RealEstateModel newRealEstate = new RealEstateModel();
 
-			// Commit transaction và gán thông báo thành công
-			RealEstateModel newRealEstate = new RealEstateModel(realEstate.getRealEstateId(), category, province,
-					district, ward, realEstate.getAddress(), realEstate.getTitle(), realEstate.getDescription(),
-					realEstate.getArea(), realEstate.getPrice(), realEstate.getUnit(), realEstate.getInterior(),
-					realEstate.getNumberOfBedrooms(), realEstate.getNumberOfToilets(), images,
-					realEstate.getContactName(), realEstate.getPhoneNumber(), realEstate.getEmail(), currentDate,
-					currentDate);
+			newRealEstate.setCategory(category);
+			newRealEstate.setProvince(province);
+			newRealEstate.setDistrict(district);
+			newRealEstate.setWard(ward);
+			newRealEstate.setUser(user);
+			newRealEstate.setAddress(address);
+			newRealEstate.setTitle(title);
+			newRealEstate.setDescription(description);
+			newRealEstate.setTypePost(typePost);
+			newRealEstate.setArea(area);
+			newRealEstate.setPrice(price);
+			newRealEstate.setUnit(unit);
+			newRealEstate.setInterior(interior);
+			newRealEstate.setDirection(direction);
+			newRealEstate.setNumberOfBedrooms(numberOfBedrooms);
+			newRealEstate.setNumberOfToilets(numberOfToilets);
+			newRealEstate.setImages(images);
+			newRealEstate.setContactName(contactName);
+			newRealEstate.setPhoneNumber(phoneNumber);
+			newRealEstate.setEmail(email);
+
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date submittedDate = dateFormat.parse(submittedDateString);
+			Date expirationDate = dateFormat.parse(expirationDateString);
+			newRealEstate.setSubmittedDate(submittedDate);
+			newRealEstate.setExpirationDate(expirationDate);
+
+			newRealEstate.setStatus("Chưa xác thực");
+			newRealEstate.setTotalMoney(totalMoney);
 
 			session.save(newRealEstate);
 			t.commit();
-			model.addAttribute("message", "Thêm mới thành công!");
+			return "redirect:/sellernet/dang-tin/ban.html";
 		} catch (Exception e) {
 			t.rollback();
-			model.addAttribute("message", "Thêm mới thất bại! ");
-			System.out.println(e);
-		} finally {
-			session.close();
-			return "redirect:/sellernet/dang-tin.html";
-		}
-	}
-
-	@ModelAttribute("categoriesSell")
-	public List<CategoryModel> getTypesSell() {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
-			Query<CategoryModel> query = session.createQuery(hql);
-			query.setParameter("type", "Nhà đất bán");
-			List<CategoryModel> categories = query.list();
-
-			return categories;
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
+			e.printStackTrace();
+			return "redirect:/sellernet/dang-tin/ban.html";
 		} finally {
 			session.close();
 		}
-	}
-
-	@ModelAttribute("categoriesRent")
-	public List<CategoryModel> getTypesRent() {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
-			Query<CategoryModel> query = session.createQuery(hql);
-			query.setParameter("type", "Nhà đất cho thuê");
-			List<CategoryModel> categories = query.list();
-
-			return categories;
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		} finally {
-			session.close();
-		}
-	}
-
-	@ModelAttribute("provinces")
-	public List<ProvincesModel> getProvinces() {
-		Session session = factory.openSession();
-		String hql = "FROM ProvincesModel";
-		Query<ProvincesModel> query = session.createQuery(hql);
-		List<ProvincesModel> list = query.list();
-		session.close();
-		return list;
 	}
 
 	@ResponseBody

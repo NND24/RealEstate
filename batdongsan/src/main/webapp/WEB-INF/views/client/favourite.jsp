@@ -42,14 +42,22 @@
 
 							if (imageString != null && !imageString.isEmpty()) {
 						imageString = imageString.substring(1, imageString.length() - 1);
-						String[] imagePaths = imageString.split(", ");
+						String[] imagePaths = imageString.split(",");
 					%>
 					<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='product-card'>
 						<div class='card-img-container'>
-							<img src="<%=imagePaths[0]%>" alt='' class='image-1' /> <img
-								src="<%=imagePaths[0]%>" alt='' class='image-2' /> <img
-								src="<%=imagePaths[0]%>" alt='' class='image-3' /> <img
-								src="<%=imagePaths[0]%>" alt='' class='image-4' />
+							<% 
+							int i = 0;
+							for (String imagePath : imagePaths) {
+								i++;
+							%>
+								<img src='<%=imagePath%>' class='image-<%=i%>' />
+							<%
+								if(i==4) {
+									break;
+								}
+							}
+							%>	
 
 							<div class='card-image-feature'>
 								<i class='fa-regular fa-image'></i> <span><%=imagePaths.length%></span>
@@ -110,7 +118,7 @@
 						</div>
 						<div class='card-contact-container'>
 							<div class='card-published-info'>
-								<img src="" alt='' class='card-published-info__avatar' />
+								<img src="<%= r.getUser().getAvatar() %>" alt='' class='card-published-info__avatar' />
 								<div>
 									<div class='card-published-info__name'><%=r.getContactName()%></div>
 									<div class='card-published-info__update-time'>Đăng hôm
@@ -119,8 +127,7 @@
 							</div>
 							<div class='card-contact-button-container'>
 								<div class='card-contact-button__phonenumber'>
-									<i class='fa-solid fa-phone-volume'></i> <span>0912 345
-										679</span> <span class='card-contact-button__phonenumber__dot'>·</span>
+									<i class='fa-solid fa-phone-volume'></i> <span><%=r.getPhoneNumber()%></span> <span class='card-contact-button__phonenumber__dot'>·</span>
 									<span>Hiện số</span>
 								</div>
 								<div class='card-contact-button__favorite'
