@@ -227,7 +227,7 @@
 		    window.addEventListener('load', () => {
 		    	let currentURL = decodeURIComponent(window.location.href);
 				let firstQuestionMarkIndex = currentURL.indexOf("?");
-				let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+				let url = "${pageContext.servletContext.contextPath}/tin-da-luu.html";
 				
 		    	if (firstQuestionMarkIndex !== -1) {
 				    let queryString = currentURL.substring(firstQuestionMarkIndex + 1);
@@ -242,63 +242,10 @@
 				        }
 				    });		
 				    
-				    let hasParameters = false; 
 
-				    if (result['listCategoryId'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "categoryIds=" + result['listCategoryId'];
-				        hasParameters = true;
-				    }
-
-				    if (result['minPrice'] !== undefined && result['maxPrice'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "minPrice=" + result['minPrice'] + "&maxPrice=" + result['maxPrice'];
-				        hasParameters = true;
-				    }
-
-				    if (result['minArea'] !== undefined && result['maxArea'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "minArea=" + result['minArea'] + "&maxArea=" + result['maxArea'];
-				        hasParameters = true;
-				    }
-
-				    if (result['listNumberOfBedrooms'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "numberOfBedrooms=" + result['listNumberOfBedrooms'];
-				        hasParameters = true;
-				    }
-
-				    if (result['listNumberOfToilets'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "numberOfToilets=" + result['listNumberOfToilets'];
-				        hasParameters = true;
-				    }
 				    
-				    if(result['provinceId'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "provinceId=" + result['provinceId'];
-				        hasParameters = true;
-				    }
-				    
-				    if(result['districtId'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "districtId=" + result['districtId'];
-				        hasParameters = true;
-				    }
-				    
-				    if(result['wardId'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "wardId=" + result['wardId'];
-				        hasParameters = true;
-				    }
-				    
-				    if(result['searchInput'] !== undefined) {
-				        url += hasParameters ? "&" : "?";
-				        url += "searchInput=" + result['searchInput'];
-				    }
-				    
-				    if (result['verify'] !== undefined) {
-				    	$("#filter-title").text(result['verify'])
+				    if (result['addedDate'] !== undefined) {
+				    	$("#filter-title").text(result['addedDate'])
 				    } else if (result['newPost'] !== undefined) {
 				    	$("#filter-title").text(result['newPost'])
 				    } else if (result['priceLowToHigh'] !== undefined) {
@@ -315,7 +262,7 @@
 		        var hasQueryString = url.indexOf('?') !== -1;
 		        
 		        $('.list-filter').append(
-		            "<a href='" + url + (hasQueryString ? "&" : "?") + "verify=Lưu mới nhất'><li><span>Lưu mới nhất</span></li></a>" +
+		            "<a href='" + url + (hasQueryString ? "&" : "?") + "addedDate=Lưu mới nhất'><li><span>Lưu mới nhất</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "newPost=Tin mới nhất'><li><span>Tin mới nhất</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "priceLowToHigh=Giá thấp đến cao'><li><span>Giá thấp đến cao</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "priceHighToLow=Giá cao đến thấp'><li><span>Giá cao đến thấp</span></li></a>" +

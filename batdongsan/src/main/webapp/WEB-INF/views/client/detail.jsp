@@ -8,7 +8,7 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css" type="text/css">
-<link rel="stylesheet" href="css/client/detail.css" type="text/css">
+<link rel="stylesheet" href="css/client/detail.css?version=50" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
@@ -196,7 +196,6 @@
 							</div>
 							<div class='swiper-wrapper'>
 								<div class='swiper-slide'>
-								
 									<%
 									List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
 			
@@ -275,9 +274,13 @@
 				<!-- Sidebar -->
 				<div class='detail-sidebar col-lg-3'>
 					<div class='sidebar-box-contact'>
-						<img class='contact-avatar' src="<%=realEstate.getUser().getAvatar() %>" alt='' />
+						<a href='${pageContext.servletContext.contextPath}/profile.html?userId=<%=realEstate.getUser().getUserId() %>'>
+							<img class='contact-avatar' src="<%=realEstate.getUser().getAvatar() %>" alt='' />
+						</a>
 						<p>Được đăng bởi</p>
-						<h5 class='contact-name'><%=realEstate.getContactName()%></h5>
+						<a href='${pageContext.servletContext.contextPath}/profile.html?userId=<%=realEstate.getUser().getUserId() %>'>
+							<h5 class='contact-name'><%=realEstate.getContactName()%></h5>
+						</a>
 						<div class='contact-button contact-button__phonenumber'>
 							<span>0912 345 679</span> <span
 								class='contact-button__phonenumber__dot'>·</span> <span>Hiện

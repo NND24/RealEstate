@@ -59,7 +59,7 @@
 			<a href="${pageContext.servletContext.contextPath}/tin-da-luu.html">
 				<i class='fa-regular fa-heart'></i> 
 			</a>
-			<i class='fa-regular fa-bell'></i>
+			<!--  	<i class='fa-regular fa-bell'></i> -->
 			<div class='user-option-container'>
 			<!-- <span class='avatar'>
 					<h3>U</h3>

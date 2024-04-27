@@ -511,7 +511,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
 }
 
 .recommend-card .card-info-container .card-published-info {
@@ -520,14 +519,14 @@
   color: #999;
 }
 
-.recommend-card .card-info-container .card-contact-button {
-  color: #2c2c2c;
+.recommend-card .card-info-container .card-contact-button__favorite {
+ color: #2c2c2c;
   background: #fff;
   border: solid 1px #ccc;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   letter-spacing: -0.2px;
-  padding: 5px 11px;
+  padding: 8px 10px;
   border-radius: 4px;
   cursor: pointer;
 }

@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="css/client/home.css" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
+<base href="${pageContext.servletContext.contextPath}/">
 </head>
 <body>
 	<%@ include file="../../components/header.jsp"%>

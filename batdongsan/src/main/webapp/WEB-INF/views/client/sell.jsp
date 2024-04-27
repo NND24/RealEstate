@@ -433,9 +433,7 @@
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "priceHighToLow=Giá cao đến thấp'><li><span>Giá cao đến thấp</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "areaLowToHigh=Diện tích bé đến lớn'><li><span>Diện tích bé đến lớn</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "areaHighToLow=Diện tích lớn đến bé'><li><span>Diện tích lớn đến bé</span></li></a>"
-		        );
-		        
-
+		        );		        
 		    })
 		    
 		    $("#refresh-page").on("click", () => {

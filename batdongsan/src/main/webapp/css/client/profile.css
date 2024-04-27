@@ -83,7 +83,7 @@
   border-radius: 4px;
   background: #fff;
   overflow: hidden;
-  padding: 0;
+  padding: 0 !important;
 }
 
 .sale-card .card-image {
@@ -166,14 +166,14 @@
   color: #999;
 }
 
-.sale-card .card-info-container .card-contact-button {
+.sale-card .card-info-container .card-contact-button__favorite {
   color: #2c2c2c;
   background: #fff;
   border: solid 1px #ccc;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   letter-spacing: -0.2px;
-  padding: 5px 11px;
+  padding: 8px 10px;
   border-radius: 4px;
   cursor: pointer;
 }

@@ -14,11 +14,9 @@
 	type="text/css">
 <link rel="stylesheet" href="../../css/client/sellernet.css"
 	type="text/css">
-<link rel="stylesheet" href="../../css/client/post.css?version=51"
+<link rel="stylesheet" href="../../css/client/post.css?version=52"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
-
-
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
 <body>

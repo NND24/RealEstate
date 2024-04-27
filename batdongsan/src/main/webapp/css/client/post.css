@@ -172,11 +172,12 @@
   position: relative;
   border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 6px 30px 6px 10px;
+  overflow: hidden;
 }
 
 .post .form-item .input-container input {
   width: 100%;
+  padding: 6px 30px 6px 10px;
 }
 
 .post .form-item .input-container span {

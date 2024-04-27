@@ -49,9 +49,6 @@
 						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
 							<li class='list-group-item'>Danh sách tin</li>
 						</a>
-						<a href="${pageContext.servletContext.contextPath}/sellernet/dang-tin.html">
-							<li class='list-group-item'>Tin nháp</li>
-						</a>
 					</ul>
 				</div>
 			</div>

@@ -1,5 +1,6 @@
 package batdongsan.controllers.client;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -29,7 +30,7 @@ public class FavouriteController {
 
 	@RequestMapping(value = { "/tin-da-luu" }, method = RequestMethod.GET)
 	public String getFavoutirePage(HttpServletRequest request,
-			@RequestParam(name = "verify", required = false) String verify,
+			@RequestParam(name = "addedDate", required = false) String addedDate,
 			@RequestParam(name = "newPost", required = false) String newPost,
 			@RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
 			@RequestParam(name = "priceHighToLow", required = false) String priceHighToLow,
@@ -42,12 +43,12 @@ public class FavouriteController {
 
 			// ORDER BY
 			String orderByClause = "";
-			if (verify != null) {
-				orderByClause = " ORDER BY updatedDate DESC";
+			if (addedDate != null) {
+				orderByClause = " ORDER BY addedDate DESC";
 			}
 
 			if (newPost != null) {
-				orderByClause = " ORDER BY updatedDate DESC";
+				orderByClause = " ORDER BY submittedDate DESC";
 			}
 
 			if (priceLowToHigh != null) {
@@ -134,7 +135,8 @@ public class FavouriteController {
 
 					UsersModel user = session.get(UsersModel.class, Integer.parseInt(userId));
 					RealEstateModel realEstate = session.get(RealEstateModel.class, Integer.parseInt(realEstateId));
-					FavouriteModel favourite = new FavouriteModel(user, realEstate);
+					Date currentTime = new Date();
+					FavouriteModel favourite = new FavouriteModel(user, realEstate, currentTime);
 
 					if (fa != null) {
 						FavouriteModel favouriteToDelete = session.get(FavouriteModel.class, fa.getFavouriteId());

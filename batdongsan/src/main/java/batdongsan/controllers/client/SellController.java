@@ -128,11 +128,11 @@ public class SellController {
 			// ORDER BY
 			String orderByClause = "";
 			if (verify != null) {
-				orderByClause = " ORDER BY updatedDate DESC";
+				orderByClause = " ORDER BY submittedDate DESC";
 			}
 
 			if (newPost != null) {
-				orderByClause = " ORDER BY updatedDate DESC";
+				orderByClause = " ORDER BY submittedDate DESC";
 			}
 
 			if (priceLowToHigh != null) {
