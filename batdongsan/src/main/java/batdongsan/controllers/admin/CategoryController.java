@@ -1,4 +1,4 @@
-package batdongsan.controllers.client;
+package batdongsan.controllers.admin;
 
 import java.util.List;
 
