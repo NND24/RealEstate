@@ -224,7 +224,7 @@ public class NewsController {
 				return "redirect:/admin/listNews.html";
 			}
 			model.addAttribute("news", news);
-			return "admin/detail";
+			return "admin/detailNews.jsp";
 		} catch (Exception e) {
 			return "redirect:/admin/listNews.html";
 		}

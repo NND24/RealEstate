@@ -109,7 +109,7 @@
 											</div>
 											<div class='detail-item'>
 											    <span class='primary'>Thời gian</span>
-											    <div class='secondary'> <%= khoangCach > 0 ? "Còn " + khoangCach + " ngày" : "Hết hạn" %> </div>
+											    <div class='secondary'><%= khoangCach > 0 ? "Còn " + khoangCach + " ngày" : "Hết hạn" %></div>
 											</div>
 										</div>
 									</div>
