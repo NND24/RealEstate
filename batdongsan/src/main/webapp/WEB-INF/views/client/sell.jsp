@@ -116,7 +116,7 @@
 							for (String imagePath : imagePaths) {
 								i++;
 							%>
-								<img src='<%=imagePath%>' class='image-<%=i%>' />
+								<img src='images/<%=imagePath.trim()%>' class='image-<%=i%>' />
 							<%
 								if(i==4) {
 									break;
@@ -180,7 +180,7 @@
 						</div>
 						<div class='card-contact-container'>
 							<div class='card-published-info'>
-								<img src="<%= r.getUser().getAvatar() %>" alt='' class='card-published-info__avatar' />
+								<img src="images/<%= r.getUser().getAvatar() %>" alt='' class='card-published-info__avatar' />
 								<div>
 									<div class='card-published-info__name'><%=r.getContactName()%></div>
 									<div class='card-published-info__update-time'>Đăng hôm

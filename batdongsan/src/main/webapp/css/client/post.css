@@ -182,6 +182,7 @@
 
 .post .form-item .input-container span {
   position: absolute;
+  top: 20%;
   right: 6px;
 }
 

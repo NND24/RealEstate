@@ -103,8 +103,7 @@ public class ManageAccountController {
 
 				userAvatar.transferTo(new File(filePath));
 
-				relativePath = "images/" + uniqueFileName;
-
+				relativePath = uniqueFileName;
 			} else {
 				relativePath = currentUser.getAvatar();
 			}

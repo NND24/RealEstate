@@ -7,7 +7,7 @@
 			<%
 			UsersModel user1 = (UsersModel) request.getAttribute("user");
 			%>
-			<img class="avatar" alt="" src="<%=user1.getAvatar()%>" /> 
+			<img class="avatar" alt="" src="images/<%=user1.getAvatar()%>" /> 
 			<div>
 				<a href='' class='user-name'> <%=user1.getName()%> </a>
 				<p>0 điểm</p>

@@ -39,7 +39,7 @@
 							for (String imagePath : imagePaths) {
 							%>
 							<div class='swiper-slide'>
-								<img src='<%=imagePath%>' />
+								<img src='images/<%=imagePath.trim()%>' />
 							</div>
 							<%
 							}
@@ -55,7 +55,7 @@
 							for (String imagePath : imagePaths) {
 							%>
 							<div class='swiper-slide'>
-								<img src='<%=imagePath%>' />
+								<img src='images/<%=imagePath.trim()%>' />
 							</div>
 							<%
 							}
@@ -211,7 +211,7 @@
 										<div class='card-image'>
 											<a
 												href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
-											<img src="<%=imgPaths[0]%>" alt='' />
+											<img src="images/<%=imgPaths[0]%>" alt='' />
 											</a>
 											<div class='card-image-feature'>
 												<i class='fa-regular fa-image'></i> <span><%= imgPaths.length %></span>
@@ -275,7 +275,7 @@
 				<div class='detail-sidebar col-lg-3'>
 					<div class='sidebar-box-contact'>
 						<a href='${pageContext.servletContext.contextPath}/profile.html?userId=<%=realEstate.getUser().getUserId() %>'>
-							<img class='contact-avatar' src="<%=realEstate.getUser().getAvatar() %>" alt='' />
+							<img class='contact-avatar' src="images/<%=realEstate.getUser().getAvatar() %>" alt='' />
 						</a>
 						<p>Được đăng bởi</p>
 						<a href='${pageContext.servletContext.contextPath}/profile.html?userId=<%=realEstate.getUser().getUserId() %>'>

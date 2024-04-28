@@ -24,7 +24,7 @@
 					UsersModel userInfo = (UsersModel) request.getAttribute("userInfo");
 			
 					%>
-					<img src="<%= userInfo.getAvatar() %>" alt='' />
+					<img src="images/<%= userInfo.getAvatar() %>" alt='' />
 					<div>
 						<h5 class='name'><%= userInfo.getName() %></h5>
 						<div class='button-container'>
@@ -52,7 +52,7 @@
 						%>
 						<div class='sale-card col-lg-3 col-md-4 col-sm-6 col-xs-2'>
 							<div class='card-image'>
-								<img src="<%=imgPaths[0]%>" alt='' />
+								<img src="images/<%=imgPaths[0]%>" alt='' />
 								<div class='card-image-feature'>
 									<i class='fa-regular fa-image'></i> <span>6</span>
 								</div>
@@ -117,7 +117,7 @@
 						%>
 						<div class='sale-card col-lg-3 col-md-4 col-sm-6 col-xs-2'>
 							<div class='card-image'>
-								<img src="<%=imgPaths[0]%>" alt='' />
+								<img src="images/<%=imgPaths[0]%>" alt='' />
 								<div class='card-image-feature'>
 									<i class='fa-regular fa-image'></i> <span>6</span>
 								</div>

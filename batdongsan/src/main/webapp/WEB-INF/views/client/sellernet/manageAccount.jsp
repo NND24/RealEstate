@@ -46,7 +46,7 @@
 								<h3>Thông tin cá nhân</h3>
 								<div class='avatar-container'>
 									<div class="image-wrapper">
-										<img src="<%=user.getAvatar()%>" />
+										<img src="images/<%=user.getAvatar()%>" />
 										<i class="fa-solid fa-xmark remove-img"></i>
 									</div>
 									<label class='avatar__label' for="avatarInput" style="display: none;">

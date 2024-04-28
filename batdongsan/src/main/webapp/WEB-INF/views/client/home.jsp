@@ -320,13 +320,13 @@
 
 								if (imageString != null && !imageString.isEmpty()) {
 							imageString = imageString.substring(1, imageString.length() - 1);
-							String[] imagePaths = imageString.split(", ");
+							String[] imagePaths = imageString.split(",");
 						%>
 						<div class='col-lg-3'>
 							<div class='card'>
 								<a
 									href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
-									<img class='card-img-top' src="<%=imagePaths[0]%>" alt='' />
+									<img class='card-img-top' src="images/<%=imagePaths[0]%>" alt='' />
 								</a>
 								<div class='card-info-container'>
 									<a

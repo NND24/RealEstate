@@ -64,7 +64,7 @@
 			<!-- <span class='avatar'>
 					<h3>U</h3>
 				 </span> -->
-				<img class="avatar" alt="" src="<%= user.getAvatar() %>" />
+				<img class="avatar" alt="" src="images/<%= user.getAvatar() %>" />
 				<span><%= user.getName() %></span> <i class='fa-solid fa-angle-down'></i>
 
 				<div class='model-container'>
