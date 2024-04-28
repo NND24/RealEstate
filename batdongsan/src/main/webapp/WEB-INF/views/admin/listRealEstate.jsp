@@ -22,7 +22,7 @@
 
 		<!-- ListPost -->
 		<div class='admin-list-post'>
-			<h1>Danh sách tin</h1>
+			<h1>Danh sách bất động sản</h1>
 			<div class='content-container'>
 				<div class='filter-wrapper'>
 					<div class='search-input'>
@@ -35,11 +35,6 @@
 							<i class='fa-regular fa-calendar'></i> <span>Mặc định</span>
 							<i class='fa-solid fa-angle-down'></i>
 						</button>
-						<ul class='dropdown-menu'>
-							<li><a href='#HTML'>Mặc định</a></li>
-							<li><a href='#'>1 tuần qua</a></li>
-							<li><a href='#'>30 ngày qua</a></li>
-						</ul>
 					</div>
 				</div>
 				<%							
@@ -86,7 +81,7 @@
 									<div class='detail-container'>
 										<div class='detail-item'>
 											<span class='primary'>Trạng thái</span>
-											<div class='status'><%= r.getStatus() %></div>
+											<div class='status' style="background-color: <%= (r.getStatus().equals("Chưa được duyệt") || r.getStatus().equals("Ẩn")) ? "#da2c2c" : "#43999f" %>" ><%= r.getStatus() %></div>
 										</div>
 										<div class='detail-item'>
 											<span class='primary'>Mã tin</span>
@@ -110,33 +105,31 @@
 							<div>
 								<div class='blank-container'></div>
 								<div class='button-container'>
-									<div class='button-item'>
+									<a href="${pageContext.servletContext.contextPath}/admin/browseRealEstate.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 										<i class='fa-regular fa-flag'></i> <span>Duyệt tin</span>
-									</div>
-									<a href="${pageContext.servletContext.contextPath}/admin/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
-										<i class='fa-solid fa-ranking-star'></i> <span>Chi
-											tiết</span>
 									</a>
-									<div class='button-item'>
-										<i class='fa-solid fa-pencil'></i> <span>Ẩn tin</span>
-									</div>
-									<div class='button-item'>
-										<i class='fa-regular fa-share-from-square'></i> <span>Xóa
-											tin</span>
-									</div>
+									<a href="${pageContext.servletContext.contextPath}/admin/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
+										<i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span>
+									</a>
+									<a href=<% if(r.getStatus().equals("Chưa được duyệt")) { %> "" <% } else { %> "${pageContext.servletContext.contextPath}/admin/hideDisplayRealEstate.html?realEstateId=<%= r.getRealEstateId() %>" <% } %> class='button-item'>
+										<i class='fa-solid fa-pencil'></i> <span><%= r.getStatus().equals("Ẩn") ? "Hiển thị" : "Ẩn" %> tin</span>
+									</a>
+									<a href="${pageContext.servletContext.contextPath}/admin/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
+										<i class='fa-regular fa-share-from-square'></i> <span>Xóa tin</span>
+									</a>
 									<div class='dropdown'>
 										<div class='button-item dropdown-toggle' type='button'
 											data-toggle='dropdown'>
 											<i class='fa-solid fa-ellipsis'></i> <span>Thao
 												tác</span>
 										</div>
-										<ul class='dropdown-menu'>
+									<!--  	<ul class='dropdown-menu'>
 											<li><a href='#'> <i class='fa-solid fa-pencil'></i>
 													<span>Sửa tin</span>
 											</a></li>
 											<li><a href='#'>CSS</a></li>
 											<li><a href='#'>JavaScript</a></li>
-										</ul>
+										</ul> -->
 									</div>
 								</div>
 							</div>

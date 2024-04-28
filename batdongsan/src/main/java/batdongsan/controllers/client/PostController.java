@@ -223,7 +223,7 @@ public class PostController {
 			newRealEstate.setSubmittedDate(submittedDate);
 			newRealEstate.setExpirationDate(expirationDate);
 
-			newRealEstate.setStatus("Chưa xác thực");
+			newRealEstate.setStatus("Chưa được duyệt");
 			newRealEstate.setTotalMoney(totalMoney);
 
 			session.save(newRealEstate);

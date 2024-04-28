@@ -67,38 +67,7 @@ public class RealEstateController {
 			
 			request.setAttribute("realEstate", realEsate);
 			
-			
-	        List<RealEstateModel> realEstates = query.list();
-
-	        request.setAttribute("realEstates", realEstates);
-	        request.setAttribute("page", "sell");
-	        
-	        request.setAttribute("amountRealEstate", realEstates.size());
-	        
-	        Cookie[] cookies = request.getCookies();
-			String userId = null;
-
-			if (cookies != null) {
-				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals("userId")) {
-						userId = cookie.getValue();
-						break;
-					}
-				}
-			}
-
-			if (userId != null) {
-				String hqlUser = "FROM UsersModel WHERE userId = :userId";
-				Query<UsersModel> queryUser = session.createQuery(hqlUser);
-				queryUser.setParameter("userId", Integer.parseInt(userId));
-				UsersModel user = queryUser.uniqueResult();
-				request.setAttribute("user", user);
-			} else {
-				UsersModel user = null;
-				request.setAttribute("user", user);
-			}
-			
-			return "client/detail";
+			return "admin/detailRealEstate";
 		} finally {
 			session.close();
 		}
@@ -118,13 +87,70 @@ public class RealEstateController {
 			
 			session.delete(deletedRealEstate);
 			t.commit();
-			return "redirect:/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
+			return "redirect:/admin/quan-ly-bat-dong-san.html";
 		} catch (Exception e) {
 			t.rollback();
 			e.printStackTrace();
-			return "redirect:/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
+			return "redirect:/admin/quan-ly-bat-dong-san.html";
 		} finally {
 			session.close();
 		}
 	}
+	
+	@RequestMapping(value = "browseRealEstate", method = RequestMethod.GET)
+	public String browseRealEstate(ModelMap model, HttpServletRequest request,
+			@RequestParam(name = "realEstateId") Integer realEstateId) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		try {
+			String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
+			Query<RealEstateModel> query = session.createQuery(hql);
+			query.setParameter("realEstateId", realEstateId);
+			RealEstateModel updatedRealEstate = query.uniqueResult();
+			updatedRealEstate.setStatus("Đang hiển thị");
+			
+			session.update(updatedRealEstate);
+			t.commit();
+			return "redirect:/admin/quan-ly-bat-dong-san.html";
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+			return "redirect:/admin/quan-ly-bat-dong-san.html";
+		} finally {
+			session.close();
+		}
+	}
+	
+	@RequestMapping(value = "hideDisplayRealEstate", method = RequestMethod.GET)
+	public String hideDisplayRealEstate(ModelMap model, HttpServletRequest request,
+	        @RequestParam(name = "realEstateId") Integer realEstateId) {
+	    Session session = factory.openSession();
+	    Transaction t = session.beginTransaction();
+	    try {
+	        String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
+	        Query<RealEstateModel> query = session.createQuery(hql);
+	        query.setParameter("realEstateId", realEstateId);
+	        RealEstateModel updatedRealEstate = query.uniqueResult();
+
+	        String status = updatedRealEstate.getStatus();
+	        if ("Đang hiển thị".equals(status)) {
+	            updatedRealEstate.setStatus("Ẩn");
+	        } else if ("Chưa được duyệt".equals(status)) {
+	            updatedRealEstate.setStatus("Chưa được duyệt");
+	        } else {
+	            updatedRealEstate.setStatus("Đang hiển thị");
+	        }
+
+	        session.update(updatedRealEstate);
+	        t.commit();
+	        return "redirect:/admin/quan-ly-bat-dong-san.html";
+	    } catch (Exception e) {
+	        t.rollback();
+	        e.printStackTrace();
+	        return "redirect:/admin/quan-ly-bat-dong-san.html";
+	    } finally {
+	        session.close();
+	    }
+	}
+
 }
