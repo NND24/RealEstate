@@ -56,7 +56,7 @@
 .header-menu .right-menu .menu-container .menu__item::after {
   content: "";
   position: absolute;
-  bottom: 0;
+  bottom: -2px;
   left: 0;
   height: 2px;
   width: 0%;
@@ -314,9 +314,7 @@
     width: 16px;
     height: 16px;
     font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
 }
 
 .search-select-container:nth-child(12) .amount-search-more {

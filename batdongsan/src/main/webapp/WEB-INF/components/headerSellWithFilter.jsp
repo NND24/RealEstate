@@ -1,3 +1,5 @@
+<%@page import="java.math.BigInteger"%>
+<%@page import="java.math.BigDecimal"%>
 <%@page import="batdongsan.models.UsersModel"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Arrays"%>
@@ -16,13 +18,13 @@
 			</div>
 			<div class="right-menu">
 				<ul class="menu-container">
-					<li class="menu__item"><a
+					<li class="menu__item" style="border-bottom: 2px solid rgb(228, 54, 54);"><a
 						href="${pageContext.servletContext.contextPath}/nha-dat-ban.html">Nhà
 							đất bán</a>
 						<ul class="list-container">
 							<c:forEach var="c" items="${categoriesSell}">
 								<a
-									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryId=${c.categoryId}"><li>${c.name}</li>
+									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>${c.name}</li>
 								</a>
 							</c:forEach>
 						</ul></li>
@@ -32,7 +34,7 @@
 						<ul class="list-container">
 							<c:forEach var="c" items="${categoriesRent}">
 								<a
-									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryId=${c.categoryId}"><li>${c.name}</li>
+									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>${c.name}</li>
 								</a>
 							</c:forEach>
 						</ul></li>
@@ -134,7 +136,7 @@
 								<i class="fa-solid fa-house"></i> <span>Tất cả nhà đất </span>
 							</div> <input type="checkbox" id="check-all"
 							<%List<Integer> categoryIdsList = (List<Integer>) request.getAttribute("categoryIds");
-if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {%>
+							if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {%>
 							checked <%}%> /> <span class="checkmark"> </span>
 						</label>
 						<div class="separate"></div>
@@ -325,102 +327,95 @@ if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3
 					<p id="list-price">Tất cả</p>
 				</div>
 				<%
-				Float minPriceFloat = (Float) request.getAttribute("minPrice");
-				Float maxPriceFloat = (Float) request.getAttribute("maxPrice");
+				BigDecimal minPriceFloat = null;
+				BigDecimal maxPriceFloat = null;
 				String unit = (String) request.getAttribute("unit");
-				int minPrice = -1;
-				int maxPrice = -1;
-				if (minPriceFloat != null && maxPriceFloat != null) {
-					minPrice = (int) Math.round(minPriceFloat) / 1000000;
-					maxPrice = (int) Math.round(maxPriceFloat) / 1000000;
+				BigInteger minPrice = BigInteger.valueOf(-1); // Initialize with -1
+				BigInteger maxPrice = BigInteger.valueOf(-1); // Initialize with -1
+				
+				Object minPriceObj = request.getAttribute("minPrice");
+				Object maxPriceObj = request.getAttribute("maxPrice");
+				
+				if (minPriceObj != null && maxPriceObj != null) {
+				    if (minPriceObj instanceof Float && maxPriceObj instanceof Float) {
+				        minPriceFloat = BigDecimal.valueOf((Float) minPriceObj);
+				        maxPriceFloat = BigDecimal.valueOf((Float) maxPriceObj);
+				        BigDecimal divisor = new BigDecimal("1000000"); // Divisor
+				        minPrice = minPriceFloat.divide(divisor).toBigInteger(); // Divide and convert to BigInteger
+				        maxPrice = maxPriceFloat.divide(divisor).toBigInteger(); // Divide and convert to BigInteger
+				    }
 				}
 				%>
-				<div class="dropdown-menu menu-price">
-					<div class="menu-list">
-						<div class="range-slider-container price-range-slider">
-							<div class="price-input">
-								<div class="field">
-									<input type="number" class="input-min"
-										value="<%=(minPriceFloat != null && maxPriceFloat != null) ? minPrice : "Từ"%>"
-										placeholder="Từ" />
-								</div>
-								<i class="fa-solid fa-arrow-right"></i>
-								<div class="field">
-									<input type="number" class="input-max"
-										value="<%=(maxPriceFloat != null && maxPriceFloat != null) ? maxPrice : "Đến"%>"
-										placeholder="Đến" />
-								</div>
-							</div>
-							<div class="slider">
-								<div class="progress"></div>
-							</div>
-							<div class="range-input">
-								<input type="range" class="range-min" min="0" max="59900"
-									value="<%=(minPriceFloat != null && maxPriceFloat != null) ? minPrice : 0%>"
-									step="100" /> <input type="range" class="range-max" min="100"
-									max="60000"
-									value="<%=(maxPriceFloat != null && maxPriceFloat != null) ? maxPrice : 60000%>"
-									step="100" />
-							</div>
-						</div>
-						<div class="separate"></div>
-						<label value="all"> <span
-							<%if (minPriceFloat == null && maxPriceFloat == null) {%>
-							class="active" <%}%>>Tất cả mức giá</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 0 && maxPrice == 500) {%>
-							class="active" <%}%>>Dưới 500 triệu</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 500 && maxPrice == 800) {%>
-							class="active" <%}%>>500 - 800 triệu</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 800 && maxPrice == 1000) {%>
-							class="active" <%}%>>800 triệu - 1 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 1000 && maxPrice == 2000) {%>
-							class="active" <%}%>>1 - 2 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 2000 && maxPrice == 3000) {%>
-							class="active" <%}%>>2 - 3 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 3000 && maxPrice == 5000) {%>
-							class="active" <%}%>>3 - 5 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 5000 && maxPrice == 7000) {%>
-							class="active" <%}%>>5 - 7 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 7000 && maxPrice == 10000) {%>
-							class="active" <%}%>>7 - 10 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 10000 && maxPrice == 20000) {%>
-							class="active" <%}%>>10 - 20 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 20000 && maxPrice == 30000) {%>
-							class="active" <%}%>>20 - 30 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 30000 && maxPrice == 40000) {%>
-							class="active" <%}%>>30 - 40 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 40000 && maxPrice == 60000) {%>
-							class="active" <%}%>>40 - 60 tỷ</span>
-						</label> <label> <span
-							<%if (minPriceFloat != null && maxPriceFloat != null && minPrice == 60000 && maxPrice == 600000) {%>
-							class="active" <%}%>>Trên 60 tỷ</span>
-						</label> <label> <span
-							<%if (unit != null && unit.equals("thoa-thuan")) {%>
-							class="active" <%}%>>Thỏa thuận</span>
-						</label>
-					</div>
-					<div class="list-search-select-footer">
-						<div class="list-search-select__reset-button"
-							id="reset-search-price">
-							<i class="fa-solid fa-rotate"></i> <span>Đặt lại</span>
-						</div>
-						<div class="list-search-select__search-button">
-							<i class="fa-solid fa-magnifying-glass"></i> <span>Tìm
-								kiếm</span>
-						</div>
-					</div>
+
+
+				<div class="dropdown-menu menu-price <%= maxPrice %>">
+				    <div class="menu-list">
+				        <div class="range-slider-container price-range-slider">
+				            <div class="price-input">
+				                <div class="field">
+				                    <input type="number" class="input-min <%= minPrice %>"
+				                        value="<%= (minPriceFloat == null || minPriceFloat.intValue() < 0) ? "Từ" : minPrice %>"
+				                        placeholder="Từ" />
+				                </div>
+				                <i class="fa-solid fa-arrow-right"></i>
+				                <div class="field">
+				                    <input type="number" class="input-max"
+				                        value="<%= (maxPriceFloat == null || maxPriceFloat.intValue() < 0) ? "Đến" : maxPrice %>"
+				                        placeholder="Đến" />
+				                </div>
+				            </div>
+				            <div class="slider">
+				                <div class="progress"></div>
+				            </div>
+				            <div class="range-input">
+				                <input type="range" class="range-min" min="0" max="59900"
+				                    value="<%= (minPriceFloat == null || minPriceFloat.intValue() < 0) ? 0 : minPrice %>"
+				                    step="100" /> 
+				                <input type="range" class="range-max" min="100" max="60000"
+				                    value="<%= (maxPriceFloat == null || maxPriceFloat.intValue() < 0) ? 60000 : maxPrice %>"
+				                    step="100" />
+				            </div>
+				        </div>
+				        <div class="separate"></div>
+				        <label value="all"> <span class="<%= (minPriceFloat == null && maxPriceFloat == null && unit != null && !unit.equals("thoa-thuan")) ? "active" : "" %>">Tất cả mức giá</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 0 && maxPrice.intValue() == 500) ? "active" : "" %>">Dưới 500 triệu</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 500 && maxPrice.intValue() == 800) ? "active" : "" %>">500 - 800 triệu</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 800 && maxPrice.intValue() == 1000) ? "active" : "" %>">800 triệu - 1 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 1000 && maxPrice.intValue() == 2000) ? "active" : "" %>">1 - 2 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 2000 && maxPrice.intValue() == 3000) ? "active" : "" %>">2 - 3 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 3000 && maxPrice.intValue() == 5000) ? "active" : "" %>">3 - 5 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 5000 && maxPrice.intValue() == 7000) ? "active" : "" %>">5 - 7 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 7000 && maxPrice.intValue() == 10000) ? "active" : "" %>">7 - 10 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 10000 && maxPrice.intValue() == 20000) ? "active" : "" %>">10 - 20 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 20000 && maxPrice.intValue() == 30000) ? "active" : "" %>">20 - 30 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 30000 && maxPrice.intValue() == 40000) ? "active" : "" %>">30 - 40 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 40000 && maxPrice.intValue() == 60000) ? "active" : "" %>">40 - 60 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 60000 && maxPrice.intValue() == 600000) ? "active" : "" %>">Trên 60 tỷ</span>
+				        </label>
+				        <label> <span class="<%= (unit != null && unit.equals("thoa-thuan")) ? "active" : "" %>">Thỏa thuận</span>
+				        </label>
+				    </div>
+				    <div class="list-search-select-footer">
+				        <div class="list-search-select__reset-button" id="reset-search-price">
+				            <i class="fa-solid fa-rotate"></i> <span>Đặt lại</span>
+				        </div>
+				        <div class="list-search-select__search-button">
+				            <i class="fa-solid fa-magnifying-glass"></i> <span>Tìm kiếm</span>
+				        </div>
+				    </div>
 				</div>
 			</div>
 
@@ -519,7 +514,7 @@ if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3
 
 			<div class="filter-wall"></div>
 			<div class="search-select-container search-more">
-				<span class="amount-search-more"></span>
+				<span class="amount-search-more" style="display: none;"></span>
 				<div class="dropdown-toggle">
 					<div class="search-select__item">
 						<span>Lọc thêm</span> <i class="fa-solid fa-sliders"></i>
@@ -549,15 +544,15 @@ if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3
 						</div>
 						<div class="menu-item">
 							<p class="item__title">Hướng nhà</p>
-							<ul class="list__items">
-								<li class="item item-1 active">Đông</li>
-								<li class="item item-2">Tây</li>
-								<li class="item item-3">Nam</li>
-								<li class="item item-4">Bắc</li>
-								<li class="item item-5">Đông - Bắc</li>
-								<li class="item item-6">Tây - Bắc</li>
-								<li class="item item-7">Tây - Nam</li>
-								<li class="item item-8">Đông - Nam</li>
+							<ul class="list__items directions">
+								<li class="item item-Đông">Đông</li>
+								<li class="item item-Tây">Tây</li>
+								<li class="item item-Nam">Nam</li>
+								<li class="item item-Bắc">Bắc</li>
+								<li class="item item-Đông-Bắc">Đông-Bắc</li>
+								<li class="item item-Tây-Bắc">Tây-Bắc</li>
+								<li class="item item-Tây-Nam">Tây-Nam</li>
+								<li class="item item-Đông-Nam">Đông-Nam</li>
 							</ul>
 						</div>
 					</div>
@@ -588,6 +583,8 @@ if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1, 2, 3
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$("")
+	
 	$(".user-option-container").on("click", () => {
 	    var modelContainer = $(".user-option-container .model-container");
 	    
@@ -712,7 +709,7 @@ $(document).ready(function() {
 	});
 
 	window.addEventListener('load', () => {
-    	  <%if (minPriceFloat != null && maxPriceFloat != null) {%>
+		<% if(minPriceFloat != null && maxPriceFloat != null) { %>
 			let minVal,
 				maxVal;
 
@@ -722,7 +719,7 @@ $(document).ready(function() {
 			priceRange.style.right = 100 - (maxVal / priceRangeInput[1].max) * 100 + "%";
 
 			updateListPrice(minVal, maxVal);
-        <%}%>
+		<% } %>
         });
 
 	// AREA RANGE SLIDER
@@ -1030,6 +1027,10 @@ $(document).ready(function() {
 	$(".list__items.number-of-toilets .item").click((event) => {
 		$(event.target).toggleClass("active");
 	});
+	
+	$(".list__items.directions .item").click((event) => {
+		$(event.target).toggleClass("active");
+	});
 
 	// HANLE SEARCH BY ADDRESS
 	let provinceId = null;
@@ -1301,33 +1302,40 @@ $(document).ready(function() {
 	        listNumberOfToilets.push(parseInt($(element).text()));
 	    });
 	    
+	    let listDirections = [];
+	    $(".list__items.directions .item.active").each((index, element) => {
+	    	listDirections.push($(element).text());
+	    });
+	    
+	    var price = document.querySelectorAll(".price-range-slider .price-input input")
 	    let minPrice;
 	    let maxPrice;
 	    
-	    if(priceInput[0].value==="" || priceInput[1].value==="") {
+	    if(price[0].value==="" && price[1].value==="") {
 	    	minPrice = -1;
 	    	maxPrice = -1;
 	    } else {
-	        minPrice = priceInput[0].value * 1000000;
-	        maxPrice = priceInput[1].value * 1000000;
+	        minPrice = price[0].value * 1000000;
+	        maxPrice = price[1].value * 1000000;
 	    }
-	
+	    
+	    var area = document.querySelectorAll(".area-range-slider .area-input input")
 	    let minArea;
 	    let maxArea;
 	    
-	    if(areaInput[0].value==="" || areaInput[1].value==="") {
+	    if(area[0].value==="" && area[1].value==="") {
 	    	minArea = -1;
 	    	maxArea = -1;
 	    } else {
-	    	minArea = areaInput[0].value;
-	        maxArea = areaInput[1].value;
+	    	minArea = area[0].value;
+	        maxArea = area[1].value;
 	    }
 	
 	    let searchInput = $(".search-bar__input input").val();
 	
 	    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
 	
-	    let hasParameters = false; // Biến kiểm tra xem đã có tham số nào trong URL chưa
+	    let hasParameters = false;
 	
 	    if (listCategoryId.length > 0) {
 	        url += hasParameters ? "&" : "?";
@@ -1356,6 +1364,12 @@ $(document).ready(function() {
 	    if (listNumberOfToilets.length > 0) {
 	        url += hasParameters ? "&" : "?";
 	        url += "numberOfToilets=" + listNumberOfToilets.join(",");
+	        hasParameters = true;
+	    }
+	    
+	    if (listDirections.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "directions=" + listDirections.join(",");
 	        hasParameters = true;
 	    }
 	    
@@ -1394,7 +1408,7 @@ $(document).ready(function() {
 
 	$(".menu-price label").click((e) => {
 		let listCategoryId = [];
-		if (typeAll.checked) {
+	    if (typeAll.checked) {
 			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 		} else {
 			if (type1.checked) {
@@ -1431,80 +1445,162 @@ $(document).ready(function() {
 				listCategoryId.push(11);
 			}
 		}
+
+	    let listNumberOfBedrooms = [];
+	    $(".list__items.number-of-bedrooms .item.active").each((index, element) => {
+	        listNumberOfBedrooms.push(parseInt($(element).text()));
+	    });
+	
+	    let listNumberOfToilets = [];
+	    $(".list__items.number-of-toilets .item.active").each((index, element) => {
+	        listNumberOfToilets.push(parseInt($(element).text()));
+	    });
+	    
+	    let listDirections = [];
+	    $(".list__items.directions .item.active").each((index, element) => {
+	    	listDirections.push($(element).text());
+	    });
 
 		let minPrice;
 		let maxPrice;
 		let unit;
 
-		if (e.target.textContent === "Tất cả mức giá") {
+		if (e.target.textContent.trim() === "Tất cả mức giá") {
 			minPrice = -1;
 			maxPrice = -1;
-		} else if (e.target.textContent === "Dưới 500 triệu") {
+		} else if (e.target.textContent.trim() === "Dưới 500 triệu") {
 			minPrice = 0;
 			maxPrice = 500000000;
-		} else if (e.target.textContent === "500 - 800 triệu") {
+		} else if (e.target.textContent.trim() === "500 - 800 triệu") {
 			minPrice = 500000000;
 			maxPrice = 800000000;
-		} else if (e.target.textContent === "800 triệu - 1 tỷ") {
+		} else if (e.target.textContent.trim() === "800 triệu - 1 tỷ") {
 			minPrice = 800000000;
 			maxPrice = 1000000000;
-		} else if (e.target.textContent === "1 - 2 tỷ") {
+		} else if (e.target.textContent.trim() === "1 - 2 tỷ") {
 			minPrice = 1000000000;
 			maxPrice = 2000000000;
-		} else if (e.target.textContent === "2 - 3 tỷ") {
+		} else if (e.target.textContent.trim() === "2 - 3 tỷ") {
 			minPrice = 2000000000;
 			maxPrice = 3000000000;
-		} else if (e.target.textContent === "3 - 5 tỷ") {
+		} else if (e.target.textContent.trim() === "3 - 5 tỷ") {
 			minPrice = 3000000000;
 			maxPrice = 5000000000;
-		} else if (e.target.textContent === "5 - 7 tỷ") {
+		} else if (e.target.textContent.trim() === "5 - 7 tỷ") {
 			minPrice = 5000000000;
 			maxPrice = 7000000000;
-		} else if (e.target.textContent === "7 - 10 tỷ") {
+		} else if (e.target.textContent.trim() === "7 - 10 tỷ") {
 			minPrice = 7000000000;
 			maxPrice = 10000000000;
-		} else if (e.target.textContent === "10 - 20 tỷ") {
+		} else if (e.target.textContent.trim() === "10 - 20 tỷ") {
 			minPrice = 10000000000;
 			maxPrice = 20000000000;
-		} else if (e.target.textContent === "20 - 30 tỷ") {
+		} else if (e.target.textContent.trim() === "20 - 30 tỷ") {
 			minPrice = 20000000000;
 			maxPrice = 30000000000;
-		} else if (e.target.textContent === "30 - 40 tỷ") {
+		} else if (e.target.textContent.trim() === "30 - 40 tỷ") {
 			minPrice = 30000000000;
 			maxPrice = 40000000000;
-		} else if (e.target.textContent === "40 - 60 tỷ") {
+		} else if (e.target.textContent.trim() === "40 - 60 tỷ") {
 			minPrice = 40000000000;
 			maxPrice = 60000000000;
-		} else if (e.target.textContent === "Trên 60 tỷ") {
+		} else if (e.target.textContent.trim() === "Trên 60 tỷ") {
 			minPrice = 60000000000;
 			maxPrice = 600000000000;
-		} else if (e.target.textContent === "Thỏa thuận") {
+		} else if (e.target.textContent.trim() === "Thỏa thuận") {
 			unit = "thoa-thuan";
 		}
+		
+		var area = document.querySelectorAll(".area-range-slider .area-input input")
+		let minArea;
+	    let maxArea;
+	    
+	    if(area[0].value==="" && area[1].value==="") {
+	    	minArea = -1;
+	    	maxArea = -1;
+	    } else {
+	    	minArea = area[0].value;
+	        maxArea = area[1].value;
+	    }
 
-		let minArea = areaInput[0].value;
-		let maxArea = areaInput[1].value;
+	    let searchInput = $(".search-bar__input input").val();
 
-		let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
-		if (listCategoryId.length > 0) {
-			url += "?categoryIds=" + listCategoryId.join(",");
+	    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+		
+	    let hasParameters = false;
+	
+	    if (listCategoryId.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "categoryIds=" + listCategoryId.join(",");
+	        hasParameters = true;
+	    }
+	
+	    if (minPrice >= 0 && maxPrice >= 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "minPrice=" + minPrice + "&maxPrice=" + maxPrice;
+	        hasParameters = true;
+	    }
+	    
+	    if (unit === "thoa-thuan") {
+	    	url += hasParameters ? "&" : "?";
+			url += "unit=thoa-thuan"
+		    hasParameters = true;
 		}
-		if (minPrice >= 0 && maxPrice >= 0) {
-			url += ((listCategoryId.length > 0) ? "&" : "?") + "minPrice=" + minPrice + "&maxPrice=" + maxPrice;
-		}
-		if (unit === "thoa-thuan") {
-			url += ((listCategoryId.length > 0) ? "&" : "?") + "unit=thoa-thuan"
-		}
-		if (minArea >= 0 && maxArea >= 0) {
-			url += ((listCategoryId.length > 0 || (minPrice >= 0 && maxPrice >= 0)) ? "&" : "?") + "minArea=" + minArea + "&maxArea=" + maxArea;
-		}
-
-		window.location.href = url;
+	
+	    if (minArea >= 0 && maxArea >= 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "minArea=" + minArea + "&maxArea=" + maxArea;
+	        hasParameters = true;
+	    }
+	
+	    if (listNumberOfBedrooms.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "numberOfBedrooms=" + listNumberOfBedrooms.join(",");
+	        hasParameters = true;
+	    }
+	
+	    if (listNumberOfToilets.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "numberOfToilets=" + listNumberOfToilets.join(",");
+	        hasParameters = true;
+	    }
+	    
+	    if (listDirections.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "directions=" + listDirections.join(",");
+	        hasParameters = true;
+	    }
+	    
+	    if(provinceId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "provinceId=" + provinceId;
+	        hasParameters = true;
+	    }
+	    
+	    if(districtId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "districtId=" + districtId;
+	        hasParameters = true;
+	    }
+	    
+	    if(wardId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "wardId=" + wardId;
+	        hasParameters = true;
+	    }
+	    
+	    if(searchInput !== "") {
+	        url += hasParameters ? "&" : "?";
+	        url += "searchInput=" + searchInput;
+	    }
+	
+	    window.location.href = url;
+		
 	});
 
 	$(".menu-area label").click((e) => {
 		let listCategoryId = [];
-		if (typeAll.checked) {
+	    if (typeAll.checked) {
 			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 		} else {
 			if (type1.checked) {
@@ -1542,57 +1638,134 @@ $(document).ready(function() {
 			}
 		}
 
-		let minPrice = priceInput[0].value * 1000000;
-		let maxPrice = priceInput[1].value * 1000000;
+	    let listNumberOfBedrooms = [];
+	    $(".list__items.number-of-bedrooms .item.active").each((index, element) => {
+	        listNumberOfBedrooms.push(parseInt($(element).text()));
+	    });
+	
+	    let listNumberOfToilets = [];
+	    $(".list__items.number-of-toilets .item.active").each((index, element) => {
+	        listNumberOfToilets.push(parseInt($(element).text()));
+	    });
+	    
+	    let listDirections = [];
+	    $(".list__items.directions .item.active").each((index, element) => {
+	    	listDirections.push($(element).text());
+	    });
+		
+	    var price = document.querySelectorAll(".price-range-slider .price-input input")
+	    let minPrice;
+	    let maxPrice;
+	    
+	    if(price[0].value==="" && price[1].value==="") {
+	    	minPrice = -1;
+	    	maxPrice = -1;
+	    } else {
+	        minPrice = price[0].value * 1000000;
+	        maxPrice = price[1].value * 1000000;
+	    }
 
 		let minArea;
 		let maxArea;
 
-		if (e.target.textContent === "Tất cả diện tích") {
+		if (e.target.textContent.trim() === "Tất cả diện tích") {
 			minArea = -1;
 			maxPrice = -1;
-		} else if (e.target.textContent === "Dưới 30 m²") {
+		} else if (e.target.textContent.trim() === "Dưới 30 m²") {
 			minArea = 0;
 			maxArea = 30;
-		} else if (e.target.textContent === "30 - 50 m²") {
+		} else if (e.target.textContent.trim() === "30 - 50 m²") {
 			minArea = 30;
 			maxArea = 50;
-		} else if (e.target.textContent === "50 - 100 m²") {
+		} else if (e.target.textContent.trim() === "50 - 100 m²") {
 			minArea = 50;
 			maxArea = 100;
-		} else if (e.target.textContent === "100 - 150 m²") {
+		} else if (e.target.textContent.trim() === "100 - 150 m²") {
 			minArea = 100;
 			maxArea = 150;
-		} else if (e.target.textContent === "150 - 200 m²") {
+		} else if (e.target.textContent.trim() === "150 - 200 m²") {
 			minArea = 150;
 			maxArea = 200;
-		} else if (e.target.textContent === "200 - 250 m²") {
+		} else if (e.target.textContent.trim() === "200 - 250 m²") {
 			minArea = 200;
 			maxArea = 250;
-		} else if (e.target.textContent === "250 - 300 m²") {
+		} else if (e.target.textContent.trim() === "250 - 300 m²") {
 			minArea = 250;
 			maxArea = 300;
-		} else if (e.target.textContent === "300 - 500 m²") {
+		} else if (e.target.textContent.trim() === "300 - 500 m²") {
 			minArea = 300;
 			maxArea = 500;
-		} else if (e.target.textContent === "Trên 500 m²") {
+		} else if (e.target.textContent.trim() === "Trên 500 m²") {
 			minArea = 500;
 			maxArea = 10000;
 		}
 
-		let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
-		if (listCategoryId.length > 0) {
-			url += "?categoryIds=" + listCategoryId.join(",");
-		}
-		if (minPrice >= 0 && maxPrice >= 0) {
-			url += ((listCategoryId.length > 0) ? "&" : "?") + "minPrice=" + minPrice + "&maxPrice=" + maxPrice;
-		}
+	    let searchInput = $(".search-bar__input input").val();
 
-		if (minArea >= 0 && maxArea >= 0) {
-			url += ((listCategoryId.length > 0 || (minPrice >= 0 && maxPrice >= 0)) ? "&" : "?") + "minArea=" + minArea + "&maxArea=" + maxArea;
-		}
-
-		window.location.href = url;
+	    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+		
+	    let hasParameters = false;
+	
+	    if (listCategoryId.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "categoryIds=" + listCategoryId.join(",");
+	        hasParameters = true;
+	    }
+	
+	    if (minPrice >= 0 && maxPrice >= 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "minPrice=" + minPrice + "&maxPrice=" + maxPrice;
+	        hasParameters = true;
+	    }
+	
+	    if (minArea >= 0 && maxArea >= 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "minArea=" + minArea + "&maxArea=" + maxArea;
+	        hasParameters = true;
+	    }
+	
+	    if (listNumberOfBedrooms.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "numberOfBedrooms=" + listNumberOfBedrooms.join(",");
+	        hasParameters = true;
+	    }
+	
+	    if (listNumberOfToilets.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "numberOfToilets=" + listNumberOfToilets.join(",");
+	        hasParameters = true;
+	    }
+	    
+	    if (listDirections.length > 0) {
+	        url += hasParameters ? "&" : "?";
+	        url += "directions=" + listDirections.join(",");
+	        hasParameters = true;
+	    }
+	    
+	    if(provinceId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "provinceId=" + provinceId;
+	        hasParameters = true;
+	    }
+	    
+	    if(districtId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "districtId=" + districtId;
+	        hasParameters = true;
+	    }
+	    
+	    if(wardId !== null) {
+	        url += hasParameters ? "&" : "?";
+	        url += "wardId=" + wardId;
+	        hasParameters = true;
+	    }
+	    
+	    if(searchInput !== "") {
+	        url += hasParameters ? "&" : "?";
+	        url += "searchInput=" + searchInput;
+	    }
+	
+	    window.location.href = url;
 	});
 	
 	// Call the function when the page is loaded
@@ -1676,8 +1849,16 @@ $(document).ready(function() {
 		        }
 		    }
 		    
+		    if (result['directions'] !== undefined) {
+		        let listDirection = result['directions'].split(",").map(String);
+		        amountSearchMore += 1;
+		        for (let i = 0; i < listDirection.length; i++) {    
+		            $(".list__items.directions .item.item-" + listDirection[i].trim()).addClass("active");
+		        }
+		    }
+		    
 		    if(amountSearchMore > 0) {
-		    	$(".amount-search-more").text(amountSearchMore)
+		    	$(".amount-search-more").css("display", "block").text(amountSearchMore)
 		    }
 		    		    
 		    if(result['provinceId'] !== undefined) {

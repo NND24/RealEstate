@@ -202,13 +202,13 @@
 						<select name='direction'>
 							<option value=''>---Hướng nhà---</option>
 							<option value='Bắc'>Bắc</option>
-							<option value='Đông Bắc'>Đông Bắc</option>
+							<option value='Đông-Bắc'>Đông-Bắc</option>
 							<option value='Đông'>Đông</option>
-							<option value='Đông Nam'>Đông Nam</option>
+							<option value='Đông-Nam'>Đông-Nam</option>
 							<option value='Nam'>Nam</option>
-							<option value='Tây Nam'>Tây Nam</option>
+							<option value='Tây-Nam'>Tây-Nam</option>
 							<option value='Tây'>Tây</option>
-							<option value='Tây Bắc'>Tây Bắc</option>
+							<option value='Tây-Bắc'>Tây-Bắc</option>
 						</select>
 					</div>
 				</div>

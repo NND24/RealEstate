@@ -47,6 +47,7 @@ public class SellController {
 			@RequestParam(name = "maxArea", required = false) Float maxArea,
 			@RequestParam(name = "numberOfBedrooms", required = false) List<Integer> numberOfBedrooms,
 			@RequestParam(name = "numberOfToilets", required = false) List<Integer> numberOfToilets,
+			@RequestParam(name = "directions", required = false) List<String> directions,
 			@RequestParam(name = "verify", required = false) String verify,
 			@RequestParam(name = "newPost", required = false) String newPost,
 			@RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
@@ -55,7 +56,7 @@ public class SellController {
 			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow) {
 		Session session = factory.openSession();
 		try {
-			String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE cat.type LIKE :type";
+			String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE re.status = :status AND cat.type LIKE :type";
 
 			// Search by input
 			if (searchInput != null && !searchInput.isEmpty()) {
@@ -110,6 +111,19 @@ public class SellController {
 				}
 			}
 
+			// Search by direction
+			if (directions != null && !directions.isEmpty()) {
+				if (directions.size() == 1) {
+					hql += " AND re.direction = :direction0";
+				} else {
+					hql += " AND (re.direction = :direction0";
+					for (int i = 1; i < directions.size(); i++) {
+						hql += " OR re.direction = :direction" + i;
+					}
+					hql += ")";
+				}
+			}
+
 			// Search by price
 			if (minPrice != null && maxPrice != null) {
 				hql += " AND (re.price >= :minPrice AND re.price <= :maxPrice)";
@@ -121,8 +135,8 @@ public class SellController {
 			}
 
 			// Search by unit
-			if (unit != null && unit.isEmpty()) {
-				hql += " AND re.unit = 'Thỏa thuận' ";
+			if (unit != null && !unit.isEmpty()) {
+				hql += " AND re.unit = :unit ";
 			}
 
 			// ORDER BY
@@ -158,6 +172,11 @@ public class SellController {
 
 			// Search by type
 			query.setParameter("type", "Nhà đất bán");
+			query.setParameter("status", "Đang hiển thị");
+
+			if (unit != null && !unit.isEmpty()) {
+				query.setParameter("unit", "Thỏa thuận");
+			}
 
 			// Search by input
 			if (searchInput != null && !searchInput.isEmpty()) {
@@ -199,6 +218,12 @@ public class SellController {
 				}
 			}
 
+			if (directions != null && !directions.isEmpty()) {
+				for (int i = 0; i < directions.size(); i++) {
+					query.setParameter("direction" + i, directions.get(i));
+				}
+			}
+
 			if (minPrice != null && maxPrice != null) {
 				query.setParameter("minPrice", minPrice);
 				query.setParameter("maxPrice", maxPrice);
@@ -216,6 +241,7 @@ public class SellController {
 			request.setAttribute("categoryIds", categoryIds);
 			request.setAttribute("minPrice", minPrice);
 			request.setAttribute("maxPrice", maxPrice);
+			System.out.println(maxPrice);
 			request.setAttribute("unit", unit);
 			request.setAttribute("minArea", minArea);
 			request.setAttribute("maxArea", maxArea);
@@ -272,7 +298,7 @@ public class SellController {
 			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow) {
 		Session session = factory.openSession();
 		try {
-			String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE cat.type LIKE :type";
+			String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE re.status = :status AND cat.type LIKE :type";
 
 			// Search by input
 			if (searchInput != null && !searchInput.isEmpty()) {
@@ -375,6 +401,7 @@ public class SellController {
 
 			// Search by type
 			query.setParameter("type", "Nhà đất cho thuê");
+			query.setParameter("status", "Đang hiển thị");
 
 			// Search by input
 			if (searchInput != null && !searchInput.isEmpty()) {
@@ -437,7 +464,7 @@ public class SellController {
 			request.setAttribute("minArea", minArea);
 			request.setAttribute("maxArea", maxArea);
 			request.setAttribute("amountRealEstate", listRealEstate.size());
-			
+
 			Cookie[] cookies = request.getCookies();
 			String userId = null;
 

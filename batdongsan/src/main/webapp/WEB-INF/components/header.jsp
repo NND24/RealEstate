@@ -20,7 +20,7 @@
 						<ul class='list-container'>
 							<c:forEach var="c" items="${categoriesSell}">
 								<a
-									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryId=${c.categoryId}"><li>
+									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>
 										${c.name}</li> </a>
 							</c:forEach>
 						</ul></li>
@@ -30,7 +30,7 @@
 						<ul class='list-container'>
 							<c:forEach var="c" items="${categoriesRent}">
 								<a
-									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryId=${c.categoryId}"><li>
+									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>
 										${c.name}</li> </a>
 							</c:forEach>
 						</ul></li>

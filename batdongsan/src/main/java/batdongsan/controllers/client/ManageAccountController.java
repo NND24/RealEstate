@@ -1,6 +1,7 @@
 package batdongsan.controllers.client;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import batdongsan.models.CategoryModel;
 import batdongsan.models.UsersModel;
 
 @Controller
@@ -172,6 +174,43 @@ public class ManageAccountController {
 			t.rollback();
 			System.out.println(e);
 			return "client/sellernet/manageAccount";
+		} finally {
+			session.close();
+		}
+	}
+	
+
+	@ModelAttribute("categoriesSell")
+	public List<CategoryModel> getTypesSell() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất bán");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	@ModelAttribute("categoriesRent")
+	public List<CategoryModel> getTypesRent() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất cho thuê");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
 		} finally {
 			session.close();
 		}

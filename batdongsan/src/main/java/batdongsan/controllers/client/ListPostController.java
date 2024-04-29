@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,12 +66,13 @@ public class ListPostController {
 				UsersModel user = queryUser.uniqueResult();
 				request.setAttribute("user", user);
 				
-				String hqlAll = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE user.userId = :userId";
+				String hqlAll = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId";
 				if (searchInput != null && !searchInput.isEmpty()) {
 					hqlAll += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2)";
 				}
 				Query<RealEstateModel> queryAll = session.createQuery(hqlAll);
 				queryAll.setParameter("userId", Integer.parseInt(userId));
+				queryAll.setParameter("status", "Đang hiển thị");
 				if (searchInput != null && !searchInput.isEmpty()) {
 					queryAll.setParameter("searchInput0", "%" + searchInput + "%");
 					queryAll.setParameter("searchInput1", "%" + searchInput + "%");
@@ -79,13 +81,14 @@ public class ListPostController {
 				List<RealEstateModel> allRealEstates = queryAll.list();
 				request.setAttribute("allRealEstates", allRealEstates);
 				
-				String hqlExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate < :today";
+				String hqlExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND re.expirationDate < :today";
 				if (searchInput != null && !searchInput.isEmpty()) {
 					hqlExpired += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2)";
 				}
 				Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired);
 				queryExpired.setParameter("userId", Integer.parseInt(userId));
 				queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
+				queryExpired.setParameter("status", "Đang hiển thị");
 				if (searchInput != null && !searchInput.isEmpty()) {
 					queryExpired.setParameter("searchInput0", "%" + searchInput + "%");
 					queryExpired.setParameter("searchInput1", "%" + searchInput + "%");
@@ -98,7 +101,7 @@ public class ListPostController {
 				LocalDate startDate = LocalDate.now().plusDays(1); // Start 2 days from now
 				LocalDate endDate = LocalDate.now().plusDays(3); // End 4 days from now
 
-				String hqlNearExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate >= :startDate AND re.expirationDate <= :endDate";
+				String hqlNearExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND re.expirationDate >= :startDate AND re.expirationDate <= :endDate";
 				if (searchInput != null && !searchInput.isEmpty()) {
 					hqlNearExpired += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2)";
 				}
@@ -106,6 +109,7 @@ public class ListPostController {
 				queryNearExpired.setParameter("userId", Integer.parseInt(userId));
 				queryNearExpired.setParameter("startDate", java.sql.Date.valueOf(startDate));
 				queryNearExpired.setParameter("endDate", java.sql.Date.valueOf(endDate));
+				queryNearExpired.setParameter("status", "Đang hiển thị");
 				if (searchInput != null && !searchInput.isEmpty()) {
 					queryNearExpired.setParameter("searchInput0", "%" + searchInput + "%");
 					queryNearExpired.setParameter("searchInput1", "%" + searchInput + "%");
@@ -157,6 +161,43 @@ public class ListPostController {
 			t.rollback();
 			e.printStackTrace();
 			return "redirect:/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
+		} finally {
+			session.close();
+		}
+	}
+	
+
+	@ModelAttribute("categoriesSell")
+	public List<CategoryModel> getTypesSell() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất bán");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	@ModelAttribute("categoriesRent")
+	public List<CategoryModel> getTypesRent() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất cho thuê");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
 		} finally {
 			session.close();
 		}

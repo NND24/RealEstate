@@ -44,11 +44,13 @@ public class HomeController {
 				}
 			}
 
-			String hql = "FROM RealEstateModel";
+			String hql = "FROM RealEstateModel re WHERE re.status = :status ";
+
 			if (user != null) {
-				hql += " WHERE NOT EXISTS (SELECT 1 FROM FavouriteModel fa WHERE fa.realEstate = id AND fa.user = :user)";
+				hql += " AND NOT EXISTS (SELECT 1 FROM FavouriteModel fa WHERE fa.realEstate = id AND fa.user = :user)";
 			}
 			Query<RealEstateModel> query = session.createQuery(hql);
+			query.setParameter("status", "Đang hiển thị");
 			if (user != null) {
 				query.setParameter("user", user);
 			}

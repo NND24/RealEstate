@@ -13,7 +13,7 @@
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerWithFilter.jsp"%>
+	<%@ include file="../../components/headerSellWithFilter.jsp"%>
 	<div class="detail">
 		<div class='container '>
 			<%

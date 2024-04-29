@@ -1,5 +1,7 @@
 package batdongsan.controllers.client;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import batdongsan.models.CategoryModel;
 import batdongsan.models.UsersModel;
 
 @Controller
@@ -83,6 +86,43 @@ public class RechargeController {
 			t.rollback();
 			System.out.println(e);
 			return "redirect:/sellernet/nap-tien.html";
+		} finally {
+			session.close();
+		}
+	}
+	
+
+	@ModelAttribute("categoriesSell")
+	public List<CategoryModel> getTypesSell() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất bán");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	@ModelAttribute("categoriesRent")
+	public List<CategoryModel> getTypesRent() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất cho thuê");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
 		} finally {
 			session.close();
 		}

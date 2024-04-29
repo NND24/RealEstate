@@ -1,5 +1,13 @@
 @charset "UTF-8";
 
+.add-new-button {
+	padding: 6px 16px;
+    border-radius: 5px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #1881e8;
+}
+
 .admin {
   position: relative;
   width: 100%;

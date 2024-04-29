@@ -13,11 +13,13 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import batdongsan.models.CategoryModel;
 import batdongsan.models.FavouriteModel;
 import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
@@ -38,7 +40,7 @@ public class FavouriteController {
 			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow) {
 		Session session = factory.openSession();
 		try {
-			String hql = "SELECT re FROM RealEstateModel re JOIN re.favourite fa WHERE fa.user.userId = :userId";
+			String hql = "SELECT re FROM RealEstateModel re JOIN re.favourite fa WHERE re.status = :status AND fa.user.userId = :userId";
 
 
 			// ORDER BY
@@ -71,6 +73,7 @@ public class FavouriteController {
 			hql += orderByClause;
 
 			Query<RealEstateModel> query = session.createQuery(hql);
+			query.setParameter("status", "Đang hiển thị");
 			
 			Cookie[] cookies = request.getCookies();
 			String userId = null;
@@ -164,6 +167,43 @@ public class FavouriteController {
 			// Xử lý ngoại lệ chung
 			System.out.println("Exception occurred: " + e.getMessage());
 			return "redirect:/tao-mat-khau.html"; // Redirect to error page or handle as appropriate
+		}
+	}
+	
+
+	@ModelAttribute("categoriesSell")
+	public List<CategoryModel> getTypesSell() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất bán");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	@ModelAttribute("categoriesRent")
+	public List<CategoryModel> getTypesRent() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất cho thuê");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			session.close();
 		}
 	}
 }

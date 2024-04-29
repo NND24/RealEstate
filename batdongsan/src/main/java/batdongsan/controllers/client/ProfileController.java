@@ -11,6 +11,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,14 +35,15 @@ public class ProfileController {
 			UsersModel userInfo = currentSession.find(UsersModel.class, userId);
 			request.setAttribute("userInfo", userInfo);
 			
-			String hqlSell = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE user.userId = :userId AND cat.type LIKE :type";
+			String hqlSell = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
 			Query<RealEstateModel> querySell = session.createQuery(hqlSell);
 			querySell.setParameter("userId", userId);
 			querySell.setParameter("type", "Nhà đất bán");
+			querySell.setParameter("status", "Đang hiển thị");
 			List<RealEstateModel> sellRealEstates = querySell.list();
 			request.setAttribute("sellRealEstates", sellRealEstates);
 			
-			String hqlRent = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE user.userId = :userId AND cat.type LIKE :type";
+			String hqlRent = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status='Đang hiển thị' AND user.userId = :userId AND cat.type LIKE :type";
 			Query<RealEstateModel> queryRent = session.createQuery(hqlRent);
 			queryRent.setParameter("userId", userId);
 			queryRent.setParameter("type", "Nhà đất cho thuê");
@@ -72,6 +74,43 @@ public class ProfileController {
 			}
 
 			return "client/profile";
+		} finally {
+			session.close();
+		}
+	}
+	
+
+	@ModelAttribute("categoriesSell")
+	public List<CategoryModel> getTypesSell() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất bán");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	@ModelAttribute("categoriesRent")
+	public List<CategoryModel> getTypesRent() {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM CategoryModel WHERE type = :type";
+			Query<CategoryModel> query = session.createQuery(hql);
+			query.setParameter("type", "Nhà đất cho thuê");
+			List<CategoryModel> categories = query.list();
+
+			return categories;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
 		} finally {
 			session.close();
 		}
