@@ -8,8 +8,8 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css" type="text/css">
-<link rel="stylesheet" href="css/client/detail.css?version=50" type="text/css">
-<link rel="stylesheet" href="css/client/footer.css" type="text/css">
+<link rel="stylesheet" href="css/client/detail.css?version=51" type="text/css">
+<link rel="stylesheet" href="css/client/footer.css?version=51" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
@@ -74,17 +74,20 @@
 							<div class='short-info__item'>
 								<span class='title'>Mức giá</span> <span class='value'>
 								<%
-								if(realEstate.getPrice() < 1000000000) {
-								    out.print((int)(realEstate.getPrice() / 1000000) + " triệu");
+								if(!realEstate.getUnit().equals("Thỏa thuận")) {
+									if(realEstate.getPrice() < 1000000000) {
+									    out.print((int)(realEstate.getPrice() / 1000000) + " triệu");
+									} else {
+									    out.print(realEstate.getPrice() / 1000000000 + " tỷ");
+									}
+								
+									if(realEstate.getUnit().equals("triệu")) {
+									    out.print("");
+									} else {
+									    out.print(realEstate.getUnit());
+									}
 								} else {
-								    out.print(realEstate.getPrice() / 1000000000 + " tỷ");
-								}
-								%>
-								<%
-								if(realEstate.getUnit().equals("triệu")) {
-								    out.print("");
-								} else {
-								    out.print(realEstate.getUnit());
+									out.print(realEstate.getUnit());
 								}
 								%>
 								</span>
@@ -127,17 +130,20 @@
 								<div class='spec-content-item__title'>Mức giá</div>
 								<div class='spec-content-item__value'>
 								<%
-								if(realEstate.getPrice() < 1000000000) {
-								    out.print((int)(realEstate.getPrice() / 1000000) + " triệu");
+								if(!realEstate.getUnit().equals("Thỏa thuận")) {
+									if(realEstate.getPrice() < 1000000000) {
+									    out.print((int)(realEstate.getPrice() / 1000000) + " triệu");
+									} else {
+									    out.print(realEstate.getPrice() / 1000000000 + " tỷ");
+									}
+								
+									if(realEstate.getUnit().equals("triệu")) {
+									    out.print("");
+									} else {
+									    out.print(realEstate.getUnit());
+									}
 								} else {
-								    out.print(realEstate.getPrice() / 1000000000 + " tỷ");
-								}
-								%>
-								<%
-								if(realEstate.getUnit().equals("triệu")) {
-								    out.print("");
-								} else {
-								    out.print(realEstate.getUnit());
+									out.print(realEstate.getUnit());
 								}
 								%>
 								</div>
@@ -224,17 +230,20 @@
 											<div class='card-info__config'>
 												<span class='card-config__item card-config__price'>
 												<%
-												if(realEstate.getPrice() < 1000000000) {
-												    out.print((int)(realEstate.getPrice() / 1000000) + " triệu");
+												if(!realEstate.getUnit().equals("Thỏa thuận")) {
+													if(realEstate.getPrice() < 1000000000) {
+													    out.print((int)(realEstate.getPrice() / 1000000) + " triệu");
+													} else {
+													    out.print(realEstate.getPrice() / 1000000000 + " tỷ");
+													}
+												
+													if(realEstate.getUnit().equals("triệu")) {
+													    out.print("");
+													} else {
+													    out.print(realEstate.getUnit());
+													}
 												} else {
-												    out.print(realEstate.getPrice() / 1000000000 + " tỷ");
-												}
-												%>
-												<%
-												if(realEstate.getUnit().equals("triệu")) {
-												    out.print("");
-												} else {
-												    out.print(realEstate.getUnit());
+													out.print(realEstate.getUnit());
 												}
 												%>
 												</span> 
@@ -246,7 +255,7 @@
 														<%=r.getProvince().getName()%></span>
 											</div>
 											<div class='card-info__contact'>
-												<div class='card-published-info'>Đăng 5 ngày trước</div>
+												<div class='card-published-info'  value="<%=r.getSubmittedDate()%>"></div>
 												<div class='card-contact-button__favorite'
 													value="<%=r.getRealEstateId()%>">
 													<i class='fa-regular fa-heart'
@@ -282,9 +291,9 @@
 							<h5 class='contact-name'><%=realEstate.getContactName()%></h5>
 						</a>
 						<div class='contact-button contact-button__phonenumber'>
-							<span>0912 345 679</span> <span
-								class='contact-button__phonenumber__dot'>·</span> <span>Hiện
-								số</span>
+								<span class="phonenumber" value="<%=realEstate.getPhoneNumber()%>"><%=realEstate.getPhoneNumber()%></span> 
+								<span class='contact-button__phonenumber__dot'>·</span> 
+								<span class="show-phonenumber">Hiện số</span>
 						</div>
 						<div class='contact-button'>
 							<span>Chat qua zalo</span>
@@ -404,6 +413,53 @@
 				});
 		    });
 			<% } %>
+			
+			$(".contact-button__phonenumber").on("click", function(e) {
+			    e.preventDefault();
+			    var phonenumber = $(this).find(".phonenumber").attr("value").trim();
+			
+			    var textarea = $("<textarea>")
+			        .val(phonenumber)
+			        .css({position: "fixed", opacity: 0});
+			
+			    $(document.body).append(textarea);
+			
+			    textarea[0].select();
+			    document.execCommand("copy");
+			
+			    textarea.remove();
+			
+			    $(this).find(".phonenumber").text(phonenumber);
+			    $(this).find(".show-phonenumber").text("Sao chép");
+			});
+
+
+		    
+		    function hidePhoneNumber(phoneNumber) {
+			    // Kiểm tra xem chuỗi có đúng 10 ký tự số không
+			    if (phoneNumber.length === 10 && /^\d+$/.test(phoneNumber)) {
+			        // Lấy 7 số đầu của chuỗi
+			        var firstPart = phoneNumber.slice(0, 7);
+			        // Tạo chuỗi kết quả bằng cách nối 7 số đầu và thêm 3 dấu *
+			        var maskedPhoneNumber = firstPart + '***';
+			        return maskedPhoneNumber;
+			    } else {
+			        // Trả về null nếu chuỗi không hợp lệ
+			        return null;
+			    }
+			}
+		    
+		    $(".contact-button__phonenumber").each(function() {
+		        var phonenumber = $(this).find(".phonenumber").text().trim();
+		        var maskedPhoneNumber = hidePhoneNumber(phonenumber);
+		        $(this).find(".phonenumber").text(maskedPhoneNumber);
+		    });
+		    
+		    $(".card-published-info").each(function() {
+		        var submittedTime = $(this).attr("value").trim();
+		        var timeAgo = moment(submittedTime).locale('vi').fromNow(); 
+		        $(this).text(timeAgo); 
+		    });
 		})
 	</script>
 </body>

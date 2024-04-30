@@ -9,12 +9,22 @@
 <title>Spring MVC</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css?version=50" type="text/css">
-<link rel="stylesheet" href="css/client/sell.css?version=50" type="text/css">
-<link rel="stylesheet" href="css/client/footer.css" type="text/css">
+<link rel="stylesheet" href="css/client/sell.css?version=51" type="text/css">
+<link rel="stylesheet" href="css/client/footer.css?version=51" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
+	<%
+	if ("sell".equals(request.getAttribute("page"))) {
+	%>
 	<%@ include file="../../components/headerSellWithFilter.jsp"%>
+	<%
+	} else {
+	%>
+	<%@ include file="../../components/headerRentWithFilter.jsp"%>
+	<%
+	}
+	%>
 	<div class="sell">
 		<div class='container '>
 			<div class='row'>
@@ -31,40 +41,68 @@
 							}
 							%>
 						</a> <span> / </span> <a id="refresh-page"> 
-						 <%
-						 List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
-						 if (categoryIdsList1 != null) {
-						 	if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5))) {
-						 %> Tất cả BĐS trên toàn quốc <%
-						 } else if (categoryIdsList1.contains(1)) {
-						 %> Căn hộ chung cư <%
-						 } else if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
-						 %> Các loại nhà bán <%
-						 } else if (categoryIdsList1.contains(2)) {
-						 %> Nhà riêng <%
-						 } else if (categoryIdsList1.contains(3)) {
-						 %> Nhà biệt thự, liền kề <%
-						 } else if (categoryIdsList1.contains(4)) {
-						 %> Nhà mặt phố <%
-						 } else if (categoryIdsList1.contains(5)) {
-						 %> Shophouse, nhà phố thương mại <%
-						 } else if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
-						 %> Các loại đất bán <%
-						 } else if (categoryIdsList1.contains(6)) {
-						 %> Đất nền dự án <%
-						 } else if (categoryIdsList1.contains(7)) {
-						 %> Bán đất <%
-						 } else if (categoryIdsList1.contains(8)) {
-						 %> Trang trại, khu nghỉ dưỡng <%
-						 } else if (categoryIdsList1.contains(9)) {
-						 %> Condotel <%
-						 } else if (categoryIdsList1.contains(10)) {
-						 %> Kho, nhà xưởng <%
-						 } else if (categoryIdsList1.contains(11)) {
-						 %> Bất động sản khác <%
-						 }
-						 }
-						 %>
+						<%
+						List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
+						if ("sell".equals(request.getAttribute("page"))) {
+						    if (categoryIdsList1 != null) {
+						        if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))) {
+						            %> Tất cả BĐS trên toàn quốc <% 
+						        } else if (categoryIdsList1.contains(1)) {
+						            %> Căn hộ chung cư <% 
+						        } else if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
+						            %> Các loại nhà bán <% 
+						        } else if (categoryIdsList1.contains(2)) {
+						            %> Nhà riêng <% 
+						        } else if (categoryIdsList1.contains(3)) {
+						            %> Nhà biệt thự, liền kề <% 
+						        } else if (categoryIdsList1.contains(4)) {
+						            %> Nhà mặt phố <% 
+						        } else if (categoryIdsList1.contains(5)) {
+						            %> Shophouse, nhà phố thương mại <% 
+						        } else if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
+						            %> Các loại đất bán <% 
+						        } else if (categoryIdsList1.contains(6)) {
+						            %> Đất nền dự án <% 
+						        } else if (categoryIdsList1.contains(7)) {
+						            %> Bán đất <% 
+						        } else if (categoryIdsList1.contains(8)) {
+						            %> Trang trại, khu nghỉ dưỡng <% 
+						        } else if (categoryIdsList1.contains(9)) {
+						            %> Condotel <% 
+						        } else if (categoryIdsList1.contains(10)) {
+						            %> Kho, nhà xưởng <% 
+						        } else if (categoryIdsList1.contains(11)) {
+						            %> Bất động sản khác <% 
+						        }
+						    }
+						} else {
+						    if (categoryIdsList1 != null) {
+						        if (categoryIdsList1.containsAll(Arrays.asList(12,13,14,15,16,17,18,19,20,21))) {
+						            %> Tất cả BĐS trên toàn quốc <% 
+						        } else if (categoryIdsList1.contains(12)) {
+						            %> Căn hộ chung cư <% 
+						        } else if (categoryIdsList1.contains(13)) {
+						            %>Nhà riêng<% 
+						        } else if (categoryIdsList1.contains(14)) {
+						            %>Nhà biệt thự, liền kề <% 
+						        } else if (categoryIdsList1.contains(15)) {
+						            %>Nhà mặt phố<% 
+						        } else if (categoryIdsList1.contains(16)) {
+						            %>Shophouse, nhà phố thương mại<% 
+						        } else if (categoryIdsList1.contains(17)) {
+						            %>Nhà trọ, phòng trọ<% 
+						        } else if (categoryIdsList1.contains(18)) {
+						            %>Văn phòng <% 
+						        } else if (categoryIdsList1.contains(19)) {
+						            %> Cửa hàng, ki ốt <% 
+						        } else if (categoryIdsList1.contains(20)) {
+						            %> Kho, nhà xưởng, đất <% 
+						        } else if (categoryIdsList1.contains(21)) {
+						            %> Bất động sản khác <% 
+						        }
+						    }
+						} 
+						%>
 						</a>
 					</div>
 					<h3 class='sell-content__title'>
@@ -135,18 +173,22 @@
 									<div class='card-config'>
 										<span class='card-config__item card-config__price'> 
 										 <%
-										 if (r.getPrice() < 1000000000) {
-										 	out.print((int) (r.getPrice() / 1000000) + " triệu");
-										 } else {
-										 	out.print(r.getPrice() / 1000000000 + " tỷ");
-										 }
-										 %> <%
-										 if (r.getUnit().equals("triệu")) {
-										 	out.print("");
-										 } else {
-										 	out.print(r.getUnit());
-										 }
-										 %>
+										if(!r.getUnit().equals("Thỏa thuận")) {
+											if(r.getPrice() < 1000000000) {
+											    out.print((int)(r.getPrice() / 1000000) + " triệu");
+											} else {
+											    out.print(r.getPrice() / 1000000000 + " tỷ");
+											}
+										
+											if(r.getUnit().equals("triệu")) {
+											    out.print("");
+											} else {
+											    out.print(r.getUnit());
+											}
+										} else {
+											out.print(r.getUnit());
+										}
+										%>
 										</span> <span class='card-config__item card-config__dot'>·</span> <span
 											class='card-config__item card-config__area'><%=r.getArea()%>
 											m²</span>
@@ -183,15 +225,15 @@
 								<img src="images/<%= r.getUser().getAvatar() %>" alt='' class='card-published-info__avatar' />
 								<div>
 									<div class='card-published-info__name'><%=r.getContactName()%></div>
-									<div class='card-published-info__update-time'>Đăng hôm
-										nay</div>
+									<div class='card-published-info__update-time' value="<%=r.getSubmittedDate()%>"></div>
 								</div>
 							</div>
 							<div class='card-contact-button-container'>
 								<div class='card-contact-button__phonenumber'>
-									<i class='fa-solid fa-phone-volume'></i> <span><%=r.getPhoneNumber()%></span> 
+									<i class='fa-solid fa-phone-volume'></i> 
+										<span class="phonenumber" value="<%=r.getPhoneNumber()%>"><%=r.getPhoneNumber()%></span> 
 										<span class='card-contact-button__phonenumber__dot'>·</span>
-									<span>Hiện số</span>
+									<span class="show-phonenumber">Hiện số</span>
 								</div>
 								<div class='card-contact-button__favorite'
 									value="<%=r.getRealEstateId()%>">
@@ -202,7 +244,9 @@
 								</div>
 							</div>
 						</div>
-						<div class='card-label-img'></div>
+						<% if(r.getTypePost().equals("VIP Kim Cương")) { %>
+						<img class='card-label-img' src="images/Label_VIPDiamond.svg" />
+						<% } %>
 					</a>
 					<%
 					}
@@ -302,9 +346,10 @@
 	<%@ include file="../../components/footer.jsp"%>
 
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(document).ready(function() {	
 			<%
-			if (user != null) {
+			UsersModel currentUser = (UsersModel) request.getAttribute("user");
+			if (currentUser != null) {
 			%>
 			// HANDLE ADD TO FAVOURITE
 		    $(".card-contact-button__favorite").on("click", function(e) {
@@ -427,7 +472,6 @@
 		        
 		        $('.list-filter').append(
 		            "<a href='" + url + "'><li><span>Thông thường</span></li></a>" +
-		            "<a href='" + url + (hasQueryString ? "&" : "?") + "verify=Tin xác thực xếp trước'><li><span>Tin xác thực xếp trước</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "newPost=Tin mới nhất'><li><span>Tin mới nhất</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "priceLowToHigh=Giá thấp đến cao'><li><span>Giá thấp đến cao</span></li></a>" +
 		            "<a href='" + url + (hasQueryString ? "&" : "?") + "priceHighToLow=Giá cao đến thấp'><li><span>Giá cao đến thấp</span></li></a>" +
@@ -439,6 +483,56 @@
 		    $("#refresh-page").on("click", () => {
 		    	 location.reload();
 		    })
+		    
+		    
+		    
+		   $(".card-contact-button__phonenumber").on("click", function(e) {
+			    e.preventDefault();
+			    var phonenumber = $(this).find(".phonenumber").attr("value").trim();
+			
+			    var textarea = $("<textarea>")
+			        .val(phonenumber)
+			        .css({position: "fixed", opacity: 0});
+			
+			    $(document.body).append(textarea);
+			
+			    textarea[0].select();
+			    document.execCommand("copy");
+			
+			    textarea.remove();
+			
+			    $(this).find(".phonenumber").text(phonenumber);
+			    $(this).find(".show-phonenumber").text("Sao chép");
+			});
+
+
+		    
+		    function hidePhoneNumber(phoneNumber) {
+			    // Kiểm tra xem chuỗi có đúng 10 ký tự số không
+			    if (phoneNumber.length === 10 && /^\d+$/.test(phoneNumber)) {
+			        // Lấy 7 số đầu của chuỗi
+			        var firstPart = phoneNumber.slice(0, 7);
+			        // Tạo chuỗi kết quả bằng cách nối 7 số đầu và thêm 3 dấu *
+			        var maskedPhoneNumber = firstPart + '***';
+			        return maskedPhoneNumber;
+			    } else {
+			        // Trả về null nếu chuỗi không hợp lệ
+			        return null;
+			    }
+			}
+		    
+		    $(".card-contact-button__phonenumber").each(function() {
+		        var phonenumber = $(this).find(".phonenumber").text().trim();
+		        var maskedPhoneNumber = hidePhoneNumber(phonenumber);
+		        $(this).find(".phonenumber").text(maskedPhoneNumber);
+		    });
+		    
+		    $(".card-published-info__update-time").each(function() {
+		        var submittedTime = $(this).attr("value").trim();
+		        var timeAgo = moment(submittedTime).locale('vi').fromNow(); 
+		        $(this).text(timeAgo); 
+		    });
+
 		});
 	</script>
 </body>

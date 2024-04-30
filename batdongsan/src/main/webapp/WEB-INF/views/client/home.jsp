@@ -10,7 +10,7 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css" type="text/css">
-<link rel="stylesheet" href="css/client/home.css" type="text/css">
+<link rel="stylesheet" href="css/client/home.css?version=50" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
@@ -55,100 +55,6 @@
 					class='glyphicon glyphicon-chevron-right'></span> <span
 					class='sr-only'>Next</span>
 				</a>
-			</div>
-
-			<!-- TABS -->
-			<div class='tabs-container'>
-				<ul class='nav nav-tabs'>
-					<li class='active'><a data-toggle='tab' href='#home'> Nhà
-							đất bán </a></li>
-					<li><a data-toggle='tab' href='#menu1'> Nhà cho thuê </a></li>
-					<li><a data-toggle='tab' href='#menu2'> Dự án </a></li>
-				</ul>
-
-				<div class='tab-content'>
-					<div id='home' class='tab-pane fade in active'>
-						<div class='search-container'>
-							<div class='search-dropdown'>
-								<i class='fa-solid fa-house'></i> <span>Loại nhà đất</span> <i
-									class='fa-solid fa-chevron-down'></i>
-							</div>
-							<input type='text' placeholder='Dự án Ecopark' />
-							<button class='search-button'>
-								<i class='fa-solid fa-magnifying-glass'></i> <span>Tìm
-									kiếm</span>
-							</button>
-						</div>
-						<div class='dropdown-menu-container'>
-							<div class='dropdown-item'>
-								<span>Trên toàn quốc</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<div class='dropdown-item'>
-								<span>Mức giá</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<div class='dropdown-item'>
-								<span>Diện tích</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<div class='dropdown-item'>
-								<span>Lọc thêm</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<i class='fa-solid fa-arrows-rotate'></i>
-						</div>
-					</div>
-					<div id='menu1' class='tab-pane fade'>
-						<div class='search-container'>
-							<div class='search-dropdown'>
-								<i class='fa-solid fa-house'></i> <span>Loại nhà đất</span> <i
-									class='fa-solid fa-chevron-down'></i>
-							</div>
-							<input type='text' placeholder='Dự án Ecopark' />
-							<button class='search-button'>
-								<i class='fa-solid fa-magnifying-glass'></i> <span>Tìm
-									kiếm</span>
-							</button>
-						</div>
-						<div class='dropdown-menu-container'>
-							<div class='dropdown-item'>
-								<span>Trên toàn quốc</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<div class='dropdown-item'>
-								<span>Mức giá</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<div class='dropdown-item'>
-								<span>Diện tích</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<div class='dropdown-item'>
-								<span>Lọc thêm</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<i class='fa-solid fa-arrows-rotate'></i>
-						</div>
-					</div>
-					<div id='menu2' class='tab-pane fade'>
-						<div class='search-container'>
-							<div class='search-dropdown'>
-								<i class='fa-solid fa-house'></i> <span>Loại nhà đất</span> <i
-									class='fa-solid fa-chevron-down'></i>
-							</div>
-							<input type='text' placeholder='Dự án Ecopark' />
-							<button class='search-button'>
-								<i class='fa-solid fa-magnifying-glass'></i> <span>Tìm
-									kiếm</span>
-							</button>
-						</div>
-						<div class='dropdown-menu-container'>
-							<div class='dropdown-item'>
-								<span>Trên toàn quốc</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<div class='dropdown-item'>
-								<span>Mức giá</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<div class='dropdown-item'>
-								<span>Trạng thái</span> <i class='fa-solid fa-chevron-down'></i>
-							</div>
-							<i class='fa-solid fa-arrows-rotate'></i>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 
@@ -336,17 +242,20 @@
 									<div class='card-config'>
 										<span class='card-config-price'>
 										<%
-										if(r.getPrice() < 1000000000) {
-										    out.print((int)(r.getPrice() / 1000000) + " triệu");
+										if(!r.getUnit().equals("Thỏa thuận")) {
+											if(r.getPrice() < 1000000000) {
+											    out.print((int)(r.getPrice() / 1000000) + " triệu");
+											} else {
+											    out.print(r.getPrice() / 1000000000 + " tỷ");
+											}
+										
+											if(r.getUnit().equals("triệu")) {
+											    out.print("");
+											} else {
+											    out.print(r.getUnit());
+											}
 										} else {
-										    out.print(r.getPrice() / 1000000000 + " tỷ");
-										}
-										%>
-										<%
-										if(r.getUnit().equals("triệu")) {
-										    out.print("");
-										} else {
-										    out.print(r.getUnit());
+											out.print(r.getUnit());
 										}
 										%>
 										</span>
@@ -359,8 +268,7 @@
 									</div>
 									<div class='card-contact'>
 										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='13/01/2024'> Đăng 3 ngày
-											trước  </span>
+											data-placement='right' title='<%=r.getSubmittedDate()%>' value='<%=r.getSubmittedDate()%>'></span>
 										<button class='card-contact-button' data-toggle='tooltip'
 											data-placement='bottom' title='Bấm để lưu tin ' value="<%= r.getRealEstateId()%>">
 											<% 
@@ -581,6 +489,12 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function() {
+		$(".card-published-info").each(function() {
+	        var submittedTime = $(this).attr("value").trim();
+	        var timeAgo = moment(submittedTime).locale('vi').fromNow(); 
+	        $(this).text(timeAgo);
+	    });
+		
 		<%
 		if (user != null) {
 		%>

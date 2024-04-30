@@ -2,36 +2,46 @@
 
 <footer class='footer_area section_padding_130_0'>
       <div class='container'>
+      <div class='row'>
+          <div class='col-3 col-sm-6 col-lg-4'>
+            <img src="https://staticfile.batdongsan.com.vn/images/logo/standard/black/logo_gray-5.svg" />
+          </div>
+          <div class='col-3 col-sm-6 col-lg-2'>
+            <div class="footer-with-icon">
+            	<i class="fa-solid fa-phone-volume"></i>
+            	<div>
+            		<p>Hotline</p>
+            		<span>1900 1881</span>
+            	</div>
+            </div>
+          </div>
+          <div class='col-3 col-sm-6 col-lg-3'>
+          	<div class="footer-with-icon">
+           		<i class="fa-regular fa-user"></i>
+            	<div>
+            		<p>Hỗ trợ khách hàng</p>
+            		<span>trogiup.batdongsan.com.vn</span>
+            	</div>
+            </div>
+          </div>
+          <div class='col-3 col-sm-6 col-lg-3'>
+          	<div class="footer-with-icon">
+            	<i class="fa-solid fa-headphones"></i>
+            	<div>
+            		<p>Chăm sóc khách hàng</p>
+            		<span>hotro@batdongsan.com.vn</span>
+            	</div>
+            </div>
+          </div>
+        </div>
+        
         <div class='row'>
           <div class='col-12 col-sm-6 col-lg-4'>
             <div class='single-footer-widget section_padding_0_130'>
-              <div class='footer-logo mb-3'></div>
-              <p>Appland is completely creative, lightweight, clean app landing page.</p>
-              <div class='copywrite-text mb-5'>
-                <p class='mb-0'>
-                  Made with <i class='lni-heart mr-1'></i>by
-                  <a class='ml-1' href='https://wrapbootstrap.com/user/DesigningWorld'>
-                    Designing World
-                  </a>
-                </p>
-              </div>
-              <div class='footer_social_area'>
-                <a href='#' data-toggle='tooltip' data-placement='top' title='' data-original-title='Facebook'>
-                  <i class='fa fa-facebook'></i>
-                </a>
-                <a href='#' data-toggle='tooltip' data-placement='top' title='' data-original-title='Pinterest'>
-                  <i class='fa fa-pinterest'></i>
-                </a>
-                <a href='#' data-toggle='tooltip' data-placement='top' title='' data-original-title='Skype'>
-                  <i class='fa fa-skype'></i>
-                </a>
-                <a href='#' data-toggle='tooltip' data-placement='top' title='' data-original-title='Twitter'>
-                  <i class='fa fa-twitter'></i>
-                </a>
-              </div>
+              <h5 class='widget-title'>CÔNG TY CỔ PHẦN PROPERTYGURU VIỆT NAM</h5>
             </div>
           </div>
-          <div class='col-12 col-sm-6 col-lg'>
+          <div class='col-12 col-sm-6 col-lg-2'>
             <div class='single-footer-widget section_padding_0_130'>
               <h5 class='widget-title'>About</h5>
               <div class='footer_menu'>
@@ -52,7 +62,7 @@
               </div>
             </div>
           </div>
-          <div class='col-12 col-sm-6 col-lg'>
+          <div class='col-12 col-sm-6 col-lg-3'>
             <div class='single-footer-widget section_padding_0_130'>
               <h5 class='widget-title'>Support</h5>
               <div class='footer_menu'>
@@ -76,7 +86,7 @@
               </div>
             </div>
           </div>
-          <div class='col-12 col-sm-6 col-lg'>
+          <div class='col-12 col-sm-6 col-lg-3'>
             <div class='single-footer-widget section_padding_0_130'>
               <h5 class='widget-title'>Contact</h5>
               <div class='footer_menu'>

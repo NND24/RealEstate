@@ -45,7 +45,7 @@
 }
 
 .tabs-container .nav-tabs > li.active > a {
-  color: #fff;
+  color: #fff !important;
   background: rgba(0, 0, 0, 0.6);
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.01) !important;

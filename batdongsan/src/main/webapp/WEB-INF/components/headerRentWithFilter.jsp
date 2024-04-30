@@ -18,7 +18,7 @@
 			</div>
 			<div class="right-menu">
 				<ul class="menu-container">
-					<li class="menu__item" style="border-bottom: 2px solid rgb(228, 54, 54);"><a
+					<li class="menu__item"><a
 						href="${pageContext.servletContext.contextPath}/nha-dat-ban.html">Nhà
 							đất bán</a>
 						<ul class="list-container">
@@ -28,7 +28,7 @@
 								</a>
 							</c:forEach>
 						</ul></li>
-					<li class="menu__item"><a
+					<li class="menu__item" style="border-bottom: 2px solid rgb(228, 54, 54);"><a
 						href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html">Nhà
 							đất cho thuê</a>
 						<ul class="list-container">
@@ -136,105 +136,89 @@
 								<i class="fa-solid fa-house"></i> <span>Tất cả nhà đất </span>
 							</div> <input type="checkbox" id="check-all"
 							<%List<Integer> categoryIdsList = (List<Integer>) request.getAttribute("categoryIds");
-							if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11))) {%>
+							if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(12,13,14,15,16,17,18,19,20,21))) {%>
 							checked <%}%> /> <span class="checkmark"> </span>
 						</label>
-						<div class="separate"></div>
 						<label for="1" class="type-item">
 							<div>
-								<i class="fa-solid fa-building"></i> <span>Căn hộ chung
-									cư</span>
+								<i class="fa-solid fa-building"></i> 
+								<span>Căn hộ chung cư</span>
 							</div> <input type="checkbox" id="1" value="1"
-							<%if (categoryIdsList != null && categoryIdsList.contains(1)) {%>
+							<%if (categoryIdsList != null && categoryIdsList.contains(12)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
 						</label>
-						<div class="separate"></div>
-						<label for="2" id="check-type-of-house" class="type-item">
+						<label for="2" class="type-item">
 							<div>
-								<i class="fa-solid fa-house-user"></i> <span>Các loại nhà
-									bán </span>
-							</div> <input type="checkbox" id="2"
-							<%if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(2, 3, 4, 5))) {%>
+								<i class="fa-solid fa-house-user"></i> 
+								<span>Nhà riêng</span>
+							</div> <input type="checkbox" id="2" value="2"
+							<%if (categoryIdsList != null && categoryIdsList.contains(13)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="3" class="type-item">
+						</label> 
+						<label for="3" class="type-item">
 							<div>
-								<i></i> <span>Nhà riêng</span>
-							</div> <input type="checkbox" id="3" value="2"
-							<%if (categoryIdsList != null && categoryIdsList.contains(2)) {%>
+								<i class="fa-solid fa-house-chimney-window"></i>
+								<span>Nhà biệt thự, liền kề</span>
+							</div> <input type="checkbox" id="3" value="3"
+							<%if (categoryIdsList != null && categoryIdsList.contains(14)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="4" class="type-item">
+						</label> 
+						<label for="4" class="type-item">
 							<div>
-								<i></i> <span>Nhà biệt thự, liền kề</span>
-							</div> <input type="checkbox" id="4" value="3"
-							<%if (categoryIdsList != null && categoryIdsList.contains(3)) {%>
+								<i class="fa-solid fa-dungeon"></i>
+								<span>Nhà mặt phố</span>
+							</div> <input type="checkbox" id="4" value="4"
+							<%if (categoryIdsList != null && categoryIdsList.contains(15)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="5" class="type-item">
+						</label> 
+						<label for="5" class="type-item">
 							<div>
-								<i></i> <span>Nhà mặt phố</span>
-							</div> <input type="checkbox" id="5" value="4"
-							<%if (categoryIdsList != null && categoryIdsList.contains(4)) {%>
+								<i class="fa-solid fa-shop"></i>
+								<span>Shophouse, nhà phố thương mại</span>
+							</div> <input type="checkbox" id="5" value="5"
+							<%if (categoryIdsList != null && categoryIdsList.contains(16)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="6" class="type-item">
+						</label>
+						<label for="6" class="type-item">
 							<div>
-								<i></i> <span>Shophouse, nhà phố thương mại</span>
+								<i class="fa-solid fa-house-laptop"></i>
+								<span>Nhà trọ, phòng trọ</span>
 							</div> <input type="checkbox" id="6" value="5"
-							<%if (categoryIdsList != null && categoryIdsList.contains(5)) {%>
+							<%if (categoryIdsList != null && categoryIdsList.contains(17)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
 						</label>
-						<div class="separate"></div>
-						<label for="7" class="type-item" id="check-type-of-land">
+						<label for="7" class="type-item"">
 							<div>
-								<i class="fa-solid fa-panorama"></i> <span>Các loại đất
-									bán</span>
+								<i class="fa-solid fa-panorama"></i> 
+								<span>Văn phòng</span>
 							</div> <input type="checkbox" id="7"
-							<%if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(6, 7))) {%>
+							<%if (categoryIdsList != null && categoryIdsList.contains(18)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="8" class="type-item">
+						</label> 
+						<label for="8" class="type-item">
 							<div>
-								<i></i> <span>Đất nền dự án</span>
+								<i class="fa-solid fa-store"></i>
+								<span>Cửa hàng, ki ốt</span>
 							</div> <input type="checkbox" id="8" value="6"
-							<%if (categoryIdsList != null && categoryIdsList.contains(6)) {%>
+							<%if (categoryIdsList != null && categoryIdsList.contains(19)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="9" class="type-item">
+						</label> 
+						<label for="9" class="type-item">
 							<div>
-								<i></i> <span>Bán đất</span>
+								<i class="fa-solid fa-tractor"></i>
+								<span>Kho, nhà xưởng, đất</span>
 							</div> <input type="checkbox" id="9" value="7"
-							<%if (categoryIdsList != null && categoryIdsList.contains(7)) {%>
+							<%if (categoryIdsList != null && categoryIdsList.contains(20)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
 						</label>
-						<div class="separate"></div>
-						<label for="10" class="type-item" id="check-type-of-farm">
+						<label for="10" class="type-item">
 							<div>
-								<i class="fa-solid fa-tractor"></i> <span>Trang trại, khu
-									nghỉ dưỡng</span>
+								<i class="fa-solid fa-hand-holding-dollar"></i>
+								<span>Bất động sản khác</span>
 							</div> <input type="checkbox" id="10" value="8"
-							<%if (categoryIdsList != null && categoryIdsList.contains(8)) {%>
+							<%if (categoryIdsList != null && categoryIdsList.contains(21)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="11" class="type-item">
-							<div>
-								<i></i> <span>Condotel</span>
-							</div> <input type="checkbox" id="11" value="9"
-							<%if (categoryIdsList != null && categoryIdsList.contains(9)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label>
-						<div class="separate"></div>
-						<label for="12" class="type-item">
-							<div>
-								<i class="fa-solid fa-warehouse"></i> <span>Kho, nhà
-									xưởng</span>
-							</div> <input type="checkbox" id="12" value="10"
-							<%if (categoryIdsList != null && categoryIdsList.contains(10)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label>
-						<div class="separate"></div>
-						<label for="13" class="type-item">
-							<div>
-								<i class="fa-solid fa-door-open"></i> <span>Bất động sản
-									khác</span>
-							</div> <input type="checkbox" id="13" value="11"
-							<%if (categoryIdsList != null && categoryIdsList.contains(11)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label>
+						</label> 
 					</div>
 
 					<div class="list-search-select-footer">
@@ -348,12 +332,12 @@
 				%>
 
 
-				<div class="dropdown-menu menu-price">
+				<div class="dropdown-menu menu-price <%= maxPrice %>">
 				    <div class="menu-list">
 				        <div class="range-slider-container price-range-slider">
 				            <div class="price-input">
 				                <div class="field">
-				                    <input type="number" class="input-min"
+				                    <input type="number" class="input-min <%= minPrice %>"
 				                        value="<%= (minPriceFloat == null || minPriceFloat.intValue() < 0) ? "Từ" : minPrice %>"
 				                        placeholder="Từ" />
 				                </div>
@@ -793,7 +777,7 @@ $(document).ready(function() {
       });
 
 	window.addEventListener('load', () => {
-  	  <%if (minAreaFloat != null && maxAreaFloat != null) {%>
+		<%if (minAreaFloat != null && maxAreaFloat != null) {%>
 		let minVal,
 			maxVal;
 
@@ -803,7 +787,7 @@ $(document).ready(function() {
 		areaRange.style.right = 100 - (maxVal / areaRangeInput[1].max) * 100 + "%";
 
 		updateListArea(minVal, maxVal);
-       <%}%>
+		<%}%>
 	});
 
 	var typeAll = document.getElementById("check-all");
@@ -817,9 +801,6 @@ $(document).ready(function() {
 	var type8 = document.getElementById("8");
 	var type9 = document.getElementById("9");
 	var type10 = document.getElementById("10");
-	var type11 = document.getElementById("11");
-	var type12 = document.getElementById("12");
-	var type13 = document.getElementById("13");
 
 	document.getElementById("all").addEventListener("click", () => {
 		if (typeAll.checked) {
@@ -833,9 +814,6 @@ $(document).ready(function() {
 			type8.checked = true;
 			type9.checked = true;
 			type10.checked = true;
-			type11.checked = true;
-			type12.checked = true;
-			type13.checked = true;
 		} else {
 			type1.checked = false;
 			type2.checked = false;
@@ -847,41 +825,6 @@ $(document).ready(function() {
 			type8.checked = false;
 			type9.checked = false;
 			type10.checked = false;
-			type11.checked = false;
-			type12.checked = false;
-			type13.checked = false;
-		}
-	});
-
-	document.getElementById("check-type-of-house").addEventListener("click", () => {
-		if (type2.checked) {
-			type3.checked = true;
-			type4.checked = true;
-			type5.checked = true;
-			type6.checked = true;
-		} else {
-			type3.checked = false;
-			type4.checked = false;
-			type5.checked = false;
-			type6.checked = false;
-		}
-	});
-
-	document.getElementById("check-type-of-land").addEventListener("click", () => {
-		if (type7.checked) {
-			type8.checked = true;
-			type9.checked = true;
-		} else {
-			type8.checked = false;
-			type9.checked = false;
-		}
-	});
-
-	document.getElementById("check-type-of-farm").addEventListener("click", () => {
-		if (type10.checked) {
-			type11.checked = true;
-		} else {
-			type11.checked = false;
 		}
 	});
 
@@ -897,9 +840,6 @@ $(document).ready(function() {
 		type8.checked = false;
 		type9.checked = false;
 		type10.checked = false;
-		type11.checked = false;
-		type12.checked = false;
-		type13.checked = false;
 	});
 
 	let selectedTypes = [];
@@ -929,9 +869,13 @@ $(document).ready(function() {
 			selectedTypes = [
 				"Bất động sản khác",
 				"Kho, nhà xưởng",
-				"Trang trại, khu nghỉ dưỡng",
-				"Các loại đất bán",
-				"Các loại nhà bán",
+				"Cửa hàng, ki ốt",
+				"Văn phòng",
+				"Nhà trọ, phòng trọ",
+				"Shophouse, nhà phố thương mại",
+				"Nhà mặt phố",
+				"Nhà biệt thự, liền kề",
+				"Nhà riêng",
 				"Căn hộ chung cư",
 			];
 		} else if (
@@ -945,27 +889,21 @@ $(document).ready(function() {
 			!type7.checked &&
 			!type8.checked &&
 			!type9.checked &&
-			!type10.checked &&
-			!type11.checked &&
-			!type12.checked &&
-			!type13.checked
+			!type10.checked
 		) {
 			selectedTypes = [];
 		} else {
 			selectedTypes = [
 				type1.checked ? "Căn hộ chung cư" : "",
-				type2.checked ? "Các loại nhà bán" : "",
-				!type2.checked && type3.checked ? "Nhà riêng" : "",
-				!type2.checked && type4.checked ? "Nhà biệt thự, liền kề" : "",
-				!type2.checked && type5.checked ? "Nhà mặt phố" : "",
-				!type2.checked && type6.checked ? "Shophouse, nhà phố thương mại" : "",
-				type7.checked ? "Các loại đất bán" : "",
-				!type7.checked && type8.checked ? "Đất nền dự án" : "",
-				!type7.checked && type9.checked ? "Bán đất" : "",
+				type2.checked ? "Nhà riêng" : "",
+				type3.checked ? "Nhà biệt thự, liền kề" : "",
+				type4.checked ? "Nhà mặt phố" : "",
+				type5.checked ? "Shophouse, nhà phố thương mại" : "",
+				type6.checked ? "Nhà trọ, phòng trọ" : "",
+				type7.checked ? "Văn phòng" : "",
+				type8.checked ? "Cửa hàng, ki ốt" : "",
+				type9.checked ? "Kho, nhà xưởng" : "",
 				type10.checked ? "Trang trại, khu nghỉ dưỡng" : "",
-				!type10.checked && type11.checked ? "Condotel" : "",
-				type12.checked ? "Kho, nhà xưởng" : "",
-				type13.checked ? "Bất động sản khác" : "",
 			];
 		}
 	}
@@ -985,30 +923,11 @@ $(document).ready(function() {
 				!type7.checked ||
 				!type8.checked ||
 				!type9.checked ||
-				!type10.checked ||
-				!type11.checked ||
-				!type12.checked ||
-				!type13.checked
+				!type10.checked 
 			) {
 				typeAll.checked = false;
 			} else {
 				typeAll.checked = true;
-			}
-
-			if (!type3.checked || !type4.checked || !type5.checked || !type6.checked) {
-				type2.checked = false;
-			} else {
-				type2.checked = true;
-			}
-
-			if (!type8.checked || !type9.checked) {
-				type7.checked = false;
-			} else {
-				type7.checked = true;
-			}
-
-			if (!type11.checked) {
-				type10.checked = false;
 			}
 
 			checkSelectedTypes();
@@ -1037,7 +956,7 @@ $(document).ready(function() {
 	        $(".amount-search-more").css("display", "none");
 	    }
 	});
-	
+
 	$("#reset-search-more").on("click", () => {
 		$(".list__items.number-of-bedrooms .item").removeClass("active")
 		$(".list__items.number-of-toilets .item").removeClass("active")
@@ -1268,40 +1187,37 @@ $(document).ready(function() {
 	$(".list-search-select__search-button").click(() => {
 	    let listCategoryId = [];
 	    if (typeAll.checked) {
-			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+			listCategoryId.push(12,13,14,15,16,17,18,19,20,21);
 		} else {
 			if (type1.checked) {
-				listCategoryId.push(1);
+				listCategoryId.push(12);
+			}
+			if (type2.checked) {
+				listCategoryId.push(13);
 			}
 			if (type3.checked) {
-				listCategoryId.push(2);
+				listCategoryId.push(14);
 			}
 			if (type4.checked) {
-				listCategoryId.push(3);
+				listCategoryId.push(15);
 			}
 			if (type5.checked) {
-				listCategoryId.push(4);
+				listCategoryId.push(16);
 			}
 			if (type6.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(17);
+			}
+			if (type7.checked) {
+				listCategoryId.push(18);
 			}
 			if (type8.checked) {
-				listCategoryId.push(6);
+				listCategoryId.push(19);
 			}
 			if (type9.checked) {
-				listCategoryId.push(7);
+				listCategoryId.push(20);
 			}
 			if (type10.checked) {
-				listCategoryId.push(8);
-			}
-			if (type11.checked) {
-				listCategoryId.push(9);
-			}
-			if (type12.checked) {
-				listCategoryId.push(10);
-			}
-			if (type13.checked) {
-				listCategoryId.push(11);
+				listCategoryId.push(21);
 			}
 		}
 	
@@ -1421,41 +1337,38 @@ $(document).ready(function() {
 
 	$(".menu-price label").click((e) => {
 		let listCategoryId = [];
-	    if (typeAll.checked) {
-			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+		if (typeAll.checked) {
+			listCategoryId.push(12,13,14,15,16,17,18,19,20,21);
 		} else {
 			if (type1.checked) {
-				listCategoryId.push(1);
+				listCategoryId.push(12);
+			}
+			if (type2.checked) {
+				listCategoryId.push(13);
 			}
 			if (type3.checked) {
-				listCategoryId.push(2);
+				listCategoryId.push(14);
 			}
 			if (type4.checked) {
-				listCategoryId.push(3);
+				listCategoryId.push(15);
 			}
 			if (type5.checked) {
-				listCategoryId.push(4);
+				listCategoryId.push(16);
 			}
 			if (type6.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(17);
+			}
+			if (type7.checked) {
+				listCategoryId.push(18);
 			}
 			if (type8.checked) {
-				listCategoryId.push(6);
+				listCategoryId.push(19);
 			}
 			if (type9.checked) {
-				listCategoryId.push(7);
+				listCategoryId.push(20);
 			}
 			if (type10.checked) {
-				listCategoryId.push(8);
-			}
-			if (type11.checked) {
-				listCategoryId.push(9);
-			}
-			if (type12.checked) {
-				listCategoryId.push(10);
-			}
-			if (type13.checked) {
-				listCategoryId.push(11);
+				listCategoryId.push(21);
 			}
 		}
 
@@ -1613,41 +1526,38 @@ $(document).ready(function() {
 
 	$(".menu-area label").click((e) => {
 		let listCategoryId = [];
-	    if (typeAll.checked) {
-			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+		 if (typeAll.checked) {
+			listCategoryId.push(12,13,14,15,16,17,18,19,20,21);
 		} else {
 			if (type1.checked) {
-				listCategoryId.push(1);
+				listCategoryId.push(12);
+			}
+			if (type2.checked) {
+				listCategoryId.push(13);
 			}
 			if (type3.checked) {
-				listCategoryId.push(2);
+				listCategoryId.push(14);
 			}
 			if (type4.checked) {
-				listCategoryId.push(3);
+				listCategoryId.push(15);
 			}
 			if (type5.checked) {
-				listCategoryId.push(4);
+				listCategoryId.push(16);
 			}
 			if (type6.checked) {
-				listCategoryId.push(5);
+				listCategoryId.push(17);
+			}
+			if (type7.checked) {
+				listCategoryId.push(18);
 			}
 			if (type8.checked) {
-				listCategoryId.push(6);
+				listCategoryId.push(19);
 			}
 			if (type9.checked) {
-				listCategoryId.push(7);
+				listCategoryId.push(20);
 			}
 			if (type10.checked) {
-				listCategoryId.push(8);
-			}
-			if (type11.checked) {
-				listCategoryId.push(9);
-			}
-			if (type12.checked) {
-				listCategoryId.push(10);
-			}
-			if (type13.checked) {
-				listCategoryId.push(11);
+				listCategoryId.push(21);
 			}
 		}
 
@@ -1794,25 +1704,6 @@ $(document).ready(function() {
 			type8.checked = true;
 			type9.checked = true;
 			type10.checked = true;
-			type11.checked = true;
-			type12.checked = true;
-			type13.checked = true;
-		}
-
-		if (type2.checked) {
-			type3.checked = true;
-			type4.checked = true;
-			type5.checked = true;
-			type6.checked = true;
-		}
-
-		if (type7.checked) {
-			type8.checked = true;
-			type9.checked = true;
-		}
-
-		if (type10.checked) {
-			type11.checked = true;
 		}
 
 		checkSelectedTypes();

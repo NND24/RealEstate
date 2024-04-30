@@ -173,6 +173,11 @@
 	color: #fff;
 }
 
+.product-card .card-info-container {
+	border-left: 1px solid #f2f2f2;
+	border-right: 1px solid #f2f2f2;
+}
+
 .product-card .card-info-container .card-info-content {
 	padding: 16px;
 }
@@ -238,7 +243,10 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: 16px;
-	border-top: 1px solid #f2f2f2;
+	border: 1px solid #f2f2f2;
+	margin-bottom: 20px;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
 }
 
 .product-card .card-contact-container .card-published-info {
@@ -299,7 +307,6 @@
 }
 
 .product-card .card-label-img {
-	background: url("../../../../assets/Label_VIPDiamond.svg") no-repeat center center transparent;
 	width: 100px;
 
 	position: absolute;

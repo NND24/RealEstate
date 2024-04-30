@@ -48,7 +48,6 @@ public class SellController {
 			@RequestParam(name = "numberOfBedrooms", required = false) List<Integer> numberOfBedrooms,
 			@RequestParam(name = "numberOfToilets", required = false) List<Integer> numberOfToilets,
 			@RequestParam(name = "directions", required = false) List<String> directions,
-			@RequestParam(name = "verify", required = false) String verify,
 			@RequestParam(name = "newPost", required = false) String newPost,
 			@RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
 			@RequestParam(name = "priceHighToLow", required = false) String priceHighToLow,
@@ -141,9 +140,6 @@ public class SellController {
 
 			// ORDER BY
 			String orderByClause = "";
-			if (verify != null) {
-				orderByClause = " ORDER BY submittedDate DESC";
-			}
 
 			if (newPost != null) {
 				orderByClause = " ORDER BY submittedDate DESC";
@@ -241,7 +237,6 @@ public class SellController {
 			request.setAttribute("categoryIds", categoryIds);
 			request.setAttribute("minPrice", minPrice);
 			request.setAttribute("maxPrice", maxPrice);
-			System.out.println(maxPrice);
 			request.setAttribute("unit", unit);
 			request.setAttribute("minArea", minArea);
 			request.setAttribute("maxArea", maxArea);
@@ -290,7 +285,7 @@ public class SellController {
 			@RequestParam(name = "maxArea", required = false) Float maxArea,
 			@RequestParam(name = "numberOfBedrooms", required = false) List<Integer> numberOfBedrooms,
 			@RequestParam(name = "numberOfToilets", required = false) List<Integer> numberOfToilets,
-			@RequestParam(name = "verify", required = false) String verify,
+			@RequestParam(name = "directions", required = false) List<String> directions,
 			@RequestParam(name = "newPost", required = false) String newPost,
 			@RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
 			@RequestParam(name = "priceHighToLow", required = false) String priceHighToLow,
@@ -353,6 +348,19 @@ public class SellController {
 				}
 			}
 
+			// Search by direction
+			if (directions != null && !directions.isEmpty()) {
+				if (directions.size() == 1) {
+					hql += " AND re.direction = :direction0";
+				} else {
+					hql += " AND (re.direction = :direction0";
+					for (int i = 1; i < directions.size(); i++) {
+						hql += " OR re.direction = :direction" + i;
+					}
+					hql += ")";
+				}
+			}
+
 			// Search by price
 			if (minPrice != null && maxPrice != null) {
 				hql += " AND (re.price >= :minPrice AND re.price <= :maxPrice)";
@@ -364,18 +372,15 @@ public class SellController {
 			}
 
 			// Search by unit
-			if (unit != null && unit.isEmpty()) {
-				hql += " AND re.unit = 'Thỏa thuận' ";
+			if (unit != null && !unit.isEmpty()) {
+				hql += " AND re.unit = :unit ";
 			}
 
 			// ORDER BY
 			String orderByClause = "";
-			if (verify != null) {
-				orderByClause = " ORDER BY updatedDate DESC";
-			}
 
 			if (newPost != null) {
-				orderByClause = " ORDER BY updatedDate DESC";
+				orderByClause = " ORDER BY submittedDate DESC";
 			}
 
 			if (priceLowToHigh != null) {
@@ -402,6 +407,10 @@ public class SellController {
 			// Search by type
 			query.setParameter("type", "Nhà đất cho thuê");
 			query.setParameter("status", "Đang hiển thị");
+
+			if (unit != null && !unit.isEmpty()) {
+				query.setParameter("unit", "Thỏa thuận");
+			}
 
 			// Search by input
 			if (searchInput != null && !searchInput.isEmpty()) {
@@ -440,6 +449,12 @@ public class SellController {
 			if (numberOfToilets != null && !numberOfToilets.isEmpty()) {
 				for (int i = 0; i < numberOfToilets.size(); i++) {
 					query.setParameter("numberOfToilets" + i, numberOfToilets.get(i));
+				}
+			}
+
+			if (directions != null && !directions.isEmpty()) {
+				for (int i = 0; i < directions.size(); i++) {
+					query.setParameter("direction" + i, directions.get(i));
 				}
 			}
 
