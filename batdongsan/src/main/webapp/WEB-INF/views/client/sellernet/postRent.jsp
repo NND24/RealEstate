@@ -9,12 +9,12 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../../css/client/header.css"
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/index.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/header.css"
 	type="text/css">
-<link rel="stylesheet" href="../../css/client/sellernet.css"
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/sellernet.css"
 	type="text/css">
-<link rel="stylesheet" href="../../css/client/post.css?version=51"
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/post.css?version=55"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 
@@ -91,8 +91,14 @@
 								Quận, huyện <span>*</span>
 							</p>
 							<select name='districtId' id="districtId">
-								<option>---Quận, huyện---</option>
+								<option value="0">---Quận, huyện---</option>
 							</select>
+							<%
+							    String districtError = (String) request.getAttribute("districtError");
+							%>
+							<p class="error" style="<%= (districtError != null && !districtError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= districtError %>
+							</p>
 						</div>
 					</div>
 
@@ -102,8 +108,14 @@
 								Phường, xã <span>*</span>
 							</p>
 							<select name='wardId' id="wardId">
-								<option>---Phường, xã---</option>
+								<option value="0">---Phường, xã---</option>
 							</select>
+							<%
+							    String wardError = (String) request.getAttribute("wardError");
+							%>
+							<p class="error" style="<%= (wardError != null && !wardError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= wardError %>
+							</p>
 						</div>
 						<div class='form-item'></div>
 					</div>
@@ -117,6 +129,12 @@
 								placeholder='Bạn có thể bổ sung hẻm, nghách, ngõ...'
 								id="detail-address" />
 						</div>
+						<%
+						    String addressError = (String) request.getAttribute("addressError");
+						%>
+						<p class="error" style="<%= (addressError != null && !addressError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= addressError %>
+						</p>
 					</div>
 				</div>
 
@@ -128,13 +146,24 @@
 							Tiêu đề <span>*</span>
 						</p>
 						<form:textarea path='title' cols='30' rows='2'></form:textarea>
+						<%
+						    String titleError = (String) request.getAttribute("titleError");
+						%>
+						<p class="error" style="<%= (titleError != null && !titleError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= titleError %>
+						</p>
 					</div>
 					<div class='form-item'>
 						<p>
 							Mô tả <span>*</span>
 						</p>
 						<form:textarea id="editor" path='description' cols='30' rows='7'></form:textarea>
-
+						<%
+						    String descriptionError = (String) request.getAttribute("descriptionError");
+						%>
+						<p class="error" style="<%= (descriptionError != null && !descriptionError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= descriptionError %>
+						</p>
 					</div>
 				</div>
 
@@ -149,6 +178,12 @@
 							<form:input path="area" placeholder="Nhập diện tích, VD: 80" />
 							<span>m²</span>
 						</div>
+						<%
+						    String areaError = (String) request.getAttribute("areaError");
+						%>
+						<p class="error" style="<%= (areaError != null && !areaError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= areaError %>
+						</p>
 					</div>
 
 					<div class='money-wrapper'>
@@ -159,6 +194,12 @@
 							<div class='input-container'>
 								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
 							</div>
+							<%
+						    String priceError = (String) request.getAttribute("priceError");
+							%>
+							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= priceError %>
+							</p>
 						</div>
 
 						<div class='form-item'>
@@ -276,7 +317,12 @@
 						</div>
 
 					</div>
-
+					<%
+				    String imageError = (String) request.getAttribute("imageError");
+					%>
+					<p class="error" style="<%= (imageError != null && !imageError.isEmpty()) ? "display: block;" : "display: none;" %>">
+					    <%= imageError %>
+					</p>
 				</div>
 
 				<div class='input-wrapper'>
@@ -289,6 +335,12 @@
 							<div class='input-container'>
 								<form:input path="contactName" placeholder="Nhập tên" />
 							</div>
+							<%
+						    String contactNameError = (String) request.getAttribute("contactNameError");
+							%>
+							<p class="error" style="<%= (contactNameError != null && !contactNameError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= contactNameError %>
+							</p>
 						</div>
 
 						<div class='form-item'>
@@ -298,6 +350,12 @@
 							<div class='input-container'>
 								<form:input path="phoneNumber" placeholder="Nhập số điện thoại" />
 							</div>
+							<%
+						    String phoneNumberError = (String) request.getAttribute("phoneNumberError");
+							%>
+							<p class="error" style="<%= (phoneNumberError != null && !phoneNumberError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= phoneNumberError %>
+							</p>
 						</div>
 					</div>
 
@@ -453,6 +511,12 @@
 							<input name="totalMoney" value="28000" readonly /> đ
 						</div>
 					</div>
+					<%
+				    String moneyError = (String) request.getAttribute("moneyError");
+					%>
+					<p class="error" style="<%= (moneyError != null && !moneyError.isEmpty()) ? "display: block;" : "display: none;" %>">
+					    <%= moneyError %>
+					</p>
 				</div>
 
 				<div class='button-wrapper'>
@@ -516,6 +580,10 @@
             console.error( error );
         } );
 		
+		$("input, select, textarea").on("change", () => {
+		    $(".error").hide(); 
+		});
+		
 		var currentDate = new Date();
 
 		var submittedDate = currentDate.toISOString().split('T')[0];
@@ -530,9 +598,6 @@
 		var expirationDate = next10day.toISOString().split('T')[0];
 		$('#expirationDate').val(expirationDate);
 		$('input[name="expirationDate"]').val(expirationDate);
-		
-		
-
 		
 		$(".type-container").on("click", function() {
 		    $(".type-container").removeClass("active");
@@ -576,6 +641,18 @@
 		    	var expirationDate = next10day.toISOString().split('T')[0];
 				$('#expirationDate').val(expirationDate);
 				$('input[name="expirationDate"]').val(expirationDate);
+				
+				var selectedDate = $(".date-container.active").find("h6").text();
+			    var selectedMoney = $(".date-container.active").find("p").text();
+
+			    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
+			    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
+
+			    $("input[name='amountDate']").val(selectedDate);
+			    $("input[name='pricePerDay']").val(moneyPerDay); 
+			    $("input[name='fee']").val(date * moneyPerDay); 
+			    $("input[name='totalMoney']").val(date * moneyPerDay); 
+
 		    }
 	    	if ($(this).hasClass("silver")) {
 	    		$(".dates-wrapper").html(
@@ -598,6 +675,17 @@
 			    var expirationDate = next7day.toISOString().split('T')[0];
 				$('#expirationDate').val(expirationDate);
 				$('input[name="expirationDate"]').val(expirationDate);
+
+				var selectedDate = $(".date-container.active").find("h6").text();
+			    var selectedMoney = $(".date-container.active").find("p").text();
+
+			    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
+			    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
+
+			    $("input[name='amountDate']").val(selectedDate);
+			    $("input[name='pricePerDay']").val(moneyPerDay); 
+			    $("input[name='fee']").val(date * moneyPerDay); 
+			    $("input[name='totalMoney']").val(date * moneyPerDay); 
 		    }
 	    	if ($(this).hasClass("gold")) {
 	    		$(".dates-wrapper").html(
@@ -620,6 +708,17 @@
 				    var expirationDate = next7day.toISOString().split('T')[0];
 					$('#expirationDate').val(expirationDate);
 					$('input[name="expirationDate"]').val(expirationDate);
+
+					var selectedDate = $(".date-container.active").find("h6").text();
+				    var selectedMoney = $(".date-container.active").find("p").text();
+
+				    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
+				    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
+
+				    $("input[name='amountDate']").val(selectedDate);
+				    $("input[name='pricePerDay']").val(moneyPerDay); 
+				    $("input[name='fee']").val(date * moneyPerDay); 
+				    $("input[name='totalMoney']").val(date * moneyPerDay); 
 		    }
 	    	if ($(this).hasClass("diamond")) {
 	    		$(".dates-wrapper").html(
@@ -642,6 +741,17 @@
 				    var expirationDate = next7day.toISOString().split('T')[0];
 					$('#expirationDate').val(expirationDate);
 					$('input[name="expirationDate"]').val(expirationDate);
+
+					var selectedDate = $(".date-container.active").find("h6").text();
+				    var selectedMoney = $(".date-container.active").find("p").text();
+
+				    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
+				    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
+
+				    $("input[name='amountDate']").val(selectedDate);
+				    $("input[name='pricePerDay']").val(moneyPerDay); 
+				    $("input[name='fee']").val(date * moneyPerDay); 
+				    $("input[name='totalMoney']").val(date * moneyPerDay); 
 		    }
 		});
 		
@@ -652,17 +762,17 @@
 		    // Add 'active' class to the clicked date container
 		    $(this).addClass("active");
 
-		 // Get the selected date text
+		 	// Get the selected date text
 		    var selectedDate = $(this).find("h6").text();
 		    var selectedMoney = $(".date-container.active").find("p").text();
 
 		    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 		    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
 
-		    $("input[name='amountDate']").val(selectedDate); // Use .val() to set input value
-		    $("input[name='pricePerDay']").val(moneyPerDay); // Use .val() to set input value
-		    $("input[name='fee']").val(date * moneyPerDay); // Use .val() to set input value
-		    $("input[name='totalMoney']").val(date * moneyPerDay); // Use .val() to set input value
+		    $("input[name='amountDate']").val(selectedDate);
+		    $("input[name='pricePerDay']").val(moneyPerDay); 
+		    $("input[name='fee']").val(date * moneyPerDay); 
+		    $("input[name='totalMoney']").val(date * moneyPerDay); 
 
 
 		    // Calculate expiration date based on selected date

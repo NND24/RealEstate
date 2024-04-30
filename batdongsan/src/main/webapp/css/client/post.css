@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
 /* POST */
+
+
 .post {
   margin-left: 280px;
   background-color: #f9f9f9;
@@ -43,6 +45,7 @@
   border: none;
   display: flex;
   margin-bottom: 24px;
+  padding-left: 0 !important;
 }
 
 .post .nav-tabs > li {
@@ -144,6 +147,15 @@
   font-weight: 600;
 }
 
+.post .form-item p.error,
+.error {
+	font-weight: 600;
+	font-size: 13px;
+	margin: 0;
+    padding-top: 6px;
+    color: #E03C31;
+}
+
 .post .form-item p span {
   margin-left: 2px;
   font-size: 14px;
@@ -178,6 +190,10 @@
 .post .form-item .input-container input {
   width: 100%;
   padding: 6px 30px 6px 10px;
+}
+
+.post .form-item .input-container #submittedDate {
+	padding: 6px 10px 6px 10px;
 }
 
 .post .form-item .input-container span {
@@ -420,7 +436,6 @@
 }
 
 .post .input-wrapper .setting-wrapper .input-container {
-	padding: 6px 6px 6px 10px;
 }
 
 .post .input-wrapper .section-wrapper {

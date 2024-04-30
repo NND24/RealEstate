@@ -15,7 +15,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -127,15 +126,15 @@ public class ManageAccountController {
 	}
 
 	@RequestMapping(value = { "updatePassword" }, method = RequestMethod.POST)
-	public String updatePassword(ModelMap model, HttpServletRequest request, @ModelAttribute("user") UsersModel user,
-	        BindingResult errors, @RequestParam("password") String password, @RequestParam("newPassword") String newPassword,
+	public String updatePassword(ModelMap model, HttpServletRequest request,
+	        @RequestParam("password") String password, 
+	        @RequestParam("newPassword") String newPassword,
 	        @RequestParam("reNewPassword") String reNewPassword) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
-		String relativePath;
 		try {
 			Cookie[] cookies = request.getCookies();
-			UsersModel currentUser = null;
+			UsersModel user = null;
 
 			if (cookies != null) {
 				for (Cookie cookie : cookies) {
@@ -144,7 +143,7 @@ public class ManageAccountController {
 						String hqlUser = "FROM UsersModel WHERE userId = :userId";
 						Query<UsersModel> queryUser = session.createQuery(hqlUser);
 						queryUser.setParameter("userId", Integer.parseInt(userId));
-						currentUser = queryUser.uniqueResult();
+						user = queryUser.uniqueResult();
 						break;
 					}
 				}
@@ -152,28 +151,30 @@ public class ManageAccountController {
 
 			Boolean isError = false;
 
-			if (!password.equals(currentUser.getPassword())) {
+			if (!password.equals(user.getPassword())) {
 				request.setAttribute("passwordError", "Mật khẩu không khớp với mật khẩu cũ");
 				isError = true;
 			}
 			if (!newPassword.equals(reNewPassword)) {
 				isError = true;
 			}
-
-			if (!isError) {
-				currentUser.setPassword(newPassword);
-				session.update(currentUser);
-				t.commit();
-			} 
 			
-			request.setAttribute("user", currentUser);
+			request.setAttribute("user", user);
 			request.setAttribute("setting", "setting");
 			request.setAttribute("edit", null);
-			return "client/sellernet/manageAccount";
+
+			if (!isError) {
+				user.setPassword(newPassword);
+				session.update(user);
+				t.commit();
+				return "redirect:/sellernet/thong-tin-ca-nhan.html?setting=true";
+			} else {
+				return "client/sellernet/manageAccount";
+			}
 		} catch (Exception e) {
 			t.rollback();
 			System.out.println(e);
-			return "client/sellernet/manageAccount";
+			return "redirect:/sellernet/thong-tin-ca-nhan.html?setting=true";
 		} finally {
 			session.close();
 		}
