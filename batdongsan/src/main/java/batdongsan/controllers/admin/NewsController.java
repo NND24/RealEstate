@@ -7,9 +7,11 @@ import java.awt.PageAttributes.MediaType;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import org.apache.commons.io.FilenameUtils;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import batdongsan.models.CategoryModel;
 import batdongsan.models.NewsModel;
+import batdongsan.models.RealEstateModel;
 
 @Controller
 @RequestMapping("/admin/")
@@ -53,17 +56,41 @@ public class NewsController {
 		return "admin/listNews";
 	}
 
+	// Thêm tin tức
 	@Transactional
 	@RequestMapping(value = "listNews/addNews", method = RequestMethod.POST)
-	public String addNews(ModelMap model, @ModelAttribute("news") NewsModel news) {
+	public String addNews(ModelMap model, HttpServletRequest request,
+			@RequestParam(name = "thumbnail") MultipartFile file, @RequestParam(name = "title") String title,
+			@RequestParam(name = "shortDescription") String shortDescription,
+			@RequestParam(name = "description") String description, @RequestParam(name = "status") Boolean status) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
+			String uploadDir = "D:/Workspace/JavaSpringMVC/Web/BatDongSan/batdongsan/src/main/webapp/images/News/";
+			String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+			String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
+			String filePath = uploadDir + uniqueFileName;
+			
+			File directory = new File(uploadDir);
+			if(!directory.exists()) {
+				directory.mkdirs();
+			}
+			
+			file.transferTo(new File(filePath));
+
+			Session currentSession = factory.getCurrentSession();
+			
+			NewsModel news = new NewsModel();
 			String newsId = generateNewsId();
 			news.setNewsId(newsId);
+			news.setTitle(title);
+			news.setThumbnail(uniqueFileName);
 			Date today = new Date(Calendar.getInstance().getTime().getTime());
-			news.setDateUploaded(today);			
-		
+			news.setDateUploaded(today);
+			news.setShortDescription(shortDescription);
+			news.setDescription(description);
+			news.setStatus(status);
+			
 			session.save(news);
 			t.commit();
 			model.addAttribute("message", "Thêm mới thành công");
@@ -153,7 +180,7 @@ public class NewsController {
 		return "redirect:/admin/listNews.html";
 	}
 
-	// =======
+	// Cập nhật
 	@RequestMapping(value = "listNews/update/{newsId}", method = RequestMethod.GET)
 	public String getUpdate(ModelMap model, @PathVariable("newsId") String newsId) {
 		Session session = factory.openSession();
@@ -192,21 +219,66 @@ public class NewsController {
 //	    return "redirect:/admin/listNews.html";
 //	}
 
-	@RequestMapping(value = "listNews/update/listNews/udpate", method = RequestMethod.POST)
-	public String updateNews(@ModelAttribute("news") NewsModel news) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			// Sử dụng merge để cập nhật đối tượng news
-			session.merge(news);
-			t.commit();
-		} catch (Exception e) {
-			t.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return "redirect:/admin/listNews.html";
+//	@RequestMapping(value = "listNews/update/listNews/update", method = RequestMethod.POST)
+//	public String updateNews(@ModelAttribute("news") NewsModel news) {
+//		Session session = factory.openSession();
+//		Transaction t = session.beginTransaction();
+//		try {
+//			// Sử dụng merge để cập nhật đối tượng news
+//			session.merge(news);
+//			t.commit();
+//		} catch (Exception e) {
+//			t.rollback();
+//			e.printStackTrace();
+//		} finally {
+//			session.close();
+//		}
+//		return "redirect:/admin/listNews.html";
+//	}
+	
+	@RequestMapping(value = "listNews/update/listNews/update", method = RequestMethod.POST)
+	public String updateNews(ModelMap model, HttpServletRequest request, @RequestParam(name = "newsId") String newsId,
+	        @RequestParam(name = "thumbnail", required = false) MultipartFile file, @RequestParam(name = "title") String title,
+	        @RequestParam(name = "shortDescription") String shortDescription,
+	        @RequestParam(name = "description") String description, @RequestParam(name = "status") Boolean status) {
+	    Session session = factory.openSession();
+	    Transaction t = session.beginTransaction();
+	    try {
+	        String filePath = null;
+	        String newPathThumbnail = null;
+	        if (file != null && !file.isEmpty()) {
+	            String uploadDir = "D:/Workspace/JavaSpringMVC/Web/BatDongSan/batdongsan/src/main/webapp/images/News/";
+	            String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+	            String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
+	            filePath = uploadDir + uniqueFileName;
+	            newPathThumbnail = uniqueFileName;
+	            File directory = new File(uploadDir);
+	            if (!directory.exists()) {
+	                directory.mkdirs();
+	            }
+
+	            file.transferTo(new File(filePath));
+	        }
+
+	        NewsModel news = (NewsModel) session.get(NewsModel.class, newsId);
+	        news.setTitle(title);
+	        if (filePath != null) {
+	            news.setThumbnail(newPathThumbnail);
+	        }
+	        news.setShortDescription(shortDescription);
+	        news.setDescription(description);
+	        news.setStatus(status);
+
+	        session.merge(news);
+	        t.commit();
+	        model.addAttribute("message", "Cập nhật thành công");
+	    } catch (Exception e) {
+	        t.rollback();
+	        model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
+	    } finally {
+	        session.close();
+	    }
+	    return "redirect:/admin/listNews.html";
 	}
 
 	@RequestMapping(value = "updateNews/cancel", method = RequestMethod.GET)
@@ -216,7 +288,7 @@ public class NewsController {
 	}
 
 	// ========
-	@RequestMapping(value = "/listNews/detail/{newsId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/listNews/detailNews/{newsId}", method = RequestMethod.GET)
 	public String getDetail(ModelMap model, @PathVariable("newsId") String newsId) {
 		try (Session session = factory.openSession()) {
 			NewsModel news = session.get(NewsModel.class, newsId);
@@ -224,7 +296,7 @@ public class NewsController {
 				return "redirect:/admin/listNews.html";
 			}
 			model.addAttribute("news", news);
-			return "admin/detailNews.jsp";
+			return "admin/detailNews";
 		} catch (Exception e) {
 			return "redirect:/admin/listNews.html";
 		}

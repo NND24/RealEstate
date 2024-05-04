@@ -4,6 +4,8 @@ import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +25,29 @@ public class NewsModel {
 	private String description;
 	private boolean status;
 	
+	@ManyToOne
+	@JoinColumn(name = "idWritter")
+	private EmployeeModel employee;
+	
+	
+	
+	public NewsModel() {
+		super();
+	}
+	
+	public NewsModel(String newsId, String title, String thumbnail, Date dateUploaded, Date dateEnded,
+			String shortDescription, String description, boolean status, EmployeeModel employee) {
+		super();
+		this.newsId = newsId;
+		this.title = title;
+		this.thumbnail = thumbnail;
+		this.dateUploaded = dateUploaded;
+		this.dateEnded = dateEnded;
+		this.shortDescription = shortDescription;
+		this.description = description;
+		this.status = status;
+		this.employee = employee;
+	}
 	public String getNewsId() {
 		return newsId;
 	}
@@ -71,5 +96,12 @@ public class NewsModel {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-
+	public EmployeeModel getEmployee() {
+		return employee;
+	}
+	public void setEmployee(EmployeeModel employee) {
+		this.employee = employee;
+	}
+	
+	
 }

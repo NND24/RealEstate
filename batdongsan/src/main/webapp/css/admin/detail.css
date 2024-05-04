@@ -440,20 +440,30 @@
   padding: 0;
 }
 
+.detail-content .breadcrumb span{
+	padding: 0 10px;
+}
+
 .detail-content .breadcrumb a:last-child {
   color: #2c2c2c;
 }
 
 .detail-content .detail-content__title {
   font-weight: 600;
+  font-size : 40px;
+  padding-bottom: 20px;
 }
 
 .detail-content .detail-content__address {
-  font-size: 14px;
+  font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 20px;
   line-height: 20px;
   color: #2c2c2c;
   margin-top: 8px;
+  font-weight: 400;
 }
+
+
 
 .detail-content .short-info-container {
   display: flex;
@@ -738,3 +748,26 @@
 .detail-sidebar .sidebar-box-contact .contact-button__phonenumber__dot {
   margin: 0 4px;
 }
+
+.writter-info span:after {
+    content: "\00a0";
+}
+
+.writter-name{
+	font-weight: bold;
+}
+
+.writter-info {
+    display: inline-block; /* Hiển thị phần tử như một khối, nhưng không chiếm toàn bộ dòng */
+}
+
+.writter-info span,
+.writter-info p.writter-name {
+    display: inline; /* Hiển thị phần tử trên cùng một dòng */
+}
+
+.short-description-container{
+	padding-top: 25px;
+}
+
+

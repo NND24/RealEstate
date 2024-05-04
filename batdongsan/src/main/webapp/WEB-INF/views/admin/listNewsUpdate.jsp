@@ -58,7 +58,7 @@
 							<div class='admin-post-card'>
 								<div>
 									<img
-										src="${pageContext.servletContext.contextPath}/${n.thumbnail}"
+										src="${pageContext.servletContext.contextPath}/images/News/${n.thumbnail}"
 										alt='Image' />
 									<div class='post-content-container'>
 										<div>
@@ -111,18 +111,10 @@
 												class='fa-regular fa-share-from-square'></i> <span>Xóa
 													tin</span></a>
 										</div>
-										<div class='dropdown'>
-											<div class='button-item dropdown-toggle' type='button'
-												data-toggle='dropdown'>
-												<i class='fa-solid fa-ellipsis'></i> <span>Thao tác</span>
-											</div>
-											<ul class='dropdown-menu'>
-												<li><a href='listNews/update/${n.newsId}.html'> <i
-														class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
-												</a></li>
-												<li><a href='#'>CSS</a></li>
-												<li><a href='#'>JavaScript</a></li>
-											</ul>
+										<div class='button-item'>
+											<a href='listNews/update/${n.newsId}.html'> <i
+												class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
+											</a>
 										</div>
 									</div>
 								</div>
@@ -140,7 +132,7 @@
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
 					<h1>Chỉnh sửa tin tức</h1>
-					<form:form action="listNews/udpate.html" modelAttribute="news"
+					<form:form action="listNews/update.html" modelAttribute="news"
 						method="post" enctype="multipart/form-data">
 						<div class='input-container'>
 							<div class='form-item'>
@@ -179,13 +171,29 @@
 						<div class='input-container'>
 							<div class='form-item full-width'>
 								<p>Nội dung</p>
-								<div class='input-wrapper'>
+								<div class='input-wrapper input-body-news'>
 									<form:textarea id="editor" path='description' cols='30'
 										rows='50'></form:textarea>
 								</div>
 							</div>
 						</div>
 
+						<div class='input-container'>
+							<div class='form-item'>
+								<p>Ảnh tiêu đề</p>
+								<div class='input-wrapper'>
+									<form:input path="thumbnail" type="file" />
+								</div>
+							</div>
+							<div class='form-item'>
+								<p>Ảnh hiện tại</p>
+								<div class=''>
+									<img class="current-image"
+										src="${pageContext.servletContext.contextPath}/images/News/${news.thumbnail}"
+										alt='Image' />
+								</div>
+							</div>
+						</div>
 
 						<div class='button-wrapper'>
 							<div></div>

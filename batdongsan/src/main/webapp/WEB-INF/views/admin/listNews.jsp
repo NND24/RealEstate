@@ -6,13 +6,10 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../css/admin/listNews.css" type="text/css">
+<link rel="stylesheet" href="../css/admin/listNews.css?version=54" type="text/css">
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listCategory.css"
-	type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listTag.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
@@ -52,7 +49,7 @@
 						<c:forEach var="n" items="${listOfNews}">
 							<div class='admin-post-card'>
 								<div>
-									<img src="http://localhost:8080/batdongsan/images/admin/News/dowsssssnload.png" alt="Image">
+									<img src="${pageContext.servletContext.contextPath}/images/News/${n.thumbnail}" alt=""/>
 									<div class='post-content-container'>
 										<div>
 											<h4 class='header'>${n.title}</h4>
@@ -74,12 +71,12 @@
 												<div class='secondary'>${n.dateUploaded}</div>
 											</div>
 											<div class='detail-item'>
-												<span class='primary'>Ngày hết hạn</span>
-												<div class='secondary'>${n.dateEnded}</div>
+												<span class='primary'>Mã viết bài</span>
+												<div class='secondary'>${n.employee.id}</div>
 											</div>
 											<div class='detail-item'>
-												<span class='primary'>Thời gian</span>
-												<div class='secondary'>Còn 10 ngày</div>
+												<span class='primary'>Tên người viết</span>
+												<div class='secondary'>${n.employee.fullname}</div>
 											</div>
 										</div>
 									</div>
@@ -92,7 +89,7 @@
 												class='fa-regular fa-flag'></i> <span>Duyệt tin</span></a>
 										</div>
 										<div class='button-item'>
-											<a href="listNews/detail/${n.newsId}.html"><i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span></a>
+											<a href="listNews/detailNews/${n.newsId}.html"><i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span></a>
 											
 										</div>
 										<div class='button-item'>
@@ -104,19 +101,12 @@
 												class='fa-regular fa-share-from-square'></i> <span>Xóa
 													tin</span></a>
 										</div>
-										<div class='dropdown'>
-											<div class='button-item dropdown-toggle' type='button'
-												data-toggle='dropdown'>
-												<i class='fa-solid fa-ellipsis'></i> <span>Thao tác</span>
-											</div>
-											<ul class='dropdown-menu'>
-												<li><a href='listNews/update/${n.newsId}.html'> <i class='fa-solid fa-pencil'></i>
+										
+										<div class='button-item'>
+											<a href='listNews/update/${n.newsId}.html'> <i class='fa-solid fa-pencil'></i>
 														<span>Sửa tin</span>
-												</a></li>
-												<li><a href='#'>CSS</a></li>
-												<li><a href='#'>JavaScript</a></li>
-											</ul>
-										</div>
+												</a>
+										</div>				
 									</div>
 								</div>
 							</div>
@@ -164,19 +154,20 @@
 						<div class='input-container'>
 							<div class='form-item full-width'>
 								<p>Nội dung</p>
-								<div class='input-wrapper'>
+								<div class='input-wrapper input-body-news'>
 									<form:textarea id="editor" path='description' cols='30' rows='7'></form:textarea>
 								</div>
 							</div>
 						</div>
 						
 						<div class='input-container'>
-							<div class='form-item full-width'>
+							<div class='form-item'>
 								<p>Ảnh tiêu đề</p>
 								<div class='input-wrapper'>
-									
+									<form:input path="thumbnail" type="file"/>
 								</div>
 							</div>
+							
 						</div>
 
 						<div class='button-wrapper'>
@@ -194,6 +185,7 @@
 			</button>
 		</div>
 		<!-- END -->
+
 
 
 
