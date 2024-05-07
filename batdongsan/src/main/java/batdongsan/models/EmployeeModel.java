@@ -17,6 +17,7 @@ public class EmployeeModel {
 	private String fullname;
 	private String email;
 	private String password;
+	private String cccd;
 	private String birthday;
 	private String address;
 	private String phoneNumber;
@@ -57,6 +58,12 @@ public class EmployeeModel {
 	}
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
+	}
+	public String getCccd() {
+		return cccd;
+	}
+	public void setCccd(String cccd) {
+		this.cccd = cccd;
 	}
 	public String getPhoneNumber() {
 		return phoneNumber;
