@@ -133,7 +133,7 @@
 								</div>
 							</div>
 							<div class='form-item'>
-								<p>Căn cước công dân</p>
+								<p>Căn cước</p>
 								<div class='input-wrapper'>
 									<form:input path="cccd" readonly="true" />
 								</div>
