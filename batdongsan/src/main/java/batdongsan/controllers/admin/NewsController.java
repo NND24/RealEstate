@@ -66,7 +66,7 @@ public class NewsController {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			String uploadDir = "D:/Workspace/JavaSpringMVC/Web/BatDongSan/batdongsan/src/main/webapp/images/News/";
+			String uploadDir = "D:/Workspace Java/BatDongSan/batdongsan/src/main/webapp/images/News/";
 			String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 			String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 			String filePath = uploadDir + uniqueFileName;
@@ -247,7 +247,7 @@ public class NewsController {
 	        String filePath = null;
 	        String newPathThumbnail = null;
 	        if (file != null && !file.isEmpty()) {
-	            String uploadDir = "D:/Workspace/JavaSpringMVC/Web/BatDongSan/batdongsan/src/main/webapp/images/News/";
+	            String uploadDir = "D:/Workspace Java/BatDongSan/batdongsan/src/main/webapp/images/News/";
 	            String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 	            String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 	            filePath = uploadDir + uniqueFileName;

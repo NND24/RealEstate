@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import batdongsan.models.CategoryModel;
+import batdongsan.models.NewsModel;
 import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
 
@@ -44,19 +45,66 @@ public class HomeController {
 				}
 			}
 
-			String hql = "FROM RealEstateModel re WHERE re.status = :status ";
-
+			String hqlREForYou = "FROM RealEstateModel re WHERE re.status = :status ";
 			if (user != null) {
-				hql += " AND NOT EXISTS (SELECT 1 FROM FavouriteModel fa WHERE fa.realEstate = id AND fa.user = :user)";
+				hqlREForYou += " AND NOT EXISTS (SELECT 1 FROM FavouriteModel fa WHERE fa.realEstate = id AND fa.user = :user)";
 			}
-			Query<RealEstateModel> query = session.createQuery(hql);
-			query.setParameter("status", "Đang hiển thị");
+			Query<RealEstateModel> queryREForYou = session.createQuery(hqlREForYou);
+			queryREForYou.setParameter("status", "Đang hiển thị");
 			if (user != null) {
-				query.setParameter("user", user);
+				queryREForYou.setParameter("user", user);
 			}
-			List<RealEstateModel> listRealEstate = query.list();
-
-			request.setAttribute("realEstates", listRealEstate);
+			List<RealEstateModel> listREForYou = queryREForYou.list();
+			request.setAttribute("listREForYou", listREForYou);
+			
+			int amountREHCM = 0;
+			int amountREHN = 0;
+			int amountREDaNang = 0;
+			int amountREBD = 0;
+			int amountREDongNai = 0;
+			
+			for(RealEstateModel re : listREForYou) {
+				if(re.getProvince().getProvinceId()==50) {
+					amountREHCM++;
+				}
+				if(re.getProvince().getProvinceId()==1) {
+					amountREHN++;
+				}
+				if(re.getProvince().getProvinceId()==32) {
+					amountREDaNang++;
+				}
+				if(re.getProvince().getProvinceId()==47) {
+					amountREBD++;
+				}
+				if(re.getProvince().getProvinceId()==48) {
+					amountREDongNai++;
+				}
+			}
+			request.setAttribute("amountREHCM", amountREHCM);
+			request.setAttribute("amountREHN", amountREHN);
+			request.setAttribute("amountREDaNang", amountREDaNang);
+			request.setAttribute("amountREBD", amountREBD);
+			request.setAttribute("amountREDongNai", amountREDongNai);
+			
+			String hqlNews = "FROM NewsModel ORDER BY dateUploaded DESC";
+			Query queryNews = session.createQuery(hqlNews);
+			List<NewsModel> listNews = queryNews.list();
+			request.setAttribute("listNews", listNews);
+			
+			String hqlNewsHN = "FROM NewsModel WHERE title LIKE :input0 OR description LIKE :input1 ORDER BY dateUploaded DESC";
+			Query queryNewsHN = session.createQuery(hqlNewsHN);
+			queryNewsHN.setParameter("input0", "%Hà Nội%");
+			queryNewsHN.setParameter("input1", "%Hà Nội%");
+			List<NewsModel> listNewsHN = queryNewsHN.list();
+			request.setAttribute("listNewsHN", listNewsHN);
+			
+			String hqlNewsHCM = "FROM NewsModel WHERE title LIKE :input0 OR description LIKE :input1 ORDER BY dateUploaded DESC";
+			Query queryNewsHCM = session.createQuery(hqlNewsHCM);
+			queryNewsHCM.setParameter("input0", "%Hồ Chí Minh%");
+			queryNewsHCM.setParameter("input1", "%Hồ Chí Minh%");
+			List<NewsModel> listNewsHCM = queryNewsHCM.list();
+			request.setAttribute("listNewsHCM", listNewsHCM);
+			
 			request.setAttribute("user", user);
 
 			return "client/home";
