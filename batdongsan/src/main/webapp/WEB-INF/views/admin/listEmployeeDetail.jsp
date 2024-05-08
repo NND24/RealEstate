@@ -133,7 +133,11 @@
 								</div>
 							</div>
 							<div class='form-item'>
+<<<<<<< HEAD
 								<p>Căn cước công dân</p>
+=======
+								<p>Căn cước</p>
+>>>>>>> branch 'main' of https://github.com/NND24/BatDongSan.git
 								<div class='input-wrapper'>
 									<form:input path="cccd" readonly="true" />
 								</div>
