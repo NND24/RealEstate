@@ -7,7 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "Employee")
@@ -28,6 +30,9 @@ public class EmployeeModel {
 	
 	@OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
 	private Collection<NewsModel> news;
+	
+	@OneToOne(mappedBy = "employee", fetch = FetchType.EAGER)
+	private PermissionModel permission;
 	
 	public String getId() {
 		return id;
@@ -107,4 +112,11 @@ public class EmployeeModel {
 	public void setNews(Collection<NewsModel> news) {
 		this.news = news;
 	}
+	public PermissionModel getPermission() {
+		return permission;
+	}
+	public void setPermission(PermissionModel permission) {
+		this.permission = permission;
+	}
+	
 }

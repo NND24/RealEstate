@@ -72,100 +72,55 @@
 				</table>
 			</div>
 		</div>
-		<!-- DETAIL MODEL -->
+		<!-- AUTHO MODEL -->
 		<div class='add-modal' style="display: flex;" id="updateModelForm">
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
-					<h1>Chi tiết nhân viên</h1>
+					<h1>Phân quyền</h1>
 					${message}
-					<form:form action="" modelAttribute="employee" method="post">
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Mã nhân viên</p>
-								<div class='input-wrapper'>
-									<form:input path="id" readonly="true" />
-								</div>
-							</div>
+					<form:form action="listEmployee/authorization.html"
+						modelAttribute="permissions" method="post" id="authorizationForm">
+						<table class='table table-hover table-striped'>
+							<thead>
+								<tr>
+									<th scope='col'>Mã quyền</th>
+									<th scope='col'>Tên quyền</th>
+									<th scope='col'>Mô tả</th>
+									<th scope='col'>Phân quyền</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="role" items="${roles}">
+									<tr>
+										<th scope='row'>${role.roleId}</th>
+										<td>${role.roleName}</td>
+										<td>${role.description}</td>	
+										<td><c:forEach var="permission"
+												items="${rolePermissions[role]}">
+												<c:choose>
+													<c:when test="${permission.status}">
+														<form:checkbox path="permissionId"
+															value="${permission.permissionId}" checked="true" />
+													</c:when>
+													<c:otherwise>
+														<form:checkbox path="permissionId"
+															value="${permission.permissionId}" />
+													</c:otherwise>
+												</c:choose>
+											</c:forEach></td>
 
-							<div class='form-item'>
-								<p>Trạng thái</p>
-								<div class='input-wrapper'>
-									<form:input path="status" readonly="true" value="${status ? 'Đang làm việc' : 'Đã nghỉ'}" />
-								</div>
-							</div>
-
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+						<input type="hidden" id="permissionIds" name="permissionIds" value="" />
+						<input type="hidden" id="unselectedPermissionIds" name="unselectedPermissionIds" value="" />
+						<div class='button-wrapper'>
+							<div></div>
+							<button class='continue-button' id="confirmButton">
+								<span>Xác nhận</span>
+							</button>
 						</div>
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Tên nhân viên</p>
-								<div class='input-wrapper'>
-									<form:input path="fullname" readonly="true" />
-								</div>
-							</div>
-							<div class='form-item'>
-								<p>Email</p>
-								<div class='input-wrapper'>
-									<form:input path="email" readonly="true" />
-								</div>
-							</div>
-						</div>
-
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Ngày sinh</p>
-								<div class='input-wrapper'>
-									<form:input path="birthday" type="date" readonly="true" />
-								</div>
-							</div>
-							<div class='form-item'>
-								<p>Số điện thoại</p>
-								<div class='input-wrapper'>
-									<form:input path="phoneNumber" readonly="true" />
-								</div>
-							</div>
-						</div>
-
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Địa chỉ</p>
-								<div class='input-wrapper'>
-									<form:input path="address" readonly="true" />
-								</div>
-							</div>
-							<div class='form-item'>
-								<p>Căn cước</p>
-								<div class='input-wrapper'>
-									<form:input path="cccd" readonly="true" />
-								</div>
-							</div>
-						</div>
-
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Ngày vào làm</p>
-								<div class='input-wrapper'>
-									<form:input path="createDate" readonly="true" />
-								</div>
-							</div>
-							<c:choose>
-								<c:when test="${employee.deleteDate != null}">
-									<div class='form-item'>
-										<p>Ngày nghỉ làm</p>
-										<div class='input-wrapper'>
-											<form:input path="deleteDate" readonly="true"/>
-										</div>
-									</div>
-								</c:when>
-							</c:choose>
-						</div>
-
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Chức vụ</p>
-								<div class='input-wrapper'></div>
-							</div>
-						</div>
-
 					</form:form>
 
 				</div>
@@ -177,5 +132,29 @@
 		</div>
 		<!-- END -->
 	</div>
+	<script>
+    $(document).ready(function() {
+        $('#confirmButton').click(function() {
+            var selectedPermissions = [];
+            var unselectedPermissions = [];
+            // Lặp qua tất cả các checkbox và lấy giá trị của những cái được chọn
+            $('input[type="checkbox"][name="permissionId"]:checked').each(function() {
+                selectedPermissions.push($(this).val());
+            });
+            
+        	// Lặp qua tất cả các checkbox và lấy giá trị của những cái không được chọn
+            $('input[type="checkbox"][name="permissionId"]:not(:checked)').each(function() {
+                unselectedPermissions.push($(this).val());
+            });
+
+            // Cập nhật giá trị của trường ẩn permissionIds và unselectedPermissionIds
+            $('#permissionIds').val(selectedPermissions.join(","));
+            $('#unselectedPermissionIds').val(unselectedPermissions.join(","));
+
+            // Submit form
+            $('#authorizationForm').submit();
+        });
+    });
+</script>
 </body>
 </html>
