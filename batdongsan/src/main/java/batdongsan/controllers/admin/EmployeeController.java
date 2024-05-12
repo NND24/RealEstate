@@ -2,8 +2,11 @@ package batdongsan.controllers.admin;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.hibernate.Session;
@@ -18,9 +21,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
+import batdongsan.models.PermissionModel;
+import batdongsan.models.RoleModel;
 
 @Controller
 @RequestMapping("/admin/")
@@ -54,6 +60,18 @@ public class EmployeeController {
 			employee.setPassword(employee.getPhoneNumber());
 			employee.setStatus(true);
 			session.save(employee);
+
+			// Lưu vào permission
+			List<RoleModel> roles = session.createQuery("FROM RoleModel").list();
+			for (RoleModel role : roles) {
+				PermissionModel permission = new PermissionModel();
+				permission.setEmployee(employee);
+				permission.setRole(role);
+				permission.setStatus(false); // Mặc định là False
+				// Lưu thông tin quyền cho nhân viên vào bảng Permission
+				session.save(permission);
+			}
+
 			t.commit();
 			model.addAttribute("message", "Thêm mới thành công");
 		} catch (Exception e) {
@@ -170,7 +188,7 @@ public class EmployeeController {
 	public String cancelUpdate() {
 		return "redirect:/admin/listEmployee.html";
 	}
-	
+
 	// Chi Tiết nhân viên
 	@RequestMapping(value = "listEmployee/detail/{id}", method = RequestMethod.GET)
 	public String getDetail(ModelMap model, @PathVariable("id") String id) {
@@ -183,12 +201,84 @@ public class EmployeeController {
 		model.addAttribute("employee", new EmployeeModel());
 
 		EmployeeModel emp = (EmployeeModel) session.get(EmployeeModel.class, id);
-		
+
 		model.addAttribute("status", emp.isStatus());
 		model.addAttribute("employee", emp);
 		return "admin/listEmployeeDetail";
 	}
-	
+
+	// Phân quyền
+	@RequestMapping(value = "listEmployee/authorization/{id}", method = RequestMethod.GET)
+	public String authorization(@PathVariable("id") String id, ModelMap model) {
+		Session session = factory.openSession();
+		String hql = "FROM EmployeeModel WHERE status = :status ORDER BY createDate DESC";
+		Query query = session.createQuery(hql);
+		query.setParameter("status", true);
+		List<EmployeeModel> list = query.list();
+		model.addAttribute("employees", list);
+
+		EmployeeModel emp = (EmployeeModel) session.get(EmployeeModel.class, id);
+		model.addAttribute("employee", emp);
+
+		// Lấy danh sách vai trò chỉ cho nhân viên được chỉ định
+		List<RoleModel> roles = session.createQuery(
+				"SELECT p.role FROM PermissionModel p WHERE p.employee.id = :employeeId")
+				.setParameter("employeeId", id).list();
+		model.addAttribute("roles", roles);
+
+		// Lấy danh sách quyền cho mỗi vai trò
+		Map<RoleModel, List<PermissionModel>> rolePermissions = new HashMap<>();
+		for (RoleModel role : roles) {
+			Query queryAuth = session
+					.createQuery("FROM PermissionModel p WHERE p.role = :role AND p.employee.id = :employeeId");
+			queryAuth.setParameter("role", role);
+			queryAuth.setParameter("employeeId", id);
+			List<PermissionModel> permissions = queryAuth.list();
+			rolePermissions.put(role, permissions);
+		}
+		model.addAttribute("rolePermissions", rolePermissions);
+		PermissionModel permission = new PermissionModel();
+		permission.setEmployee(emp); // Set id của nhân viên cho permission
+		model.addAttribute("permissions", permission);
+		session.close();
+		return "admin/listEmployeeAuthorization";
+	}
+
+	@RequestMapping(value = "listEmployee/authorization/listEmployee/authorization", method = RequestMethod.POST)
+	public String updatePermissions(ModelMap model, @RequestParam("permissionIds") List<Integer> permissionIds, @RequestParam(value = "unselectedPermissionIds", required = false) List<Integer> unselectedPermissionIds) {
+		Session session = factory.openSession();
+	    Transaction t = null;
+	    try {
+	        t = session.beginTransaction();
+	        for (Integer permissionId : permissionIds) {
+	        	PermissionModel permission = (PermissionModel) session.get(PermissionModel.class,permissionId);
+	        	permission.setStatus(true);
+	            session.merge(permission);
+	        }
+	        
+	        if (unselectedPermissionIds != null && !unselectedPermissionIds.isEmpty()) {
+	            for (Integer unselectedPermissionId : unselectedPermissionIds) {
+	                PermissionModel unselectedPermission = session.get(PermissionModel.class, unselectedPermissionId);
+	                unselectedPermission.setStatus(false);
+	                session.merge(unselectedPermission);
+	            }
+	        }
+	        // Commit transaction sau khi cập nhật thành công
+	        t.commit();
+	        model.addAttribute("message", "Cập nhật thành công");
+	    } catch (Exception e) {
+	        if (t != null) {
+	            t.rollback();
+	        }
+	        model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
+	        e.printStackTrace(); // In ra lỗi để debug
+	    } finally {
+	        // Đóng session sau khi sử dụng xong
+	        session.close();
+	    }
+	    // Chuyển hướng người dùng về trang danh sách nhân viên sau khi cập nhật
+	    return "redirect:/admin/listEmployee.html";
+	}
 
 	// ================================================================
 	public static String generateId() {

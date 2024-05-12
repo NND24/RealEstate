@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listEmployee.css?version=52"
+<link rel="stylesheet" href="../css/admin/listEmployee.css?version=55"
 	type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
@@ -43,10 +43,10 @@
 						<tr>
 							<th scope='col'>Mã nhân viên</th>
 							<th scope='col'>Họ tên</th>
-							<th scope='col'>Email</th>
 							<th scope='col'>Trạng thái</th>
 							<th scope='col'>Chức vụ</th>
 							<th scope='col'>Chi tiết</th>
+							<th scope='col'>Phân quyền</th>
 							<th scope='col'>Thao tác</th>
 						</tr>
 					</thead>
@@ -55,10 +55,13 @@
 							<tr>
 								<th scope='row'>${e.id}</th>
 								<td>${e.fullname}</td>
-								<td>${e.email}</td>
 								<td class="status" data-status='${e.status}'>${e.status ? 'Còn làm' : 'Đã nghỉ'}</td>
 								<td>Quản lý bài viết</td>
-								<td><a href='listEmployee/detail/${e.id}.html'> <p class="detail-emp">Xem chi tiết</p>
+								<td><a href='listEmployee/detail/${e.id}.html'>
+										<p class="detail-emp">Xem chi tiết</p>
+								</a></td>
+								<td><a href="listEmployee/authorization/${e.id}.html" class="authorization-link">
+										<button class="authorization-button">Phân quyền</button>
 								</a></td>
 								<td><a href='listEmployee/update/${e.id}.html'
 									class="updateModelButton"> <i class='fa-solid fa-pencil'></i>
