@@ -8,18 +8,19 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../../../css/client/index.css"
 	type="text/css">
-<link rel="stylesheet" href="../../../css/admin/listCategory.css"
+
+<link rel="stylesheet" href="../../../css/admin/listEmployee.css?version=57"
 	type="text/css">
 <link rel="stylesheet" href="../../../css/admin/headerAdmin.css"
 	type="text/css">
 <link rel="stylesheet" href="../../../css/admin/listTag.css"
 	type="text/css">
-<%@ include file="../../../links/links.jsp"%>
+<%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerAdmin.jsp"%>
+	<%@ include file="../../../components/headerAdmin.jsp"%>
 	<div class='admin active'>
-		<%@ include file="../../components/sidebarAdmin.jsp"%>
+		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListCategory -->
 		<div class='list-category'>
 			<div class='header-wrapper'>
@@ -45,10 +46,9 @@
 						<tr>
 							<th scope='col'>Mã nhân viên</th>
 							<th scope='col'>Họ tên</th>
-							<th scope='col'>Email</th>
-							<th scope='col'>CCCD</th>
-							<th scope='col'>SDT</th>
-							<th scope='col'>Ngày vào làm</th>
+							<th scope='col'>Trạng thái</th>
+							<th scope='col'>Chi tiết</th>
+							<th scope='col'>Phân quyền</th>
 							<th scope='col'>Thao tác</th>
 						</tr>
 					</thead>
@@ -57,12 +57,16 @@
 							<tr>
 								<th scope='row'>${e.id}</th>
 								<td>${e.fullname}</td>
-								<td>${e.email}</td>
-								<td>${e.cccd}</td>
-								<td>${e.phoneNumber}</td>
-								<td>${e.createDate}</td>
-								<td><a href='' class="updateModelButton"> <i
-										class='fa-solid fa-pencil'></i>
+								<td class="status" data-status='${e.status}'>${e.status ? 'Còn làm' : 'Đã nghỉ'}</td>
+								<td><a href='listEmployee/detail/${e.id}.html'>
+										<p class="detail-emp">Xem chi tiết</p>
+								</a></td>
+								<td><a href="listEmployee/authorization/${e.id}.html"
+									class="authorization-link">
+										<button class="authorization-button">Phân quyền</button>
+								</a></td>
+								<td><a href='listEmployee/update/${e.id}.html'
+									class="updateModelButton"> <i class='fa-solid fa-pencil'></i>
 								</a> <a href='listEmployee/delete/${e.id}.html'> <i
 										class='fa-solid fa-trash'></i>
 								</a></td>

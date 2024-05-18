@@ -563,3 +563,6 @@
   justify-content: center;
 }
 
+.errorMessage{
+    color: red !important;
+}
