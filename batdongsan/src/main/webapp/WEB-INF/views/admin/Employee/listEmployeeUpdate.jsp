@@ -6,18 +6,20 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listEmployee.css?version=55"
+<link rel="stylesheet" href="../../../css/client/index.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/headerAdmin.css"
+<link rel="stylesheet" href="../../../css/admin/headerAdmin.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listTag.css" type="text/css">
-<%@ include file="../../../links/links.jsp"%>
+	<link rel="stylesheet" href="../../../css/admin/listEmployee.css?version=61"
+	type="text/css">
+<link rel="stylesheet" href="../../../css/admin/listTag.css"
+	type="text/css">
+<%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerAdmin.jsp"%>
+	<%@ include file="../../../components/headerAdmin.jsp"%>
 	<div class='admin active'>
-		<%@ include file="../../components/sidebarAdmin.jsp"%>
+		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListCategory -->
 		<div class='list-category'>
 			<div class='header-wrapper'>
@@ -44,7 +46,6 @@
 							<th scope='col'>Mã nhân viên</th>
 							<th scope='col'>Họ tên</th>
 							<th scope='col'>Trạng thái</th>
-							<th scope='col'>Chức vụ</th>
 							<th scope='col'>Chi tiết</th>
 							<th scope='col'>Phân quyền</th>
 							<th scope='col'>Thao tác</th>
@@ -56,11 +57,11 @@
 								<th scope='row'>${e.id}</th>
 								<td>${e.fullname}</td>
 								<td class="status" data-status='${e.status}'>${e.status ? 'Còn làm' : 'Đã nghỉ'}</td>
-								<td>Quản lý bài viết</td>
 								<td><a href='listEmployee/detail/${e.id}.html'>
 										<p class="detail-emp">Xem chi tiết</p>
 								</a></td>
-								<td><a href="listEmployee/authorization/${e.id}.html" class="authorization-link">
+								<td><a href="listEmployee/authorization/${e.id}.html"
+									class="authorization-link">
 										<button class="authorization-button">Phân quyền</button>
 								</a></td>
 								<td><a href='listEmployee/update/${e.id}.html'
@@ -74,26 +75,36 @@
 				</table>
 			</div>
 		</div>
-		<!-- ADDMODAL -->
-		<div class='add-modal' style="display: none;" id="addModelForm">
+		<!-- UPDATE MODEL -->
+		<div class='add-modal' style="display: flex;" id="updateModelForm">
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
-					<h1>Thêm nhân viên</h1>
+					<h1>Chỉnh sửa nhân viên</h1>
 					${message}
-					<form:form action="listEmployee/addEmployee.html"
+					<form:form action="${employee.id}.html"
 						modelAttribute="employee" method="post">
+						<div class='input-container'>
+							<div class='form-item'>
+								<p>Mã nhân viên</p>
+								<div class='input-wrapper'>
+									<form:input path="id" readonly="true" />
+								</div>
+							</div>
+						</div>
 						<div class='input-container'>
 							<div class='form-item'>
 								<p>Tên nhân viên</p>
 								<div class='input-wrapper'>
-									<form:input path="fullname" placeholder='Nhập tên' />
+									<form:input path="fullname" placeholder='Nhập tên' />	
 								</div>
+								<form:errors class="errorMessage" path="fullname" element="p"/>
 							</div>
 							<div class='form-item'>
 								<p>Email</p>
 								<div class='input-wrapper'>
-									<form:input path="email" placeholder='Email' />
+									<form:input path="email" placeholder='Email' />									
 								</div>
+								<form:errors class="errorMessage" path="email" element="p"/>
 							</div>
 						</div>
 
@@ -109,6 +120,7 @@
 								<div class='input-wrapper'>
 									<form:input path="phoneNumber" placeholder='Số điện thoại' />
 								</div>
+								<form:errors class="errorMessage" path="phoneNumber" element="p"/>
 							</div>
 						</div>
 
@@ -122,8 +134,9 @@
 							<div class='form-item'>
 								<p>Căn cước công dân</p>
 								<div class='input-wrapper'>
-									<form:input path="cccd" placeholder='9 hoặc 12 số' />
+									<form:input path="cccd" placeholder='9 hoặc 12 số' />			
 								</div>
+								<form:errors class="errorMessage" path="cccd" element="p"/>
 							</div>
 						</div>
 						<div class='button-wrapper'>
@@ -136,27 +149,12 @@
 
 				</div>
 			</div>
-			<button class='close-btn' id="closeAddModelButton">
+			<button class='close-btn' id="closeUpdateModelButton"
+				onclick="window.location.href='/batdongsan/admin/updateEmployee/cancel.html'">
 				<i class='fa-solid fa-xmark'></i>
 			</button>
 		</div>
 		<!-- END -->
-
 	</div>
-	<script>
-		$(document).ready(function() {
-			// Xử lý sự kiện Add Model
-			$("#addEmployeeButton").click(function() {
-				$("#addModelForm").show();
-			});
-
-			// Xử lý sự kiện click vào nút đóng modal
-			$("#closeAddModelButton").click(function() {
-				$("#addModelForm").hide();
-			});
-			// End Add Model
-
-		});
-	</script>
 </body>
 </html>

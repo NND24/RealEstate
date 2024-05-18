@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +30,7 @@ import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.PermissionModel;
 import batdongsan.models.RoleModel;
+import batdongsan.utils.Vadilator;
 
 @Controller
 @RequestMapping("/admin/")
@@ -43,57 +47,95 @@ public class EmployeeController {
 		model.addAttribute("employees", list);
 		model.addAttribute("employee", new EmployeeModel());
 		session.close();
-		return "admin/listEmployee";
+		return "admin/Employee/listEmployee";
 	}
 
 	// Thêm nhân viên
+	@RequestMapping(value = "listEmployee/add", method = RequestMethod.GET)
+	public String add(ModelMap model) {
+		Session session = factory.openSession();
+		String hql = "FROM EmployeeModel ORDER BY createDate DESC";
+		Query query = session.createQuery(hql);
+		List<EmployeeModel> list = query.list();
+		model.addAttribute("employees", list);
+		model.addAttribute("employee", new EmployeeModel());
+		session.close();
+		return "admin/Employee/listEmployeeAdd";
+	}
+	
 	@Transactional
 	@RequestMapping(value = "listEmployee/addEmployee", method = RequestMethod.POST)
-	public String addEmployee(ModelMap model, @ModelAttribute("employee") EmployeeModel employee) {
+	public String addEmployee(ModelMap model, @ModelAttribute("employee") EmployeeModel employee, BindingResult errors) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
-		try {
-			String id = generateId();
-			employee.setId(id);
-			Date today = new Date(Calendar.getInstance().getTime().getTime());
-			employee.setCreateDate(today);
-			employee.setPassword(employee.getPhoneNumber());
-			employee.setStatus(true);
-			session.save(employee);
-
-			// Lưu vào permission
-			List<RoleModel> roles = session.createQuery("FROM RoleModel").list();
-			for (RoleModel role : roles) {
-				PermissionModel permission = new PermissionModel();
-				permission.setEmployee(employee);
-				permission.setRole(role);
-				permission.setStatus(false); // Mặc định là False
-				// Lưu thông tin quyền cho nhân viên vào bảng Permission
-				session.save(permission);
-			}
-
-			t.commit();
-			model.addAttribute("message", "Thêm mới thành công");
-		} catch (Exception e) {
-			t.rollback();
-			model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
-		} finally {
-			session.close();
+		if(employee.getFullname() == null || employee.getFullname().isEmpty()) {
+			errors.rejectValue("fullname", "employee", "Vui lòng nhập họ và tên!");
 		}
-		return "redirect:/admin/listEmployee.html";
+		// Kiểm tra email
+		if(employee.getEmail() == null||employee.getEmail().isEmpty()) {
+			errors.rejectValue("email", "employee", "Vui lòng nhập email!");
+		}
+		else if(!Vadilator.isValidEmail(employee.getEmail())) {
+			errors.rejectValue("email", "employee", "Email không hợp lệ");
+		}
+		else if(checkEmpExists(employee.getEmail())) {
+			errors.rejectValue("email", "employee", "Email đã tồn tại");
+		}
+		// Kiểm tra số điện thoại
+		if(employee.getPhoneNumber() == null||employee.getPhoneNumber().isEmpty()) {
+			errors.rejectValue("phoneNumber", "employee", "Vui lòng nhập số điện thoại!");
+		}
+		else if(!Vadilator.isValidPhoneNumber(employee.getPhoneNumber())) {
+			errors.rejectValue("phoneNumber", "employee", "Số điện thoại không hợp lệ");
+		}
+		// Kiểm tra căn cước công dân
+		if(employee.getCccd() == null||employee.getCccd().isEmpty()) {
+			errors.rejectValue("cccd", "employee", "Vui lòng nhập căn cước!");
+		}
+		else if(!Vadilator.isValidCccd(employee.getCccd())) {
+			errors.rejectValue("cccd", "employee", "Căn cước không hợp lệ");
+		}		
+		if(errors.hasErrors()) {
+			model.addAttribute("message", "Có lỗi");
+			String hql = "FROM EmployeeModel ORDER BY createDate DESC";
+			Query query = session.createQuery(hql);
+			List<EmployeeModel> list = query.list();
+			model.addAttribute("employees", list);
+			session.close();
+			return "admin/Employee/listEmployeeAdd";
+		} else {
+			try {
+				String id = generateId();
+				employee.setId(id);
+				Date today = new Date(Calendar.getInstance().getTime().getTime());
+				employee.setCreateDate(today);
+				employee.setPassword(employee.getPhoneNumber());
+				employee.setStatus(true);
+				session.save(employee);
+
+				// Lưu vào permission
+				List<RoleModel> roles = session.createQuery("FROM RoleModel").list();
+				for (RoleModel role : roles) {
+					PermissionModel permission = new PermissionModel();
+					permission.setEmployee(employee);
+					permission.setRole(role);
+					permission.setStatus(false); // Mặc định là False
+					// Lưu thông tin quyền cho nhân viên vào bảng Permission
+					session.save(permission);
+				}
+
+				t.commit();
+			} catch (Exception e) {
+				t.rollback();
+				model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
+			} finally {
+				session.close();
+			}
+			return "redirect:/admin/listEmployee.html";
+		}	
 	}
 
 	// Xóa nhân viên: Thực ra là chuyển trạng thái thành ẩn (Status)
-	public boolean isEmployeeInNews(String id) {
-		Session session = factory.openSession();
-		String hql = "FROM NewsModel WHERE idWritter = :id";
-		Query query = session.createQuery(hql);
-		query.setParameter("id", id);
-		List<NewsModel> newsList = query.list();
-		session.close();
-		return !newsList.isEmpty();
-	}
-
 	@RequestMapping(value = "listEmployee/delete/{id}", method = RequestMethod.GET)
 	public String deleteEmployee(ModelMap model, @PathVariable("id") String id) {
 		Session session = factory.openSession();
@@ -138,13 +180,50 @@ public class EmployeeController {
 
 		EmployeeModel emp = (EmployeeModel) session.get(EmployeeModel.class, id);
 		model.addAttribute("employee", emp);
-		return "admin/listEmployeeUpdate";
+		return "admin/Employee/listEmployeeUpdate";
 	}
 
-	@RequestMapping(value = "listEmployee/update/listEmployee/update", method = RequestMethod.POST)
-	public String updateEmp(ModelMap model, @ModelAttribute("employee") EmployeeModel employee) {
+	@RequestMapping(value = "listEmployee/update/{id}", method = RequestMethod.POST)
+	public String updateEmp(ModelMap model, @ModelAttribute("employee") EmployeeModel employee, BindingResult errors,  HttpServletRequest request) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
+		// Kiểm tra họ và tên
+		if(employee.getFullname().isEmpty()) {
+			errors.rejectValue("fullname", "employee", "Vui lòng nhập họ và tên!");
+		}
+		// Kiểm tra email
+		if(employee.getEmail().isEmpty()) {
+			errors.rejectValue("email", "employee", "Vui lòng nhập email!");
+		}
+		else if(!Vadilator.isValidEmail(employee.getEmail())) {
+			errors.rejectValue("email", "employee", "Email không hợp lệ");
+		}
+		else if(checkEmpExists(employee.getEmail())) {
+			errors.rejectValue("email", "employee", "Email đã tồn tại");
+		}
+		// Kiểm tra số điện thoại
+		if(employee.getPhoneNumber().isEmpty()) {
+			errors.rejectValue("phoneNumber", "employee", "Vui lòng nhập số điện thoại!");
+		}
+		else if(!Vadilator.isValidPhoneNumber(employee.getPhoneNumber())) {
+			errors.rejectValue("phoneNumber", "employee", "Số điện thoại không hợp lệ");
+		}
+		// Kiểm tra căn cước công dân
+		if(employee.getCccd().isEmpty()) {
+			errors.rejectValue("cccd", "employee", "Vui lòng nhập căn cước!");
+		}
+		else if(!Vadilator.isValidCccd(employee.getCccd())) {
+			errors.rejectValue("cccd", "employee", "Căn cước không hợp lệ");
+		}		
+		if(errors.hasErrors()) {
+			model.addAttribute("message", "Có lỗi");
+			String hql = "FROM EmployeeModel ORDER BY createDate DESC";
+			Query query = session.createQuery(hql);
+			List<EmployeeModel> list = query.list();
+			model.addAttribute("employees", list);
+			session.close();
+			return "admin/Employee/listEmployeeUpdate";
+		}
 		try {
 			EmployeeModel existingEmp = (EmployeeModel) session.get(EmployeeModel.class, employee.getId());
 			if (existingEmp != null) {
@@ -168,22 +247,6 @@ public class EmployeeController {
 		return "redirect:/admin/listEmployee.html";
 	}
 
-//	@RequestMapping(value = "listEmployee/update/listEmployee/update", method = RequestMethod.POST)
-//	public String updateEmployee(@ModelAttribute("employee") EmployeeModel employee) {
-//		Session session = factory.openSession();
-//		Transaction t = session.beginTransaction();
-//		try {
-//			session.merge(employee);
-//			t.commit();
-//		} catch (Exception e) {
-//			t.rollback();
-//			e.printStackTrace();
-//		} finally {
-//			session.close();
-//		}
-//		return "redirect:/admin/listEmployee.html";
-//	}
-
 	@RequestMapping(value = "updateEmployee/cancel", method = RequestMethod.GET)
 	public String cancelUpdate() {
 		return "redirect:/admin/listEmployee.html";
@@ -199,12 +262,13 @@ public class EmployeeController {
 		List<EmployeeModel> list = query.list();
 		model.addAttribute("employees", list);
 		model.addAttribute("employee", new EmployeeModel());
-
+		String roleName = getEmployeeRole(session, id);
+		model.addAttribute("roleName", roleName);
 		EmployeeModel emp = (EmployeeModel) session.get(EmployeeModel.class, id);
 
 		model.addAttribute("status", emp.isStatus());
 		model.addAttribute("employee", emp);
-		return "admin/listEmployeeDetail";
+		return "admin/Employee/listEmployeeDetail";
 	}
 
 	// Phân quyền
@@ -241,7 +305,7 @@ public class EmployeeController {
 		permission.setEmployee(emp); // Set id của nhân viên cho permission
 		model.addAttribute("permissions", permission);
 		session.close();
-		return "admin/listEmployeeAuthorization";
+		return "admin/Employee/listEmployeeAuthorization";
 	}
 
 	@RequestMapping(value = "listEmployee/authorization/listEmployee/authorization", method = RequestMethod.POST)
@@ -290,4 +354,42 @@ public class EmployeeController {
 		String randomString = "NV" + timeString + randomNumber;
 		return randomString;
 	}
+	
+	private boolean checkEmpExists(String email) {
+		Session session = factory.openSession();
+	    List<EmployeeModel> employees = new ArrayList<>();
+	    try {
+	        String hql = "FROM EmployeeModel WHERE email = :email";
+	        Query<EmployeeModel> query = session.createQuery(hql, EmployeeModel.class);
+	        query.setParameter("email", email);
+	        employees = query.list();
+	    } finally {
+	        session.close();
+	    }
+	    return !employees.isEmpty();
+	}
+	
+	public boolean isEmployeeInNews(String id) {
+		Session session = factory.openSession();
+		String hql = "FROM NewsModel WHERE idWritter = :id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<NewsModel> newsList = query.list();
+		session.close();
+		return !newsList.isEmpty();
+	}
+
+	private String getEmployeeRole(Session session, String empId) {
+		String hql = "SELECT r.roleName FROM RoleModel r " +
+                "JOIN r.permissions p " +
+                "WHERE p.employee.id = :empId AND p.status = true";
+		Query<String> query = session.createQuery(hql, String.class);
+        query.setParameter("empId", empId);
+        // Execute the query and get the list of role names
+        List<String> roleNames = query.list();
+        // Join the role names into a single string
+        String roles = String.join(", ", roleNames);
+        return roles;  
+	}
+	
 }

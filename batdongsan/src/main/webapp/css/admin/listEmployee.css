@@ -620,3 +620,7 @@ button.authorization-button:hover::before {
   top: -30px;
   left: -30px;
 }
+
+.errorMessage{
+    color: red !important;
+}
