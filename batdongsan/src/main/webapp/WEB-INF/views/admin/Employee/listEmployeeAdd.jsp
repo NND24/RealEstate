@@ -28,14 +28,9 @@
 			<div class='search-wrapper'>
 				<div class='input-container'>
 					<i class='fa-solid fa-magnifying-glass'></i> <input type='text'
-						placeholder='Tìm kiếm...' />
+						placeholder='Mã hoặc tên nhân viên ...' />
 				</div>
-				<div class='filter-container'>
-					<select name='' id=''>
-						<option value=''>Nhà đất bán</option>
-						<option value=''>Nhà đất cho thuê</option>
-					</select>
-				</div>
+
 			</div>
 			<div class='table-wrapper'>
 				<table class='table table-hover table-striped'>

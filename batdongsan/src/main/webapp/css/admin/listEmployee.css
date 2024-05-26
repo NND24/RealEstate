@@ -329,6 +329,7 @@
   font-weight: 600;
   margin: 0;
   margin-top: 10px;
+  padding-bottom: 7px;
 }
 
 .admin .list-category .search-wrapper {
@@ -623,4 +624,11 @@ button.authorization-button:hover::before {
 
 .errorMessage{
     color: red !important;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; 
 }

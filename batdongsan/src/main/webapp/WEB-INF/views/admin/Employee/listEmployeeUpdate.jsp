@@ -20,7 +20,7 @@
 	<%@ include file="../../../components/headerAdmin.jsp"%>
 	<div class='admin active'>
 		<%@ include file="../../../components/sidebarAdmin.jsp"%>
-		<!-- ListCategory -->
+		<!-- LIST EMPLOYEE -->
 		<div class='list-category'>
 			<div class='header-wrapper'>
 				<h3>Quản lý nhân viên</h3>
@@ -30,13 +30,7 @@
 			<div class='search-wrapper'>
 				<div class='input-container'>
 					<i class='fa-solid fa-magnifying-glass'></i> <input type='text'
-						placeholder='Tìm kiếm...' />
-				</div>
-				<div class='filter-container'>
-					<select name='' id=''>
-						<option value=''>Nhà đất bán</option>
-						<option value=''>Nhà đất cho thuê</option>
-					</select>
+						placeholder='Mã hoặc tên nhân viên ...' />
 				</div>
 			</div>
 			<div class='table-wrapper'>

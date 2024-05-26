@@ -7,34 +7,30 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listEmployee.css?version=55"
+<link rel="stylesheet" href="../css/admin/listEmployee.css?version=58"
 	type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
 <link rel="stylesheet" href="../css/admin/listTag.css" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
+
+
 </head>
 <body>
 	<%@ include file="../../../components/headerAdmin.jsp"%>
 	<div class='admin active'>
 		<%@ include file="../../../components/sidebarAdmin.jsp"%>
-		<!-- ListCategory -->
+		<!-- ListEmployee -->
 		<div class='list-category'>
 			<div class='header-wrapper'>
 				<h3>Quản lý nhân viên</h3>
-				<a href="listEmployee/add.html"><button class='add-new-button' id="addEmployeeButton">Thêm
-					mới</button></a>	
+				<a href="listEmployee/add.html"><button class='add-new-button'
+						id="addEmployeeButton">Thêm mới</button></a>
 			</div>
 			<div class='search-wrapper'>
 				<div class='input-container'>
-					<i class='fa-solid fa-magnifying-glass'></i> <input type='text'
-						placeholder='Tìm kiếm...' />
-				</div>
-				<div class='filter-container'>
-					<select name='' id=''>
-						<option value=''>Nhà đất bán</option>
-						<option value=''>Nhà đất cho thuê</option>
-					</select>
+					<i class='fa-solid fa-magnifying-glass'></i> <input type='text' id="searchInput"
+						placeholder='Mã hoặc tên nhân viên ...' />
 				</div>
 			</div>
 			<div class='table-wrapper'>
@@ -49,7 +45,7 @@
 							<th scope='col'>Thao tác</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="employeeTable">
 						<c:forEach var="e" items="${employees}">
 							<tr>
 								<th scope='row'>${e.id}</th>
@@ -71,83 +67,136 @@
 						</c:forEach>
 					</tbody>
 				</table>
+
 			</div>
-		</div>
-		<!-- ADDMODAL -->
-		<div class='add-modal' style="display: none;" id="addModelForm">
-			<div class='modal-wrapper'>
-				<div class='modal-container'>
-					<h1>Thêm nhân viên</h1>
-					${message}
-					<form:form action="listEmployee/addEmployee.html"
-						modelAttribute="employee" method="post" id="employeeForm">
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Tên nhân viên</p>
-								<div class='input-wrapper'>
-									<form:input path="fullname" placeholder='Nhập tên' />
-									<form:errors class="errorMessage errorCtrlMessage"
-										path="fullname" />
+			<div class="pagination-container">
+				<nav aria-label="Page navigation">
+					<ul id="pagination" class="pagination"></ul>
+				</nav>
+			</div>
+			<!-- ADDMODAL -->
+			<div class='add-modal' style="display: none;" id="addModelForm">
+				<div class='modal-wrapper'>
+					<div class='modal-container'>
+						<h1>Thêm nhân viên</h1>
+						${message}
+						<form:form action="listEmployee/addEmployee.html"
+							modelAttribute="employee" method="post" id="employeeForm">
+							<div class='input-container'>
+								<div class='form-item'>
+									<p>Tên nhân viên</p>
+									<div class='input-wrapper'>
+										<form:input path="fullname" placeholder='Nhập tên' />
+										<form:errors class="errorMessage errorCtrlMessage"
+											path="fullname" />
+									</div>
+								</div>
+								<div class='form-item'>
+									<p>Email</p>
+									<div class='input-wrapper'>
+										<form:input path="email" placeholder='Email' />
+										<form:errors class="errorMessage errorCtrlMessage"
+											path="email" />
+									</div>
 								</div>
 							</div>
-							<div class='form-item'>
-								<p>Email</p>
-								<div class='input-wrapper'>
-									<form:input path="email" placeholder='Email' />
-									<form:errors class="errorMessage errorCtrlMessage" path="email" />
-								</div>
-							</div>
-						</div>
 
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Ngày sinh</p>
-								<div class='input-wrapper'>
-									<form:input path="birthday" type="date" placeholder='Địa chỉ' />
+							<div class='input-container'>
+								<div class='form-item'>
+									<p>Ngày sinh</p>
+									<div class='input-wrapper'>
+										<form:input path="birthday" type="date" placeholder='Địa chỉ' />
+									</div>
+								</div>
+								<div class='form-item'>
+									<p>Số điện thoại</p>
+									<div class='input-wrapper'>
+										<form:input path="phoneNumber" placeholder='Số điện thoại' />
+										<form:errors class="errorMessage errorCtrlMessage"
+											path="phoneNumber" />
+									</div>
 								</div>
 							</div>
-							<div class='form-item'>
-								<p>Số điện thoại</p>
-								<div class='input-wrapper'>
-									<form:input path="phoneNumber" placeholder='Số điện thoại' />
-									<form:errors class="errorMessage errorCtrlMessage"
-										path="phoneNumber" />
-								</div>
-							</div>
-						</div>
 
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Địa chỉ</p>
-								<div class='input-wrapper'>
-									<form:input path="address" placeholder='Địa chỉ' />
+							<div class='input-container'>
+								<div class='form-item'>
+									<p>Địa chỉ</p>
+									<div class='input-wrapper'>
+										<form:input path="address" placeholder='Địa chỉ' />
+									</div>
+								</div>
+								<div class='form-item'>
+									<p>Căn cước công dân</p>
+									<div class='input-wrapper'>
+										<form:input path="cccd" placeholder='9 hoặc 12 số' />
+										<form:errors class="errorMessage errorCtrlMessage" path="cccd" />
+									</div>
 								</div>
 							</div>
-							<div class='form-item'>
-								<p>Căn cước công dân</p>
-								<div class='input-wrapper'>
-									<form:input path="cccd" placeholder='9 hoặc 12 số' />
-									<form:errors class="errorMessage errorCtrlMessage" path="cccd" />
-								</div>
+							<div class='button-wrapper'>
+								<div></div>
+								<button class='continue-button' id='submitButton'>
+									<span>Xác nhận</span>
+								</button>
 							</div>
-						</div>
-						<div class='button-wrapper'>
-							<div></div>
-							<button class='continue-button' id='submitButton'>
-								<span>Xác nhận</span>
-							</button>
-						</div>
-					</form:form>
+						</form:form>
 
+					</div>
 				</div>
+				<button class='close-btn' id="closeAddModelButton">
+					<i class='fa-solid fa-xmark'></i>
+				</button>
 			</div>
-			<button class='close-btn' id="closeAddModelButton">
-				<i class='fa-solid fa-xmark'></i>
-			</button>
+			<!-- END -->
+
 		</div>
-		<!-- END -->
+		<script>
+		$(document).ready(function () {
+		    var totalPages = ${totalPages};
+		    var currentPage = ${currentPage};
 
-	</div>
+		    function initPagination() {
+		        $('#pagination').twbsPagination({
+		            totalPages: totalPages,
+		            visiblePages: 5,
+		            startPage: currentPage,
+		            onPageClick: function (event, page) {
+		                console.info('Page ' + page + ' clicked.');
+		                $.get("listEmployee.html", { page: page })
+		                .done(function(data) {
+		                    $('#employeeTable').html($(data).find('#employeeTable').html());
+		                    currentPage = page;
+		                })
+		                .fail(function() {
+		                    console.error('Error while fetching data from server.');
+		                });
+		            },
+		            first: 'Đầu',
+		            prev: '<i class="fas fa-angle-left"></i>',
+		            next: '<i class="fas fa-angle-right"></i>',
+		            last: 'Cuối'
+		        });
+		    }
 
+		    // Initialize pagination
+		    initPagination();
+		    
+		    $('#searchInput').on('keyup', function () {
+		        var searchText = $(this).val().toLowerCase(); // Lấy giá trị của ô input và chuyển đổi thành chữ thường
+		        $('#employeeTable tr').each(function () {
+		        	var employeeId = $(this).find('th').text().trim().toLowerCase(); // Lấy mã nhân viên từ cột đầu tiên trong dòng
+		        	console.log("Employee ID:", employeeId); 
+		        	var employeeName = $(this).find('td:eq(0)').text().trim().toLowerCase();
+		            console.log("Employee Name:", employeeName); 
+		     
+		            if (employeeId.includes(searchText) || employeeName.includes(searchText)) {
+		                $(this).show(); // Hiện nhân viên nếu tìm thấy kết quả
+		            } else {
+		                $(this).hide(); // Ẩn nhân viên nếu không tìm thấy kết quả
+		            }
+		        });
+		    });
+		});
+		</script>
 </body>
 </html>

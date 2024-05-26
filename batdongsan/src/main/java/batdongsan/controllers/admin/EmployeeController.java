@@ -38,16 +38,39 @@ public class EmployeeController {
 	@Autowired
 	SessionFactory factory;
 
-	@RequestMapping("listEmployee")
-	public String index(ModelMap model) {
-		Session session = factory.openSession();
-		String hql = "FROM EmployeeModel ORDER BY createDate DESC";
-		Query query = session.createQuery(hql);
-		List<EmployeeModel> list = query.list();
-		model.addAttribute("employees", list);
-		model.addAttribute("employee", new EmployeeModel());
-		session.close();
-		return "admin/Employee/listEmployee";
+	@RequestMapping(value = "listEmployee", method = RequestMethod.GET)
+	public String index(ModelMap model, HttpServletRequest request) {
+	    Session session = factory.openSession();
+
+	    // Phân trang
+	    int pageSize = 6;
+	    String pageParam = request.getParameter("page");
+	    int currentPage = 1;
+	    if (pageParam != null && !pageParam.isEmpty()) {
+	        currentPage = Integer.parseInt(pageParam);
+	    }
+	    int startIndex = (currentPage - 1) * pageSize;
+
+	    // Lấy dữ liệu với phân trang
+	    String hql = "FROM EmployeeModel ORDER BY createDate DESC";
+	    Query query = session.createQuery(hql);
+	    query.setFirstResult(startIndex);
+	    query.setMaxResults(pageSize);
+	    List<EmployeeModel> employeesForPage = query.list();
+
+	    // Tính toán tổng số trang
+	    Query countQuery = session.createQuery("SELECT count(e.id) FROM EmployeeModel e");
+	    Long countResult = (Long) countQuery.uniqueResult();
+	    int totalPages = (int) Math.ceil((double) countResult / pageSize);;
+
+	    model.addAttribute("employees", employeesForPage);
+	    model.addAttribute("employee", new EmployeeModel());
+	    model.addAttribute("employeeCount", countResult);
+	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("totalPages", totalPages);
+
+	    session.close();
+	    return "admin/Employee/listEmployee";
 	}
 
 	// Thêm nhân viên
