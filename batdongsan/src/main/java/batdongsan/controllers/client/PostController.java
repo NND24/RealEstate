@@ -240,7 +240,7 @@ public class PostController {
 				List<String> imagePaths = new ArrayList<>();
 				for (MultipartFile file : files) {
 					try {
-						String uploadDir = "D:/Workspace Java/DoAnLTW/batdongsan/src/main/webapp/images/";
+						String uploadDir = "D:/Workspace Java/BatDongSan/batdongsan/src/main/webapp/images/";
 						String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 						String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 						String filePath = uploadDir + uniqueFileName;
