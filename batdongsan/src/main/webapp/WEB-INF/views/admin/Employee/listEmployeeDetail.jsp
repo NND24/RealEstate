@@ -8,7 +8,7 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../../../css/client/index.css"
 	type="text/css">
-<link rel="stylesheet" href="../../../css/admin/listCategory.css"
+<link rel="stylesheet" href="../../../css/admin/listEmployee.css"
 	type="text/css">
 <link rel="stylesheet" href="../../../css/admin/headerAdmin.css"
 	type="text/css">
@@ -30,13 +30,7 @@
 			<div class='search-wrapper'>
 				<div class='input-container'>
 					<i class='fa-solid fa-magnifying-glass'></i> <input type='text'
-						placeholder='Tìm kiếm...' />
-				</div>
-				<div class='filter-container'>
-					<select name='' id=''>
-						<option value=''>Nhà đất bán</option>
-						<option value=''>Nhà đất cho thuê</option>
-					</select>
+						placeholder='Mã hoặc tên nhân viên ...'/>
 				</div>
 			</div>
 			<div class='table-wrapper'>
@@ -150,6 +144,17 @@
 									<form:input path="createDate" readonly="true" />
 								</div>
 							</div>
+							
+							<div class='form-item'>
+								<p>Chức vụ</p>
+								<div class='input-wrapper'>
+									 <input type="text" value="${roleName}" readonly="true" />
+								</div>
+							</div>
+							
+						</div>
+
+						<div class='input-container'>
 							<c:choose>
 								<c:when test="${employee.deleteDate != null}">
 									<div class='form-item'>
@@ -160,15 +165,6 @@
 									</div>
 								</c:when>
 							</c:choose>
-						</div>
-
-						<div class='input-container'>
-							<div class='form-item'>
-								<p>Chức vụ</p>
-								<div class='input-wrapper'>
-									 <input type="text" value="${roleName}" readonly="true" />
-								</div>
-							</div>
 						</div>
 
 					</form:form>

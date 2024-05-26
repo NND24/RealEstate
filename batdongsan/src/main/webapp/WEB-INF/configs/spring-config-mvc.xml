@@ -34,7 +34,7 @@
 	    <property name="dataSource" ref="dataSource" />
 	    <property name="hibernateProperties">
 	        <props>
-	            <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+	            <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</prop>
 	            <prop key="hibernate.show_sql">false</prop>
 	        </props>
 	    </property>
@@ -46,11 +46,8 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		p:url="jdbc:sqlserver://localhost:1433;DatabaseName=BatDongSan;encrypt=true;trustServerCertificate=true"
-<<<<<<< HEAD
-		p:username="sa" p:password="123456789" />
-=======
 		p:username="sa" p:password="123456" />
->>>>>>> branch 'main' of https://github.com/NND24/BatDongSan.git
+
 	
 	<!-- Transaction Manager -->
 	<bean id="transactionManager"
