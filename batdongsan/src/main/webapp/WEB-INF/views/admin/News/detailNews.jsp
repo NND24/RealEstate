@@ -16,12 +16,12 @@
 	type="text/css">
 <link rel="stylesheet" href="../../../css/admin/detail.css?version=50"
 	type="text/css">
-<%@ include file="../../../links/links.jsp"%>
+<%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerAdmin.jsp"%>
+	<%@ include file="../../../components/headerAdmin.jsp"%>
 	<div class='admin active'>
-		<%@ include file="../../components/sidebarAdmin.jsp"%>
+		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- Detail -->
 		<div class='detail'>
 			<div class='container '>

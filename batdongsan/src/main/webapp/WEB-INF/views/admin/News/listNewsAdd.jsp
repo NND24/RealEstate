@@ -6,27 +6,29 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../css/admin/listNews.css?version=54" type="text/css">
-<link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/headerAdmin.css"
+<link rel="stylesheet" href="../../css/admin/listNews.css?version=56"
 	type="text/css">
-<%@ include file="../../../links/links.jsp"%>
+<link rel="stylesheet" href="../../css/client/index.css" type="text/css">
+<link rel="stylesheet" href="../../css/admin/headerAdmin.css"
+	type="text/css">
+<%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerAdmin.jsp"%>
+	<%@ include file="../../../components/headerAdmin.jsp"%>
 	<div class='admin active'>
-		<%@ include file="../../components/sidebarAdmin.jsp"%>
-
+		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListNews -->
 		<div class='admin-list-news'>
 			<div class='head-container'>
 				<h1>Danh sách tin tức</h1>
-				<button class='add-new-button' id='addNewsButton'>Thêm mới</button>
+				<a href="listNews/add.html"><button class='add-new-button'
+						id="addNewsButton">Thêm mới</button></a>
 			</div>
 			<div class='content-container'>
 				<div class='filter-wrapper'>
 					<div class='search-input'>
-						<input type='text' placeholder='Tìm theo mã tin, tiêu đề' /> <i
+						<input type='text' id="searchInput"
+							placeholder='Tìm theo mã tin, tiêu đề' /> <i
 							class='fa-solid fa-magnifying-glass'></i>
 					</div>
 					<div class='dropdown'>
@@ -44,12 +46,13 @@
 				</div>
 
 				<div class='post-container'>
-					<div class='tab-content'>
-					
+					<div class='tab-content' id="news-container">
 						<c:forEach var="n" items="${listOfNews}">
 							<div class='admin-post-card'>
 								<div>
-									<img src="${pageContext.servletContext.contextPath}/images/News/${n.thumbnail}" alt=""/>
+									<img
+										src="${pageContext.servletContext.contextPath}/images/News/${n.thumbnail}"
+										alt="" />
 									<div class='post-content-container'>
 										<div>
 											<h4 class='header'>${n.title}</h4>
@@ -89,8 +92,9 @@
 												class='fa-regular fa-flag'></i> <span>Duyệt tin</span></a>
 										</div>
 										<div class='button-item'>
-											<a href="listNews/detailNews/${n.newsId}.html"><i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span></a>
-											
+											<a href="listNews/detailNews/${n.newsId}.html"><i
+												class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span></a>
+
 										</div>
 										<div class='button-item'>
 											<a href='listNews/hide/${n.newsId}.html'><i
@@ -101,12 +105,12 @@
 												class='fa-regular fa-share-from-square'></i> <span>Xóa
 													tin</span></a>
 										</div>
-										
+
 										<div class='button-item'>
-											<a href='listNews/update/${n.newsId}.html'> <i class='fa-solid fa-pencil'></i>
-														<span>Sửa tin</span>
-												</a>
-										</div>				
+											<a href='listNews/update/${n.newsId}.html'> <i
+												class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -115,15 +119,20 @@
 
 					</div>
 				</div>
+				<div class="pagination-container">
+					<nav aria-label="Page navigation">
+						<ul id="pagination" class="pagination"></ul>
+					</nav>
+				</div>
 			</div>
 		</div>
 
 		<!-- ADD NEWS -->
-		<div class='add-modal' id='addNewsForm'>
+		<div class='add-modal' style="display: flex;" id='addNewsForm'>
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
 					<h1>Thêm tin tức</h1>
-					<form:form action="listNews/addNews.html" modelAttribute="news"
+					<form:form action="addNews.html" modelAttribute="news"
 						method="post" enctype="multipart/form-data">
 						<div class='input-container'>
 							<div class='form-item'>
@@ -131,6 +140,9 @@
 								<div class='input-wrapper'>
 									<form:input path="title" placeholder='Nhập tiêu đề' />
 								</div>
+								<c:if test="${not empty titleError}">
+									<p class="errorMessage">${titleError}</p>
+								</c:if>
 							</div>
 
 							<div class='form-item'>
@@ -148,6 +160,9 @@
 								<div class='input-wrapper'>
 									<form:textarea path="shortDescription" placeholder='Nhập mô tả' />
 								</div>
+								<c:if test="${not empty shortDescriptionError}">
+									<p class="errorMessage">${shortDescriptionError}</p>
+								</c:if>
 							</div>
 						</div>
 
@@ -155,19 +170,20 @@
 							<div class='form-item full-width'>
 								<p>Nội dung</p>
 								<div class='input-wrapper input-body-news'>
-									<form:textarea id="editor" path='description' cols='30' rows='7'></form:textarea>
+									<form:textarea id="editor" path='description' cols='30'
+										rows='7'></form:textarea>
 								</div>
 							</div>
 						</div>
-						
+
 						<div class='input-container'>
 							<div class='form-item'>
 								<p>Ảnh tiêu đề</p>
 								<div class='input-wrapper'>
-									<form:input path="thumbnail" type="file"/>
+									<input type="file" name="thumbnail" />
 								</div>
 							</div>
-							
+
 						</div>
 
 						<div class='button-wrapper'>
@@ -180,13 +196,12 @@
 
 				</div>
 			</div>
-			<button class='close-btn' id='closeAddModelButton'>
+			<button class='close-btn' id='closeAddModelButton'
+				onclick="window.location.href='/batdongsan/admin/updateNews/cancel.html'">
 				<i class='fa-solid fa-xmark'></i>
 			</button>
 		</div>
 		<!-- END -->
-
-
 
 
 	</div>
@@ -198,16 +213,19 @@
 	            console.error( error );
 	        } );
 			
-			// Xử lý sự kiện Add Model
-			$("#addNewsButton").click(function() {
-				$("#addNewsForm").show();
-			});
-
-			// Xử lý sự kiện click vào nút đóng modal
-			$("#closeAddModelButton").click(function() {
-				$("#addNewsForm").hide();
-			});
-			// End Add Model
+	         // Chức năng tìm kiếm
+	            $('#searchInput').on('keyup', function () {
+	                var searchText = $(this).val().toLowerCase();
+	                $('#news-container .admin-post-card').each(function () {
+	                    var newsId = $(this).find('.detail-item .secondary').first().text().toLowerCase();
+	                    var newsTitle = $(this).find('.header').text().toLowerCase();
+	                    if (newsId.includes(searchText) || newsTitle.includes(searchText)) {
+	                        $(this).show();
+	                    } else {
+	                        $(this).hide();
+	                    }
+	                });
+	            });
 		});
 	</script>
 </body>
