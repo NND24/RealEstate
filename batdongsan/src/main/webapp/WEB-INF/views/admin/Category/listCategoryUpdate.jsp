@@ -6,19 +6,19 @@
 <head>
 <meta charset="utf-8">
 <title>Chỉnh sửa danh mục</title>
-<link rel="stylesheet" href="../../css/client/index.css" type="text/css">
+<link rel="stylesheet" href="../../../css/client/index.css" type="text/css">
 
-<link rel="stylesheet" href="../../css/admin/listCategory.css"
+<link rel="stylesheet" href="../../../css/admin/listCategory.css"
 	type="text/css">
-<link rel="stylesheet" href="../../css/admin/headerAdmin.css"
+<link rel="stylesheet" href="../../../css/admin/headerAdmin.css"
 	type="text/css">
-<%@ include file="../../../links/links.jsp"%>
+<%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerAdmin.jsp"%>
+	<%@ include file="../../../components/headerAdmin.jsp"%>
 	
 	<div class='admin active'>
-		<%@ include file="../../components/sidebarAdmin.jsp"%>
+		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListCategory -->
 		<div class='list-category'>
 			<div class='header-wrapper'>
@@ -73,7 +73,7 @@
 				<div class='modal-container'>
 					<h1>Chỉnh sửa danh mục</h1>
 					${message}
-					<form:form action="listCategory/update.html"
+					<form:form action="${category.categoryId}.html"
 						modelAttribute="category" method="post">
 						<div class='input-container'>
 							<div class='form-item'>
@@ -81,6 +81,7 @@
 								<div class='input-wrapper'>
 									<form:input path="categoryId" readonly = "true"/>
 								</div>
+								
 							</div>
 							<div class='form-item'>
 								<p>Loại danh mục</p>
@@ -97,6 +98,7 @@
 								<div class='input-wrapper'>
 									<form:input path="name" type='text' placeholder='Nhập tên' />
 								</div>
+								<form:errors class="errorMessage" path="name" element="p"/>
 							</div>
 
 							<div class='form-item'>
