@@ -6,11 +6,9 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../../../css/admin/listNews.css"
+<link rel="stylesheet" href="../../../css/admin/listNews.css?versin=50"
 	type="text/css">
 <link rel="stylesheet" href="../../../css/client/index.css"
-	type="text/css">
-<link rel="stylesheet" href="../../../css/admin/listCategory.css"
 	type="text/css">
 <link rel="stylesheet" href="../../../css/admin/headerAdmin.css"
 	type="text/css">
@@ -18,13 +16,12 @@
 	type="text/css">
 <script
 	src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
-<%@ include file="../../../links/links.jsp"%>
+<%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerAdmin.jsp"%>
+	<%@ include file="../../../components/headerAdmin.jsp"%>
 	<div class='admin active'>
-		<%@ include file="../../components/sidebarAdmin.jsp"%>
-
+		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListNews -->
 		<div class='admin-list-news'>
 			<div class='head-container'>
@@ -132,7 +129,7 @@
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
 					<h1>Chỉnh sửa tin tức</h1>
-					<form:form action="listNews/update.html" modelAttribute="news"
+					<form:form action="${news.newsId}.html" modelAttribute="news"
 						method="post" enctype="multipart/form-data">
 						<div class='input-container'>
 							<div class='form-item'>
@@ -148,6 +145,9 @@
 								<div class='input-wrapper'>
 									<form:input path="title" placeholder='Nhập tiêu đề' />
 								</div>
+								<c:if test="${not empty titleError}">
+									<p class="errorMessage">${titleError}</p>
+								</c:if>
 							</div>
 
 							<div class='form-item'>
@@ -165,6 +165,9 @@
 								<div class='input-wrapper'>
 									<form:textarea path="shortDescription" placeholder='Nhập mô tả' />
 								</div>
+								<c:if test="${not empty shortDescriptionError}">
+									<p class="errorMessage">${shortDescriptionError}</p>
+								</c:if>
 							</div>
 						</div>
 

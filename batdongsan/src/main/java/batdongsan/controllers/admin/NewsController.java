@@ -1,11 +1,8 @@
 package batdongsan.controllers.admin;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.awt.PageAttributes.MediaType;
 import java.io.File;
-import java.io.IOException;
 import java.sql.Date;
 import org.apache.commons.io.FilenameUtils;
 
@@ -21,21 +18,16 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import batdongsan.models.CategoryModel;
+
 import batdongsan.models.NewsModel;
-import batdongsan.models.RealEstateModel;
 
 @Controller
 @RequestMapping("/admin/")
@@ -46,61 +38,165 @@ public class NewsController {
 	ServletContext context;
 
 	@RequestMapping("listNews")
-	public String index(ModelMap model) {
+	public String index(ModelMap model, HttpServletRequest request) {
+	    Session session = factory.openSession();
+
+	    // Phân trang
+	    int pageSize = 3;
+	    String pageParam = request.getParameter("page");
+	    int currentPage = 1;
+	    if (pageParam != null && !pageParam.isEmpty()) {
+	        currentPage = Integer.parseInt(pageParam);
+	    }
+	    int startIndex = (currentPage - 1) * pageSize;
+
+	    // Lấy tham số filter từ request
+	    String filter = request.getParameter("filter");
+	    String hql = "FROM NewsModel";
+
+	    // Thêm điều kiện vào HQL nếu có filter
+	    if (filter != null) {
+	        switch (filter) {
+	            case "approved":
+	                hql += " WHERE status = true";
+	                break;
+	            case "hidden":
+	                hql += " WHERE status = false";
+	                break;
+	            default:
+	                break;
+	        }
+	    }
+
+	    hql += " ORDER BY dateUploaded DESC";
+	    Query query = session.createQuery(hql);
+	    query.setFirstResult(startIndex);
+	    query.setMaxResults(pageSize);
+	    List<NewsModel> list = query.list();
+
+	    // Tính toán tổng số trang
+	    String countHql = "SELECT count(n.id) FROM NewsModel n";
+	    if (filter != null) {
+	        switch (filter) {
+	            case "approved":
+	                countHql += " WHERE status = true";
+	                break;
+	            case "hidden":
+	                countHql += " WHERE status = false";
+	                break;
+	            default:
+	                break;
+	        }
+	    }
+	    Query countQuery = session.createQuery(countHql);
+	    Long countResult = (Long) countQuery.uniqueResult();
+	    int totalPages = (int) Math.ceil((double) countResult / pageSize);
+
+	    model.addAttribute("listOfNews", list);
+	    model.addAttribute("news", new NewsModel());
+	    model.addAttribute("totalNews", countResult);
+	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("filter", filter);  // Add filter attribute for view
+
+	    session.close();
+	    return "admin/News/listNews";
+	}
+
+
+	// Thêm tin tức
+	@RequestMapping(value = "listNews/add", method = RequestMethod.GET)
+	public String add(ModelMap model) {
 		Session session = factory.openSession();
 		String hql = "FROM NewsModel ORDER BY dateUploaded DESC";
 		Query query = session.createQuery(hql);
 		List<NewsModel> list = query.list();
 		model.addAttribute("listOfNews", list);
 		model.addAttribute("news", new NewsModel());
-		return "admin/listNews";
+		session.close();
+		return "admin/News/listNewsAdd";
 	}
 
-	// Thêm tin tức
 	@Transactional
 	@RequestMapping(value = "listNews/addNews", method = RequestMethod.POST)
 	public String addNews(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "thumbnail") MultipartFile file, @RequestParam(name = "title") String title,
 			@RequestParam(name = "shortDescription") String shortDescription,
 			@RequestParam(name = "description") String description, @RequestParam(name = "status") Boolean status) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			String uploadDir = "D:/Workspace Java/BatDongSan/batdongsan/src/main/webapp/images/News/";
-			String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-			String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
-			String filePath = uploadDir + uniqueFileName;
-			
-			File directory = new File(uploadDir);
-			if(!directory.exists()) {
-				directory.mkdirs();
-			}
-			
-			file.transferTo(new File(filePath));
 
-			Session currentSession = factory.getCurrentSession();
-			
-			NewsModel news = new NewsModel();
-			String newsId = generateNewsId();
-			news.setNewsId(newsId);
-			news.setTitle(title);
-			news.setThumbnail(uniqueFileName);
-			Date today = new Date(Calendar.getInstance().getTime().getTime());
-			news.setDateUploaded(today);
-			news.setShortDescription(shortDescription);
-			news.setDescription(description);
-			news.setStatus(status);
-			
-			session.save(news);
-			t.commit();
-			model.addAttribute("message", "Thêm mới thành công");
-		} catch (Exception e) {
-			t.rollback();
-			model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
-		} finally {
-			session.close();
+		boolean hasErrors = false;
+
+		// Tạo một đối tượng NewsModel và thiết lập các thuộc tính
+		NewsModel news = new NewsModel();
+		news.setTitle(title);
+		news.setShortDescription(shortDescription);
+		news.setDescription(description);
+		news.setStatus(status);
+
+		// Kiểm tra tiêu đề
+		if (title == null || title.isEmpty()) {
+			model.addAttribute("titleError", "Vui lòng nhập tiêu đề!");
+			hasErrors = true;
 		}
-		return "redirect:/admin/listNews.html";
+
+		// Kiểm tra mô tả
+		if (shortDescription == null || shortDescription.isEmpty()) {
+			model.addAttribute("shortDescriptionError", "Vui lòng nhập mô tả!");
+			hasErrors = true;
+		}
+
+		if (hasErrors) {
+			loadListOfNews(model);
+			model.addAttribute("message", "Có lỗi");
+			model.addAttribute("news", news);
+
+			// Load danh sách tin tức để hiển thị lại trong trường hợp có lỗi
+			Session session = factory.openSession();
+			String hql = "FROM NewsModel ORDER BY dateUploaded DESC";
+			Query query = session.createQuery(hql);
+			List<NewsModel> list = query.list();
+			model.addAttribute("listOfNews", list);
+			session.close();
+
+			return "admin/News/listNewsAdd";
+		} else {
+			Session session = factory.openSession();
+			Transaction t = session.beginTransaction();
+			try {
+				String newsId = generateNewsId();
+				news.setNewsId(newsId);
+
+				if (!file.isEmpty()) {
+					String uploadDir = "D:/Workspace/JavaSpringMVC/RealEstate/batdongsan/src/main/webapp/images/News/";
+					String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+					String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
+					String filePath = uploadDir + uniqueFileName;
+
+					File directory = new File(uploadDir);
+					if (!directory.exists()) {
+						directory.mkdirs();
+					}
+
+					file.transferTo(new File(filePath));
+					news.setThumbnail(uniqueFileName);
+				} else {
+					news.setThumbnail("default-thumbnail.png"); // hoặc đặt giá trị mặc định nếu cần
+				}
+
+				Date today = new Date(Calendar.getInstance().getTime().getTime());
+				news.setDateUploaded(today);
+
+				session.save(news);
+				t.commit();
+				model.addAttribute("message", "Thêm mới thành công");
+			} catch (Exception e) {
+				t.rollback();
+				model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
+			} finally {
+				session.close();
+			}
+			return "redirect:/admin/listNews.html";
+		}
 	}
 
 	// Duyệt tin
@@ -194,92 +290,90 @@ public class NewsController {
 		model.addAttribute("news", news);
 		String description = news.getDescription();
 		model.addAttribute("description", description);
-		return "admin/listNewsUpdate";
+		return "admin/News/listNewsUpdate";
 	}
 
-//	@RequestMapping(value = "listNews/update/listNews/udpate", method = RequestMethod.POST)
-//	public String updateNews(ModelMap model, @ModelAttribute("news") NewsModel news) {
-//	    Session session = factory.openSession();
-//	    Transaction t = session.beginTransaction();
-//	    try {
-//	        // Cập nhật danh mục	
-//	    	NewsModel existingNews = (NewsModel) session.get(NewsModel.class, news.getNewsId());
-//	    	if (existingNews != null) {
-//	            session.update(existingNews);
-//	            t.commit();
-//	            model.addAttribute("message", "Cập nhật thành công");
-//	    	}
-//	    } catch (Exception e) {
-//	        t.rollback();
-//	        model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
-//	    } finally {
-//	        session.close();
-//	    }
-//	    // Chuyển hướng người dùng về trang danh sách các danh mục sau khi cập nhật
-//	    return "redirect:/admin/listNews.html";
-//	}
+	@RequestMapping(value = "listNews/update/{newsId}", method = RequestMethod.POST)
+	public String updateNews(ModelMap model, HttpServletRequest request,
+	                         @RequestParam(name = "newsId") String newsId,
+	                         @RequestParam(name = "thumbnail", required = false) MultipartFile file,
+	                         @RequestParam(name = "title") String title,
+	                         @RequestParam(name = "shortDescription") String shortDescription,
+	                         @RequestParam(name = "description") String description,
+	                         @RequestParam(name = "status") Boolean status) {
 
-//	@RequestMapping(value = "listNews/update/listNews/update", method = RequestMethod.POST)
-//	public String updateNews(@ModelAttribute("news") NewsModel news) {
-//		Session session = factory.openSession();
-//		Transaction t = session.beginTransaction();
-//		try {
-//			// Sử dụng merge để cập nhật đối tượng news
-//			session.merge(news);
-//			t.commit();
-//		} catch (Exception e) {
-//			t.rollback();
-//			e.printStackTrace();
-//		} finally {
-//			session.close();
-//		}
-//		return "redirect:/admin/listNews.html";
-//	}
-	
-	@RequestMapping(value = "listNews/update/listNews/update", method = RequestMethod.POST)
-	public String updateNews(ModelMap model, HttpServletRequest request, @RequestParam(name = "newsId") String newsId,
-	        @RequestParam(name = "thumbnail", required = false) MultipartFile file, @RequestParam(name = "title") String title,
-	        @RequestParam(name = "shortDescription") String shortDescription,
-	        @RequestParam(name = "description") String description, @RequestParam(name = "status") Boolean status) {
+	    boolean hasErrors = false;
+
+	    // Lấy đối tượng NewsModel từ cơ sở dữ liệu
 	    Session session = factory.openSession();
-	    Transaction t = session.beginTransaction();
-	    try {
-	        String filePath = null;
-	        String newPathThumbnail = null;
-	        if (file != null && !file.isEmpty()) {
-	            String uploadDir = "D:/Workspace Java/BatDongSan/batdongsan/src/main/webapp/images/News/";
-	            String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-	            String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
-	            filePath = uploadDir + uniqueFileName;
-	            newPathThumbnail = uniqueFileName;
-	            File directory = new File(uploadDir);
-	            if (!directory.exists()) {
-	                directory.mkdirs();
-	            }
+	    NewsModel news = (NewsModel) session.get(NewsModel.class, newsId);
+	    session.close();
 
-	            file.transferTo(new File(filePath));
-	        }
-
-	        NewsModel news = (NewsModel) session.get(NewsModel.class, newsId);
-	        news.setTitle(title);
-	        if (filePath != null) {
-	            news.setThumbnail(newPathThumbnail);
-	        }
-	        news.setShortDescription(shortDescription);
-	        news.setDescription(description);
-	        news.setStatus(status);
-
-	        session.merge(news);
-	        t.commit();
-	        model.addAttribute("message", "Cập nhật thành công");
-	    } catch (Exception e) {
-	        t.rollback();
-	        model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
-	    } finally {
-	        session.close();
+	    if (news == null) {
+	        model.addAttribute("message", "Không tìm thấy tin tức với ID: " + newsId);
+	        return "redirect:/admin/listNews.html";
 	    }
-	    return "redirect:/admin/listNews.html";
+
+	    // Kiểm tra tiêu đề
+	    if (title == null || title.isEmpty()) {
+	        model.addAttribute("titleError", "Vui lòng nhập tiêu đề!");
+	        hasErrors = true;
+	    }
+
+	    // Kiểm tra mô tả
+	    if (shortDescription == null || shortDescription.isEmpty()) {
+	        model.addAttribute("shortDescriptionError", "Vui lòng nhập mô tả!");
+	        hasErrors = true;
+	    }
+
+	    if (hasErrors) {
+	        model.addAttribute("message", "Có lỗi");
+	        model.addAttribute("news", news);
+
+	        // Load danh sách tin tức để hiển thị lại trong trường hợp có lỗi
+	        loadListOfNews(model);
+
+	        return "admin/News/listNewsUpdate";
+	    } else {
+	        session = factory.openSession();
+	        Transaction t = session.beginTransaction();
+	        try {
+	            String filePath = null;
+	            String newPathThumbnail = null;
+	            if (file != null && !file.isEmpty()) {
+	                String uploadDir = "D:/Workspace/JavaSpringMVC/RealEstate/batdongsan/src/main/webapp/images/News/";
+	                String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+	                String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
+	                filePath = uploadDir + uniqueFileName;
+	                newPathThumbnail = uniqueFileName;
+	                File directory = new File(uploadDir);
+	                if (!directory.exists()) {
+	                    directory.mkdirs();
+	                }
+
+	                file.transferTo(new File(filePath));
+	            }
+	            news.setTitle(title);
+	            if (filePath != null) {
+	                news.setThumbnail(newPathThumbnail);
+	            }
+	            news.setShortDescription(shortDescription);
+	            news.setDescription(description);
+	            news.setStatus(status);
+
+	            session.merge(news);
+	            t.commit();
+	            model.addAttribute("message", "Cập nhật thành công");
+	        } catch (Exception e) {
+	            t.rollback();
+	            model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
+	        } finally {
+	            session.close();
+	        }
+	        return "redirect:/admin/listNews.html";
+	    }
 	}
+
 
 	@RequestMapping(value = "updateNews/cancel", method = RequestMethod.GET)
 	public String cancelUpdate() {
@@ -287,7 +381,7 @@ public class NewsController {
 		return "redirect:/admin/listNews.html";
 	}
 
-	// ========
+	// Xem chi tiết tin
 	@RequestMapping(value = "/listNews/detailNews/{newsId}", method = RequestMethod.GET)
 	public String getDetail(ModelMap model, @PathVariable("newsId") String newsId) {
 		try (Session session = factory.openSession()) {
@@ -296,7 +390,7 @@ public class NewsController {
 				return "redirect:/admin/listNews.html";
 			}
 			model.addAttribute("news", news);
-			return "admin/detailNews";
+			return "admin/News/detailNews";
 		} catch (Exception e) {
 			return "redirect:/admin/listNews.html";
 		}
@@ -311,6 +405,15 @@ public class NewsController {
 		int randomNumber = random.nextInt(10000);
 		String randomString = "NW" + timeString + randomNumber;
 		return randomString;
+	}
+
+	private void loadListOfNews(ModelMap model) {
+		Session session = factory.openSession();
+		String hql = "FROM NewsModel ORDER BY dateUploaded DESC";
+		Query query = session.createQuery(hql);
+		List<NewsModel> list = query.list();
+		model.addAttribute("listOfNews", list);
+		session.close();
 	}
 
 }

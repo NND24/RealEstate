@@ -716,3 +716,14 @@
 .current-image{
 	width: 150px;
 }
+
+.pagination-container{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; 
+}
+
+.errorMessage{
+    color: red !important;
+}
