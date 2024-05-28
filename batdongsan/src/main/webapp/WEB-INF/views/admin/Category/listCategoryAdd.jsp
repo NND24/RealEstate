@@ -5,21 +5,24 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/headerAdmin.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listCategory.css?version=50" type="text/css">
-<link rel="stylesheet" href="../css/admin/listTag.css" type="text/css">
-<%@ include file="../../../links/links.jsp"%>
+<title>Thêm danh mục</title>
+<link rel="stylesheet" href="../../css/client/index.css" type="text/css">
+
+<link rel="stylesheet" href="../../css/admin/listCategory.css"
+	type="text/css">
+<link rel="stylesheet" href="../../css/admin/headerAdmin.css"
+	type="text/css">
+<%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerAdmin.jsp"%>
+	<%@ include file="../../../components/headerAdmin.jsp"%>
+	
 	<div class='admin active'>
-		<%@ include file="../../components/sidebarAdmin.jsp"%>
+		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListCategory -->
 		<div class='list-category'>
 			<div class='header-wrapper'>
-				<h3>Quản lý danh mục</h3>
+				<h3>Chỉnh sửa danh mục</h3>
 				<button class='add-new-button' id="addCategoryButton">Thêm mới</button>
 			</div>
 			<div class='search-wrapper'>
@@ -64,20 +67,21 @@
 			</div>
 		</div>
 		
-		<!-- ADDMODAL -->
-		<div class='add-modal' style="display: none;" id="addModelForm">
+		<!-- UPDATEMODEL -->
+		<div class='add-modal' style="display: flex;" id="addModelForm">
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
 					<h1>Thêm danh mục</h1>
 					${message}
-					<form:form action="listCategory/add.html" modelAttribute="category"
-						method="post">
+					<form:form action="addCategory.html"
+						modelAttribute="category" method="post">
 						<div class='input-container'>
 							<div class='form-item'>
-								<p>Mã danh mục</p>
+								<p>Tên danh mục</p>
 								<div class='input-wrapper'>
-									<form:input path="categoryId" placeholder="Nhập tên" />
+									<form:input path="name" placeholder='Nhập tên' />
 								</div>
+								<form:errors class="errorMessage" path="name" element="p"/>
 							</div>
 							<div class='form-item'>
 								<p>Loại danh mục</p>
@@ -89,13 +93,6 @@
 						</div>
 
 						<div class='input-container'>
-							<div class='form-item'>
-								<p>Tên danh mục</p>
-								<div class='input-wrapper'>
-									<form:input path="name" type='text' placeholder='Nhập tên' />
-								</div>
-							</div>
-
 							<div class='form-item'>
 								<p>Trạng thái</p>
 								<form:select path="status" class='select-wrapper' name='' id=''>
@@ -115,31 +112,13 @@
 
 				</div>
 			</div>
-			<button class='close-btn' id="closeAddModelButton">
+			<button class='close-btn' id="closeUpdateModelButton" onclick="window.location.href='/batdongsan/admin/update/cancel.html'">
 				<i class='fa-solid fa-xmark'></i>
 			</button>
 		</div>
 		<!-- END -->
-
-
-
+	
 	</div>
-	<script>
-		$(document).ready(function() {
-			// Xử lý sự kiện Add Model
-			$("#addCategoryButton").click(function() {
-				$("#addModelForm").show();
-			});
-
-			// Xử lý sự kiện click vào nút đóng modal
-			$("#closeAddModelButton").click(function() {
-				$("#addModelForm").hide();
-			});
-			// End Add Model
-
-
-
-		});
-	</script>
+	
 </body>
 </html>
