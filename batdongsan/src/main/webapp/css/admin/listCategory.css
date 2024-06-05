@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+body {
+	overflow-y: hidden;
+}
+
 .add-new-button {
 	padding: 6px 16px;
     border-radius: 5px;
@@ -43,9 +47,9 @@
   position: fixed;
   top: 89px;
   width: 280px;
-  height: 100%;
+  height: calc(100vh - 89px);
   overflow-y: scroll;
-  max-height: 100%;
+  scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: rgb(204, 204, 204) transparent;
   border-right: 1px solid #f1f1f1;
@@ -213,7 +217,8 @@
 }
 
 .admin.active .admin-list-post,
-.admin.active .detail {
+.admin.active .detail,
+.admin.active .list-category {
   margin-left: 80px;
   width: calc(100% - 80px);
 }
@@ -314,8 +319,8 @@
 
 /* LISTCATEGORY */
 .admin .list-category {
-  margin-left: 80px;
-  width: calc(100% - 80px);
+  margin-left: 280px;
+  width: calc(100% - 280px);
   padding: 20px;
 }
 

@@ -9,14 +9,13 @@
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listCategory.css?version=51"
+<link rel="stylesheet" href="../css/admin/listCategory.css?version=52"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listTag.css" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
 	<%@ include file="../../../components/headerAdmin.jsp"%>
-	<div class='admin active'>
+	<div class='admin'>
 		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListCategory -->
 		<div class='list-category'>
@@ -26,21 +25,28 @@
 						id="addCategoryButton">Thêm mới</button></a>
 			</div>
 			<div class='search-wrapper'>
-    <div class='input-container'>
-        <i class='fa-solid fa-magnifying-glass'></i>
-        <input type='text' id="searchInput" placeholder='Tìm kiếm theo tên' value="${search != null ? search : ''}" />
-    </div>
-    <div class='filter-container'>
-        <form id="filterForm" method="get" action="">
-            <select name="filter" id="filter" onchange="this.form.submit()">
-                <option value="" <c:if test="${filter == null || filter.isEmpty()}">selected</c:if>>Tất cả</option>
-                <option value="sell" <c:if test="${filter == 'sell'}">selected</c:if>>Nhà đất bán</option>
-                <option value="rent" <c:if test="${filter == 'rent'}">selected</c:if>>Nhà đất cho thuê</option>
-            </select>
-            <input type="hidden" name="search" id="hiddenSearch" value="${search != null ? search : ''}" />
-        </form>
-    </div>
-</div>
+				<div class='input-container'>
+					<i class='fa-solid fa-magnifying-glass'></i> <input type='text'
+						id="searchInput" placeholder='Tìm kiếm theo tên'
+						value="${search != null ? search : ''}" />
+				</div>
+				<div class='filter-container'>
+					<form id="filterForm" method="get" action="">
+						<select name="filter" id="filter" onchange="this.form.submit()">
+							<option value=""
+								<c:if test="${filter == null || filter.isEmpty()}">selected</c:if>>Tất
+								cả</option>
+							<option value="sell"
+								<c:if test="${filter == 'sell'}">selected</c:if>>Nhà
+								đất bán</option>
+							<option value="rent"
+								<c:if test="${filter == 'rent'}">selected</c:if>>Nhà
+								đất cho thuê</option>
+						</select> <input type="hidden" name="search" id="hiddenSearch"
+							value="${search != null ? search : ''}" />
+					</form>
+				</div>
+			</div>
 
 			<div class='table-wrapper'>
 				<table class='table table-hover table-striped'>
@@ -78,50 +84,75 @@
 		</div>
 	</div>
 	<script>
-	$(document).ready(function () {
-	    var totalPages = ${totalPages};
-	    var currentPage = ${currentPage};
-	    var filter = "${filter}"; // Lấy filter hiện tại từ server
-	    var searchText = "${search != null ? search : ''}"; // Lấy giá trị tìm kiếm hiện tại từ server
+		$(document)
+				.ready(
+						function() {
+							var totalPages = $
+							{
+								totalPages
+							}
+							;
+							var currentPage = $
+							{
+								currentPage
+							}
+							;
+							var filter = "${filter}"; // Lấy filter hiện tại từ server
+							var searchText = "${search != null ? search : ''}"; // Lấy giá trị tìm kiếm hiện tại từ server
 
-	    function loadPage(page) {
-	        $.get("listCategory.html", { page: page, filter: filter, search: searchText })
-	            .done(function(data) {
-	                var newContent = $(data).find('#categoryTable').html();
-	                $('#categoryTable').html(newContent);
-	                $('#pagination').twbsPagination('changeTotalPages', totalPages, page);
-	            })
-	            .fail(function() {
-	                console.error('Error while fetching data from server.');
-	            });
-	    }
+							function loadPage(page) {
+								$
+										.get("listCategory.html", {
+											page : page,
+											filter : filter,
+											search : searchText
+										})
+										.done(
+												function(data) {
+													var newContent = $(data)
+															.find(
+																	'#categoryTable')
+															.html();
+													$('#categoryTable').html(
+															newContent);
+													$('#pagination')
+															.twbsPagination(
+																	'changeTotalPages',
+																	totalPages,
+																	page);
+												})
+										.fail(
+												function() {
+													console
+															.error('Error while fetching data from server.');
+												});
+							}
 
-	    $('#pagination').twbsPagination({
-	        totalPages: totalPages,
-	        visiblePages: 5,
-	        startPage: currentPage,
-	        onPageClick: function(event, page) {
-	            if (page !== currentPage) {
-	                currentPage = page;
-	                loadPage(page);
-	            }
-	        },
-	        first: 'Đầu',
-	        prev: '<i class="fas fa-angle-left"></i>',
-	        next: '<i class="fas fa-angle-right"></i>',
-	        last: 'Cuối'
-	    });
+							$('#pagination').twbsPagination({
+								totalPages : totalPages,
+								visiblePages : 5,
+								startPage : currentPage,
+								onPageClick : function(event, page) {
+									if (page !== currentPage) {
+										currentPage = page;
+										loadPage(page);
+									}
+								},
+								first : 'Đầu',
+								prev : '<i class="fas fa-angle-left"></i>',
+								next : '<i class="fas fa-angle-right"></i>',
+								last : 'Cuối'
+							});
 
-	    $('#searchInput').on('keyup', function () {
-	        searchText = $(this).val().toLowerCase();
-	        $('#hiddenSearch').val(searchText); // Cập nhật giá trị tìm kiếm ẩn trong form
-	        loadPage(1); // Load lại từ trang đầu tiên khi tìm kiếm
-	    });
+							$('#searchInput').on('keyup', function() {
+								searchText = $(this).val().toLowerCase();
+								$('#hiddenSearch').val(searchText); // Cập nhật giá trị tìm kiếm ẩn trong form
+								loadPage(1); // Load lại từ trang đầu tiên khi tìm kiếm
+							});
 
-	    // Initial load
-	    loadPage(currentPage);
-	});
-
+							// Initial load
+							loadPage(currentPage);
+						});
 	</script>
 </body>
 </html>

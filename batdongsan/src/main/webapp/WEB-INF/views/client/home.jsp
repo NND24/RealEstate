@@ -78,7 +78,9 @@
 					List<NewsModel> listNewsHN = (List<NewsModel>) request.getAttribute("listNewsHN");
 					List<NewsModel> listNewsHCM = (List<NewsModel>) request.getAttribute("listNewsHCM");
 					%>
+					
 					<div class='tab-content'>
+					<% if(listNews != null) { %>
 						<div id='tinNoiBat' class='tab-pane fade in active'>
 							<div class='article-container'>
 								<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= listNews.get(0).getNewsId() %>' class='article-info-container'>
@@ -135,6 +137,9 @@
 								</div>
 							</div>
 						</div>
+						
+						<% } %>
+						<% if(listNewsHCM != null) { %>
 						<div id='bdsHcm' class='tab-pane fade'>
 							<div class='article-container'>
 								<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= listNewsHCM.get(0).getNewsId() %>' class='article-info-container'>
@@ -163,6 +168,8 @@
 								</div>
 							</div>
 						</div>
+						<% } %>
+						<% if(listNewsHN != null) { %>
 						<div id='bdsHN' class='tab-pane fade'>
 							<div class='article-container'>
 								<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= listNewsHN.get(0).getNewsId() %>' class='article-info-container'>
@@ -191,6 +198,7 @@
 								</div>
 							</div>
 						</div>
+						<% } %>
 					</div>
 				</div>
 
