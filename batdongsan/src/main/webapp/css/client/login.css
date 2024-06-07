@@ -75,6 +75,10 @@
 	color: #e34f46;
 }
 
+.error-border {
+	border-color: rgb(224, 60, 49) !important;
+}
+
 .login-container .right-wrapper .form-wrapper .form-item {
 	margin-bottom: 12px;
 }
@@ -167,7 +171,6 @@
 	opacity: 1;
 	font-weight: 600;
 	margin-top: 8px;
-	opacity: 0.4;
 }
 
 .login-container .right-wrapper .form-wrapper .signin-button {}
