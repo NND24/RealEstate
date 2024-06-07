@@ -167,7 +167,7 @@ public class NewsController {
 				news.setNewsId(newsId);
 
 				if (!file.isEmpty()) {
-					String uploadDir = "D:/Workspace/JavaSpringMVC/RealEstate/batdongsan/src/main/webapp/images/News/";
+					String uploadDir = "D:/Workspace/Java/BDS/RealEstate/batdongsan/src/main/webapp/images/News/";
 					String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 					String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 					String filePath = uploadDir + uniqueFileName;
@@ -341,7 +341,7 @@ public class NewsController {
 	            String filePath = null;
 	            String newPathThumbnail = null;
 	            if (file != null && !file.isEmpty()) {
-	                String uploadDir = "D:/Workspace/JavaSpringMVC/RealEstate/batdongsan/src/main/webapp/images/News/";
+	                String uploadDir = "D:/Workspace/Java/BDS/RealEstate/batdongsan/src/main/webapp/images/News/";
 	                String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 	                String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 	                filePath = uploadDir + uniqueFileName;

@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class='loginAdmin'
-		style="background-image: url('${pageContext.servletContext.contextPath}/images/bg-01.jpg');">
+		style="background-image: url('${pageContext.servletContext.contextPath}/images/bg-login-admin3.jpg');">
 
 		<div class="login-card">
 			<div class="card-header">

@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class='loginAdmin'
-		style="background-image: url('${pageContext.servletContext.contextPath}/images/bg-01.jpg');">
+		style="background-image: url('${pageContext.servletContext.contextPath}/images/bg-login-admin3.jpg');">
 
 		<div class="login-card">
 			<div class="card-header">
@@ -27,13 +27,12 @@
 					<form:errors class="errorMessage errorCtrlMessage" path="email" />
 				</div>
 				<div class="form-group">
-					<label for="password">Password:</label>
+					<label for="password">Mật khẩu:</label>
 					<form:input path="password" id="password" type="password" />
 					<form:errors class="errorMessage errorCtrlMessage" path="password" />
 				</div>
 				<div class="form-group">
-					<a href="forgot-password.html"><span class="forget-password">Forgot
-							password?</span> </a>
+					<a href="forgot-password.html"><span class="forget-password">Quên mật khẩu?</span> </a>
 				</div>
 				<%
 				String error = (String) request.getAttribute("error");

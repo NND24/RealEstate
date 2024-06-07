@@ -34,7 +34,8 @@
 										${c.name}</li> </a>
 							</c:forEach>
 						</ul></li>
-					<li class='menu__item'>Tin tức</li>
+					<li class='menu__item'><a
+						href="${pageContext.servletContext.contextPath}/tin-tuc.html">Tin tức</a></li>
 				</ul>
 			</div>
 		</div>

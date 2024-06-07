@@ -125,7 +125,7 @@
 		</div>
 
 		<!-- UPDATE NEWS -->
-		<div class='add-modal' id='updateNewsForm'>
+		<div class='add-modal' style="display: flex;" id='updateNewsForm'>
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
 					<h1>Chỉnh sửa tin tức</h1>

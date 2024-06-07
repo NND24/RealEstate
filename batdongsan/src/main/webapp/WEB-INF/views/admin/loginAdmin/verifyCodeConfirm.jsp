@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class='loginAdmin'
-		style="background-image: url('${pageContext.servletContext.contextPath}/images/bg-01.jpg');">
+		style="background-image:url('${pageContext.servletContext.contextPath}/images/bg-login-admin3.jpg');">
 
 		<form class="otp-Form" action="confirmVerifyCode.html" method = "post">
 			<span class="mainHeading">Nhập mã xác nhận</span>
