@@ -84,25 +84,25 @@
 			var password = $('input[name="password"]');
 			var rePassword = $('input[name="rePassword"]');
 
-			$('input[type="password"]').on("mouseout", function() { 
-			    if (password.val() !== "" && password.val() !== rePassword.val()) {
-			        $(".rePassword .errorMessage").css("display", "block").text("Mật khẩu không trùng khớp");
-			        $(".rePassword .input-wrapper").css("border-color", "rgb(224, 60, 49)")
-			    } else {
-			        $(".rePassword .errorMessage").css("display", "none").text("");
-			        $(".rePassword .input-wrapper").css("border-color", "#ccc")
-			    }
-			    
-			    var containsUppercase = /[A-Z]/.test(password.val());
-			    var containsNumber = /\d/.test(password.val());
-			    
-			    if(password.val().length >= 8 && containsUppercase && containsNumber && password.val().trim() !== "" 
-			    		&& rePassword.val().trim() !== "" && password.val() === rePassword.val()) {
-			    	 $(".signin-button").css("opacity", "1").prop('disabled', false);
-			    } else {
+			$('input[type="password"], input[name="rePassword"]').on("input", function() {
+		        if (password.val() !== "" && rePassword.val() !== "" && password.val() !== rePassword.val()) {
+		            $(".rePassword .errorMessage").css("display", "block").text("Mật khẩu không trùng khớp");
+		            $(".rePassword .input-wrapper").css("border-color", "rgb(224, 60, 49)");
+		        } else {
+		            $(".rePassword .errorMessage").css("display", "none").text("");
+		            $(".rePassword .input-wrapper").css("border-color", "#ccc");
+		        }
+		        
+		        var containsUppercase = /[A-Z]/.test(password.val());
+		        var containsNumber = /\d/.test(password.val());
+		        
+		        if (password.val().length >= 8 && containsUppercase && containsNumber && password.val().trim() !== "" 
+		                && rePassword.val().trim() !== "" && password.val() === rePassword.val()) {
+		            $(".signin-button").css("opacity", "1").prop('disabled', false);
+		        } else {
 		            $(".signin-button").css("opacity", "0.4").prop('disabled', true);
-			    }
-			});
+		        }
+		    });
 			
 			password.on("input", function() {
 			    if (password.val().length >= 8) {

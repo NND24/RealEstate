@@ -4,9 +4,9 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
-<link rel="stylesheet" href="css/client/index.css" type="text/css">
-<link rel="stylesheet" href="css/client/header.css" type="text/css">
-<link rel="stylesheet" href="css/client/login.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/index.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/header.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/login.css?version=52" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
@@ -32,14 +32,18 @@
 							<% } else { %>
 							    <h3>Khôi phục mật khẩu</h3>
 							<% } %>
-							<form action='mailer/send.html' method="POST">
+							<form action='mailer/checkAndSend.html' method="POST">
 								<div class='input-wrapper'>
-									<i class="fa-regular fa-envelope"></i> <input type="email"
-										placeholder='Nhập email' name="to" id="email" />
+									<i class="fa-regular fa-envelope"></i> 
+									<input type="email" placeholder='Nhập email' name="to" id="email"
+									class="${not empty emailError || not empty error ? 'error-border' : ''}" />
 									<button class='clear-button'>
 										<i class='fa-solid fa-xmark'></i>
 									</button>
 								</div>
+								<c:if test="${not empty error}">
+									<p class="errorMessage errorCtrlMessage">${error}</p>
+								</c:if>
 
 								<button class='signup-button' disabled="disabled">
 									Tiếp tục

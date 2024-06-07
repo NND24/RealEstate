@@ -1,4 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +8,8 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css" type="text/css">
-<link rel="stylesheet" href="css/client/login.css?version=50" type="text/css">
+<link rel="stylesheet" href="css/client/login.css?version=52"
+	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
@@ -24,45 +27,49 @@
 						<div>
 							<h5>Xin chào bạn</h5>
 							<h3>Đăng nhập để tiếp tục</h3>
-							<form action='login.html' method="post">
+							<form:form action="login.html" method="post"
+								modelAttribute="account">								
 								<div class='form-item email'>
 									<div class='input-wrapper'>
-										<i class='fa-regular fa-user'></i> <input type='text'
-											placeholder='SĐT chính hoặc email' name="email" />
+										<i class='fa-regular fa-user'></i>
+										<form:input path="email" id="email" type="text" placeholder='SĐT chính hoặc email' 
+                        				cssClass="${not empty emailError || not empty error ? 'error-border' : ''}" />
+										<form:errors class="errorMessage errorCtrlMessage"
+											path="email" />
 										<div class='button clear-button'>
 											<i class='fa-solid fa-xmark'></i>
 										</div>
 									</div>
-									<p class="errorMessage" style="display: none"></p>
 								</div>
-								<div class='form-item password'>
+								<div class='form-item'>
 									<div class='input-wrapper'>
-										<i class='fa-solid fa-lock'></i> <input type='password'
-											placeholder='Mật khẩu' class="password" name="password" />
+										<i class='fa-solid fa-lock'></i>
+										<form:input path="password" id="password" type="password" placeholder='Mật khẩu'
+										cssClass="${not empty passwordError || not empty error  ? 'error-border' : ''}" />
+										<form:errors class="errorMessage errorCtrlMessage"
+											path="password" />
 										<div class='button show-pass show'>
-											<i class='fa-solid fa-eye-slash'></i>
-											<i class="fa-solid fa-eye"></i>
+											<i class='fa-solid fa-eye-slash'></i> <i
+												class="fa-solid fa-eye"></i>
 										</div>
 									</div>
-									<%
-									String error = (String) request.getAttribute("error");
-									if(error != null && !error.isEmpty()) {
-									%>
-									<p class="errorMessage errorCtrlMessage"><%= error %></p>
-									<% } %>
-									<p class="errorMessage" style="display: none"></p>
+									<c:if test="${not empty error}">
+										<p class="errorMessage errorCtrlMessage">${error}</p>
+									</c:if>
 								</div>
-								<button class='signin-button' disabled="disabled">Đăng nhập</button>
-							</form>
+								<button class="signin-button" type="submit">Đăng nhập</button>
+							</form:form>
 							<div class='nav-wrapper'>
-								<div>
-									
-								</div>
-								<a href='${pageContext.servletContext.contextPath}/khoi-phuc-mat-khau.html'><span>Quên mật khẩu?</span></a>
+								<div></div>
+								<a
+									href='${pageContext.servletContext.contextPath}/khoi-phuc-mat-khau.html'><span>Quên
+										mật khẩu?</span></a>
 							</div>
 						</div>
 						<div class='form-footer'>
-							<span> Chưa là thành viên? <a href='${pageContext.servletContext.contextPath}/dang-ky.html'>Đăng ký</a> tại đây
+							<span> Chưa là thành viên? <a
+								href='${pageContext.servletContext.contextPath}/dang-ky.html'>Đăng
+									ký</a> tại đây
 							</span>
 						</div>
 					</div>
@@ -75,41 +82,10 @@
 			$(".show-pass").on("click", () => {
 				$(".show-pass").toggleClass("show");
 				
-				var passwordField = $(".password");
+				var passwordField = $("#password");
 			    var currentType = passwordField.attr("type");
 			    var newType = currentType === "password" ? "text" : "password";
 			    passwordField.attr("type", newType);
-			})
-			
-			$('input[name="email"], input[name="password"]').on("mouseout", function() { 
-			    var email = $('input[name="email"]');
-			    var password = $('input[name="password"]');
-			    
-			    if (email.val().trim() === "") {
-			        $(".email .errorMessage").css("display", "block").text("Email không được bỏ trống");
-			        $(".email input[name='email']").css("border-color", "rgb(224, 60, 49)");
-			    } else if (email.val().trim() !== "") {
-			        $(".email .errorMessage").css("display", "none").text("");
-			        $(".email input[name='email']").css("border-color", "#ccc");
-			    }
-			    
-			    if (password.val().trim() === "") {
-			        $(".password .errorMessage").css("display", "block").text("Mật khẩu không được bỏ trống");
-			        $(".password input[name='password']").css("border-color", "rgb(224, 60, 49)");
-			    } else {
-			        $(".password .errorMessage").css("display", "none").text("");
-			        $(".password input[name='password']").css("border-color", "#ccc");
-			    }
-			    
-			    if(email.val().trim() !== "" && password.val().trim() !== "") {
-			        $(".signin-button").css("opacity", "1").prop('disabled', false);
-			    } else {
-			        $(".signin-button").css("opacity", "0.4").prop('disabled', true);
-			    }
-			});
-			
-			$('input[name="password"]').on("input", function() {
-				$(".errorCtrlMessage").css("display", "none")
 			})
 		})
 	</script>
