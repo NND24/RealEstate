@@ -1,5 +1,6 @@
 package batdongsan.controllers.client;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +30,7 @@ public class HomeController {
 	@RequestMapping(value = { "/", "/trang-chu" }, method = RequestMethod.GET)
 	public String getHomePage(HttpServletRequest request) {
 		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
 		try {
 			Cookie[] cookies = request.getCookies();
 			UsersModel user = null;
@@ -44,6 +47,18 @@ public class HomeController {
 					}
 				}
 			}
+			
+			// Fetch expired real estates
+            String hqlExpired = "SELECT re FROM RealEstateModel re WHERE re.expirationDate < :today";
+            Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
+            queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
+            List<RealEstateModel> expiredRealEstates = queryExpired.list();
+
+            // Update status of all real estates to "Ẩn"
+            expiredRealEstates.forEach(re -> {
+                re.setStatus("Ẩn");
+                session.merge(re);
+            });
 
 			String hqlREForYou = "FROM RealEstateModel re WHERE re.status = :status ";
 			if (user != null) {
@@ -107,8 +122,12 @@ public class HomeController {
 			
 			request.setAttribute("user", user);
 
+			t.commit();
 			return "client/home";
-		} finally {
+		} catch (Exception e) {
+            t.rollback();
+            throw e;
+        } finally {
 			session.close();
 		}
 	}

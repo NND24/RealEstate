@@ -1,6 +1,7 @@
 package batdongsan.controllers.client;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,7 +56,20 @@ public class SellController {
 			@RequestParam(name = "areaLowToHigh", required = false) String areaLowToHigh,
 			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow) {
 		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
 		try {
+			// Fetch expired real estates
+            String hqlExpired = "SELECT re FROM RealEstateModel re WHERE re.expirationDate < :today";
+            Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
+            queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
+            List<RealEstateModel> expiredRealEstates = queryExpired.list();
+
+            // Update status of all real estates to "Ẩn"
+            expiredRealEstates.forEach(re -> {
+                re.setStatus("Ẩn");
+                session.merge(re);
+            });
+			
 			String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE re.status = :status AND cat.type LIKE :type";
 
 			// Search by input
@@ -265,8 +280,12 @@ public class SellController {
 				request.setAttribute("user", user);
 			}
 
+			t.commit();
 			return "client/sell";
-		} finally {
+		} catch (Exception e) {
+            t.rollback();
+            throw e;
+        } finally {
 			session.close();
 		}
 	}
@@ -292,7 +311,20 @@ public class SellController {
 			@RequestParam(name = "areaLowToHigh", required = false) String areaLowToHigh,
 			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow) {
 		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
 		try {
+			// Fetch expired real estates
+            String hqlExpired = "SELECT re FROM RealEstateModel re WHERE re.expirationDate < :today";
+            Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
+            queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
+            List<RealEstateModel> expiredRealEstates = queryExpired.list();
+
+            // Update status of all real estates to "Ẩn"
+            expiredRealEstates.forEach(re -> {
+                re.setStatus("Ẩn");
+                session.merge(re);
+            });
+			
 			String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE re.status = :status AND cat.type LIKE :type";
 
 			// Search by input
@@ -503,6 +535,7 @@ public class SellController {
 				request.setAttribute("user", user);
 			}
 
+			t.commit();
 			return "client/sell";
 		} finally {
 			session.close();

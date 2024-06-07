@@ -7,8 +7,9 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/client/header.css?version=62" type="text/css">
-<link rel="stylesheet" href="../css/client/sellernet.css"
+<link rel="stylesheet" href="../css/client/header.css?version=62"
+	type="text/css">
+<link rel="stylesheet" href="../css/client/sellernet.css?version=64"
 	type="text/css">
 <link rel="stylesheet" href="../css/client/manageAccount.css?version=64"
 	type="text/css">
@@ -31,47 +32,54 @@
 					%>
 					<ul class='nav nav-tabs'>
 						<li <%if (edit != null && !edit.isEmpty()) {%> class='active'
-							<%}%>><a data-toggle='tab' href='#edit'>Chỉnh
-								sửa thông tin </a></li>
+							<%}%>><a data-toggle='tab' href='#edit'>Chỉnh sửa thông
+								tin </a></li>
 						<li <%if (setting != null && !setting.isEmpty()) {%>
-							class='active' <%}%>><a data-toggle='tab'
-							href='#setting'> Cài đặt tài khoản</a></li>
+							class='active' <%}%>><a data-toggle='tab' href='#setting'>
+								Cài đặt tài khoản</a></li>
 					</ul>
 
 					<div class='tab-content'>
-						<form:form action="sellernet/updateAccount.html" modelAttribute="user"
-							method="post" enctype="multipart/form-data" id='edit'
-							class='tab-pane fade'>
+						<form:form action="sellernet/updateAccount.html"
+							modelAttribute="user" method="post" enctype="multipart/form-data"
+							id='edit' class='tab-pane fade'>
 							<div class='input-wrapper'>
 								<h3>Thông tin cá nhân</h3>
 								<div class='avatar-container'>
 									<div class="image-wrapper">
-										<img src="images/<%=user.getAvatar()%>" />
-										<i class="fa-solid fa-xmark remove-img"></i>
+										<img src="images/<%=user.getAvatar()%>" /> <i
+											class="fa-solid fa-xmark remove-img"></i>
 									</div>
-									<label class='avatar__label' for="avatarInput" style="display: none;">
+									<label class='avatar__label' for="avatarInput"
+										style="display: none;">
 										<div style="transform: translate(15px, 40px);">
-											<i class='fa-solid fa-camera'></i> 
-										<span>Tải ảnh</span>
+											<i class='fa-solid fa-camera'></i> <span>Tải ảnh</span>
 										</div>
-										
-									</label>
-									<input type='file' id='avatarInput' name='userAvatar' style="display: none;" />
+
+									</label> <input type='file' id='avatarInput' name='userAvatar'
+										style="display: none;" />
 								</div>
 								<div class='input-container'>
 									<div class='form-item'>
 										<p>Họ và tên</p>
-										<div class='input-wrapper'>
-											<form:input path='name' type='text' placeholder='Nhập tên' />
+										<div class="${not empty nameError ? 'input-wrapper error-border' : 'input-wrapper'}">
+											<form:input path='name' type='text' placeholder='Nhập tên'
+											 />
 										</div>
+										<c:if test="${not empty nameError}">
+											<p class="errorMessage">${nameError}</p>
+										</c:if>
 									</div>
 
 									<div class='form-item'>
 										<p>Mã số thuế cá nhân</p>
-										<div class='input-wrapper'>
+										<div class="${not empty taxCodeError ? 'input-wrapper error-border' : 'input-wrapper'}">
 											<form:input path='taxCode' type='text'
 												placeholder='Nhập số đã đăng ký' />
 										</div>
+										<c:if test="${not empty taxCodeError}">
+											<p class="errorMessage">${taxCodeError}</p>
+										</c:if>
 									</div>
 								</div>
 							</div>
@@ -81,10 +89,13 @@
 								<div class='input-container'>
 									<div class='form-item'>
 										<p>Số điện thoại</p>
-										<div class='input-wrapper'>
+										<div class="${not empty phonenumber ? 'input-wrapper error-border' : 'input-wrapper'}">
 											<form:input path='phonenumber' type='text'
 												placeholder='Nhập số điện thoại' />
 										</div>
+										<c:if test="${not empty phonenumberError}">
+											<p class="errorMessage">${phonenumberError}</p>
+										</c:if>
 									</div>
 
 									<div class='form-item'>
@@ -104,7 +115,8 @@
 								</button>
 							</div>
 						</form:form>
-						<form:form action="sellernet/updatePassword.html" method="post" id='setting' class='tab-pane fade'>
+						<form:form action="sellernet/updatePassword.html" method="post"
+							id='setting' class='tab-pane fade'>
 							<div class='input-wrapper'>
 								<h3>Đổi mật khẩu</h3>
 								<div class='input-container'>
@@ -117,30 +129,34 @@
 										<div class='input-wrapper'>
 											<input name="password" type='password' />
 											<div class='button show-pass'>
-												<i class='fa-solid fa-eye-slash'></i>
-												<i class="fa-solid fa-eye"></i>
+												<i class='fa-solid fa-eye-slash'></i> <i
+													class="fa-solid fa-eye"></i>
 											</div>
 										</div>
 										<%
-										if(passwordError != null && !passwordError.isEmpty()) {
+										if (passwordError != null && !passwordError.isEmpty()) {
 										%>
-										<p class="errorMessage errorCtrlMessage"><%= passwordError %></p>
-										<% } %>
+										<p class="errorMessage errorCtrlMessage"><%=passwordError%></p>
+										<%
+										}
+										%>
 										<p class="errorMessage password" style="display: none"></p>
 									</div>
 
 									<div class='form-item'>
 										<p></p>
-										<a href='${pageContext.servletContext.contextPath}/khoi-phuc-mat-khau.html'>Bạn quên mật khẩu</a>
+										<a
+											href='${pageContext.servletContext.contextPath}/khoi-phuc-mat-khau.html'>Bạn
+											quên mật khẩu</a>
 									</div>
 
 									<div class='form-item newPassword'>
 										<p>Mật khẩu mới</p>
 										<div class='input-wrapper'>
-											<input name="newPassword" type='password' /> 
+											<input name="newPassword" type='password' />
 											<div class='button show-pass'>
-												<i class='fa-solid fa-eye-slash'></i>
-												<i class="fa-solid fa-eye"></i>
+												<i class='fa-solid fa-eye-slash'></i> <i
+													class="fa-solid fa-eye"></i>
 											</div>
 										</div>
 										<p class="errorMessage" style="display: none"></p>
@@ -153,10 +169,10 @@
 									<div class='form-item reNewPassword'>
 										<p>Nhập lại mật khẩu mới</p>
 										<div class='input-wrapper'>
-											<input name="reNewPassword" type='password' /> 
+											<input name="reNewPassword" type='password' />
 											<div class='button show-pass'>
-												<i class='fa-solid fa-eye-slash'></i>
-												<i class="fa-solid fa-eye"></i>
+												<i class='fa-solid fa-eye-slash'></i> <i
+													class="fa-solid fa-eye"></i>
 											</div>
 										</div>
 										<p class="errorMessage" style="display: none"></p>
@@ -164,7 +180,8 @@
 
 									<div class='form-item'>
 										<p></p>
-										<button class="update-pass-btn" disabled="disabled">Lưu thay đổi</button>
+										<button class="update-pass-btn" disabled="disabled">Lưu
+											thay đổi</button>
 									</div>
 								</div>
 								<ul>
@@ -242,8 +259,8 @@
 			var newPassword = $('input[name="newPassword"]');
 			var reNewPassword = $('input[name="reNewPassword"]');
 
-			$('input[type="password"]').on("mouseout", function() {		    
-			    if (newPassword.val() !== "" && reNewPassword.val() !== newPassword.val()) {
+			$('input[type="newPassword"], input[name="reNewPassword"]').on("input", function() {		    
+			    if (newPassword.val() !== "" && reNewPassword.val() !== "" && reNewPassword.val() !== newPassword.val()) {
 			        $(".reNewPassword .errorMessage").css("display", "block").text("Mật khẩu không trùng khớp");
 			        $(".reNewPassword .input-wrapper").css("border-color", "rgb(224, 60, 49)")
 			    } else {

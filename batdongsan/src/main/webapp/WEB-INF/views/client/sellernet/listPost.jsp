@@ -15,8 +15,8 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/client/header.css" type="text/css">
-<link rel="stylesheet" href="../css/client/sellernet.css" type="text/css">
-<link rel="stylesheet" href="../css/client/listPost.css?version=50" type="text/css">
+<link rel="stylesheet" href="../css/client/sellernet.css?version=54" type="text/css">
+<link rel="stylesheet" href="../css/client/listPost.css?version=54" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
 </head>

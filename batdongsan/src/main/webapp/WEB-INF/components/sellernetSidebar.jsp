@@ -1,3 +1,5 @@
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.util.Locale" %>
 <%@page import="batdongsan.models.UsersModel"%>
 <%@ page pageEncoding="utf-8"%>
 
@@ -20,7 +22,12 @@
 			</div>
 			<div class='user-money-item'>
 				<div>Tài khoản chính</div>
-				<div class='money'><%=user1.getAccountBalance()%></div>
+				<%				
+				    // Định dạng số tiền thành tiền Việt Nam Đồng
+				    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+				    String formattedBalance = currencyFormatter.format(user1.getAccountBalance());
+				%>
+				<div class='money'><%= formattedBalance %></div>
 			</div>
 
 			<a href='${pageContext.servletContext.contextPath}/sellernet/nap-tien.html'>

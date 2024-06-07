@@ -34,7 +34,7 @@
 										<i class='fa-regular fa-user'></i>
 										<form:input path="email" id="email" type="text" placeholder='SĐT chính hoặc email' 
                         				cssClass="${not empty emailError || not empty error ? 'error-border' : ''}" />
-										<form:errors class="errorMessage errorCtrlMessage"
+										<form:errors class="errorMessage"
 											path="email" />
 										<div class='button clear-button'>
 											<i class='fa-solid fa-xmark'></i>
@@ -46,7 +46,7 @@
 										<i class='fa-solid fa-lock'></i>
 										<form:input path="password" id="password" type="password" placeholder='Mật khẩu'
 										cssClass="${not empty passwordError || not empty error  ? 'error-border' : ''}" />
-										<form:errors class="errorMessage errorCtrlMessage"
+										<form:errors class="errorMessage"
 											path="password" />
 										<div class='button show-pass show'>
 											<i class='fa-solid fa-eye-slash'></i> <i
@@ -54,7 +54,7 @@
 										</div>
 									</div>
 									<c:if test="${not empty error}">
-										<p class="errorMessage errorCtrlMessage">${error}</p>
+										<p class="errorMessage">${error}</p>
 									</c:if>
 								</div>
 								<button class="signin-button" type="submit">Đăng nhập</button>

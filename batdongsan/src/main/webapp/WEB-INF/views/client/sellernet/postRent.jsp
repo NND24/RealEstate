@@ -362,8 +362,14 @@
 					<div class='form-item'>
 						<p>Email</p>
 						<div class='input-container'>
-							<form:input path="email" placeholder="Nhập email" />
+							<form:input type="email" path="email" placeholder="Nhập email" />
 						</div>
+						<%
+					    	String emailError = (String) request.getAttribute("emailError");
+						%>
+						<p class="error" style="<%= (emailError != null && !emailError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= emailError %>
+						</p>
 					</div>
 				</div>
 
@@ -482,7 +488,7 @@
 					<div class="section-wrapper">
 						<span>Đơn giá / ngày</span>
 						<div>	
-							<input name="pricePerDay" value="2800" readonly /> đ
+							<input type="text" name="pricePerDay" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">
 						</div>	
 					</div>
 					<div class="section-wrapper">
@@ -501,14 +507,14 @@
 					<div class="section-wrapper">
 						<span>Phí đăng tin</span>
 						<div>						
-							<input name="fee"  value="28000" readonly /> đ
+							<input type="text" name="fee" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">
 						</div>
 					</div>
 					<hr />
 					<div class="section-wrapper">
 						<span>Tổng tiền</span>
 						<div>
-							<input name="totalMoney" value="28000" readonly /> đ
+							<input type="text" name="totalMoney" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">
 						</div>
 					</div>
 					<%
@@ -915,10 +921,83 @@
 	            $("#detail-address").val($("#detail-address").val() + address);
             }
         });
-
+		
+     // Format currency
+        $(".post").on("mouseover", () => {
+        	formatCurrency($("input[name='pricePerDay']"));
+        	formatCurrency($("input[name='fee']"));
+        	formatCurrency($("input[name='totalMoney']"));
+        })
+        
+		function formatNumber(n) {
+		  // format number 1000000 to 1,234,567
+		  return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		}
+		
+		
+		function formatCurrency(input, blur) {
+		  // appends $ to value, validates decimal side
+		  // and puts cursor back in right position.
+		  
+		  // get input value
+		  var input_val = input.val();
+		  
+		  // don't validate empty input
+		  if (input_val === "") { return; }
+		  
+		  // original length
+		  var original_len = input_val.length;
+		
+		  // initial caret position 
+		  var caret_pos = input.prop("selectionStart");
+		    
+		  // check for decimal
+		  if (input_val.indexOf(".") >= 0) {
+		
+		    // get position of first decimal
+		    // this prevents multiple decimals from
+		    // being entered
+		    var decimal_pos = input_val.indexOf(".");
+		
+		    // split number by decimal point
+		    var left_side = input_val.substring(0, decimal_pos);
+		    var right_side = input_val.substring(decimal_pos);
+		
+		    // add commas to left side of number
+		    left_side = formatNumber(left_side);
+		
+		    // validate right side
+		    right_side = formatNumber(right_side);
+		    
+		    // On blur make sure 2 numbers after decimal
+		    if (blur === "blur") {
+		      right_side += "00";
+		    }
+		    
+		    // Limit decimal to only 2 digits
+		    right_side = right_side.substring(0, 2);
+		
+		    // join number by .
+		    input_val = left_side + "." + right_side + "đ";
+		
+		  } else {
+		    // no decimal entered
+		    // add commas to number
+		    // remove all non-digits
+		    input_val = formatNumber(input_val);
+		    input_val = input_val + "đ";
+		    
+		  }
+		  
+		  // send updated string to input
+		  input.val(input_val);
+		
+		  // put caret back in the right position
+		  var updated_len = input_val.length;
+		  caret_pos = updated_len - original_len + caret_pos;
+		  input[0].setSelectionRange(caret_pos, caret_pos);
+		}
 	});
-
-
 	</script>
 </body>
 </html>

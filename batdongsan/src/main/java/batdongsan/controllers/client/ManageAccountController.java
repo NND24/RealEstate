@@ -15,6 +15,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.UsersModel;
+import batdongsan.utils.Vadilator;
 
 @Controller
 @RequestMapping("/sellernet/")
@@ -60,7 +62,6 @@ public class ManageAccountController {
 			}
 
 			request.setAttribute("user", user);
-			model.addAttribute("user", user);
 
 			return "client/sellernet/manageAccount";
 		} finally {
@@ -70,7 +71,7 @@ public class ManageAccountController {
 
 	@RequestMapping(value = { "updateAccount" }, method = RequestMethod.POST)
 	public String updateAccount(ModelMap model, HttpServletRequest request, @ModelAttribute("user") UsersModel user,
-			@RequestParam("userAvatar") MultipartFile userAvatar) {
+			@RequestParam("userAvatar") MultipartFile userAvatar, BindingResult errors) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		String relativePath;
@@ -89,6 +90,58 @@ public class ManageAccountController {
 						break;
 					}
 				}
+			}
+
+			String name = user.getName();
+			String taxCode = user.getTaxCode();
+			String phonenumber = user.getPhonenumber();
+
+			if (name == null || name.trim().length() == 0) {
+				errors.rejectValue("name", "user", "Họ và tên không được để trống!");
+			}
+
+			if (phonenumber != null && !phonenumber.isEmpty()) {
+				// Kiểm tra xem số điện thoại đã tồn tại chưa
+				String hqlPhoneCheck = "FROM UsersModel WHERE phonenumber = :phonenumber AND userId != :userId";
+				Query<UsersModel> queryPhoneCheck = session.createQuery(hqlPhoneCheck);
+				queryPhoneCheck.setParameter("phonenumber", phonenumber);
+				queryPhoneCheck.setParameter("userId", currentUser.getUserId());
+				UsersModel existingUserWithPhone = queryPhoneCheck.uniqueResult();
+
+				if (existingUserWithPhone != null) {
+					errors.rejectValue("phonenumber", "user", "Số điện thoại đã tồn tại!");
+				}
+			}
+
+			if (taxCode != null && !taxCode.isEmpty()) {
+				String hqlTaxCodeCheck = "FROM UsersModel WHERE taxCode = :taxCode AND userId != :userId";
+				Query<UsersModel> queryTaxCodeCheck = session.createQuery(hqlTaxCodeCheck);
+				queryTaxCodeCheck.setParameter("taxCode", phonenumber);
+				queryTaxCodeCheck.setParameter("userId", currentUser.getUserId());
+				UsersModel existingUserWithTC = queryTaxCodeCheck.uniqueResult();
+
+				if (existingUserWithTC != null) {
+					errors.rejectValue("taxCode", "user", "Mã số thuế cá nhân đã tồn tại!");
+				}
+			}
+
+			if (errors.hasErrors()) {
+				if (errors.hasFieldErrors("name")) {
+					model.addAttribute("nameError", "Họ và tên không được để trống!");
+				}
+				if (errors.hasFieldErrors("taxCode")) {
+					model.addAttribute("taxCodeError", "Mã số thuế cá nhân đã tồn tại!");
+				}
+
+				if (!Vadilator.isValidPhoneNumber(phonenumber)) {
+					model.addAttribute("phonenumberError", "Số điện thoại không đúng định dạng!");
+				} else if (errors.hasFieldErrors("phonenumber")) {
+					model.addAttribute("phonenumberError", "Số điện thoại đã tồn tại!");
+				}
+
+				request.setAttribute("edit", "true");
+				model.addAttribute("user", currentUser);
+				return "client/sellernet/manageAccount";
 			}
 
 			if (!userAvatar.isEmpty()) {
@@ -126,10 +179,8 @@ public class ManageAccountController {
 	}
 
 	@RequestMapping(value = { "updatePassword" }, method = RequestMethod.POST)
-	public String updatePassword(ModelMap model, HttpServletRequest request,
-	        @RequestParam("password") String password, 
-	        @RequestParam("newPassword") String newPassword,
-	        @RequestParam("reNewPassword") String reNewPassword) {
+	public String updatePassword(ModelMap model, HttpServletRequest request, @RequestParam("password") String password,
+			@RequestParam("newPassword") String newPassword, @RequestParam("reNewPassword") String reNewPassword) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
@@ -158,7 +209,7 @@ public class ManageAccountController {
 			if (!newPassword.equals(reNewPassword)) {
 				isError = true;
 			}
-			
+
 			request.setAttribute("user", user);
 			request.setAttribute("setting", "setting");
 			request.setAttribute("edit", null);
@@ -179,7 +230,6 @@ public class ManageAccountController {
 			session.close();
 		}
 	}
-	
 
 	@ModelAttribute("categoriesSell")
 	public List<CategoryModel> getTypesSell() {

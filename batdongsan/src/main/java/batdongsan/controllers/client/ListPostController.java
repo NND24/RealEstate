@@ -44,105 +44,111 @@ public class ListPostController {
 
 	@RequestMapping(value = { "quan-ly-tin-rao-ban-cho-thue" }, method = RequestMethod.GET)
 	public String getListPostPage(HttpServletRequest request,
-			@RequestParam(name = "searchInput", required = false) String searchInput) {
-		Session session = factory.openSession();
-		try {
-			Cookie[] cookies = request.getCookies();
-			String userId = null;
+	        @RequestParam(name = "searchInput", required = false) String searchInput) {
+	    try (Session session = factory.openSession()) {
+	        Transaction t = session.beginTransaction();
+	        try {
+	            Cookie[] cookies = request.getCookies();
+	            String userId = null;
 
-			if (cookies != null) {
-				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals("userId")) {
-						userId = cookie.getValue();
-						break;
-					}
-				}
-			}
+	            if (cookies != null) {
+	                for (Cookie cookie : cookies) {
+	                    if (cookie.getName().equals("userId")) {
+	                        userId = cookie.getValue();
+	                        break;
+	                    }
+	                }
+	            }
 
-			if (userId != null) {
-				String hqlUser = "FROM UsersModel WHERE userId = :userId";
-				Query<UsersModel> queryUser = session.createQuery(hqlUser);
-				queryUser.setParameter("userId", Integer.parseInt(userId));
-				UsersModel user = queryUser.uniqueResult();
-				request.setAttribute("user", user);
-				
-				String hqlAll = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId";
-				if (searchInput != null && !searchInput.isEmpty()) {
-					hqlAll += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2)";
-				}
-				Query<RealEstateModel> queryAll = session.createQuery(hqlAll);
-				queryAll.setParameter("userId", Integer.parseInt(userId));
-				queryAll.setParameter("status", "Đang hiển thị");
-				if (searchInput != null && !searchInput.isEmpty()) {
-					queryAll.setParameter("searchInput0", "%" + searchInput + "%");
-					queryAll.setParameter("searchInput1", "%" + searchInput + "%");
-					queryAll.setParameter("searchInput2", "%" + searchInput + "%");
-				}
-				List<RealEstateModel> allRealEstates = queryAll.list();
-				request.setAttribute("allRealEstates", allRealEstates);
-				
-				String hqlExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND re.expirationDate < :today";
-				if (searchInput != null && !searchInput.isEmpty()) {
-					hqlExpired += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2)";
-				}
-				Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired);
-				queryExpired.setParameter("userId", Integer.parseInt(userId));
-				queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
-				queryExpired.setParameter("status", "Đang hiển thị");
-				if (searchInput != null && !searchInput.isEmpty()) {
-					queryExpired.setParameter("searchInput0", "%" + searchInput + "%");
-					queryExpired.setParameter("searchInput1", "%" + searchInput + "%");
-					queryExpired.setParameter("searchInput2", "%" + searchInput + "%");
-				}
-				List<RealEstateModel> expiredRealEstates = queryExpired.list();
-				request.setAttribute("expiredRealEstates", expiredRealEstates);
-				
-				// Construct the range for expiration dates
-				LocalDate startDate = LocalDate.now().plusDays(1); // Start 2 days from now
-				LocalDate endDate = LocalDate.now().plusDays(3); // End 4 days from now
+	            if (userId != null) {
+	                int parsedUserId = Integer.parseInt(userId);
 
-				String hqlNearExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND re.expirationDate >= :startDate AND re.expirationDate <= :endDate";
-				if (searchInput != null && !searchInput.isEmpty()) {
-					hqlNearExpired += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2)";
-				}
-				Query<RealEstateModel> queryNearExpired = session.createQuery(hqlNearExpired); 
-				queryNearExpired.setParameter("userId", Integer.parseInt(userId));
-				queryNearExpired.setParameter("startDate", java.sql.Date.valueOf(startDate));
-				queryNearExpired.setParameter("endDate", java.sql.Date.valueOf(endDate));
-				queryNearExpired.setParameter("status", "Đang hiển thị");
-				if (searchInput != null && !searchInput.isEmpty()) {
-					queryNearExpired.setParameter("searchInput0", "%" + searchInput + "%");
-					queryNearExpired.setParameter("searchInput1", "%" + searchInput + "%");
-					queryNearExpired.setParameter("searchInput2", "%" + searchInput + "%");
-				}
-				List<RealEstateModel> nearExpiredRealEstates = queryNearExpired.list();
-				request.setAttribute("nearExpiredRealEstates", nearExpiredRealEstates);
+	                // Fetch user details
+	                String hqlUser = "FROM UsersModel WHERE userId = :userId";
+	                UsersModel user = session.createQuery(hqlUser, UsersModel.class)
+	                                         .setParameter("userId", parsedUserId)
+	                                         .uniqueResult();
+	                request.setAttribute("user", user);
 
-				String hqlDisplay = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status";
-				if (searchInput != null && !searchInput.isEmpty()) {
-					hqlDisplay += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2)";
-				}
-				Query<RealEstateModel> queryDisplay = session.createQuery(hqlDisplay);
-				queryDisplay.setParameter("status", "Đang hiển thị");
-				if (searchInput != null && !searchInput.isEmpty()) {
-					queryDisplay.setParameter("searchInput0", "%" + searchInput + "%");
-					queryDisplay.setParameter("searchInput1", "%" + searchInput + "%");
-					queryDisplay.setParameter("searchInput2", "%" + searchInput + "%");
-				}
-				List<RealEstateModel> displayRealEstates = queryDisplay.list();
-				request.setAttribute("displayRealEstates", displayRealEstates);
+	                // Fetch all real estates
+	                String hqlAll = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE user.userId = :userId";
+	                if (searchInput != null && !searchInput.isEmpty()) {
+	                    hqlAll += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
+	                }
+	                Query<RealEstateModel> queryAll = session.createQuery(hqlAll, RealEstateModel.class);
+	                queryAll.setParameter("userId", parsedUserId);
+	                if (searchInput != null && !searchInput.isEmpty()) {
+	                    queryAll.setParameter("searchInput", "%" + searchInput + "%");
+	                }
+	                List<RealEstateModel> allRealEstates = queryAll.list();
+	                request.setAttribute("allRealEstates", allRealEstates);
 
-			} else {
-				UsersModel user = null;
-				request.setAttribute("user", user);
-			}
-			return "client/sellernet/listPost";
-		} finally {
-			session.close();
-		}
+	                // Fetch expired real estates
+	                String hqlExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate < :today";
+	                if (searchInput != null && !searchInput.isEmpty()) {
+	                    hqlExpired += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
+	                }
+	                Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
+	                queryExpired.setParameter("userId", parsedUserId);
+	                queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
+	                if (searchInput != null && !searchInput.isEmpty()) {
+	                    queryExpired.setParameter("searchInput", "%" + searchInput + "%");
+	                }
+	                List<RealEstateModel> expiredRealEstates = queryExpired.list();
+	                request.setAttribute("expiredRealEstates", expiredRealEstates);
+
+	                // Update status of all real estates to "Ẩn"
+	                expiredRealEstates.forEach(re -> {
+	                    re.setStatus("Ẩn");
+	                    session.merge(re);
+	                });
+
+	                // Construct the range for near-expiration dates
+	                LocalDate startDate = LocalDate.now().plusDays(1);
+	                LocalDate endDate = LocalDate.now().plusDays(3);
+
+	                // Fetch near-expired real estates
+	                String hqlNearExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate >= :startDate AND re.expirationDate <= :endDate";
+	                if (searchInput != null && !searchInput.isEmpty()) {
+	                    hqlNearExpired += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
+	                }
+	                Query<RealEstateModel> queryNearExpired = session.createQuery(hqlNearExpired, RealEstateModel.class);
+	                queryNearExpired.setParameter("userId", parsedUserId);
+	                queryNearExpired.setParameter("startDate", java.sql.Date.valueOf(startDate));
+	                queryNearExpired.setParameter("endDate", java.sql.Date.valueOf(endDate));
+	                if (searchInput != null && !searchInput.isEmpty()) {
+	                    queryNearExpired.setParameter("searchInput", "%" + searchInput + "%");
+	                }
+	                List<RealEstateModel> nearExpiredRealEstates = queryNearExpired.list();
+	                request.setAttribute("nearExpiredRealEstates", nearExpiredRealEstates);
+
+	                // Fetch real estates that are currently displayed
+	                String hqlDisplay = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status";
+	                if (searchInput != null && !searchInput.isEmpty()) {
+	                    hqlDisplay += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
+	                }
+	                Query<RealEstateModel> queryDisplay = session.createQuery(hqlDisplay, RealEstateModel.class);
+	                queryDisplay.setParameter("status", "Đang hiển thị");
+	                if (searchInput != null && !searchInput.isEmpty()) {
+	                    queryDisplay.setParameter("searchInput", "%" + searchInput + "%");
+	                }
+	                List<RealEstateModel> displayRealEstates = queryDisplay.list();
+	                request.setAttribute("displayRealEstates", displayRealEstates);
+
+	                t.commit();
+	            } else {
+	                request.setAttribute("user", null);
+	            }
+
+	            return "client/sellernet/listPost";
+	        } catch (Exception e) {
+	            t.rollback();
+	            throw e;
+	        }
+	    }
 	}
 
-	
+
 	@RequestMapping(value = "deleteRealEstate", method = RequestMethod.GET)
 	public String deleteRealEstate(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "realEstateId") Integer realEstateId) {
@@ -153,7 +159,7 @@ public class ListPostController {
 			Query<RealEstateModel> query = session.createQuery(hql);
 			query.setParameter("realEstateId", realEstateId);
 			RealEstateModel deletedRealEstate = query.uniqueResult();
-			
+
 			session.delete(deletedRealEstate);
 			t.commit();
 			return "redirect:/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
@@ -165,7 +171,6 @@ public class ListPostController {
 			session.close();
 		}
 	}
-	
 
 	@ModelAttribute("categoriesSell")
 	public List<CategoryModel> getTypesSell() {

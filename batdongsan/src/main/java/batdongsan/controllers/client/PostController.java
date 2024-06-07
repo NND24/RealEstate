@@ -46,6 +46,8 @@ import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import eu.medsea.mimeutil.MimeUtil2;
 
+import batdongsan.utils.Vadilator;
+
 @Controller
 @Transactional
 @RequestMapping("/sellernet/")
@@ -126,12 +128,12 @@ public class PostController {
 	@RequestMapping(value = "addNewRealEstate", method = RequestMethod.POST)
 	public String addNewRealEstate(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "image") MultipartFile[] files, @RequestParam(name = "categoryId") Integer categoryId,
-			@RequestParam(name = "provinceId") Integer provinceId, @RequestParam(name = "districtId") Integer districtId,
-			@RequestParam(name = "wardId") Integer wardId, @RequestParam(name = "address") String address,
-			@RequestParam(name = "title") String title, @RequestParam(name = "description") String description,
-			@RequestParam(name = "typePost") String typePost, @RequestParam(name = "area") String area,
-			@RequestParam(name = "price") String price, @RequestParam(name = "unit") String unit,
-			@RequestParam(name = "interior") String interior,
+			@RequestParam(name = "provinceId") Integer provinceId,
+			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
+			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
+			@RequestParam(name = "description") String description, @RequestParam(name = "typePost") String typePost,
+			@RequestParam(name = "area") String area, @RequestParam(name = "price") String price,
+			@RequestParam(name = "unit") String unit, @RequestParam(name = "interior") String interior,
 			@RequestParam(name = "numberOfBedrooms") int numberOfBedrooms,
 			@RequestParam(name = "numberOfToilets") int numberOfToilets,
 			@RequestParam(name = "direction") String direction, @RequestParam(name = "contactName") String contactName,
@@ -157,71 +159,77 @@ public class PostController {
 					}
 				}
 			}
-			
+
 			boolean isError = false;
 
 			if (districtId == 0) {
 				request.setAttribute("districtError", "Quận, huyện không được bỏ trống!");
 				isError = true;
 			}
-			
+
 			if (wardId == 0) {
 				request.setAttribute("wardError", "Phường, xã không được bỏ trống!");
 				isError = true;
 			}
-			
+
 			if (address.trim().equals("")) {
 				request.setAttribute("addressError", "Địa chỉ không được bỏ trống!");
 				isError = true;
 			}
-			
+
 			if (title.trim().equals("")) {
 				request.setAttribute("titleError", "Tiêu đề không được bỏ trống!");
 				isError = true;
 			}
-			
+
 			if (description.trim().equals("")) {
 				request.setAttribute("descriptionError", "Mô tả không được bỏ trống!");
 				isError = true;
 			}
-			
-			if(area.isEmpty()) {
-			    request.setAttribute("areaError", "Diện tích không được để trống!");
-			    isError = true;
-			} else if (!area.matches("\\d+(\\.\\d+)?")) { 
-			    request.setAttribute("areaError", "Diện tích phải là số!");
-			    isError = true;
+
+			if (area.isEmpty()) {
+				request.setAttribute("areaError", "Diện tích không được để trống!");
+				isError = true;
+			} else if (!area.matches("\\d+(\\.\\d+)?")) {
+				request.setAttribute("areaError", "Diện tích phải là số!");
+				isError = true;
 			} else if (Float.parseFloat(area) <= 0) {
-			    request.setAttribute("areaError", "Diện tích phải lớn hơn 0!");
-			    isError = true;
+				request.setAttribute("areaError", "Diện tích phải lớn hơn 0!");
+				isError = true;
 			}
 
-			
-			if(price.isEmpty()) {
+			if (price.isEmpty()) {
 				request.setAttribute("priceError", "Mức giá không được để trống!");
 				isError = true;
-			} else if (!price.matches("\\d+(\\.\\d+)?")) { 
+			} else if (!price.matches("\\d+(\\.\\d+)?")) {
 				request.setAttribute("priceError", "Mức giá phải là số!");
 				isError = true;
-	        } else if (Float.parseFloat(price) <= 0) {
-	        	request.setAttribute("priceError", "Mức giá phải lớn hơn 0!");
+			} else if (Float.parseFloat(price) <= 0) {
+				request.setAttribute("priceError", "Mức giá phải lớn hơn 0!");
 				isError = true;
-	        }
-			
+			}
+
 			if (contactName.trim().equals("")) {
 				request.setAttribute("contactNameError", "Tên liên hệ không được bỏ trống!");
 				isError = true;
 			}
-			
+
 			if (phoneNumber.trim().isEmpty()) {
-			    request.setAttribute("phoneNumberError", "Số điện thoại không được bỏ trống!");
-			    isError = true;
-			} else if (!phoneNumber.matches("^\\d{10}$")) {
-			    request.setAttribute("phoneNumberError", "Số điện thoại phải có 10 chữ số!");
-			    isError = true;
+				request.setAttribute("phoneNumberError", "Số điện thoại không được bỏ trống!");
+				isError = true;
+			} else if (!Vadilator.isValidPhoneNumber(phoneNumber)) {
+				request.setAttribute("phoneNumberError", "Số điện thoại không đúng định dạng!");
+				isError = true;
 			}
 
-			
+			if (email.trim().isEmpty()) {
+				request.setAttribute("emailError", "Email không được bỏ trống!");
+				isError = true;
+			} else if (!Vadilator.isValidEmail(email)) {
+				request.setAttribute("emailError", "Email không đúng định dạng!");
+				isError = true;
+			}
+
 			int amountImages = 0;
 			for (MultipartFile file : files) {
 				amountImages++;
@@ -230,8 +238,8 @@ public class PostController {
 				request.setAttribute("imageError", "Đăng tối thiểu 4 ảnh, tối đa 24 ảnh!");
 				isError = true;
 			}
-			
-			if(totalMoney - user.getAccountBalance() < 0) {
+
+			if (user.getAccountBalance() - totalMoney < 0) {
 				request.setAttribute("moneyError", "Tài khoản chính không đủ để thực hiện giao dịch");
 				isError = true;
 			}
@@ -306,8 +314,8 @@ public class PostController {
 
 				session.save(newRealEstate);
 				t.commit();
-				
-				if(category.getType().equals("Nhà đất bán")) {
+
+				if (category.getType().equals("Nhà đất bán")) {
 					return "redirect:/sellernet/dang-tin/ban.html";
 				} else {
 					return "redirect:/sellernet/dang-tin/cho-thue.html";
@@ -315,7 +323,7 @@ public class PostController {
 			} else {
 				Session currentSession = factory.getCurrentSession();
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-				
+
 				String hqlCat = "FROM CategoryModel WHERE type = :type";
 				Query<CategoryModel> queryCat = session.createQuery(hqlCat);
 				queryCat.setParameter("type", "Nhà đất bán");
@@ -328,45 +336,49 @@ public class PostController {
 				request.setAttribute("categories", categories);
 				request.setAttribute("provinces", provinces);
 				request.setAttribute("user", user);
-				
+
 				RealEstateModel newRealEstate = new RealEstateModel();
-				
+
 				if (!address.trim().equals("")) {
 					newRealEstate.setAddress(address);
 				}
-				
+
 				if (!title.trim().equals("")) {
 					newRealEstate.setTitle(title);
 				}
-				
+
 				if (!description.trim().equals("")) {
 					newRealEstate.setDescription(description);
 				}
-				
-				if(!area.isEmpty() && area.matches("\\d+(\\.\\d+)?") && Float.parseFloat(area) > 0) {
-					newRealEstate.setArea(Float.parseFloat(area));
-				} 
 
-				if(!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Float.parseFloat(price) > 0) {
+				if (!area.isEmpty() && area.matches("\\d+(\\.\\d+)?") && Float.parseFloat(area) > 0) {
 					newRealEstate.setArea(Float.parseFloat(area));
-				} 
-				
+				}
+
+				if (!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Float.parseFloat(price) > 0) {
+					newRealEstate.setArea(Float.parseFloat(area));
+				}
+
 				newRealEstate.setUnit(unit);
 				newRealEstate.setInterior(interior);
 				newRealEstate.setDirection(direction);
 				newRealEstate.setNumberOfBedrooms(numberOfBedrooms);
 				newRealEstate.setNumberOfToilets(numberOfToilets);
-				
+
 				if (!contactName.trim().equals("")) {
 					newRealEstate.setContactName(contactName);
 				}
-				
-				if (!phoneNumber.trim().isEmpty() && phoneNumber.matches("^\\d{10}$")) {
+
+				if (!phoneNumber.trim().isEmpty() && Vadilator.isValidPhoneNumber(phoneNumber)) {
 					newRealEstate.setPhoneNumber(phoneNumber);
 				}
 				
+				if (!email.trim().isEmpty() && Vadilator.isValidEmail(email)) {
+					newRealEstate.setEmail(email);
+				}
+
 				model.addAttribute("realEstate", newRealEstate);
-				if(category.getType().equals("Nhà đất bán")) {
+				if (category.getType().equals("Nhà đất bán")) {
 					return "client/sellernet/postSell";
 				} else {
 					return "client/sellernet/postRent";
@@ -461,7 +473,13 @@ public class PostController {
 		request.setAttribute("categories", categories);
 		request.setAttribute("provinces", provinces);
 		request.setAttribute("user", user);
-		model.addAttribute("realEstate", new RealEstateModel());
+		
+		String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
+		Query<RealEstateModel> query = session.createQuery(hql);
+		query.setParameter("realEstateId", realEstateId);
+		RealEstateModel RealEstate = query.uniqueResult();
+		model.addAttribute("realEstate", RealEstate);
+		request.setAttribute("realEstate", RealEstate);
 		return "client/sellernet/editRentPost";
 	}
 
@@ -472,8 +490,8 @@ public class PostController {
 			@RequestParam(name = "provinceId") Integer provinceId,
 			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
 			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
-			@RequestParam(name = "description") String description, @RequestParam(name = "area") Float area,
-			@RequestParam(name = "price") Float price, @RequestParam(name = "unit") String unit,
+			@RequestParam(name = "description") String description, @RequestParam(name = "area") String area,
+			@RequestParam(name = "price") String price, @RequestParam(name = "unit") String unit,
 			@RequestParam(name = "interior") String interior,
 			@RequestParam(name = "numberOfBedrooms") int numberOfBedrooms,
 			@RequestParam(name = "numberOfToilets") int numberOfToilets,
@@ -482,38 +500,6 @@ public class PostController {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			String images = "";
-			if (files != null && files.length > 0) {
-				List<String> imagePaths = new ArrayList<>();
-				for (MultipartFile file : files) {
-					String contentType = file.getContentType();
-					if (contentType != null && contentType.startsWith("image/")) {
-						String uploadDir = "D:/Workspace Java/DoAnLTW/batdongsan/src/main/webapp/images/";
-						String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-						String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
-						String filePath = uploadDir + uniqueFileName;
-						File directory = new File(uploadDir);
-						if (!directory.exists()) {
-							directory.mkdirs();
-						}
-						file.transferTo(new File(filePath));
-						String relativePath = uniqueFileName;
-						imagePaths.add(relativePath);
-					} else {
-						// Handle non-image file or just continue with next file
-					}
-				}
-				images = Arrays.toString(imagePaths.toArray());
-			}
-
-			Session currentSession = factory.getCurrentSession();
-
-			CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-			ProvincesModel province = currentSession.find(ProvincesModel.class, provinceId);
-			DistrictsModel district = currentSession.find(DistrictsModel.class, districtId);
-			WardsModel ward = currentSession.find(WardsModel.class, wardId);
-			RealEstateModel editedRealEstate = currentSession.find(RealEstateModel.class, editedRealEstateId);
-
 			Cookie[] cookies = request.getCookies();
 			UsersModel user = null;
 
@@ -530,31 +516,245 @@ public class PostController {
 				}
 			}
 
-			editedRealEstate.setCategory(category);
-			editedRealEstate.setProvince(province);
-			editedRealEstate.setDistrict(district);
-			editedRealEstate.setWard(ward);
-			editedRealEstate.setUser(user);
-			editedRealEstate.setAddress(address);
-			editedRealEstate.setTitle(title);
-			editedRealEstate.setDescription(description);
-			editedRealEstate.setArea(area);
-			editedRealEstate.setPrice(price);
-			editedRealEstate.setUnit(unit);
-			editedRealEstate.setInterior(interior);
-			editedRealEstate.setDirection(direction);
-			editedRealEstate.setNumberOfBedrooms(numberOfBedrooms);
-			editedRealEstate.setNumberOfToilets(numberOfToilets);
-			if (files != null && files.length > 0 && !images.isEmpty() && !images.equals("[]")) {
-				editedRealEstate.setImages(images);
-			}
-			editedRealEstate.setContactName(contactName);
-			editedRealEstate.setPhoneNumber(phoneNumber);
-			editedRealEstate.setEmail(email);
+			boolean isError = false;
 
-			session.merge(editedRealEstate);
-			t.commit();
-			return "redirect:/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
+			if (districtId == 0) {
+				request.setAttribute("districtError", "Quận, huyện không được bỏ trống!");
+				isError = true;
+			}
+
+			if (wardId == 0) {
+				request.setAttribute("wardError", "Phường, xã không được bỏ trống!");
+				isError = true;
+			}
+
+			if (address.trim().equals("")) {
+				request.setAttribute("addressError", "Địa chỉ không được bỏ trống!");
+				isError = true;
+			}
+
+			if (title.trim().equals("")) {
+				request.setAttribute("titleError", "Tiêu đề không được bỏ trống!");
+				isError = true;
+			}
+
+			if (description.trim().equals("")) {
+				request.setAttribute("descriptionError", "Mô tả không được bỏ trống!");
+				isError = true;
+			}
+
+			if (area.isEmpty()) {
+				request.setAttribute("areaError", "Diện tích không được để trống!");
+				isError = true;
+			} else if (!area.matches("\\d+(\\.\\d+)?")) {
+				request.setAttribute("areaError", "Diện tích phải là số!");
+				isError = true;
+			} else if (Float.parseFloat(area) <= 0) {
+				request.setAttribute("areaError", "Diện tích phải lớn hơn 0!");
+				isError = true;
+			}
+
+			if (price.isEmpty()) {
+				request.setAttribute("priceError", "Mức giá không được để trống!");
+				isError = true;
+			} else if (!price.matches("\\d+(\\.\\d+)?")) {
+				request.setAttribute("priceError", "Mức giá phải là số!");
+				isError = true;
+			} else if (Float.parseFloat(price) <= 0) {
+				request.setAttribute("priceError", "Mức giá phải lớn hơn 0!");
+				isError = true;
+			}
+
+			if (contactName.trim().equals("")) {
+				request.setAttribute("contactNameError", "Tên liên hệ không được bỏ trống!");
+				isError = true;
+			}
+
+			if (phoneNumber.trim().isEmpty()) {
+				request.setAttribute("phoneNumberError", "Số điện thoại không được bỏ trống!");
+				isError = true;
+			} else if (!Vadilator.isValidPhoneNumber(phoneNumber)) {
+				request.setAttribute("phoneNumberError", "Số điện thoại không đúng định dạng!");
+				isError = true;
+			}
+
+			if (email.trim().isEmpty()) {
+				request.setAttribute("emailError", "Email không được bỏ trống!");
+				isError = true;
+			} else if (!Vadilator.isValidEmail(email)) {
+				request.setAttribute("emailError", "Email không đúng định dạng!");
+				isError = true;
+			}
+
+			int amountImages = 0;
+			for (MultipartFile file : files) {
+				amountImages++;
+			}
+			if (amountImages < 4 || amountImages > 24) {
+				request.setAttribute("imageError", "Đăng tối thiểu 4 ảnh, tối đa 24 ảnh!");
+				isError = true;
+			}
+
+			if (!isError) {
+				String images = "";
+				if (files != null && files.length > 0) {
+					List<String> imagePaths = new ArrayList<>();
+					for (MultipartFile file : files) {
+						String contentType = file.getContentType();
+						if (contentType != null && contentType.startsWith("image/")) {
+							String uploadDir = "D:/Workspace Java/DoAnLTW/batdongsan/src/main/webapp/images/";
+							String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+							String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
+							String filePath = uploadDir + uniqueFileName;
+							File directory = new File(uploadDir);
+							if (!directory.exists()) {
+								directory.mkdirs();
+							}
+							file.transferTo(new File(filePath));
+							String relativePath = uniqueFileName;
+							imagePaths.add(relativePath);
+						} else {
+							// Handle non-image file or just continue with next file
+						}
+					}
+					images = Arrays.toString(imagePaths.toArray());
+				}
+
+				Session currentSession = factory.getCurrentSession();
+
+				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
+				ProvincesModel province = currentSession.find(ProvincesModel.class, provinceId);
+				DistrictsModel district = currentSession.find(DistrictsModel.class, districtId);
+				WardsModel ward = currentSession.find(WardsModel.class, wardId);
+				RealEstateModel editedRealEstate = currentSession.find(RealEstateModel.class, editedRealEstateId);
+
+				editedRealEstate.setCategory(category);
+				editedRealEstate.setProvince(province);
+				editedRealEstate.setDistrict(district);
+				editedRealEstate.setWard(ward);
+				editedRealEstate.setUser(user);
+				editedRealEstate.setAddress(address);
+				editedRealEstate.setTitle(title);
+				editedRealEstate.setDescription(description);
+				editedRealEstate.setArea(Float.parseFloat(area));
+				editedRealEstate.setPrice(Float.parseFloat(price));
+				editedRealEstate.setUnit(unit);
+				editedRealEstate.setInterior(interior);
+				editedRealEstate.setDirection(direction);
+				editedRealEstate.setNumberOfBedrooms(numberOfBedrooms);
+				editedRealEstate.setNumberOfToilets(numberOfToilets);
+				if (files != null && files.length > 0 && !images.isEmpty() && !images.equals("[]")) {
+					editedRealEstate.setImages(images);
+				}
+				editedRealEstate.setContactName(contactName);
+				editedRealEstate.setPhoneNumber(phoneNumber);
+				editedRealEstate.setEmail(email);
+
+				session.merge(editedRealEstate);
+				t.commit();
+				return "redirect:/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
+			} else {
+				Session currentSession = factory.getCurrentSession();
+				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
+
+				String hqlCat = "FROM CategoryModel WHERE type = :type";
+				Query<CategoryModel> queryCat = session.createQuery(hqlCat);
+				queryCat.setParameter("type", "Nhà đất bán");
+				List<CategoryModel> categories = queryCat.list();
+
+				String hqlPro = "FROM ProvincesModel";
+				Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
+				List<ProvincesModel> provinces = queryPro.list();
+
+				request.setAttribute("categories", categories);
+				request.setAttribute("provinces", provinces);
+				request.setAttribute("user", user);
+
+				RealEstateModel newRealEstate = new RealEstateModel();
+
+				if (!address.trim().equals("")) {
+					newRealEstate.setAddress(address);
+				}
+
+				if (!title.trim().equals("")) {
+					newRealEstate.setTitle(title);
+				}
+
+				if (!description.trim().equals("")) {
+					newRealEstate.setDescription(description);
+				}
+
+				if (!area.isEmpty() && area.matches("\\d+(\\.\\d+)?") && Float.parseFloat(area) > 0) {
+					newRealEstate.setArea(Float.parseFloat(area));
+				}
+
+				if (!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Float.parseFloat(price) > 0) {
+					newRealEstate.setArea(Float.parseFloat(area));
+				}
+
+				newRealEstate.setUnit(unit);
+				newRealEstate.setInterior(interior);
+				newRealEstate.setDirection(direction);
+				newRealEstate.setNumberOfBedrooms(numberOfBedrooms);
+				newRealEstate.setNumberOfToilets(numberOfToilets);
+
+				if (!contactName.trim().equals("")) {
+					newRealEstate.setContactName(contactName);
+				}
+
+				if (!phoneNumber.trim().isEmpty() && Vadilator.isValidPhoneNumber(phoneNumber)) {
+					newRealEstate.setPhoneNumber(phoneNumber);
+				}
+				
+				if (!email.trim().isEmpty() && Vadilator.isValidEmail(email)) {
+					newRealEstate.setEmail(email);
+				}
+
+				model.addAttribute("realEstate", newRealEstate);
+				if (category.getType().equals("Nhà đất bán")) {
+					String hqlCat1 = "FROM CategoryModel WHERE type = :type";
+					Query<CategoryModel> queryCat1 = session.createQuery(hqlCat1);
+					queryCat1.setParameter("type", "Nhà đất bán");
+					List<CategoryModel> categories1 = queryCat1.list();
+
+					String hqlPro1 = "FROM ProvincesModel";
+					Query<ProvincesModel> queryPro1 = session.createQuery(hqlPro1);
+					List<ProvincesModel> provinces1 = queryPro1.list();
+
+					request.setAttribute("categories", categories1);
+					request.setAttribute("provinces", provinces1);
+					request.setAttribute("user", user);
+					
+					String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
+					Query<RealEstateModel> query = session.createQuery(hql);
+					query.setParameter("realEstateId", editedRealEstateId);
+					RealEstateModel RealEstate = query.uniqueResult();
+					model.addAttribute("realEstate", RealEstate);
+					request.setAttribute("realEstate", RealEstate);
+					return "client/sellernet/editSellPost";
+				} else {
+					String hqlCat2 = "FROM CategoryModel WHERE type = :type";
+					Query<CategoryModel> queryCat2 = session.createQuery(hqlCat2);
+					queryCat2.setParameter("type", "Nhà đất cho thuê");
+					List<CategoryModel> categories2 = queryCat.list();
+
+					String hqlPro2 = "FROM ProvincesModel";
+					Query<ProvincesModel> queryPro2 = session.createQuery(hqlPro2);
+					List<ProvincesModel> provinces2 = queryPro2.list();
+
+					request.setAttribute("categories", categories2);
+					request.setAttribute("provinces", provinces2);
+					request.setAttribute("user", user);
+					
+					String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
+					Query<RealEstateModel> query = session.createQuery(hql);
+					query.setParameter("realEstateId", editedRealEstateId);
+					RealEstateModel RealEstate = query.uniqueResult();
+					model.addAttribute("realEstate", RealEstate);
+					request.setAttribute("realEstate", RealEstate);
+					return "client/sellernet/editRentPost";
+				}
+			}
 		} catch (Exception e) {
 			t.rollback();
 			e.printStackTrace();
