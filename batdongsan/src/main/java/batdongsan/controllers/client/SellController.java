@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.DistrictsModel;
+import batdongsan.models.NewsModel;
 import batdongsan.models.ProvincesModel;
 import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
@@ -541,6 +543,19 @@ public class SellController {
 			session.close();
 		}
 	}
+	
+	//News
+	@RequestMapping(value = { "/tin-tuc" }, method = RequestMethod.GET)
+	public String getNewsPage(ModelMap model) {
+		Session session = factory.openSession();
+		String hql = "SELECT n FROM NewsModel n WHERE n.status = true ORDER BY n.dateUploaded DESC";
+		Query query = session.createQuery(hql);
+		List<NewsModel> newsList = query.getResultList();
+		model.addAttribute("newsList", newsList);
+		session.close();
+		return "client/news/news";
+	}
+	
 
 	@ModelAttribute("categoriesSell")
 	public List<CategoryModel> getTypesSell() {

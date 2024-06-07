@@ -84,8 +84,7 @@
 		</div>
 	</div>
 	<script>
-		$(document)
-				.ready(
+		$(document).ready(
 						function() {
 							var totalPages = $
 							{

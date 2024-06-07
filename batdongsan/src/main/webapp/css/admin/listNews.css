@@ -305,8 +305,8 @@
 
 /* LISTCATEGORY */
 .admin-list-news {
-	margin-left: 80px;
-	width: calc(100% - 80px);
+	margin-left: 280px;
+	width: calc(100% - 280px);
 	background-color: #fdfdfd;
 }
 
