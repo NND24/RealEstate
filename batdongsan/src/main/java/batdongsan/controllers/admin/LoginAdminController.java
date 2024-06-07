@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import batdongsan.models.EmployeeModel;
+import batdongsan.utils.PasswordHashing;
 
 
 @Controller
@@ -129,8 +130,8 @@ public class LoginAdminController {
 	        	Query<EmployeeModel> query = session.createQuery(hql);
 	        	query.setParameter("email", empEmail);
 	        	EmployeeModel currentEmp = query.uniqueResult();
-	            
-	        	currentEmp.setPassword(password);
+	            String hashPassword = PasswordHashing.hashPassword(password);
+	        	currentEmp.setPassword(hashPassword);
 	            session.update(currentEmp);
 	            t.commit();
 
@@ -163,15 +164,14 @@ public class LoginAdminController {
 		    errors.rejectValue("password", "account", "Vui lòng mật khẩu!");
 		}
 		try {
-			String hql = "FROM EmployeeModel WHERE email = :email AND password = :password";
+			String hql = "FROM EmployeeModel WHERE email = :email";
 			Query<EmployeeModel> query = session.createQuery(hql);
 			query.setParameter("email",  email);
-			query.setParameter("password", password);
 
 			EmployeeModel emp = query.uniqueResult();
 
 			if (emp != null) {
-				if (!emp.getPassword().equals(password)) {
+				if (!PasswordHashing.checkPassword(password, emp.getPassword())) {
 	                request.setAttribute("error", "Mật khẩu hoặc email không chính xác!");
 	                return "admin/loginAdmin/loginAdmin";
 	            }
@@ -187,7 +187,7 @@ public class LoginAdminController {
 		} finally {
 			session.close();
 		}
-		return "redirect:/admin/listNews.html";
+		return "redirect:/admin/dashboard.html";
 	}
 	
 	// ===========================

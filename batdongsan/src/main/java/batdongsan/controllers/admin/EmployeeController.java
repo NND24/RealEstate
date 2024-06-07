@@ -30,6 +30,7 @@ import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.PermissionModel;
 import batdongsan.models.RoleModel;
+import batdongsan.utils.PasswordHashing;
 import batdongsan.utils.Vadilator;
 
 @Controller
@@ -89,74 +90,73 @@ public class EmployeeController {
 	@Transactional
 	@RequestMapping(value = "listEmployee/addEmployee", method = RequestMethod.POST)
 	public String addEmployee(ModelMap model, @ModelAttribute("employee") EmployeeModel employee, BindingResult errors) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		if(employee.getFullname() == null || employee.getFullname().isEmpty()) {
-			errors.rejectValue("fullname", "employee", "Vui lòng nhập họ và tên!");
-		}
-		// Kiểm tra email
-		if(employee.getEmail() == null||employee.getEmail().isEmpty()) {
-			errors.rejectValue("email", "employee", "Vui lòng nhập email!");
-		}
-		else if(!Vadilator.isValidEmail(employee.getEmail())) {
-			errors.rejectValue("email", "employee", "Email không hợp lệ");
-		}
-		else if(checkEmpExists(employee.getEmail())) {
-			errors.rejectValue("email", "employee", "Email đã tồn tại");
-		}
-		// Kiểm tra số điện thoại
-		if(employee.getPhoneNumber() == null||employee.getPhoneNumber().isEmpty()) {
-			errors.rejectValue("phoneNumber", "employee", "Vui lòng nhập số điện thoại!");
-		}
-		else if(!Vadilator.isValidPhoneNumber(employee.getPhoneNumber())) {
-			errors.rejectValue("phoneNumber", "employee", "Số điện thoại không hợp lệ");
-		}
-		// Kiểm tra căn cước công dân
-		if(employee.getCccd() == null||employee.getCccd().isEmpty()) {
-			errors.rejectValue("cccd", "employee", "Vui lòng nhập căn cước!");
-		}
-		else if(!Vadilator.isValidCccd(employee.getCccd())) {
-			errors.rejectValue("cccd", "employee", "Căn cước không hợp lệ");
-		}		
-		if(errors.hasErrors()) {
-			model.addAttribute("message", "Có lỗi");
-			String hql = "FROM EmployeeModel ORDER BY createDate DESC";
-			Query query = session.createQuery(hql);
-			List<EmployeeModel> list = query.list();
-			model.addAttribute("employees", list);
-			session.close();
-			return "admin/Employee/listEmployeeAdd";
-		} else {
-			try {
-				String id = generateId();
-				employee.setId(id);
-				Date today = new Date(Calendar.getInstance().getTime().getTime());
-				employee.setCreateDate(today);
-				employee.setPassword(employee.getPhoneNumber());
-				employee.setStatus(true);
-				session.save(employee);
+	    Session session = factory.openSession();
+	    Transaction t = session.beginTransaction();
 
-				// Lưu vào permission
-				List<RoleModel> roles = session.createQuery("FROM RoleModel").list();
-				for (RoleModel role : roles) {
-					PermissionModel permission = new PermissionModel();
-					permission.setEmployee(employee);
-					permission.setRole(role);
-					permission.setStatus(false); // Mặc định là False
-					// Lưu thông tin quyền cho nhân viên vào bảng Permission
-					session.save(permission);
-				}
+	    try {
+	        // Kiểm tra thông tin nhân viên
+	        if(employee.getFullname() == null || employee.getFullname().isEmpty()) {
+	            errors.rejectValue("fullname", "employee", "Vui lòng nhập họ và tên!");
+	        }
+	        if(employee.getEmail() == null || employee.getEmail().isEmpty()) {
+	            errors.rejectValue("email", "employee", "Vui lòng nhập email!");
+	        } else if(!Vadilator.isValidEmail(employee.getEmail())) {
+	            errors.rejectValue("email", "employee", "Email không hợp lệ");
+	        } else if(checkEmpExists(employee.getEmail())) {
+	            errors.rejectValue("email", "employee", "Email đã tồn tại");
+	        }
+	        if(employee.getPhoneNumber() == null || employee.getPhoneNumber().isEmpty()) {
+	            errors.rejectValue("phoneNumber", "employee", "Vui lòng nhập số điện thoại!");
+	        } else if(!Vadilator.isValidPhoneNumber(employee.getPhoneNumber())) {
+	            errors.rejectValue("phoneNumber", "employee", "Số điện thoại không hợp lệ");
+	        }
+	        if(employee.getCccd() == null || employee.getCccd().isEmpty()) {
+	            errors.rejectValue("cccd", "employee", "Vui lòng nhập căn cước!");
+	        } else if(!Vadilator.isValidCccd(employee.getCccd())) {
+	            errors.rejectValue("cccd", "employee", "Căn cước không hợp lệ");
+	        }
+	        if(errors.hasErrors()) {
+	            model.addAttribute("message", "Có lỗi");
+	            String hql = "FROM EmployeeModel ORDER BY createDate DESC";
+	            Query query = session.createQuery(hql);
+	            List<EmployeeModel> list = query.list();
+	            model.addAttribute("employees", list);
+	            session.close();
+	            return "admin/Employee/listEmployeeAdd";
+	        } else {
+	            // Xử lý thêm nhân viên
+	            String id = generateId();
+	            employee.setId(id);
+	            Date today = new Date(Calendar.getInstance().getTime().getTime());
+	            employee.setCreateDate(today);
+	            String password = PasswordHashing.hashPassword(employee.getPhoneNumber());
+	            employee.setPassword(password);
+	            employee.setStatus(true);
+	            session.save(employee);
 
-				t.commit();
-			} catch (Exception e) {
-				t.rollback();
-				model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
-			} finally {
-				session.close();
-			}
-			return "redirect:/admin/listEmployee.html";
-		}	
+	            // Xử lý thêm quyền cho nhân viên
+	            session.flush(); // Đảm bảo các thay đổi trước đó được lưu vào database
+
+	            List<RoleModel> roles = session.createQuery("FROM RoleModel").list();
+	            for (RoleModel role : roles) {
+	                PermissionModel permission = new PermissionModel();
+	                permission.setEmployee(employee);
+	                permission.setRole(role);
+	                permission.setStatus(false); // Mặc định là False
+	                session.save(permission);
+	            }
+
+	            t.commit();
+	        }
+	    } catch (Exception e) {
+	        t.rollback();
+	        model.addAttribute("message", "Thao tác thất bại: " + e.getMessage());
+	    } finally {
+	        session.close();
+	    }
+	    return "redirect:/admin/listEmployee.html";
 	}
+
 
 	// Xóa nhân viên: Thực ra là chuyển trạng thái thành ẩn (Status)
 	@RequestMapping(value = "listEmployee/delete/{id}", method = RequestMethod.GET)
