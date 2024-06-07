@@ -752,6 +752,7 @@ public class PostController {
 					RealEstateModel RealEstate = query.uniqueResult();
 					model.addAttribute("realEstate", RealEstate);
 					request.setAttribute("realEstate", RealEstate);
+					
 					return "client/sellernet/editRentPost";
 				}
 			}
