@@ -19,7 +19,7 @@
 </head>
 <body>
 	<%@ include file="../../../components/headerAdmin.jsp"%>
-	<div class='admin active'>
+	<div class='admin'>
 		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListCategory -->
 		<div class='list-category'>

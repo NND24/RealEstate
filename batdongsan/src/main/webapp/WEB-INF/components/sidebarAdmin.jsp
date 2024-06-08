@@ -6,11 +6,10 @@
 			<div class='panel panel-default'>
 				<div class='panel-heading'>
 					<h4 class='panel-title'>
-						<a data-toggle='collapse'>
+						<a href="${pageContext.servletContext.contextPath}/admin/dashboard.html">
 							<div>
-								<i class='fa-solid fa-list'></i> <span>Danhboard</span>
-							</div>
-						</a>
+								<i class="fa-solid fa-table-columns"></i> <span>Trang chủ</span>
+							</div></a>
 					</h4>
 				</div>
 			</div>
@@ -40,20 +39,12 @@
 			<div class='panel panel-default'>
 				<div class='panel-heading'>
 					<h4 class='panel-title'>
-						<a data-toggle='collapse' href='#collapse2'>
+						<a href='${pageContext.servletContext.contextPath}/admin/listNews.html'>
 							<div>
-								<i class='fa-solid fa-coins'></i> <span> Quản lý tài
-									chính</span>
-							</div> <i class='fa-solid fa-angle-down'></i>
+								<i class="fa-solid fa-newspaper"></i> <span> Quản lý tin tức</span>
+							</div>
 						</a>
 					</h4>
-				</div>
-				<div id='collapse2' class='panel-collapse collapse'>
-					<ul class='list-group'>
-						<li class='list-group-item'>Thông tin số dư</li>
-						<li class='list-group-item'>Lịch sử giao dịch</li>
-						<li class='list-group-item'>Nạp tiền vào tài khoản</li>
-					</ul>
 				</div>
 			</div>
 		</div>
@@ -62,20 +53,12 @@
 			<div class='panel panel-default'>
 				<div class='panel-heading'>
 					<h4 class='panel-title'>
-						<a data-toggle='collapse' href='#collapse3'>
+						<a href='${pageContext.servletContext.contextPath}/admin/listEmployee.html' >
 							<div>
-								<i class='fa-solid fa-paperclip'></i> <span>Báo giá &
-									hướng dẫn</span>
-							</div> <i class='fa-solid fa-angle-down'></i>
+								<i class="fa-solid fa-users"></i> <span>Quản lý nhân viên</span>
+							</div>
 						</a>
 					</h4>
-				</div>
-				<div id='collapse3' class='panel-collapse collapse'>
-					<ul class='list-group'>
-						<li class='list-group-item'>Báo giá</li>
-						<li class='list-group-item'>Hướng dẫn thanh toán</li>
-						<li class='list-group-item'>Hướng dẫn sử dụng</li>
-					</ul>
 				</div>
 			</div>
 		</div>
@@ -84,10 +67,10 @@
 			<div class='panel panel-default'>
 				<div class='panel-heading'>
 					<h4 class='panel-title'>
-						<a data-toggle='collapse' href='#collapse4'>
+						<a href='${pageContext.servletContext.contextPath}/admin/listCategory.html'>
 							<div>
-								<i class='fa-solid fa-gear'></i> <span>Tiện ích</span>
-							</div> <i class='fa-solid fa-angle-down'></i>
+								<i class="fa-solid fa-table-list"></i> <span>Quản lý danh mục</span>
+							</div>
 						</a>
 					</h4>
 				</div>

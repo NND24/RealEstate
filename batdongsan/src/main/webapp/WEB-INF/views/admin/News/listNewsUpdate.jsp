@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Website số 1 về bất động sản</title>
+<title>Cập nhật tin tức</title>
 <link rel="stylesheet" href="../../../css/admin/listNews.css?versin=50"
 	type="text/css">
 <link rel="stylesheet" href="../../../css/client/index.css"
@@ -20,7 +20,7 @@
 </head>
 <body>
 	<%@ include file="../../../components/headerAdmin.jsp"%>
-	<div class='admin active'>
+	<div class='admin'>
 		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListNews -->
 		<div class='admin-list-news'>

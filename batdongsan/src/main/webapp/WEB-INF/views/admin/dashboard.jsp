@@ -5,13 +5,14 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Website số 1 về bất động sản</title>
+<title>Trang chủ</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
 <link rel="stylesheet" href="../css/admin/dashboard.css?version=55"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 	<%@ include file="../../components/headerAdmin.jsp"%>
@@ -23,33 +24,46 @@
 				<h3>Bảng thống kê</h3>
 			</div>
 
-			 <div class="row">
-                <div class="col-md-3">
-                    <div class="card card-sales">
-                        <h3>Tổng doanh thu</h3>
-                        <p>$50,000</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-users">
-                        <h3>Số người dùng</h3>
-                        <p>1,200</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-posts">
-                        <h3>Số bài đăng</h3>
-                        <p>320</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-articles">
-                        <h3>Số bài viết</h3>
-                        <p>150</p>
-                    </div>
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="card card-sales">
+						<h3>Tổng doanh thu</h3>
+						<p>${totalRevenue}VNĐ</p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="card card-users">
+						<h3>Số người dùng</h3>
+						<p>${totalUsers}</p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="card card-posts">
+						<h3>Số bài đăng</h3>
+						<p>${totalPosts}</p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="card card-articles">
+						<h3>Số bài viết</h3>
+						<p>${totalArticles}</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<canvas id="totalMoneyChart"></canvas>
+				</div>
+				<div class="col-md-6">
+					<canvas id="totalPostsChart"></canvas>
+				</div>
+			</div>
+
 		</div>
 	</div>
+	<script>
+
+    </script>
 </body>
 </html>
