@@ -38,9 +38,9 @@
 					<h3>Thông tin cơ bản</h3>
 
 					<ul class='nav nav-tabs'>
-						<li class='active'><a>
-								Bán </a></li>
 						<li><a>
+								Bán </a></li>
+						<li class='active'><a>
 								Cho thuê </a></li>
 					</ul>
 

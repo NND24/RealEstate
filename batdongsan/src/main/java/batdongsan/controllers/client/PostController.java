@@ -56,7 +56,7 @@ public class PostController {
 	SessionFactory factory;
 
 	@RequestMapping(value = "dang-tin/ban", method = RequestMethod.GET)
-	public String indexSell(ModelMap model, HttpServletRequest request) {
+	public String getSellPage(ModelMap model, HttpServletRequest request) {
 		Session session = factory.openSession();
 		Cookie[] cookies = request.getCookies();
 		UsersModel user = null;
@@ -91,7 +91,7 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "dang-tin/cho-thue", method = RequestMethod.GET)
-	public String indexRent(ModelMap model, HttpServletRequest request) {
+	public String getRentPage(ModelMap model, HttpServletRequest request) {
 		Session session = factory.openSession();
 		Cookie[] cookies = request.getCookies();
 		UsersModel user = null;
@@ -372,7 +372,7 @@ public class PostController {
 				if (!phoneNumber.trim().isEmpty() && Vadilator.isValidPhoneNumber(phoneNumber)) {
 					newRealEstate.setPhoneNumber(phoneNumber);
 				}
-				
+
 				if (!email.trim().isEmpty() && Vadilator.isValidEmail(email)) {
 					newRealEstate.setEmail(email);
 				}
@@ -473,7 +473,7 @@ public class PostController {
 		request.setAttribute("categories", categories);
 		request.setAttribute("provinces", provinces);
 		request.setAttribute("user", user);
-		
+
 		String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
 		Query<RealEstateModel> query = session.createQuery(hql);
 		query.setParameter("realEstateId", realEstateId);
@@ -515,6 +515,9 @@ public class PostController {
 					}
 				}
 			}
+
+			Session currentSession = factory.getCurrentSession();
+			RealEstateModel editedRealEstate = currentSession.find(RealEstateModel.class, editedRealEstateId);
 
 			boolean isError = false;
 
@@ -586,13 +589,16 @@ public class PostController {
 				isError = true;
 			}
 
-			int amountImages = 0;
-			for (MultipartFile file : files) {
-				amountImages++;
-			}
-			if (amountImages < 4 || amountImages > 24) {
-				request.setAttribute("imageError", "Đăng tối thiểu 4 ảnh, tối đa 24 ảnh!");
-				isError = true;
+			if (files != null && files.length > 1) {
+				int amountImages = 0;
+				for (MultipartFile file : files) {
+					amountImages++;
+				}
+				System.out.println(amountImages);
+				if (amountImages < 4 || amountImages > 24) {
+					request.setAttribute("imageError", "Đăng tối thiểu 4 ảnh, tối đa 24 ảnh!");
+					isError = true;
+				}
 			}
 
 			if (!isError) {
@@ -620,13 +626,10 @@ public class PostController {
 					images = Arrays.toString(imagePaths.toArray());
 				}
 
-				Session currentSession = factory.getCurrentSession();
-
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
 				ProvincesModel province = currentSession.find(ProvincesModel.class, provinceId);
 				DistrictsModel district = currentSession.find(DistrictsModel.class, districtId);
 				WardsModel ward = currentSession.find(WardsModel.class, wardId);
-				RealEstateModel editedRealEstate = currentSession.find(RealEstateModel.class, editedRealEstateId);
 
 				editedRealEstate.setCategory(category);
 				editedRealEstate.setProvince(province);
@@ -654,7 +657,6 @@ public class PostController {
 				t.commit();
 				return "redirect:/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
 			} else {
-				Session currentSession = factory.getCurrentSession();
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
 
 				String hqlCat = "FROM CategoryModel WHERE type = :type";
@@ -705,7 +707,7 @@ public class PostController {
 				if (!phoneNumber.trim().isEmpty() && Vadilator.isValidPhoneNumber(phoneNumber)) {
 					newRealEstate.setPhoneNumber(phoneNumber);
 				}
-				
+
 				if (!email.trim().isEmpty() && Vadilator.isValidEmail(email)) {
 					newRealEstate.setEmail(email);
 				}
@@ -724,13 +726,9 @@ public class PostController {
 					request.setAttribute("categories", categories1);
 					request.setAttribute("provinces", provinces1);
 					request.setAttribute("user", user);
-					
-					String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-					Query<RealEstateModel> query = session.createQuery(hql);
-					query.setParameter("realEstateId", editedRealEstateId);
-					RealEstateModel RealEstate = query.uniqueResult();
-					model.addAttribute("realEstate", RealEstate);
-					request.setAttribute("realEstate", RealEstate);
+
+					model.addAttribute("realEstate", editedRealEstate);
+					request.setAttribute("realEstate", editedRealEstate);
 					return "client/sellernet/editSellPost";
 				} else {
 					String hqlCat2 = "FROM CategoryModel WHERE type = :type";
@@ -745,14 +743,10 @@ public class PostController {
 					request.setAttribute("categories", categories2);
 					request.setAttribute("provinces", provinces2);
 					request.setAttribute("user", user);
-					
-					String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-					Query<RealEstateModel> query = session.createQuery(hql);
-					query.setParameter("realEstateId", editedRealEstateId);
-					RealEstateModel RealEstate = query.uniqueResult();
-					model.addAttribute("realEstate", RealEstate);
-					request.setAttribute("realEstate", RealEstate);
-					
+
+					model.addAttribute("realEstate", editedRealEstate);
+					request.setAttribute("realEstate", editedRealEstate);
+
 					return "client/sellernet/editRentPost";
 				}
 			}
