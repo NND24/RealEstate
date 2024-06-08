@@ -9,7 +9,7 @@
 <title>Spring MVC</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css?version=50" type="text/css">
-<link rel="stylesheet" href="css/client/sell.css?version=51" type="text/css">
+<link rel="stylesheet" href="css/client/sell.css?version=52" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css?version=51" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
@@ -42,67 +42,114 @@
 							%>
 						</a> <span> / </span> <a id="refresh-page"> 
 						<%
-						List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
-						if ("sell".equals(request.getAttribute("page"))) {
-						    if (categoryIdsList1 != null) {
-						        if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))) {
-						            %> Tất cả BĐS trên toàn quốc <% 
-						        } else if (categoryIdsList1.contains(1)) {
-						            %> Căn hộ chung cư <% 
-						        } else if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
-						            %> Các loại nhà bán <% 
-						        } else if (categoryIdsList1.contains(2)) {
-						            %> Nhà riêng <% 
-						        } else if (categoryIdsList1.contains(3)) {
-						            %> Nhà biệt thự, liền kề <% 
-						        } else if (categoryIdsList1.contains(4)) {
-						            %> Nhà mặt phố <% 
-						        } else if (categoryIdsList1.contains(5)) {
-						            %> Shophouse, nhà phố thương mại <% 
-						        } else if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
-						            %> Các loại đất bán <% 
-						        } else if (categoryIdsList1.contains(6)) {
-						            %> Đất nền dự án <% 
-						        } else if (categoryIdsList1.contains(7)) {
-						            %> Bán đất <% 
-						        } else if (categoryIdsList1.contains(8)) {
-						            %> Trang trại, khu nghỉ dưỡng <% 
-						        } else if (categoryIdsList1.contains(9)) {
-						            %> Condotel <% 
-						        } else if (categoryIdsList1.contains(10)) {
-						            %> Kho, nhà xưởng <% 
-						        } else if (categoryIdsList1.contains(11)) {
-						            %> Bất động sản khác <% 
-						        }
-						    }
-						} else {
-						    if (categoryIdsList1 != null) {
-						        if (categoryIdsList1.containsAll(Arrays.asList(12,13,14,15,16,17,18,19,20,21))) {
-						            %> Tất cả BĐS trên toàn quốc <% 
-						        } else if (categoryIdsList1.contains(12)) {
-						            %> Căn hộ chung cư <% 
-						        } else if (categoryIdsList1.contains(13)) {
-						            %>Nhà riêng<% 
-						        } else if (categoryIdsList1.contains(14)) {
-						            %>Nhà biệt thự, liền kề <% 
-						        } else if (categoryIdsList1.contains(15)) {
-						            %>Nhà mặt phố<% 
-						        } else if (categoryIdsList1.contains(16)) {
-						            %>Shophouse, nhà phố thương mại<% 
-						        } else if (categoryIdsList1.contains(17)) {
-						            %>Nhà trọ, phòng trọ<% 
-						        } else if (categoryIdsList1.contains(18)) {
-						            %>Văn phòng <% 
-						        } else if (categoryIdsList1.contains(19)) {
-						            %> Cửa hàng, ki ốt <% 
-						        } else if (categoryIdsList1.contains(20)) {
-						            %> Kho, nhà xưởng, đất <% 
-						        } else if (categoryIdsList1.contains(21)) {
-						            %> Bất động sản khác <% 
-						        }
-						    }
-						} 
-						%>
+					    List<Integer> categoryIdsList1 = (List<Integer>) request.getAttribute("categoryIds");
+					    StringBuilder result = new StringBuilder();
+					
+					    if ("sell".equals(request.getAttribute("page"))) {
+					        if (categoryIdsList1 != null) {
+					            if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))) {
+					                result.append("Tất cả BĐS trên toàn quốc");
+					            } else {
+					                if (categoryIdsList1.contains(1)) {
+					                    result.append("Căn hộ chung cư, ");
+					                }
+					                
+					                if(categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
+					                	result.append("Các loại nhà bán, ");
+					                } else {
+					                	if (categoryIdsList1.contains(2)) {
+						                    result.append("Nhà riêng, ");
+						                }
+						                if (categoryIdsList1.contains(3)) {
+						                    result.append("Nhà biệt thự, liền kề, ");
+						                }
+						                if (categoryIdsList1.contains(4)) {
+						                    result.append("Nhà mặt phố, ");
+						                }
+						                if (categoryIdsList1.contains(5)) {
+						                    result.append("Shophouse, nhà phố thương mại, ");
+						                }
+					                }
+					                
+					                if(categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
+					                	result.append("Các loại đất bán, ");
+					                } else {
+					                	if (categoryIdsList1.contains(6)) {
+						                    result.append("Đất nền dự án, ");
+						                }
+						                if (categoryIdsList1.contains(7)) {
+						                    result.append("Bán đất, ");
+						                }
+					                }
+					                
+					                if (categoryIdsList1.contains(8)) {
+					                    result.append("Trang trại, khu nghỉ dưỡng, ");
+					                }
+					                if (categoryIdsList1.contains(9)) {
+					                    result.append("Condotel, ");
+					                }
+					                if (categoryIdsList1.contains(10)) {
+					                    result.append("Kho, nhà xưởng, ");
+					                }
+					                if (categoryIdsList1.contains(11)) {
+					                    result.append("Bất động sản khác, ");
+					                }
+					                // Remove the trailing comma and space
+					                if (result.length() > 0) {
+					                    result.setLength(result.length() - 2);
+					                }
+					            }
+					        } else {
+					            result.append("Tất cả BĐS trên toàn quốc");
+					        }
+					    } else {
+					        if (categoryIdsList1 != null) {
+					            if (categoryIdsList1.containsAll(Arrays.asList(12,13,14,15,16,17,18,19,20,21))) {
+					                result.append("Tất cả BĐS trên toàn quốc");
+					            } else {
+					                if (categoryIdsList1.contains(12)) {
+					                    result.append("Căn hộ chung cư, ");
+					                }
+					                if (categoryIdsList1.contains(13)) {
+					                    result.append("Nhà riêng, ");
+					                }
+					                if (categoryIdsList1.contains(14)) {
+					                    result.append("Nhà biệt thự, liền kề, ");
+					                }
+					                if (categoryIdsList1.contains(15)) {
+					                    result.append("Nhà mặt phố, ");
+					                }
+					                if (categoryIdsList1.contains(16)) {
+					                    result.append("Shophouse, nhà phố thương mại, ");
+					                }
+					                if (categoryIdsList1.contains(17)) {
+					                    result.append("Nhà trọ, phòng trọ, ");
+					                }
+					                if (categoryIdsList1.contains(18)) {
+					                    result.append("Văn phòng, ");
+					                }
+					                if (categoryIdsList1.contains(19)) {
+					                    result.append("Cửa hàng, ki ốt, ");
+					                }
+					                if (categoryIdsList1.contains(20)) {
+					                    result.append("Kho, nhà xưởng, đất, ");
+					                }
+					                if (categoryIdsList1.contains(21)) {
+					                    result.append("Bất động sản khác, ");
+					                }
+					                // Remove the trailing comma and space
+					                if (result.length() > 0) {
+					                    result.setLength(result.length() - 2);
+					                }
+					            }
+					        } else {
+					            result.append("Tất cả BĐS trên toàn quốc");
+					        }
+					    }
+					
+					    out.print(result.toString());
+					%>
+
 						</a>
 					</div>
 					<h3 class='sell-content__title'>
@@ -418,15 +465,15 @@
 				        hasParameters = true;
 				    }
 
-				    if (result['listNumberOfBedrooms'] !== undefined) {
+				    if (result['numberOfBedrooms'] !== undefined) {
 				        url += hasParameters ? "&" : "?";
-				        url += "numberOfBedrooms=" + result['listNumberOfBedrooms'];
+				        url += "numberOfBedrooms=" + result['numberOfBedrooms'];
 				        hasParameters = true;
 				    }
 
-				    if (result['listNumberOfToilets'] !== undefined) {
+				    if (result['numberOfToilets'] !== undefined) {
 				        url += hasParameters ? "&" : "?";
-				        url += "numberOfToilets=" + result['listNumberOfToilets'];
+				        url += "numberOfToilets=" + result['numberOfToilets'];
 				        hasParameters = true;
 				    }
 				    
@@ -466,6 +513,69 @@
 				    } else if (result['areaHighToLow'] !== undefined) {
 				    	$("#filter-title").text(result['areaHighToLow'])
 				    }
+				    
+				    let title = "<%if ("sell".equals(request.getAttribute("page"))) {%>Mua bán<%}else{%>Cho thuê<%}%> các loại nhà đất bán trên toàn quốc, ";
+
+				    if (result['minPrice'] !== undefined && result['maxPrice'] !== undefined) {
+				        let price = "";
+				        let minPrice = result['minPrice'] / 1000000000;
+				        let maxPrice = result['maxPrice'] / 1000000000;
+
+				        if (minPrice === 0 && maxPrice === 60) {
+				            price = "≤ 60 tỷ";
+				        } else if (minPrice === 0 && maxPrice < 60) {
+				            if (maxPrice < 1) {
+				                price = "≤ " + (maxPrice * 1000) + " triệu";
+				            } else {
+				                price = "≤ " + maxPrice + " tỷ";
+				            }
+				        } else {
+				            if (minPrice < 1 && maxPrice < 1) {
+				                price = (minPrice * 1000) + " - " + (maxPrice * 1000) + " triệu";
+				            } else if (minPrice < 1 && maxPrice >= 1) {
+				                price = (minPrice * 1000) + " triệu - " + maxPrice + " tỷ";
+				            } else {
+				                price = minPrice + " - " + maxPrice + " tỷ";
+				            }
+				        }
+
+				        title += price + ", ";
+				    }
+
+				    if (result['minArea'] !== undefined && result['maxArea'] !== undefined) {
+				        let area = "";
+				        let minArea = result['minArea'];
+				        let maxArea = result['maxArea'];
+
+				        if (minArea === 0 && maxArea <= 500) {
+				            area = "≤ " + maxArea + " m²";
+				        } else if (minArea > 0 && maxArea <= 500) {
+				            area = minArea + " - " + maxArea + " m²";
+				        }
+
+				        title += area + ", ";
+				    }
+				    
+				    if (result['numberOfBedrooms'] !== undefined) {
+				        let listBedroom = result['numberOfBedrooms'].split(",").map(Number);
+				        let numberOfBedroom = listBedroom.join("-");
+				        title += numberOfBedroom + " phòng ngủ, ";
+				    }
+
+				    if (result['numberOfToilets'] !== undefined) {
+				        let listBedroom = result['numberOfToilets'].split(",").map(Number);
+				        let numberOfBedroom = listBedroom.join("-");
+				        title += numberOfBedroom + " phòng vệ sinh, ";
+				    }
+
+				    // Remove the trailing comma and space if it exists
+				    if (title.endsWith(", ")) {
+				        title = title.slice(0, -2);
+				    }
+
+				    document.querySelector(".sell-content__title").textContent = title;
+
+
 				}
 		    	
 		        var hasQueryString = url.indexOf('?') !== -1;
@@ -485,7 +595,7 @@
 		    })
 		    
 		    
-		    
+		    // Handle show and copy phonenumber
 		   $(".card-contact-button__phonenumber").on("click", function(e) {
 			    e.preventDefault();
 			    var phonenumber = $(this).find(".phonenumber").attr("value").trim();
