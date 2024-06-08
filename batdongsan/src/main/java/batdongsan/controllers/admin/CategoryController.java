@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
@@ -117,15 +118,20 @@ public class CategoryController {
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("filter", filter);
 		model.addAttribute("search", search); // Add search attribute for view
-
+		
+		EmployeeModel emp = getEmployeeFromCookies(request);
+        model.addAttribute("loginEmp", emp);
+		
 		session.close();
 		return "admin/Category/listCategory";
 	}
 
 	// Thêm danh mục
 	@RequestMapping(value = "listCategory/add", method = RequestMethod.GET)
-	public String add(ModelMap model) {
+	public String add(ModelMap model, HttpServletRequest request) {
 		loadListOfCategory(model);
+		EmployeeModel emp = getEmployeeFromCookies(request);
+        model.addAttribute("loginEmp", emp);
 		return "admin/Category/listCategoryAdd";
 	}
 
@@ -164,7 +170,7 @@ public class CategoryController {
 
 	// Cập nhật danh mục
 	@RequestMapping(value = "listCategory/update/{categoryId}", method = RequestMethod.GET)
-	public String getUpdate(ModelMap model, @PathVariable("categoryId") int categoryId) {
+	public String getUpdate(ModelMap model, @PathVariable("categoryId") int categoryId,  HttpServletRequest request) {
 		Session session = factory.openSession();
 		String hql = "FROM CategoryModel";
 		Query query = session.createQuery(hql);
@@ -173,6 +179,8 @@ public class CategoryController {
 		model.addAttribute("category", new CategoryModel());
 		CategoryModel category = (CategoryModel) session.get(CategoryModel.class, categoryId);
 		model.addAttribute("category", category);
+		EmployeeModel emp = getEmployeeFromCookies(request);
+        model.addAttribute("loginEmp", emp);
 		return "admin/Category/listCategoryUpdate";
 	}
 
@@ -248,5 +256,32 @@ public class CategoryController {
 		model.addAttribute("category", new CategoryModel());
 		session.close();
 	}
+	
+	// lấy id Nhân viên từ khi đăng nhập
+		private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
+			Session session = factory.openSession();
+			Cookie[] cookies = request.getCookies();
+		    String empId = null;
 
+		    if (cookies != null) {
+		        for (Cookie cookie : cookies) {
+		            if (cookie.getName().equals("id")) {
+		                empId = cookie.getValue();
+		                System.out.println(empId);
+		                break;
+		            }
+		        }
+		    }
+
+		    if (empId != null) {
+		        String hqlEmp = "FROM EmployeeModel WHERE id = :id";
+		        Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
+		        queryEmp.setParameter("id", empId);
+		        EmployeeModel emp = queryEmp.uniqueResult();
+		        return emp;
+		    } else {
+		        System.out.println("Không tìm thấy");
+		        return null;
+		    }
+		}
 }

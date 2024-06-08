@@ -1,88 +1,101 @@
 <%@ page pageEncoding="utf-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <div class='sidebar'>
 	<div class='sidebar-wrapper'>
 		<div class='panel-group'>
 			<div class='panel panel-default'>
 				<div class='panel-heading'>
 					<h4 class='panel-title'>
-						<a href="${pageContext.servletContext.contextPath}/admin/dashboard.html">
+						<a
+							href="${pageContext.servletContext.contextPath}/admin/dashboard.html">
 							<div>
 								<i class="fa-solid fa-table-columns"></i> <span>Trang chủ</span>
-							</div></a>
-					</h4>
-				</div>
-			</div>
-		</div>
-		<div class='panel-group'>
-			<div class='panel panel-default'>
-				<div class='panel-heading'>
-					<h4 class='panel-title'>
-						<a data-toggle='collapse' href='#collapse1'>
-							<div>
-								<i class='fa-solid fa-list'></i> <span> Quản lý tin đăng</span>
-							</div> <i class='fa-solid fa-angle-down'></i>
-						</a>
-					</h4>
-				</div>
-				<div id='collapse1' class='panel-collapse collapse'>
-					<ul class='list-group'>
-						<li class='list-group-item'>Đăng mới</li>
-						<li class='list-group-item'>Danh sách tin</li>
-						<li class='list-group-item'>Tin nháp</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class='panel-group'>
-			<div class='panel panel-default'>
-				<div class='panel-heading'>
-					<h4 class='panel-title'>
-						<a href='${pageContext.servletContext.contextPath}/admin/listNews.html'>
-							<div>
-								<i class="fa-solid fa-newspaper"></i> <span> Quản lý tin tức</span>
 							</div>
 						</a>
 					</h4>
 				</div>
 			</div>
 		</div>
-
-		<div class='panel-group'>
-			<div class='panel panel-default'>
-				<div class='panel-heading'>
-					<h4 class='panel-title'>
-						<a href='${pageContext.servletContext.contextPath}/admin/listEmployee.html' >
-							<div>
-								<i class="fa-solid fa-users"></i> <span>Quản lý nhân viên</span>
-							</div>
-						</a>
-					</h4>
+		<!-- Quản lý tin đăng -->
+		<c:if test="${fn:contains(permissions, 1) || fn:contains(permissions, 2)}">
+			<div class='panel-group'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<h4 class='panel-title'>
+							<a data-toggle='collapse' href='#collapse1'>
+								<div>
+									<i class='fa-solid fa-list'></i> <span> Quản lý tin đăng</span>
+								</div> <i class='fa-solid fa-angle-down'></i>
+							</a>
+						</h4>
+					</div>
+					<div id='collapse1' class='panel-collapse collapse'>
+						<ul class='list-group'>
+							<li class='list-group-item'>Đăng mới</li>
+							<li class='list-group-item'>Danh sách tin</li>
+							<li class='list-group-item'>Tin nháp</li>
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
+		</c:if>
 
-		<div class='panel-group'>
-			<div class='panel panel-default'>
-				<div class='panel-heading'>
-					<h4 class='panel-title'>
-						<a href='${pageContext.servletContext.contextPath}/admin/listCategory.html'>
-							<div>
-								<i class="fa-solid fa-table-list"></i> <span>Quản lý danh mục</span>
-							</div>
-						</a>
-					</h4>
-				</div>
-				<div id='collapse4' class='panel-collapse collapse'>
-					<ul class='list-group'>
-						<li class='list-group-item'>Thông báo</li>
-						<li class='list-group-item'>Quản lý đăng ký nhận email</li>
-						<li class='list-group-item'>Yêu cầu khóa tài khoản</li>
-					</ul>
+		<!-- Quản lý tin tức -->
+		<c:if test="${fn:contains(permissions, 1) || fn:contains(permissions, 3)}">
+			<div class='panel-group'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<h4 class='panel-title'>
+							<a
+								href='${pageContext.servletContext.contextPath}/admin/listNews.html'>
+								<div>
+									<i class="fa-solid fa-newspaper"></i> <span> Quản lý tin
+										tức</span>
+								</div>
+							</a>
+						</h4>
+					</div>
 				</div>
 			</div>
-		</div>
+		</c:if>
+
+		<!-- Quản lý nhân viên -->
+		<c:if test="${fn:contains(permissions, 1) || fn:contains(permissions, 4)}">
+			<div class='panel-group'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<h4 class='panel-title'>
+							<a
+								href='${pageContext.servletContext.contextPath}/admin/listEmployee.html'>
+								<div>
+									<i class="fa-solid fa-users"></i> <span>Quản lý nhân
+										viên</span>
+								</div>
+							</a>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</c:if>
+
+		<!-- Quản lý danh mục (chỉ admin) -->
+		<c:if test="${fn:contains(permissions, 1)}">
+			<div class='panel-group'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<h4 class='panel-title'>
+							<a
+								href='${pageContext.servletContext.contextPath}/admin/listCategory.html'>
+								<div>
+									<i class="fa-solid fa-table-list"></i> <span>Quản lý
+										danh mục</span>
+								</div>
+							</a>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</c:if>
 	</div>
 
 	<div class='collapse-container collapse-container-1'>

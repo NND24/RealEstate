@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
 
 @Controller
@@ -98,7 +100,10 @@ public class NewsController {
 	    model.addAttribute("currentPage", currentPage);
 	    model.addAttribute("totalPages", totalPages);
 	    model.addAttribute("filter", filter);  // Add filter attribute for view
-
+	    
+	    EmployeeModel emp = getEmployeeFromCookies(request);
+        model.addAttribute("loginEmp", emp);
+	    
 	    session.close();
 	    return "admin/News/listNews";
 	}
@@ -106,13 +111,16 @@ public class NewsController {
 
 	// Thêm tin tức
 	@RequestMapping(value = "listNews/add", method = RequestMethod.GET)
-	public String add(ModelMap model) {
+	public String add(ModelMap model, HttpServletRequest request) {
 		Session session = factory.openSession();
 		String hql = "FROM NewsModel ORDER BY dateUploaded DESC";
 		Query query = session.createQuery(hql);
 		List<NewsModel> list = query.list();
 		model.addAttribute("listOfNews", list);
 		model.addAttribute("news", new NewsModel());
+		
+		EmployeeModel emp = getEmployeeFromCookies(request);
+        model.addAttribute("loginEmp", emp);
 		session.close();
 		return "admin/News/listNewsAdd";
 	}
@@ -278,7 +286,7 @@ public class NewsController {
 
 	// Cập nhật
 	@RequestMapping(value = "listNews/update/{newsId}", method = RequestMethod.GET)
-	public String getUpdate(ModelMap model, @PathVariable("newsId") String newsId) {
+	public String getUpdate(ModelMap model, @PathVariable("newsId") String newsId, HttpServletRequest request) {
 		Session session = factory.openSession();
 		String hql = "FROM NewsModel ORDER BY dateUploaded DESC";
 		Query query = session.createQuery(hql);
@@ -290,6 +298,8 @@ public class NewsController {
 		model.addAttribute("news", news);
 		String description = news.getDescription();
 		model.addAttribute("description", description);
+		EmployeeModel emp = getEmployeeFromCookies(request);
+        model.addAttribute("loginEmp", emp);
 		return "admin/News/listNewsUpdate";
 	}
 
@@ -415,5 +425,33 @@ public class NewsController {
 		model.addAttribute("listOfNews", list);
 		session.close();
 	}
+	
+	// lấy id Nhân viên từ khi đăng nhập
+		private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
+			Session session = factory.openSession();
+			Cookie[] cookies = request.getCookies();
+			String empId = null;
+
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("id")) {
+						empId = cookie.getValue();
+						System.out.println(empId);
+						break;
+					}
+				}
+			}
+
+			if (empId != null) {
+				String hqlEmp = "FROM EmployeeModel WHERE id = :id";
+				Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
+				queryEmp.setParameter("id", empId);
+				EmployeeModel emp = queryEmp.uniqueResult();
+				return emp;
+			} else {
+				System.out.println("Không tìm thấy");
+				return null;
+			}
+		}
 
 }

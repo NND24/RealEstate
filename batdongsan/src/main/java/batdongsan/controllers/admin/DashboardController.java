@@ -1,9 +1,11 @@
 package batdongsan.controllers.admin;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
@@ -14,7 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import batdongsan.models.NewsModel;
+import batdongsan.models.EmployeeModel;
+import batdongsan.models.PermissionModel;
 
 @Controller
 @RequestMapping("/admin/")
@@ -23,7 +26,7 @@ public class DashboardController {
 	SessionFactory factory;
 
 	@RequestMapping("dashboard")
-	public String index(ModelMap model) {
+	public String index(ModelMap model, HttpServletRequest request) {
 		Session session = factory.openSession();
 		try {
 			String hqlTotalEmployees = "SELECT COUNT(e) FROM EmployeeModel e";
@@ -86,11 +89,73 @@ public class DashboardController {
             // Chuyển dữ liệu thành JSON
             model.addAttribute("totalMoneyPerMonth", totalMoneyPerMonth);
             model.addAttribute("totalPostsPerMonth", totalPostsPerMonth);
+            
+            EmployeeModel emp = getEmployeeFromCookies(request, session);         
+            if (emp != null) {
+            	model.addAttribute("loginEmp", emp);
+                // Kiểm tra quyền
+//                boolean hasPermissions = checkPermissions(emp.getId(), session);
+            	List<Integer> permissions = getPermissions(emp.getId(), session);
+                model.addAttribute("permissions", permissions);
+            } else {
+                model.addAttribute("employee", null);
+                model.addAttribute("permissions", Collections.emptyList());
+            }
 
 		} finally {
 			session.close();
 		}
 		return "admin/dashboard";
+	}
+	
+	// lấy id Nhân viên từ khi đăng nhập
+	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request, Session session) {
+	    Cookie[] cookies = request.getCookies();
+	    String empId = null;
+
+	    if (cookies != null) {
+	        for (Cookie cookie : cookies) {
+	            if (cookie.getName().equals("id")) {
+	                empId = cookie.getValue();
+	                System.out.println(empId);
+	                break;
+	            }
+	        }
+	    }
+
+	    if (empId != null) {
+	        String hqlEmp = "FROM EmployeeModel WHERE id = :id";
+	        Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
+	        queryEmp.setParameter("id", empId);
+	        EmployeeModel emp = queryEmp.uniqueResult();
+	        return emp;
+	    } else {
+	        System.out.println("Không tìm thấy");
+	        return null;
+	    }
+	}
+	
+	private boolean checkPermissions(String empId, Session session) {
+	    String hqlPermissions = "FROM PermissionModel WHERE idEmp = :idEmp AND status = true";
+	    Query<PermissionModel> queryPermissions = session.createQuery(hqlPermissions, PermissionModel.class);
+	    queryPermissions.setParameter("idEmp", empId);
+	    List<PermissionModel> activePermissions = queryPermissions.getResultList();
+	    for (PermissionModel item : activePermissions) {
+	        System.out.println("Permission ID: " + item.getPermissionId());
+	        System.out.println("Permission ID: " + item.isStatus());
+	        System.out.println("Permission ID: " + item.getRole().getRoleName());
+	        // In các thuộc tính khác của PermissionModel nếu có
+
+	        System.out.println(); // In một dòng trống giữa các mục
+	    }
+	    return !activePermissions.isEmpty();
+	}
+	
+	private List<Integer> getPermissions(String empId, Session session) {
+	    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
+	    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
+	    queryPermissions.setParameter("idEmp", empId);
+	    return queryPermissions.getResultList();
 	}
 
 }

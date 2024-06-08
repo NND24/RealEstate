@@ -130,12 +130,12 @@
 
 .control-menu.logined .user-option-container .model-container {
   position: absolute;
-  bottom: -175px;
-  right: -40px;
-  width: 230px;
+  bottom: -170px;
+  right: 0px;
+  width: 270px;
   background-color: #fff;
-  padding: 10px 0;
-  border-radius: 6px;
+  padding: 15px 0;
+  border-radius: 15px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   display: none;
 }
