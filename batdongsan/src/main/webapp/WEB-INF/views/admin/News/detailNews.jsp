@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Website số 1 về bất động sản</title>
+<title>Chi tiết tin tức</title>
 <link rel="stylesheet" href="../../../css/admin/listNews.css"
 	type="text/css">
 <link rel="stylesheet" href="../../../css/client/index.css"
@@ -14,13 +14,13 @@
 	type="text/css">
 <link rel="stylesheet" href="../../../css/admin/listTag.css"
 	type="text/css">
-<link rel="stylesheet" href="../../../css/admin/detail.css?version=50"
+<link rel="stylesheet" href="../../../css/admin/detail.css?version=51"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
 	<%@ include file="../../../components/headerAdmin.jsp"%>
-	<div class='admin active'>
+	<div class='admin'>
 		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- Detail -->
 		<div class='detail'>
@@ -49,7 +49,7 @@
 						</div>
 						
 						<div class='short-info-container'>
-							<p class='detail-content__address'>Ảnh bìa sẽ ở đây</p>
+							
 							<img src="${pageContext.servletContext.contextPath}/images/News/${news.thumbnail}" alt=""/>
 						</div>
 						<div class='description-container'>

@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listEmployee.css?version=58"
+<link rel="stylesheet" href="../css/admin/listEmployee.css?version=59"
 	type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
@@ -18,7 +18,7 @@
 </head>
 <body>
 	<%@ include file="../../../components/headerAdmin.jsp"%>
-	<div class='admin active'>
+	<div class='admin'>
 		<%@ include file="../../../components/sidebarAdmin.jsp"%>
 		<!-- ListEmployee -->
 		<div class='list-category'>

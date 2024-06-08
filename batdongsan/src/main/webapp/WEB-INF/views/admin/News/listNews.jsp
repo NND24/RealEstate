@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Website số 1 về bất động sản</title>
+<title>Quản lý tin tức</title>
 <link rel="stylesheet" href="../css/admin/listNews.css?version=56"
 	type="text/css">
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">

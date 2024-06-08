@@ -312,10 +312,10 @@
   background-color: #eee;
 }
 
-/* LISTCATEGORY */
+/* LIST EMP */
 .admin .list-category {
-  margin-left: 80px;
-  width: calc(100% - 80px);
+  margin-left: 280px;
+  width: calc(100% - 280px);
   padding: 20px;
 }
 
