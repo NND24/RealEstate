@@ -48,13 +48,13 @@
 					<a>
 						<div class='main-article'>
 							<img
-								src='${pageContext.servletContext.contextPath}/images/News/${newsList[0].thumbnail}'
+								src='${pageContext.servletContext.contextPath}/images/News/${firstFourNews[0].thumbnail}'
 								alt='' />
 							<div class='main-article__textOverlay'>
-								<span class='article-date'>${newsList[0].dateUploaded}•
+								<span class='article-date'>${firstFourNews[0].dateUploaded}•
 									Tin tức</span>
-								<h3 class='article-title'>${newsList[0].title}</h3>
-								<p class='article-description'>${newsList[0].shortDescription}</p>
+								<h3 class='article-title'>${firstFourNews[0].title}</h3>
+								<p class='article-description'>${firstFourNews[0].shortDescription}</p>
 							</div>
 							<div class='main-article__backgroundOverlay'></div>
 						</div>
@@ -62,9 +62,9 @@
 				</div>
 
 				<div class='col-lg-4 col-md-12 col-sm-12'>
-					<c:forEach var="news" items="${newsList}" begin="1" end="3">
+					<c:forEach var="news" items="${firstFourNews}" begin="1" end="3">
 						<div class='article-right-content'>
-							<span class='article-date'>${news.dateUploaded}}</span> <a
+							<span class='article-date'>${news.dateUploaded}</span> <a
 								class='card-info__title'>${news.title}</a>
 						</div>
 					</c:forEach>
@@ -74,22 +74,26 @@
 			<div class='row'>
 				<div class='news-content col-xl-8 col-lg-8 col-md-12 col-12'>
 					<h2 class='article-list-heading'>Các tin khác</h2>
-					<div class="additional-news-wrapper" >
-						<c:forEach var="news" items="${newsList}" begin="4" end="8">
-						<div class='news-card'>
-							<div class='card-img-container'>
-								<img src='${pageContext.servletContext.contextPath}/images/News/${news.thumbnail}' alt='' /> <span
-									class='card-highlight'>Tin tức</span>
+					<div id="additional-news-wrapper" class="additional-news-wrapper">
+						<c:forEach var="news" items="${initialNews}">
+							<div class='news-card'>
+								<div class='card-img-container'>
+									<img
+										src='${pageContext.servletContext.contextPath}/images/News/${news.thumbnail}'
+										alt='' /> <span class='card-highlight'>Tin tức</span>
+								</div>
+								<div class='card-info-container'>
+									<span class='article-date'>${news.dateUploaded}</span> <a
+										class='card-info__title'>${news.title}</a>
+									<div class='card-description'>${news.shortDescription}</div>
+								</div>
 							</div>
-							<div class='card-info-container'>
-								<span class='article-date'>${news.dateUploaded}}</span> <a
-									class='card-info__title'>${news.title}</a>
-								<div class='card-description'>${news.shortDescription}</div>
-							</div>
-						</div>
-					</c:forEach>
+						</c:forEach>
 					</div>
-					<button id="see-more-btn" class="btn btn-primary">Xem thêm</button>
+					<div class="pagination">
+					<a href="tin-tuc/danh-sach.html"><button id="load-more-btn" class="btn btn-primary">Xem thêm</button></a>
+						
+					</div>
 				</div>
 			</div>
 		</div>

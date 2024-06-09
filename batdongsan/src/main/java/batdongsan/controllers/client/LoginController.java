@@ -305,7 +305,7 @@ public class LoginController {
 		}
 		return "redirect:/trang-chu.html";
 	}
-
+	
 	@ResponseBody
 	@RequestMapping("logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {

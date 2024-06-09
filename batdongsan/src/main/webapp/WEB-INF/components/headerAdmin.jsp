@@ -28,11 +28,6 @@
 						<i class="fa-regular fa-id-card"></i> <span>Thông tin cá
 							nhân</span>
 					</div>
-					<a href="changePassword/${loginEmp.id}.html">
-						<div class='model-item' id="change-password">
-							<i class="fa-solid fa-key"></i> <span>Thay đổi mật khẩu</span>
-						</div>
-					</a> 
 					<a href="logout.html">
 						<div class='model-item'>
 							<i class="fa-solid fa-right-from-bracket" style="color: #ff0000;"></i>
