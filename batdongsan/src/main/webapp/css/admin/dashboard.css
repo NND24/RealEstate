@@ -15,7 +15,7 @@ body {
 .admin {
   position: relative;
   width: 100%;
-  height: calc(100vh - 89px);
+  height: calc(100vh);
   display: flex;
 }
 
@@ -48,7 +48,7 @@ body {
   top: 89px;
   width: 280px;
   height: calc(100vh - 89px);
-  overflow-y: scroll;
+  overflow-y: hidden;
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: rgb(204, 204, 204) transparent;
@@ -319,6 +319,7 @@ body {
 
 /* LISTCATEGORY */
 .admin .dashboard {
+	margin-top: 78px;
   margin-left: 280px;
   width: calc(100% - 280px);
   padding: 20px;

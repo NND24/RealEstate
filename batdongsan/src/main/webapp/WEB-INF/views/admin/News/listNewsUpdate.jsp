@@ -12,8 +12,6 @@
 	type="text/css">
 <link rel="stylesheet" href="../../../css/admin/headerAdmin.css"
 	type="text/css">
-<link rel="stylesheet" href="../../css/admin/listTag.css"
-	type="text/css">
 <script
 	src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 <%@ include file="../../../../links/links.jsp"%>

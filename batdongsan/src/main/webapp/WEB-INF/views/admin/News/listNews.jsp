@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <title>Quản lý tin tức</title>
-<link rel="stylesheet" href="../css/admin/listNews.css?version=56"
+<link rel="stylesheet" href="../css/admin/listNews.css?version=58"
 	type="text/css">
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
@@ -54,12 +54,14 @@
 						<c:forEach var="n" items="${listOfNews}">
 							<div class='admin-post-card'>
 								<div>
-									<img
+									<div class="img-wrapper">
+										<img
 										src="${pageContext.servletContext.contextPath}/images/News/${n.thumbnail}"
 										alt="" />
+									</div>									
 									<div class='post-content-container'>
 										<div>
-											<h4 class='header'>${n.title}</h4>
+											<h4 class='title'>${n.title}</h4>
 											<div class='location'>
 												<span>${n.shortDescription}</span>
 											</div>

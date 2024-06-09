@@ -22,19 +22,13 @@
 				<div class='panel panel-default'>
 					<div class='panel-heading'>
 						<h4 class='panel-title'>
-							<a data-toggle='collapse' href='#collapse1'>
+							<a
+								href='${pageContext.servletContext.contextPath}/admin/quan-ly-bat-dong-san.html'>
 								<div>
-									<i class='fa-solid fa-list'></i> <span> Quản lý tin đăng</span>
-								</div> <i class='fa-solid fa-angle-down'></i>
+									<i class="fa-regular fa-building"></i> <span> Quản lý đăng</span>
+								</div>
 							</a>
 						</h4>
-					</div>
-					<div id='collapse1' class='panel-collapse collapse'>
-						<ul class='list-group'>
-							<li class='list-group-item'>Đăng mới</li>
-							<li class='list-group-item'>Danh sách tin</li>
-							<li class='list-group-item'>Tin nháp</li>
-						</ul>
 					</div>
 				</div>
 			</div>
@@ -49,7 +43,7 @@
 							<a
 								href='${pageContext.servletContext.contextPath}/admin/listNews.html'>
 								<div>
-									<i class="fa-solid fa-newspaper"></i> <span> Quản lý tin
+									<i class="fa-solid fa-newspaper"></i></i> <span> Quản lý tin
 										tức</span>
 								</div>
 							</a>
@@ -87,7 +81,7 @@
 							<a
 								href='${pageContext.servletContext.contextPath}/admin/listCategory.html'>
 								<div>
-									<i class="fa-solid fa-table-list"></i> <span>Quản lý
+									<i class="fa-solid fa-list"></i></i> <span>Quản lý
 										danh mục</span>
 								</div>
 							</a>

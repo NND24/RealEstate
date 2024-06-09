@@ -7,11 +7,10 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listEmployee.css?version=59"
+<link rel="stylesheet" href="../css/admin/listEmployee.css?version=60"
 	type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listTag.css" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 
 
@@ -48,9 +47,9 @@
 					<tbody id="employeeTable">
 						<c:forEach var="e" items="${employees}">
 							<tr>
-								<th scope='row'>${e.id}</th>
-								<td>${e.fullname}</td>
-								<td class="status" data-status='${e.status}'>${e.status ? 'Còn làm' : 'Đã nghỉ'}</td>
+								<th scope='row'><p>${e.id}</p></th>
+								<td><p>${e.fullname}</p></td>
+								<td class="status" data-status='${e.status}'><p>${e.status ? 'Còn làm' : 'Đã nghỉ'}</p></td>
 								<td><a href='listEmployee/detail/${e.id}.html'>
 										<p class="detail-emp">Xem chi tiết</p>
 								</a></td>

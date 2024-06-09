@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="../../css/admin/listNews.css?version=56"
 	type="text/css">
 <link rel="stylesheet" href="../../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../../css/admin/headerAdmin.css"
+<link rel="stylesheet" href="../../css/admin/headerAdmin.css?version=56"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 </head>

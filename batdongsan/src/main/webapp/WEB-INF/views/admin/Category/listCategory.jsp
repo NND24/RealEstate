@@ -7,9 +7,9 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/headerAdmin.css"
+<link rel="stylesheet" href="../css/admin/headerAdmin.css?version=53"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listCategory.css?version=52"
+<link rel="stylesheet" href="../css/admin/listCategory.css?version=55"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 </head>
@@ -62,10 +62,10 @@
 					<tbody id="categoryTable">
 						<c:forEach var="c" items="${categories}">
 							<tr>
-								<th scope='row'>${c.categoryId}</th>
-								<td>${c.type}</td>
-								<td>${c.name}</td>
-								<td>${c.status ? 'Hiển thị' : 'Ẩn'}</td>
+								<th scope='row'><p>${c.categoryId}</p></th>
+								<td><p>${c.type}</p></td>
+								<td><p>${c.name}</p></td>
+								<td><p>${c.status ? 'Hiển thị' : 'Ẩn'}</p></td>
 								<td><a href='listCategory/update/${c.categoryId}.html'
 									class="updateModelButton"> <i class='fa-solid fa-pencil'></i>
 								</a> <a href='listCategory/delete/${c.categoryId}.html'> <i

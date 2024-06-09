@@ -1,7 +1,7 @@
 .admin {
   position: relative;
   width: 100%;
-  height: calc(100vh - 89px);
+  height: calc(100vh);
   display: flex;
 }
 
@@ -34,7 +34,7 @@
   top: 89px;
   width: 280px;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: hidden;
   max-height: 100%;
   scrollbar-width: thin;
   scrollbar-color: rgb(204, 204, 204) transparent;
@@ -304,9 +304,10 @@
 
 /* DETAIL */
 .admin .detail {
-  margin-left: 280px;
-  width: calc(100% - 280px);
-  padding-top: 20px;
+      margin-left: 280px;
+    margin-top: 78px;
+    width: calc(100% - 280px);
+    padding-top: 0px;
 }
 
 .admin .detail .container {
@@ -454,17 +455,17 @@
 
 .detail-content .detail-content__title {
   font-weight: 600;
-  font-size : 40px;
-  padding-bottom: 20px;
+  font-size : 35px;
+  padding-bottom: 15px;
 }
 
 .detail-content .detail-content__address {
   font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 20px;
-  line-height: 20px;
+  line-height: 12px;
   color: #2c2c2c;
   margin-top: 8px;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 
@@ -763,15 +764,17 @@
 
 .writter-info {
     display: inline-block; /* Hiển thị phần tử như một khối, nhưng không chiếm toàn bộ dòng */
+     font-size: 16px;
 }
 
 .writter-info span,
 .writter-info p.writter-name {
     display: inline; /* Hiển thị phần tử trên cùng một dòng */
+    font-size: 16px;
 }
 
 .short-description-container{
-	padding-top: 25px;
+	padding-top: 10px;
 }
 
 

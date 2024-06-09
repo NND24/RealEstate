@@ -10,7 +10,7 @@
 }
 
 .header-container {
-  padding: 17px 15px 17px;
+  padding: 7px 15px 7px;
   display: flex;
   justify-content: space-between;
   background-color: white;
@@ -25,9 +25,11 @@
 }
 
 .header-menu .left-menu img {
-  width: 160px;
-  height: 48px;
-  margin-top: 7px;
+  width: 94px;
+    height: 64px;
+        margin-right: 25px;
+    margin-left: 35px;
+    object-fit: cover;
 }
 
 .header-menu .right-menu .menu-container {
@@ -481,8 +483,18 @@
   position: relative;
   border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 6px 30px 6px 10px;
   width: 100%;
+  overflow: hidden;
+}
+
+.add-modal .form-item .select-wrapper {
+	padding: 6px 30px 6px 10px;
+}
+
+.add-modal .form-item .input-wrapper textarea {
+	padding: 6px 30px 6px 10px;
+	width: 100%;
+	resize: none;
 }
 
 .add-modal .form-item .input-wrapper i {
@@ -495,6 +507,7 @@
 
 .add-modal .form-item .input-wrapper input {
   width: 100%;
+  padding: 6px 30px 6px 10px;
 }
 
 .add-modal .form-item .input-wrapper span {
@@ -529,13 +542,13 @@
 }
 
 .add-modal .button-wrapper .continue-button span {
-  margin-right: 6px;
+  margin-right: 0px;
 }
 
 .add-modal .close-btn {
   position: absolute;
   top: 35px;
-  right: 100px;
+  right: 11%;
   width: 40px;
   height: 40px;
   border-radius: 999px;

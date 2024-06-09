@@ -51,11 +51,11 @@
 					<tbody>
 						<c:forEach var="c" items="${categories}">
 							<tr>
-								<th scope='row'>${c.categoryId}</th>
-								<td>${c.type}</td>
-								<td>${c.name}</td>
-								<td>${c.status ? 'Hiển thị' : 'Ẩn'}</td>
-								<td><a href='update/${c.categoryId}.html'
+								<th scope='row'><p>${c.categoryId}</p></th>
+								<td><p>${c.type}</p></td>
+								<td><p>${c.name}</p></td>
+								<td><p>${c.status ? 'Hiển thị' : 'Ẩn'}</p></td>
+								<td><a href='listCategory/update/${c.categoryId}.html'
 									class="updateModelButton"> <i class='fa-solid fa-pencil'></i>
 								</a> <a href='listCategory/delete/${c.categoryId}.html'> <i
 										class='fa-solid fa-trash'></i>

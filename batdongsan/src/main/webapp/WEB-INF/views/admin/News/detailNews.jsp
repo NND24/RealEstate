@@ -4,17 +4,9 @@
 <head>
 <meta charset="utf-8">
 <title>Chi tiết tin tức</title>
-<link rel="stylesheet" href="../../../css/admin/listNews.css"
+<link rel="stylesheet" href="../../../css/admin/headerAdmin.css?version=53"
 	type="text/css">
-<link rel="stylesheet" href="../../../css/client/index.css"
-	type="text/css">
-<link rel="stylesheet" href="../../../css/admin/listCategory.css"
-	type="text/css">
-<link rel="stylesheet" href="../../../css/admin/headerAdmin.css"
-	type="text/css">
-<link rel="stylesheet" href="../../../css/admin/listTag.css"
-	type="text/css">
-<link rel="stylesheet" href="../../../css/admin/detail.css?version=51"
+<link rel="stylesheet" href="../../../css/admin/detail.css?version=55"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 </head>
@@ -27,7 +19,7 @@
 			<div class='container '>
 				<div class='row'>
 					<!-- Content -->
-					<div class='detail-content col-lg-9'>
+					<div class='detail-content col-lg-12'>
 
 
 						<div class='breadcrumb'>

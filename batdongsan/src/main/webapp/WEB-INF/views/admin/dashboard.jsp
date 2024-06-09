@@ -8,9 +8,9 @@
 <meta charset="utf-8">
 <title>Trang chủ</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/headerAdmin.css?version=54"
+<link rel="stylesheet" href="../css/admin/headerAdmin.css?version=55"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/dashboard.css?version=55"
+<link rel="stylesheet" href="../css/admin/dashboard.css?version=56"
 	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
