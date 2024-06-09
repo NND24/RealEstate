@@ -2,6 +2,7 @@ package batdongsan.controllers.admin;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.io.File;
 import java.sql.Date;
 import org.apache.commons.io.FilenameUtils;
@@ -102,7 +103,14 @@ public class NewsController {
 	    model.addAttribute("filter", filter);  // Add filter attribute for view
 	    
 	    EmployeeModel emp = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", emp);
+        if (emp != null) {
+        	model.addAttribute("loginEmp", emp);
+        	List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 	    
 	    session.close();
 	    return "admin/News/listNews";
@@ -119,8 +127,15 @@ public class NewsController {
 		model.addAttribute("listOfNews", list);
 		model.addAttribute("news", new NewsModel());
 		
-		EmployeeModel emp = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", emp);
+        EmployeeModel emp = getEmployeeFromCookies(request);
+        if (emp != null) {
+        	model.addAttribute("loginEmp", emp);
+        	List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		session.close();
 		return "admin/News/listNewsAdd";
 	}
@@ -299,7 +314,14 @@ public class NewsController {
 		String description = news.getDescription();
 		model.addAttribute("description", description);
 		EmployeeModel emp = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", emp);
+        if (emp != null) {
+        	model.addAttribute("loginEmp", emp);
+        	List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		return "admin/News/listNewsUpdate";
 	}
 
@@ -393,13 +415,22 @@ public class NewsController {
 
 	// Xem chi tiết tin
 	@RequestMapping(value = "/listNews/detailNews/{newsId}", method = RequestMethod.GET)
-	public String getDetail(ModelMap model, @PathVariable("newsId") String newsId) {
+	public String getDetail(ModelMap model, @PathVariable("newsId") String newsId, HttpServletRequest request) {	
 		try (Session session = factory.openSession()) {
 			NewsModel news = session.get(NewsModel.class, newsId);
 			if (news == null) {
 				return "redirect:/admin/listNews.html";
 			}
 			model.addAttribute("news", news);
+			EmployeeModel emp = getEmployeeFromCookies(request);
+	        if (emp != null) {
+	        	model.addAttribute("loginEmp", emp);
+	        	List<Integer> permissions = getPermissions(emp.getId(), session);
+	            model.addAttribute("permissions", permissions);
+	        } else {
+	            model.addAttribute("employee", null);
+	            model.addAttribute("permissions", Collections.emptyList());
+	        }
 			return "admin/News/detailNews";
 		} catch (Exception e) {
 			return "redirect:/admin/listNews.html";
@@ -454,4 +485,11 @@ public class NewsController {
 			}
 		}
 
+		private List<Integer> getPermissions(String empId, Session session) {
+		    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
+		    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
+		    queryPermissions.setParameter("idEmp", empId);
+		    return queryPermissions.getResultList();
+		}
+		
 }

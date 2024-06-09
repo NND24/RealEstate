@@ -2,6 +2,7 @@ package batdongsan.controllers.admin;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -120,7 +121,14 @@ public class CategoryController {
 		model.addAttribute("search", search); // Add search attribute for view
 		
 		EmployeeModel emp = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", emp);
+        if (emp != null) {
+        	model.addAttribute("loginEmp", emp);
+        	List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		
 		session.close();
 		return "admin/Category/listCategory";
@@ -129,9 +137,18 @@ public class CategoryController {
 	// Thêm danh mục
 	@RequestMapping(value = "listCategory/add", method = RequestMethod.GET)
 	public String add(ModelMap model, HttpServletRequest request) {
+		Session session = factory.openSession();
 		loadListOfCategory(model);
 		EmployeeModel emp = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", emp);
+        if (emp != null) {
+        	model.addAttribute("loginEmp", emp);
+        	List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
+        
 		return "admin/Category/listCategoryAdd";
 	}
 
@@ -180,7 +197,14 @@ public class CategoryController {
 		CategoryModel category = (CategoryModel) session.get(CategoryModel.class, categoryId);
 		model.addAttribute("category", category);
 		EmployeeModel emp = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", emp);
+        if (emp != null) {
+        	model.addAttribute("loginEmp", emp);
+        	List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		return "admin/Category/listCategoryUpdate";
 	}
 
@@ -283,5 +307,12 @@ public class CategoryController {
 		        System.out.println("Không tìm thấy");
 		        return null;
 		    }
+		}
+		
+		private List<Integer> getPermissions(String empId, Session session) {
+		    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
+		    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
+		    queryPermissions.setParameter("idEmp", empId);
+		    return queryPermissions.getResultList();
 		}
 }
