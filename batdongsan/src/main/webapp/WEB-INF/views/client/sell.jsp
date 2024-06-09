@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css?version=50"
 	type="text/css">
-<link rel="stylesheet" href="css/client/sell.css?version=52"
+<link rel="stylesheet" href="css/client/sell.css?version=53"
 	type="text/css">
 <link rel="stylesheet" href="css/client/footer.css?version=51"
 	type="text/css">
@@ -312,7 +312,9 @@
 						<%
 						if (currentPage > 1) {
 						%>
-						<a href="?page=<%=currentPage - 1%>">&laquo; Previous</a>
+						<a href="?page=<%=currentPage - 1%>">
+							<i class="fa-solid fa-chevron-left"></i>
+						</a>
 						<%
 						}
 						%>
@@ -329,7 +331,9 @@
 						<%
 						if (currentPage < totalPages) {
 						%>
-						<a href="?page=<%=currentPage + 1%>">Next &raquo;</a>
+						<a href="?page=<%=currentPage + 1%>"> 
+							<i class="fa-solid fa-angle-right"></i>
+						 </a>
 						<%
 						}
 						%>
