@@ -543,19 +543,7 @@ public class SellController {
 			session.close();
 		}
 	}
-	
-	//News
-	@RequestMapping(value = { "/tin-tuc" }, method = RequestMethod.GET)
-	public String getNewsPage(ModelMap model) {
-		Session session = factory.openSession();
-		String hql = "SELECT n FROM NewsModel n WHERE n.status = true ORDER BY n.dateUploaded DESC";
-		Query query = session.createQuery(hql);
-		List<NewsModel> newsList = query.getResultList();
-		model.addAttribute("newsList", newsList);
-		session.close();
-		return "client/news/news";
-	}
-	
+
 
 	@ModelAttribute("categoriesSell")
 	public List<CategoryModel> getTypesSell() {

@@ -141,7 +141,7 @@
 	    var filter = "${filter}"; // Lấy filter hiện tại từ server
 
 	    function loadPage(page) {
-	        $.get("listNews.html", { page: page, filter: filter })
+	        $.get("danh-sach.html", { page: page, filter: filter })
 	            .done(function(data) {
 	                var newContent = $(data).find('#news-container').html();
 	                $('#news-container').html(newContent);
