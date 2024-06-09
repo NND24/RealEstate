@@ -37,7 +37,9 @@ public class FavouriteController {
 			@RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
 			@RequestParam(name = "priceHighToLow", required = false) String priceHighToLow,
 			@RequestParam(name = "areaLowToHigh", required = false) String areaLowToHigh,
-			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow) {
+			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow,
+	        @RequestParam(name = "page", defaultValue = "1") int page,
+	        @RequestParam(name = "size", defaultValue = "10") int size) {
 		Session session = factory.openSession();
 		try {
 			String hql = "SELECT re FROM RealEstateModel re JOIN re.favourite fa WHERE re.status = :status AND fa.user.userId = :userId";
@@ -86,11 +88,20 @@ public class FavouriteController {
 				}
 			}
 			query.setParameter("userId", Integer.parseInt(userId));
+			
+			// Pagination
+	        int totalResults = query.list().size();
+	        query.setFirstResult((page - 1) * size);
+	        query.setMaxResults(size);
 
 			List<RealEstateModel> listRealEstate = query.list();
+			
+			// Pagination attributes
+	        request.setAttribute("currentPage", page);
+	        request.setAttribute("totalResults", totalResults);
+	        request.setAttribute("totalPages", (int) Math.ceil((double) totalResults / size));
 
 			request.setAttribute("realEstates", listRealEstate);
-			request.setAttribute("amountRealEstate", listRealEstate.size());
 			if (userId != null) {
 				String hqlUser = "FROM UsersModel WHERE userId = :userId";
 				Query<UsersModel> queryUser = session.createQuery(hqlUser);

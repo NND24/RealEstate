@@ -265,7 +265,6 @@ public class SellController {
 	        request.setAttribute("unit", unit);
 	        request.setAttribute("minArea", minArea);
 	        request.setAttribute("maxArea", maxArea);
-	        request.setAttribute("amountRealEstate", listRealEstate.size());
 
 	        // Pagination attributes
 	        request.setAttribute("currentPage", page);
@@ -533,7 +532,6 @@ public class SellController {
 			request.setAttribute("unit", unit);
 			request.setAttribute("minArea", minArea);
 			request.setAttribute("maxArea", maxArea);
-			request.setAttribute("amountRealEstate", listRealEstate.size());
 			
 			// Pagination attributes
 	        request.setAttribute("currentPage", page);

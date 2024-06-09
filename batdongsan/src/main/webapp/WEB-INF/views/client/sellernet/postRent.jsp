@@ -10,7 +10,7 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/index.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/header.css"
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/header.css?version=53""
 	type="text/css">
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/sellernet.css"
 	type="text/css">

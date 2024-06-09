@@ -11,7 +11,7 @@
             	<i class="fa-solid fa-phone-volume"></i>
             	<div>
             		<p>Hotline</p>
-            		<span>1900 1881</span>
+            		<span>1900 1781</span>
             	</div>
             </div>
           </div>
@@ -20,7 +20,7 @@
            		<i class="fa-regular fa-user"></i>
             	<div>
             		<p>Hỗ trợ khách hàng</p>
-            		<span>trogiup.batdongsan.com.vn</span>
+            		<span>trogiup.ptithouse.com.vn</span>
             	</div>
             </div>
           </div>
@@ -29,7 +29,7 @@
             	<i class="fa-solid fa-headphones"></i>
             	<div>
             		<p>Chăm sóc khách hàng</p>
-            		<span>hotro@batdongsan.com.vn</span>
+            		<span>hotro@ptithouse.com.vn</span>
             	</div>
             </div>
           </div>
@@ -38,7 +38,7 @@
         <div class='row'>
           <div class='col-12 col-sm-6 col-lg-4'>
             <div class='single-footer-widget section_padding_0_130'>
-              <h5 class='widget-title'>CÔNG TY CỔ PHẦN PROPERTYGURU VIỆT NAM</h5>
+              <h5 class='widget-title'>CÔNG TY CỔ PHẦN PTITHOUSE VIỆT NAM</h5>
             </div>
           </div>
           <div class='col-12 col-sm-6 col-lg-2'>

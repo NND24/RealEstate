@@ -10,7 +10,7 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
-<link rel="stylesheet" href="css/client/header.css" type="text/css">
+<link rel="stylesheet" href="css/client/header.css?version=52" type="text/css">
 <link rel="stylesheet" href="css/client/home.css?version=50" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
@@ -311,11 +311,11 @@
 						%>
 					</div>
 				</div>
-				<div class='product-view-container'>
+			<!--  	<div class='product-view-container'>
 					<a href='${pageContext.servletContext.contextPath}/nha-dat-ban.html' class='product-view-more'>
 						<span>Xem thêm</span>
 					</a>
-				</div>
+				</div> -->
 			</div>
 		</div>
 
@@ -424,11 +424,17 @@
 	        $(this).text(timeAgo);
 	    });
 		
-		<%
-		if (user != null) {
-		%>
 		// HANDLE ADD TO FAVOURITE
-	    $(".card-contact-button").on("click", function() {
+	    $(".card-contact-button").on("click", function(e) {
+	    	 e.preventDefault();
+
+             <% if (user == null) { %>
+             swal({
+             	title: "Vui lòng đăng nhập để tiếp tục!",
+                 icon: "error",
+                 button: "OK"
+             });
+             <% } else { %>
 	        var regularHeartIcon = $(this).find(".fa-regular.fa-heart");
 	        var solidHeartIcon = $(this).find(".fa-solid.fa-heart");
 	        if (regularHeartIcon.css("display") === "block") {
@@ -452,8 +458,9 @@
 					console.log("Thêm thất bại")
 				}
 			});
+	        <% } %>
 	    });
-		<% } %>
+		
 	});
 	</script>
 </body>
