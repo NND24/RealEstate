@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listPost.css?version=55"
+<link rel="stylesheet" href="../css/admin/listPost.css?version=56"
 	type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
@@ -74,7 +74,7 @@
 									alt='' />
 								<div class='post-content-container'>
 									<div>
-										<h4 class='header'><%=r.getTitle()%></h4>
+										<h4 class='title'><%=r.getTitle()%></h4>
 										<div class='location'>
 											<span><%=r.getCategory().getName()%></span> <span> ·
 											</span> <span><%=r.getAddress()%></span>

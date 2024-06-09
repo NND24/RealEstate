@@ -1,7 +1,7 @@
 .admin {
   position: relative;
   width: 100%;
-  height: calc(100vh - 89px);
+  height: calc(100vh);
   display: flex;
 }
 
@@ -31,10 +31,10 @@
 
 .admin .sidebar .sidebar-wrapper {
   position: fixed;
-  top: 89px;
+  top: 80px;
   width: 280px;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: hidden;
   max-height: 100%;
   scrollbar-width: thin;
   scrollbar-color: rgb(204, 204, 204) transparent;
@@ -303,7 +303,8 @@
 }
 
 /* DETAIL */
-.admin .detail {
+.admin .container  {
+	margin-top: 78px;
   margin-left: 280px;
   width: calc(100% - 280px);
   padding-top: 20px;

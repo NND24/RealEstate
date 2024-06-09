@@ -8,12 +8,12 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/detailRealEstate.css?version=50" type="text/css">
+<link rel="stylesheet" href="../css/admin/detailRealEstate.css?version=52" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
 	<%@ include file="../../components/headerAdmin.jsp"%>
-	<div class="detail admin active">
+	<div class="detail admin">
 		<%@ include file="../../components/sidebarAdmin.jsp"%>
 		
 		<div class='container '>

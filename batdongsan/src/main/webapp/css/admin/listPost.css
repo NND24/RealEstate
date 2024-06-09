@@ -33,7 +33,7 @@
 
 .admin .sidebar .sidebar-wrapper {
   position: fixed;
-  top: 89px;
+  top: 80px;
   width: 280px;
   height: 100%;
   overflow-y: hidden;
@@ -424,7 +424,7 @@
   width: 100%;
 }
 
-.admin-post-card .post-content-container .header {
+.admin-post-card .post-content-container .title {
   color: #e03c31;
   font-weight: 600;
   margin-top: 0;
