@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +73,15 @@ public class EmployeeController {
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("totalPages", totalPages);
 		
-		EmployeeModel emp = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", emp);
+		EmployeeModel emp = getEmployeeFromCookies(request);         
+        if (emp != null) {
+        	model.addAttribute("loginEmp", emp);
+        	List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		
 		session.close();
 		return "admin/Employee/listEmployee";
@@ -88,8 +96,15 @@ public class EmployeeController {
 		List<EmployeeModel> list = query.list();
 		model.addAttribute("employees", list);
 		model.addAttribute("employee", new EmployeeModel());
-		EmployeeModel emp = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", emp);
+		EmployeeModel emp = getEmployeeFromCookies(request);         
+        if (emp != null) {
+        	model.addAttribute("loginEmp", emp);
+        	List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		session.close();
 		return "admin/Employee/listEmployeeAdd";
 	}
@@ -209,8 +224,15 @@ public class EmployeeController {
 		model.addAttribute("employee", new EmployeeModel());
 
 		EmployeeModel emp = (EmployeeModel) session.get(EmployeeModel.class, id);
-		EmployeeModel empLogin = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", empLogin);
+		EmployeeModel empLog = getEmployeeFromCookies(request);         
+        if (empLog != null) {
+        	model.addAttribute("loginEmp", empLog);
+        	List<Integer> permissions = getPermissions(empLog.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		return "admin/Employee/listEmployeeUpdate";
 	}
 
@@ -296,7 +318,15 @@ public class EmployeeController {
 		EmployeeModel empLogin = getEmployeeFromCookies(request);
         model.addAttribute("loginEmp", empLogin);
 		model.addAttribute("status", emp.isStatus());
-		model.addAttribute("employee", emp);
+		model.addAttribute("employee", emp);      
+        if (empLogin != null) {
+        	model.addAttribute("loginEmp", empLogin);
+        	List<Integer> permissions = getPermissions(empLogin.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		
 		return "admin/Employee/listEmployeeDetail";
 	}
@@ -334,8 +364,15 @@ public class EmployeeController {
 		PermissionModel permission = new PermissionModel();
 		permission.setEmployee(emp); // Set id của nhân viên cho permission
 		model.addAttribute("permissions", permission);
-		EmployeeModel empLogin = getEmployeeFromCookies(request);
-        model.addAttribute("loginEmp", empLogin);
+		EmployeeModel empLogin = getEmployeeFromCookies(request);        
+        if (emp != null) {
+        	model.addAttribute("loginEmp", empLogin);
+        	List<Integer> permissions = getPermissions(empLogin.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 		session.close();
 		return "admin/Employee/listEmployeeAuthorization";
 	}
@@ -451,5 +488,13 @@ public class EmployeeController {
 			return null;
 		}
 	}
+	
+	private List<Integer> getPermissions(String empId, Session session) {
+	    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
+	    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
+	    queryPermissions.setParameter("idEmp", empId);
+	    return queryPermissions.getResultList();
+	}
+	
 
 }

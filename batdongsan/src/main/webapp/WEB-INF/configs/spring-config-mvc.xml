@@ -83,5 +83,15 @@
 			</props>
 		</property>
 	</bean>
+	
+	<!-- Interceptor -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**"/>
+			<mvc:exclude-mapping path="/admin/login.html"/>
+			<mvc:exclude-mapping path="/admin/loginInAdminPage.html"/>
+			<bean class="batdongsan.interceptor.LoggerInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 </beans>
