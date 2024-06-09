@@ -1,3 +1,5 @@
+<%@page import="batdongsan.models.FavouriteModel"%>
+<%@page import="java.util.Collection"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="batdongsan.models.RealEstateModel"%>
 <%@ page pageEncoding="utf-8"%>
@@ -7,7 +9,7 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
-<link rel="stylesheet" href="css/client/header.css" type="text/css">
+<link rel="stylesheet" href="css/client/header.css?version=53"" type="text/css">
 <link rel="stylesheet" href="css/client/detail.css?version=51" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css?version=51" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
@@ -72,7 +74,8 @@
 					<div class='short-info-container'>
 						<div>
 							<div class='short-info__item'>
-								<span class='title'>Mức giá</span> <span class='value'>
+								<span class='title'>Mức giá</span> 
+								<span class='value'>
 								<%
 								if(!realEstate.getUnit().equals("Thỏa thuận")) {
 									if(realEstate.getPrice() < 1000000000) {
@@ -84,7 +87,7 @@
 									if(realEstate.getUnit().equals("triệu")) {
 									    out.print("");
 									} else {
-									    out.print(realEstate.getUnit());
+										out.print(" " + realEstate.getUnit());
 									}
 								} else {
 									out.print(realEstate.getUnit());
@@ -103,11 +106,23 @@
 							</a> <a href='' class='short-info__button'> <i
 								class='fa-solid fa-triangle-exclamation'></i>
 							</a> 
-							<a class='short-info__button card-contact-button__favorite' value="<%=realEstate.getRealEstateId()%>"> 
+							<a class='short-info__button card-contact-button__favorite' value="<%=realEstate.getRealEstateId()%>">
+								<%
+									Collection<FavouriteModel> favourites = realEstate.getFavourite();
+									boolean isLogined = false;
+									if(user != null) {
+									    for (FavouriteModel favourite : favourites) {
+									    	if(user.getUserId() == favourite.getUser().getUserId()) {
+									    		isLogined = true;
+									    		break;
+									    	}    
+									    }
+									}
+									%> 
 								<i class='fa-regular fa-heart'
-										style="display: <%=realEstate.getFavourite().size() > 0 ? "none" : "block"%>;"></i>
+										style="display: <%= isLogined ? "none" : "block"%>;"></i>
 									<i class="fa-solid fa-heart"
-										style="color: #e03c31;display: <%=realEstate.getFavourite().size() > 0 ? "block" : "none"%>;"></i>
+										style="color: #e03c31;display: <%= isLogined ? "block" : "none"%>;"></i>
 							</a>
 						</div>
 					</div>
@@ -140,7 +155,7 @@
 									if(realEstate.getUnit().equals("triệu")) {
 									    out.print("");
 									} else {
-									    out.print(realEstate.getUnit());
+										out.print(" " + realEstate.getUnit());
 									}
 								} else {
 									out.print(realEstate.getUnit());
@@ -240,7 +255,7 @@
 													if(realEstate.getUnit().equals("triệu")) {
 													    out.print("");
 													} else {
-													    out.print(realEstate.getUnit());
+														out.print(" " + realEstate.getUnit());
 													}
 												} else {
 													out.print(realEstate.getUnit());
@@ -258,10 +273,22 @@
 												<div class='card-published-info'  value="<%=r.getSubmittedDate()%>"></div>
 												<div class='card-contact-button__favorite'
 													value="<%=r.getRealEstateId()%>">
+													<%
+													Collection<FavouriteModel> favourites2 = r.getFavourite();
+													boolean isLogined2 = false;
+													if(user != null) {
+													    for (FavouriteModel favourite : favourites2) {
+													    	if(user.getUserId() == favourite.getUser().getUserId()) {
+													    		isLogined = true;
+													    		break;
+													    	}    
+													    }
+													}
+													%> 
 													<i class='fa-regular fa-heart'
-														style="display: <%=r.getFavourite().size() > 0 ? "none" : "block"%>;"></i>
+														style="display: <%= isLogined2 ? "none" : "block"%>;"></i>
 													<i class="fa-solid fa-heart"
-														style="color: #e03c31;display: <%=r.getFavourite().size() > 0 ? "block" : "none"%>;"></i>
+														style="color: #e03c31;display: <%= isLogined2 ? "block" : "none"%>;"></i>
 												</div>
 											</div>
 										</div>
@@ -382,12 +409,17 @@
 		});
 		
 		$(document).ready(function() {
-			<%
-			if (user != null) {
-			%>
 			// HANDLE ADD TO FAVOURITE
 		    $(".card-contact-button__favorite").on("click", function(e) {
 		    	e.preventDefault();
+		    	
+		    	<% if (user == null) { %>
+                swal({
+                	title: "Vui lòng đăng nhập để tiếp tục!",
+                    icon: "error",
+                    button: "OK"
+                });
+                <% } else { %>
 		        var regularHeartIcon = $(this).find(".fa-regular.fa-heart");
 		        var solidHeartIcon = $(this).find(".fa-solid.fa-heart");
 		        if (regularHeartIcon.css("display") === "block") {
@@ -411,11 +443,19 @@
 						console.log("Thêm thất bại")
 					}
 				});
+				<% } %>
 		    });
-			<% } %>
 			
 			$(".contact-button__phonenumber").on("click", function(e) {
 			    e.preventDefault();
+			    
+			    <% if (user == null) { %>
+                swal({
+                	title: "Vui lòng đăng nhập để tiếp tục!",
+                    icon: "error",
+                    button: "OK"
+                });
+                <% } else { %>
 			    var phonenumber = $(this).find(".phonenumber").attr("value").trim();
 			
 			    var textarea = $("<textarea>")
@@ -431,6 +471,7 @@
 			
 			    $(this).find(".phonenumber").text(phonenumber);
 			    $(this).find(".show-phonenumber").text("Sao chép");
+			    <% } %>
 			});
 
 

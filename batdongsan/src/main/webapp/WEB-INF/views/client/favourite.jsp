@@ -6,23 +6,29 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Spring MVC</title>
+<title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
-<link rel="stylesheet" href="css/client/header.css" type="text/css">
+<link rel="stylesheet" href="css/client/header.css?version=53" type="text/css">
 <link rel="stylesheet" href="css/client/sell.css" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
 	<%@ include file="../../components/header.jsp"%>
+	<%
+	List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
+	Integer currentPage = (Integer) request.getAttribute("currentPage");
+	Integer totalResults = (Integer) request.getAttribute("totalResults");
+	Integer totalPages = (Integer) request.getAttribute("totalPages");
+	%>
 	<div class="sell">
 		<div class='container '>
 			<div class='row'>
 				<div class='sell-content col-lg-9'>
 					<h3 class='sell-content__title'>Tin đăng đã lưu</h3>
 					<div class='sell-content__navbar'>
-						<span class='total-count'>Tổng số ${amountRealEstate }
-							tin đăng</span>
+						<span class='total-count'>Tổng số ${totalResults }
+							tin đã lưu</span>
 						<div class='navbar-filter dropdown'>
 							<div class=' dropdown-toggle' data-toggle='dropdown'>
 								<span id="filter-title">Lưu mới nhất</span> <i
@@ -36,8 +42,6 @@
 
 					<!-- CARD -->
 					<%
-					List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
-
 					if (realEstates != null) {
 						for (RealEstateModel r : realEstates) {
 							String imageString = (String) r.getImages();
@@ -74,22 +78,22 @@
 								<div class='card-info__detail'>
 									<div class='card-config'>
 										<span class='card-config__item card-config__price'> <%
- if (!r.getUnit().equals("Thỏa thuận")) {
- 	if (r.getPrice() < 1000000000) {
- 		out.print((int) (r.getPrice() / 1000000) + " triệu");
- 	} else {
- 		out.print(r.getPrice() / 1000000000 + " tỷ");
- 	}
-
- 	if (r.getUnit().equals("triệu")) {
- 		out.print("");
- 	} else {
- 		out.print(r.getUnit());
- 	}
- } else {
- 	out.print(r.getUnit());
- }
- %>
+										 if (!r.getUnit().equals("Thỏa thuận")) {
+										 	if (r.getPrice() < 1000000000) {
+										 		out.print((int) (r.getPrice() / 1000000) + " triệu");
+										 	} else {
+										 		out.print(r.getPrice() / 1000000000 + " tỷ");
+										 	}
+										
+										 	if (r.getUnit().equals("triệu")) {
+										 		out.print("");
+										 	} else {
+										 		out.print(" "+r.getUnit());
+										 	}
+										 } else {
+										 	out.print(r.getUnit());
+										 }
+										 %>
 										</span> <span class='card-config__item card-config__dot'>·</span> <span
 											class='card-config__item card-config__area'><%=r.getArea()%>
 											m²</span>
@@ -154,6 +158,38 @@
 					}
 					}
 					%>
+					
+					<!-- Phân trang -->
+					<div class="pagination">
+						<%
+						if (currentPage > 1) {
+						%>
+						<a href="?page=<%=currentPage - 1%>">
+							<i class="fa-solid fa-chevron-left"></i>
+						</a>
+						<%
+						}
+						%>
+
+						<%
+						for (int i = 1; i <= totalPages; i++) {
+						%>
+						<a href="?page=<%=i%>"
+							class="<%=i == currentPage ? "active" : ""%>"><%=i%></a>
+						<%
+						}
+						%>
+
+						<%
+						if (currentPage < totalPages) {
+						%>
+						<a href="?page=<%=currentPage + 1%>"> 
+							<i class="fa-solid fa-angle-right"></i>
+						 </a>
+						<%
+						}
+						%>
+					</div>
 				</div>
 
 				<div class='sell-sidebar col-lg-3'>

@@ -39,258 +39,271 @@ public class SellController {
 
 	@RequestMapping(value = { "/nha-dat-ban" }, method = RequestMethod.GET)
 	public String getSellPage(HttpServletRequest request,
-			@RequestParam(name = "searchInput", required = false) String searchInput,
-			@RequestParam(name = "categoryIds", required = false) List<Integer> categoryIds,
-			@RequestParam(name = "provinceId", required = false) Integer provinceId,
-			@RequestParam(name = "districtId", required = false) Integer districtId,
-			@RequestParam(name = "wardId", required = false) Integer wardId,
-			@RequestParam(name = "minPrice", required = false) Float minPrice,
-			@RequestParam(name = "maxPrice", required = false) Float maxPrice,
-			@RequestParam(name = "unit", required = false) String unit,
-			@RequestParam(name = "minArea", required = false) Float minArea,
-			@RequestParam(name = "maxArea", required = false) Float maxArea,
-			@RequestParam(name = "numberOfBedrooms", required = false) List<Integer> numberOfBedrooms,
-			@RequestParam(name = "numberOfToilets", required = false) List<Integer> numberOfToilets,
-			@RequestParam(name = "directions", required = false) List<String> directions,
-			@RequestParam(name = "newPost", required = false) String newPost,
-			@RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
-			@RequestParam(name = "priceHighToLow", required = false) String priceHighToLow,
-			@RequestParam(name = "areaLowToHigh", required = false) String areaLowToHigh,
-			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			// Fetch expired real estates
-            String hqlExpired = "SELECT re FROM RealEstateModel re WHERE re.expirationDate < :today";
-            Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
-            queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
-            List<RealEstateModel> expiredRealEstates = queryExpired.list();
+	        @RequestParam(name = "searchInput", required = false) String searchInput,
+	        @RequestParam(name = "categoryIds", required = false) List<Integer> categoryIds,
+	        @RequestParam(name = "provinceId", required = false) Integer provinceId,
+	        @RequestParam(name = "districtId", required = false) Integer districtId,
+	        @RequestParam(name = "wardId", required = false) Integer wardId,
+	        @RequestParam(name = "minPrice", required = false) Float minPrice,
+	        @RequestParam(name = "maxPrice", required = false) Float maxPrice,
+	        @RequestParam(name = "unit", required = false) String unit,
+	        @RequestParam(name = "minArea", required = false) Float minArea,
+	        @RequestParam(name = "maxArea", required = false) Float maxArea,
+	        @RequestParam(name = "numberOfBedrooms", required = false) List<Integer> numberOfBedrooms,
+	        @RequestParam(name = "numberOfToilets", required = false) List<Integer> numberOfToilets,
+	        @RequestParam(name = "directions", required = false) List<String> directions,
+	        @RequestParam(name = "newPost", required = false) String newPost,
+	        @RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
+	        @RequestParam(name = "priceHighToLow", required = false) String priceHighToLow,
+	        @RequestParam(name = "areaLowToHigh", required = false) String areaLowToHigh,
+	        @RequestParam(name = "areaHighToLow", required = false) String areaHighToLow,
+	        @RequestParam(name = "page", defaultValue = "1") int page,
+	        @RequestParam(name = "size", defaultValue = "10") int size) {
+	    
+	    Session session = factory.openSession();
+	    Transaction t = session.beginTransaction();
+	    try {
+	        // Fetch expired real estates
+	        String hqlExpired = "SELECT re FROM RealEstateModel re WHERE re.expirationDate < :today";
+	        Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
+	        queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
+	        List<RealEstateModel> expiredRealEstates = queryExpired.list();
 
-            // Update status of all real estates to "Ẩn"
-            expiredRealEstates.forEach(re -> {
-                re.setStatus("Ẩn");
-                session.merge(re);
-            });
-			
-			String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE re.status = :status AND cat.type LIKE :type";
+	        // Update status of all real estates to "Ẩn"
+	        expiredRealEstates.forEach(re -> {
+	            re.setStatus("Ẩn");
+	            session.merge(re);
+	        });
 
-			// Search by input
-			if (searchInput != null && !searchInput.isEmpty()) {
-				hql += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2 OR cat.name LIKE :searchInput3)";
-			}
+	        String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE re.status = :status AND cat.type LIKE :type";
 
-			// Search by category
-			if (categoryIds != null && !categoryIds.isEmpty()) {
-				if (categoryIds.size() == 1) {
-					hql += " AND cat.categoryId = :categoryId0";
-				} else {
-					hql += " AND (cat.categoryId = :categoryId0";
-					for (int i = 1; i < categoryIds.size(); i++) {
-						hql += " OR cat.categoryId = :categoryId" + i;
-					}
-					hql += ")";
-				}
-			}
+	        // Search by input
+	        if (searchInput != null && !searchInput.isEmpty()) {
+	            hql += " AND (address LIKE :searchInput0 OR title LIKE :searchInput1 OR description LIKE :searchInput2 OR cat.name LIKE :searchInput3)";
+	        }
 
-			// Search by address
-			if (provinceId != null && districtId == null && wardId == null) {
-				hql += " AND pro.provinceId = :provinceId";
-			} else if (provinceId != null && districtId != null && wardId == null) {
-				hql += " AND pro.provinceId = :provinceId AND dis.districtId = :districtId";
-			} else if (provinceId != null && districtId != null && wardId != null) {
-				hql += " AND pro.provinceId = :provinceId AND dis.districtId = :districtId AND ward.wardId = :wardId";
-			}
+	        // Search by category
+	        if (categoryIds != null && !categoryIds.isEmpty()) {
+	            if (categoryIds.size() == 1) {
+	                hql += " AND cat.categoryId = :categoryId0";
+	            } else {
+	                hql += " AND (cat.categoryId = :categoryId0";
+	                for (int i = 1; i < categoryIds.size(); i++) {
+	                    hql += " OR cat.categoryId = :categoryId" + i;
+	                }
+	                hql += ")";
+	            }
+	        }
 
-			// Search by number of bedrooms
-			if (numberOfBedrooms != null && !numberOfBedrooms.isEmpty()) {
-				if (numberOfBedrooms.size() == 1) {
-					hql += " AND re.numberOfBedrooms = :numberOfBedrooms0";
-				} else {
-					hql += " AND (re.numberOfBedrooms = :numberOfBedrooms0";
-					for (int i = 1; i < numberOfBedrooms.size(); i++) {
-						hql += " OR re.numberOfBedrooms = :numberOfBedrooms" + i;
-					}
-					hql += ")";
-				}
-			}
+	        // Search by address
+	        if (provinceId != null && districtId == null && wardId == null) {
+	            hql += " AND pro.provinceId = :provinceId";
+	        } else if (provinceId != null && districtId != null && wardId == null) {
+	            hql += " AND pro.provinceId = :provinceId AND dis.districtId = :districtId";
+	        } else if (provinceId != null && districtId != null && wardId != null) {
+	            hql += " AND pro.provinceId = :provinceId AND dis.districtId = :districtId AND ward.wardId = :wardId";
+	        }
 
-			// Search by number of toilets
-			if (numberOfToilets != null && !numberOfToilets.isEmpty()) {
-				if (numberOfToilets.size() == 1) {
-					hql += " AND re.numberOfToilets = :numberOfToilets0";
-				} else {
-					hql += " AND (re.numberOfToilets = :numberOfToilets0";
-					for (int i = 1; i < numberOfToilets.size(); i++) {
-						hql += " OR re.numberOfToilets = :numberOfToilets" + i;
-					}
-					hql += ")";
-				}
-			}
+	        // Search by number of bedrooms
+	        if (numberOfBedrooms != null && !numberOfBedrooms.isEmpty()) {
+	            if (numberOfBedrooms.size() == 1) {
+	                hql += " AND re.numberOfBedrooms = :numberOfBedrooms0";
+	            } else {
+	                hql += " AND (re.numberOfBedrooms = :numberOfBedrooms0";
+	                for (int i = 1; i < numberOfBedrooms.size(); i++) {
+	                    hql += " OR re.numberOfBedrooms = :numberOfBedrooms" + i;
+	                }
+	                hql += ")";
+	            }
+	        }
 
-			// Search by direction
-			if (directions != null && !directions.isEmpty()) {
-				if (directions.size() == 1) {
-					hql += " AND re.direction = :direction0";
-				} else {
-					hql += " AND (re.direction = :direction0";
-					for (int i = 1; i < directions.size(); i++) {
-						hql += " OR re.direction = :direction" + i;
-					}
-					hql += ")";
-				}
-			}
+	        // Search by number of toilets
+	        if (numberOfToilets != null && !numberOfToilets.isEmpty()) {
+	            if (numberOfToilets.size() == 1) {
+	                hql += " AND re.numberOfToilets = :numberOfToilets0";
+	            } else {
+	                hql += " AND (re.numberOfToilets = :numberOfToilets0";
+	                for (int i = 1; i < numberOfToilets.size(); i++) {
+	                    hql += " OR re.numberOfToilets = :numberOfToilets" + i;
+	                }
+	                hql += ")";
+	            }
+	        }
 
-			// Search by price
-			if (minPrice != null && maxPrice != null) {
-				hql += " AND (re.price >= :minPrice AND re.price <= :maxPrice)";
-			}
+	        // Search by direction
+	        if (directions != null && !directions.isEmpty()) {
+	            if (directions.size() == 1) {
+	                hql += " AND re.direction = :direction0";
+	            } else {
+	                hql += " AND (re.direction = :direction0";
+	                for (int i = 1; i < directions.size(); i++) {
+	                    hql += " OR re.direction = :direction" + i;
+	                }
+	                hql += ")";
+	            }
+	        }
 
-			// Search by area
-			if (minArea != null && maxArea != null) {
-				hql += " AND (re.area >= :minArea AND re.area <= :maxArea)";
-			}
+	        // Search by price
+	        if (minPrice != null && maxPrice != null) {
+	            hql += " AND (re.price >= :minPrice AND re.price <= :maxPrice)";
+	        }
 
-			// Search by unit
-			if (unit != null && !unit.isEmpty()) {
-				hql += " AND re.unit = :unit ";
-			}
+	        // Search by area
+	        if (minArea != null && maxArea != null) {
+	            hql += " AND (re.area >= :minArea AND re.area <= :maxArea)";
+	        }
 
-			// ORDER BY
-			String orderByClause = "";
+	        // Search by unit
+	        if (unit != null && !unit.isEmpty()) {
+	            hql += " AND re.unit = :unit ";
+	        }
 
-			if (newPost != null) {
-				orderByClause = " ORDER BY submittedDate DESC";
-			}
+	        // ORDER BY
+	        String orderByClause = "";
 
-			if (priceLowToHigh != null) {
-				orderByClause = " ORDER BY price ASC";
-			}
+	        if (newPost != null) {
+	            orderByClause = " ORDER BY submittedDate DESC";
+	        }
 
-			if (priceHighToLow != null) {
-				orderByClause = " ORDER BY price DESC";
-			}
+	        if (priceLowToHigh != null) {
+	            orderByClause = " ORDER BY price ASC";
+	        }
 
-			if (areaLowToHigh != null) {
-				orderByClause = " ORDER BY area ASC";
-			}
+	        if (priceHighToLow != null) {
+	            orderByClause = " ORDER BY price DESC";
+	        }
 
-			if (areaHighToLow != null) {
-				orderByClause = " ORDER BY area DESC";
-			}
+	        if (areaLowToHigh != null) {
+	            orderByClause = " ORDER BY area ASC";
+	        }
 
-			// Append the ORDER BY clause to the HQL query
-			hql += orderByClause;
+	        if (areaHighToLow != null) {
+	            orderByClause = " ORDER BY area DESC";
+	        }
 
-			Query<RealEstateModel> query = session.createQuery(hql);
+	        // Append the ORDER BY clause to the HQL query
+	        hql += orderByClause;
 
-			// Search by type
-			query.setParameter("type", "Nhà đất bán");
-			query.setParameter("status", "Đang hiển thị");
+	        Query<RealEstateModel> query = session.createQuery(hql);
 
-			if (unit != null && !unit.isEmpty()) {
-				query.setParameter("unit", "Thỏa thuận");
-			}
+	        // Search by type
+	        query.setParameter("type", "Nhà đất bán");
+	        query.setParameter("status", "Đang hiển thị");
 
-			// Search by input
-			if (searchInput != null && !searchInput.isEmpty()) {
-				query.setParameter("searchInput0", "%" + searchInput + "%");
-				query.setParameter("searchInput1", "%" + searchInput + "%");
-				query.setParameter("searchInput2", "%" + searchInput + "%");
-				query.setParameter("searchInput3", "%" + searchInput + "%");
-			}
+	        if (unit != null && !unit.isEmpty()) {
+	            query.setParameter("unit", "Thỏa thuận");
+	        }
 
-			// Search by category
-			if (categoryIds != null && !categoryIds.isEmpty()) {
-				for (int i = 0; i < categoryIds.size(); i++) {
-					query.setParameter("categoryId" + i, categoryIds.get(i));
-				}
-			}
+	        // Search by input
+	        if (searchInput != null && !searchInput.isEmpty()) {
+	            query.setParameter("searchInput0", "%" + searchInput + "%");
+	            query.setParameter("searchInput1", "%" + searchInput + "%");
+	            query.setParameter("searchInput2", "%" + searchInput + "%");
+	            query.setParameter("searchInput3", "%" + searchInput + "%");
+	        }
 
-			// Search by address
-			if (provinceId != null && districtId == null && wardId == null) {
-				query.setParameter("provinceId", provinceId);
-			} else if (provinceId != null && districtId != null && wardId == null) {
-				query.setParameter("provinceId", provinceId);
-				query.setParameter("districtId", districtId);
-			} else if (provinceId != null && districtId != null && wardId != null) {
-				query.setParameter("provinceId", provinceId);
-				query.setParameter("districtId", districtId);
-				query.setParameter("wardId", wardId);
-			}
+	        // Search by category
+	        if (categoryIds != null && !categoryIds.isEmpty()) {
+	            for (int i = 0; i < categoryIds.size(); i++) {
+	                query.setParameter("categoryId" + i, categoryIds.get(i));
+	            }
+	        }
 
-			// Search by number of bedrooms
-			if (numberOfBedrooms != null && !numberOfBedrooms.isEmpty()) {
-				for (int i = 0; i < numberOfBedrooms.size(); i++) {
-					query.setParameter("numberOfBedrooms" + i, numberOfBedrooms.get(i));
-				}
-			}
+	        // Search by address
+	        if (provinceId != null && districtId == null && wardId == null) {
+	            query.setParameter("provinceId", provinceId);
+	        } else if (provinceId != null && districtId != null && wardId == null) {
+	            query.setParameter("provinceId", provinceId);
+	            query.setParameter("districtId", districtId);
+	        } else if (provinceId != null && districtId != null && wardId != null) {
+	            query.setParameter("provinceId", provinceId);
+	            query.setParameter("districtId", districtId);
+	            query.setParameter("wardId", wardId);
+	        }
 
-			if (numberOfToilets != null && !numberOfToilets.isEmpty()) {
-				for (int i = 0; i < numberOfToilets.size(); i++) {
-					query.setParameter("numberOfToilets" + i, numberOfToilets.get(i));
-				}
-			}
+	        // Search by number of bedrooms
+	        if (numberOfBedrooms != null && !numberOfBedrooms.isEmpty()) {
+	            for (int i = 0; i < numberOfBedrooms.size(); i++) {
+	                query.setParameter("numberOfBedrooms" + i, numberOfBedrooms.get(i));
+	            }
+	        }
 
-			if (directions != null && !directions.isEmpty()) {
-				for (int i = 0; i < directions.size(); i++) {
-					query.setParameter("direction" + i, directions.get(i));
-				}
-			}
+	        if (numberOfToilets != null && !numberOfToilets.isEmpty()) {
+	            for (int i = 0; i < numberOfToilets.size(); i++) {
+	                query.setParameter("numberOfToilets" + i, numberOfToilets.get(i));
+	            }
+	        }
 
-			if (minPrice != null && maxPrice != null) {
-				query.setParameter("minPrice", minPrice);
-				query.setParameter("maxPrice", maxPrice);
-			}
+	        if (directions != null && !directions.isEmpty()) {
+	            for (int i = 0; i < directions.size(); i++) {
+	                query.setParameter("direction" + i, directions.get(i));
+	            }
+	        }
 
-			if (minArea != null && maxArea != null) {
-				query.setParameter("minArea", minArea);
-				query.setParameter("maxArea", maxArea);
-			}
+	        if (minPrice != null && maxPrice != null) {
+	            query.setParameter("minPrice", minPrice);
+	            query.setParameter("maxPrice", maxPrice);
+	        }
 
-			List<RealEstateModel> listRealEstate = query.list();
+	        if (minArea != null && maxArea != null) {
+	            query.setParameter("minArea", minArea);
+	            query.setParameter("maxArea", maxArea);
+	        }
 
-			request.setAttribute("realEstates", listRealEstate);
-			request.setAttribute("page", "sell");
-			request.setAttribute("categoryIds", categoryIds);
-			request.setAttribute("minPrice", minPrice);
-			request.setAttribute("maxPrice", maxPrice);
-			request.setAttribute("unit", unit);
-			request.setAttribute("minArea", minArea);
-			request.setAttribute("maxArea", maxArea);
-			request.setAttribute("amountRealEstate", listRealEstate.size());
+	        // Pagination
+	        int totalResults = query.list().size();
+	        query.setFirstResult((page - 1) * size);
+	        query.setMaxResults(size);
 
-			Cookie[] cookies = request.getCookies();
-			String userId = null;
+	        List<RealEstateModel> listRealEstate = query.list();
 
-			if (cookies != null) {
-				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals("userId")) {
-						userId = cookie.getValue();
-						break;
-					}
-				}
-			}
+	        request.setAttribute("realEstates", listRealEstate);
+	        request.setAttribute("page", "sell");
+	        request.setAttribute("categoryIds", categoryIds);
+	        request.setAttribute("minPrice", minPrice);
+	        request.setAttribute("maxPrice", maxPrice);
+	        request.setAttribute("unit", unit);
+	        request.setAttribute("minArea", minArea);
+	        request.setAttribute("maxArea", maxArea);
 
-			if (userId != null) {
-				String hqlUser = "FROM UsersModel WHERE userId = :userId";
-				Query<UsersModel> queryUser = session.createQuery(hqlUser);
-				queryUser.setParameter("userId", Integer.parseInt(userId));
-				UsersModel user = queryUser.uniqueResult();
-				request.setAttribute("user", user);
-			} else {
-				UsersModel user = null;
-				request.setAttribute("user", user);
-			}
+	        // Pagination attributes
+	        request.setAttribute("currentPage", page);
+	        request.setAttribute("totalResults", totalResults);
+	        request.setAttribute("totalPages", (int) Math.ceil((double) totalResults / size));
 
-			t.commit();
-			return "client/sell";
-		} catch (Exception e) {
-            t.rollback();
-            throw e;
-        } finally {
-			session.close();
-		}
+	        Cookie[] cookies = request.getCookies();
+	        String userId = null;
+
+	        if (cookies != null) {
+	            for (Cookie cookie : cookies) {
+	                if (cookie.getName().equals("userId")) {
+	                    userId = cookie.getValue();
+	                    break;
+	                }
+	            }
+	        }
+
+	        if (userId != null) {
+	            String hqlUser = "FROM UsersModel WHERE userId = :userId";
+	            Query<UsersModel> queryUser = session.createQuery(hqlUser);
+	            queryUser.setParameter("userId", Integer.parseInt(userId));
+	            UsersModel user = queryUser.uniqueResult();
+	            request.setAttribute("user", user);
+	        } else {
+	            UsersModel user = null;
+	            request.setAttribute("user", user);
+	        }
+
+	        t.commit();
+	        return "client/sell";
+	    } catch (Exception e) {
+	        t.rollback();
+	        throw e;
+	    } finally {
+	        session.close();
+	    }
 	}
+
 
 	@RequestMapping(value = { "/nha-dat-cho-thue" }, method = RequestMethod.GET)
 	public String getRentPage(HttpServletRequest request,
@@ -311,7 +324,9 @@ public class SellController {
 			@RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
 			@RequestParam(name = "priceHighToLow", required = false) String priceHighToLow,
 			@RequestParam(name = "areaLowToHigh", required = false) String areaLowToHigh,
-			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow) {
+			@RequestParam(name = "areaHighToLow", required = false) String areaHighToLow,
+			@RequestParam(name = "page", defaultValue = "1") int page,
+	        @RequestParam(name = "size", defaultValue = "10") int size) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
@@ -501,6 +516,11 @@ public class SellController {
 				query.setParameter("minArea", minArea);
 				query.setParameter("maxArea", maxArea);
 			}
+			
+			// Pagination
+	        int totalResults = query.list().size();
+	        query.setFirstResult((page - 1) * size);
+	        query.setMaxResults(size);
 
 			List<RealEstateModel> listRealEstate = query.list();
 
@@ -512,7 +532,11 @@ public class SellController {
 			request.setAttribute("unit", unit);
 			request.setAttribute("minArea", minArea);
 			request.setAttribute("maxArea", maxArea);
-			request.setAttribute("amountRealEstate", listRealEstate.size());
+			
+			// Pagination attributes
+	        request.setAttribute("currentPage", page);
+	        request.setAttribute("totalResults", totalResults);
+	        request.setAttribute("totalPages", (int) Math.ceil((double) totalResults / size));
 
 			Cookie[] cookies = request.getCookies();
 			String userId = null;

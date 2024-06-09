@@ -14,7 +14,7 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/client/header.css" type="text/css">
+<link rel="stylesheet" href="../css/client/header.css?version=53"" type="text/css">
 <link rel="stylesheet" href="../css/client/sellernet.css?version=54" type="text/css">
 <link rel="stylesheet" href="../css/client/listPost.css?version=54" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
@@ -38,23 +38,42 @@
 
 				<div class='post-container'>
 					<ul class='nav nav-tabs'>
-						<%							
+						<%		
+							// All realEstate
 							List<RealEstateModel> allRealEstates = (List<RealEstateModel>) request.getAttribute("allRealEstates");
+							Integer currentAllPage = (Integer) request.getAttribute("currentAllPage");
+							Integer totalAllPages = (Integer) request.getAttribute("totalAllPages");
+							Integer totalAllResults = (Integer) request.getAttribute("totalAllResults");
+						
+							// Expired realEstates
 							List<RealEstateModel> expiredRealEstates = (List<RealEstateModel>) request.getAttribute("expiredRealEstates");
+							Integer currentExpiredPage = (Integer) request.getAttribute("currentExpiredPage");
+							Integer totalExpiredResults = (Integer) request.getAttribute("totalExpiredResults");
+							Integer totalExpiredPages = (Integer) request.getAttribute("totalExpiredPages");
+							
+							// Near ExpiredRealEstates
 							List<RealEstateModel> nearExpiredRealEstates = (List<RealEstateModel>) request.getAttribute("nearExpiredRealEstates");
+							Integer currentNearExpiredPage = (Integer) request.getAttribute("currentNearExpiredPage");
+							Integer totalNearExpiredResults = (Integer) request.getAttribute("totalNearExpiredResults");
+							Integer totalNearExpiredPages = (Integer) request.getAttribute("totalNearExpiredPages");
+							
+							// Display RealEstates
 							List<RealEstateModel> displayRealEstates = (List<RealEstateModel>) request.getAttribute("displayRealEstates");
+							Integer currentDisplayPage = (Integer) request.getAttribute("currentDisplayPage");
+							Integer totalDisplayResults = (Integer) request.getAttribute("totalDisplayResults");
+							Integer totalDisplayPages = (Integer) request.getAttribute("totalDisplayPages");
 						%>
 						<li class='active'><a data-toggle='tab' href='#home'>
-								Tất cả (<%= allRealEstates.size() %>) </a></li>
-						<li><a data-toggle='tab' href='#menu1'> Hết hạn (<%= expiredRealEstates.size() %>) </a></li>
-						<li><a data-toggle='tab' href='#menu2'> Sắp hết hạn (<%= nearExpiredRealEstates.size() %>) </a></li>
-						<li><a data-toggle='tab' href='#menu3'> Đang hiển thị (<%= displayRealEstates.size() %>) </a></li>
+								Tất cả (<%= totalAllResults %>) </a></li>
+						<li><a data-toggle='tab' href='#menu1'> Hết hạn (<%= totalExpiredResults %>) </a></li>
+						<li><a data-toggle='tab' href='#menu2'> Sắp hết hạn (<%= totalNearExpiredResults %>) </a></li>
+						<li><a data-toggle='tab' href='#menu3'> Đang hiển thị (<%= totalDisplayResults %>) </a></li>
 					</ul>
 
 					<div class='tab-content'>
 						<div id='home' class='tab-pane fade in active'>
 							<%									
-							if (allRealEstates != null) {
+							if (allRealEstates != null) {								
 								for (RealEstateModel r : allRealEstates) {
 									String imageString = (String) r.getImages();
 		
@@ -156,11 +175,46 @@
 							}
 							}
 							}
+							if (totalAllPages == 0) {
 							%>
+								<h1>Chưa có bất động sản nào</h1>
+							<% } %>
+							
+							<!-- Phân trang -->
+							<div class="pagination">
+								<%
+								if (currentAllPage > 1) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=currentAllPage - 1%>">
+									<i class="fa-solid fa-chevron-left"></i>
+								</a>
+								<%
+								}
+								%>
+		
+								<%
+								for (int i = 1; i <= totalAllPages; i++) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=i%>"
+									class="<%=i == currentAllPage ? "active" : ""%>"><%=i%></a>
+								<%
+								}
+								%>
+		
+								<%
+								if (currentAllPage < totalAllPages) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=currentAllPage + 1%>"> 
+									<i class="fa-solid fa-angle-right"></i>
+								 </a>
+								<%
+								}
+								%>
+							</div>
 						</div>
 						<div id='menu1' class='tab-pane fade'>
 							<%							
-							if (allRealEstates != null) {
+							if (expiredRealEstates != null) {
 								for (RealEstateModel r : expiredRealEstates) {
 									String imageString = (String) r.getImages();
 		
@@ -216,7 +270,6 @@
 											<div class='detail-item'>
 											    <span class='primary'>Thời gian</span>
 											    <div class='secondary'> <%= khoangCach > 0 ? "Còn " + khoangCach + " ngày" : "Hết hạn" %> </div>
-
 											</div>
 										</div>
 									</div>
@@ -260,14 +313,49 @@
 								</div>
 							</div>
 							<%
-							}
-							}
-							}
+									}
+								}
+							}  
+							if (totalExpiredResults == 0) {
 							%>
+								<h1>Chưa có bất động sản nào</h1>
+							<% } %>
+							
+							<!-- Phân trang -->
+							<div class="pagination">
+								<%
+								if (currentExpiredPage > 1) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageExpired=<%=currentAllPage - 1%>">
+									<i class="fa-solid fa-chevron-left"></i>
+								</a>
+								<%
+								}
+								%>
+		
+								<%
+								for (int i = 1; i <= totalExpiredPages; i++) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageExpired=<%=i%>"
+									class="<%=i == currentExpiredPage ? "active" : ""%>"><%=i%></a>
+								<%
+								}
+								%>
+		
+								<%
+								if (currentExpiredPage < totalExpiredPages) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageExpired=<%=currentAllPage + 1%>"> 
+									<i class="fa-solid fa-angle-right"></i>
+								 </a>
+								<%
+								}
+								%>
+							</div>
 						</div>
 						<div id='menu2' class='tab-pane fade'>
 							<%									
-							if (allRealEstates != null) {
+							if (nearExpiredRealEstates != null) {
 								for (RealEstateModel r : nearExpiredRealEstates) {
 									String imageString = (String) r.getImages();
 		
@@ -370,11 +458,46 @@
 							}
 							}
 							}
+							if (totalNearExpiredPages == 0) {
 							%>
+								<h1>Chưa có bất động sản nào</h1>
+							<% } %>
+							
+							<!-- Phân trang -->
+							<div class="pagination">
+								<%
+								if (currentNearExpiredPage > 1) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageNearExpired=<%=currentAllPage - 1%>">
+									<i class="fa-solid fa-chevron-left"></i>
+								</a>
+								<%
+								}
+								%>
+		
+								<%
+								for (int i = 1; i <= totalNearExpiredPages; i++) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageNearExpired=<%=i%>"
+									class="<%=i == currentNearExpiredPage ? "active" : ""%>"><%=i%></a>
+								<%
+								}
+								%>
+		
+								<%
+								if (currentNearExpiredPage < totalNearExpiredPages) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageNearExpired=<%=currentAllPage + 1%>"> 
+									<i class="fa-solid fa-angle-right"></i>
+								 </a>
+								<%
+								}
+								%>
+							</div>
 						</div>
 						<div id='menu3' class='tab-pane fade'>
 							<%									
-							if (allRealEstates != null) {
+							if (displayRealEstates != null) {
 								for (RealEstateModel r : displayRealEstates) {
 									String imageString = (String) r.getImages();
 		
@@ -477,7 +600,42 @@
 							}
 							}
 							}
+							if (totalDisplayPages == 0) {
 							%>
+								<h1>Chưa có bất động sản nào</h1>
+							<% } %>
+							
+							<!-- Phân trang -->
+							<div class="pagination">
+								<%
+								if (currentDisplayPage > 1) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageDisplay=<%=currentAllPage - 1%>">
+									<i class="fa-solid fa-chevron-left"></i>
+								</a>
+								<%
+								}
+								%>
+		
+								<%
+								for (int i = 1; i <= totalDisplayPages; i++) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageDisplay=<%=i%>"
+									class="<%=i == currentDisplayPage ? "active" : ""%>"><%=i%></a>
+								<%
+								}
+								%>
+		
+								<%
+								if (currentDisplayPage < totalDisplayPages) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageDisplay=<%=currentAllPage + 1%>"> 
+									<i class="fa-solid fa-angle-right"></i>
+								 </a>
+								<%
+								}
+								%>
+							</div>
 						</div>
 					</div>
 				</div>

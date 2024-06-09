@@ -8,7 +8,7 @@
 			<div class='left-menu'>
 				<a href='${pageContext.servletContext.contextPath}/trang-chu.html'>
 					<img
-					src='https://staticfile.batdongsan.com.vn/images/logo/standard/red/logo.svg'
+					src='${pageContext.servletContext.contextPath}/images/logo1.jpg'
 					alt='' />
 				</a>
 			</div>
@@ -100,7 +100,7 @@
 			</div>
 			<div class='postProduct__button main-button'>
 				<a
-					href='${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html'>Đăng
+					href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>Đăng
 					tin</a>
 			</div>
 		</div>

@@ -23,7 +23,6 @@ public class EmployeeModel {
 	private String birthday;
 	private String address;
 	private String phoneNumber;
-	private String avatar;
 	private Date createDate;
 	private Date deleteDate;
 	private boolean status;
@@ -96,14 +95,6 @@ public class EmployeeModel {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
 	}
 
 	public Date getCreateDate() {

@@ -43,13 +43,25 @@ public class RealEstateController {
 
 	@RequestMapping(value = { "quan-ly-bat-dong-san" }, method = RequestMethod.GET)
 	public String getListPostPage(HttpServletRequest request,
-			@RequestParam(name = "searchInput", required = false) String searchInput) {
+			@RequestParam(name = "searchInput", required = false) String searchInput,
+	        @RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
+	        @RequestParam(name = "size", defaultValue = "5") int size) {
 		Session session = factory.openSession();
 		try {
 			String hqlAll = "FROM RealEstateModel";
 			Query<RealEstateModel> queryAll = session.createQuery(hqlAll);
+			
+			int totalAllResults = queryAll.list().size();
+	        queryAll.setFirstResult((pageAll - 1) * size);
+	        queryAll.setMaxResults(size);
+			
 			List<RealEstateModel> allRealEstates = queryAll.list();
 			request.setAttribute("allRealEstates", allRealEstates);
+			
+			request.setAttribute("currentAllPage", pageAll);
+	        request.setAttribute("totalAllResults", totalAllResults);
+	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
+			
 			return "admin/listRealEstate";
 		} finally {
 			session.close();

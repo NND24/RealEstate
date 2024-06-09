@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import batdongsan.models.UsersModel;
+import batdongsan.utils.PasswordHashing;
 
 @Controller
 @Transactional
@@ -193,7 +194,8 @@ public class LoginController {
 			try {
 				String randomUsername = "user" + generateRandomNumber();
 
-				UsersModel user = new UsersModel(randomUsername, registerEmail, password, "images/avatar-mac-dinh.jpg",
+				String hashPassword = PasswordHashing.hashPassword(password);
+				UsersModel user = new UsersModel(randomUsername, registerEmail, hashPassword, "images/avatar-mac-dinh.jpg",
 						"", "");
 
 				session.save(user);
@@ -234,7 +236,8 @@ public class LoginController {
 					return "redirect:/doi-mat-khau-moi.html";
 				}
 
-				currentUser.setPassword(password);
+				String hashPassword = PasswordHashing.hashPassword(password);
+				currentUser.setPassword(hashPassword);
 				session.update(currentUser);
 				t.commit();
 
@@ -278,16 +281,15 @@ public class LoginController {
 				return "client/login/login";
 			}
 
-			String hql = "FROM UsersModel WHERE (email = :email OR phonenumber = :phonenumber) AND password = :password";
+			String hql = "FROM UsersModel WHERE (email = :email OR phonenumber = :phonenumber)";
 			Query<UsersModel> query = session.createQuery(hql);
 			query.setParameter("email", email);
 			query.setParameter("phonenumber", email);
-			query.setParameter("password", password);
 
 			UsersModel user = query.uniqueResult();
 
-			if (user != null) {
-				if (!user.getPassword().equals(password)) {
+			if (user != null) {				
+				if (!PasswordHashing.checkPassword(password, user.getPassword())) {
 					request.setAttribute("error", "Mật khẩu hoặc email không chính xác!");
 					return "client/login/login";
 				}

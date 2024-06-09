@@ -12,7 +12,7 @@
 			<div class="left-menu">
 				<a href="${pageContext.servletContext.contextPath}/trang-chu.html">
 					<img
-					src="https://staticfile.batdongsan.com.vn/images/logo/standard/red/logo.svg"
+					src="${pageContext.servletContext.contextPath}/images/logo1.jpg"
 					alt="" />
 				</a>
 			</div>
@@ -24,7 +24,8 @@
 						<ul class="list-container">
 							<c:forEach var="c" items="${categoriesSell}">
 								<a
-									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>${c.name}</li>
+									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}">
+									<li data-category-id="${c.categoryId}"">${c.name}</li>
 								</a>
 							</c:forEach>
 						</ul></li>
@@ -34,7 +35,8 @@
 						<ul class="list-container">
 							<c:forEach var="c" items="${categoriesRent}">
 								<a
-									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>${c.name}</li>
+									href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html?categoryIds=${c.categoryId}">
+									<li data-category-id="${c.categoryId}"">${c.name}</li>
 								</a>
 							</c:forEach>
 						</ul></li>
@@ -96,7 +98,7 @@
 				</div>
 			</div>
 			<div class='postProduct__button main-button'>
-				<a href='${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html'>Đăng tin</a>
+				<a href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>Đăng tin</a>
 			</div>
 		</div>
 		<%
@@ -1819,9 +1821,15 @@ $(document).ready(function() {
 					}
 				});
 		    }
-		    		   
+		    	
+		    if (result['categoryIds'] !== undefined) {
+		    	let listCategory = result['categoryIds'].split(",").map(Number);
+		        for (let i = 0; i < listCategory.length; i++) {
+	                $("[data-category-id='" + listCategory[i] + "']").css('color', 'rgb(228, 54, 54)');
+	                break;
+		        }
+		    }
 		}
-
 	});
 });
 </script>

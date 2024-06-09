@@ -12,12 +12,12 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css" type="text/css">
-<link rel="stylesheet" href="../css/admin/listPost.css" type="text/css">
+<link rel="stylesheet" href="../css/admin/listPost.css?version=50" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
 	<%@ include file="../../components/headerAdmin.jsp"%>
-	<div class='admin active'>
+	<div class='admin'>
 		<%@ include file="../../components/sidebarAdmin.jsp"%>
 
 		<!-- ListPost -->
@@ -29,16 +29,12 @@
 						<input type='text' placeholder='Tìm theo mã tin, tiêu đề' /> <i
 							class='fa-solid fa-magnifying-glass'></i>
 					</div>
-					<div class='dropdown'>
-						<button class='btn dropdown-toggle' type='button'
-							data-toggle='dropdown'>
-							<i class='fa-regular fa-calendar'></i> <span>Mặc định</span>
-							<i class='fa-solid fa-angle-down'></i>
-						</button>
-					</div>
 				</div>
 				<%							
 					List<RealEstateModel> allRealEstates = (List<RealEstateModel>) request.getAttribute("allRealEstates");
+					Integer currentAllPage = (Integer) request.getAttribute("currentAllPage");
+					Integer totalAllPages = (Integer) request.getAttribute("totalAllPages");
+					Integer totalAllResults = (Integer) request.getAttribute("totalAllResults");
 				%>
 				<div class='post-container'>
 					<div class='tab-content'>
@@ -139,6 +135,38 @@
 						}
 						}
 						%>
+						
+						<!-- Phân trang -->
+							<div class="pagination">
+								<%
+								if (currentAllPage > 1) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=currentAllPage - 1%>">
+									<i class="fa-solid fa-chevron-left"></i>
+								</a>
+								<%
+								}
+								%>
+		
+								<%
+								for (int i = 1; i <= totalAllPages; i++) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=i%>"
+									class="<%=i == currentAllPage ? "active" : ""%>"><%=i%></a>
+								<%
+								}
+								%>
+		
+								<%
+								if (currentAllPage < totalAllPages) {
+								%>
+								<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=currentAllPage + 1%>"> 
+									<i class="fa-solid fa-angle-right"></i>
+								 </a>
+								<%
+								}
+								%>
+							</div>
 					</div>
 				</div>
 			</div>
