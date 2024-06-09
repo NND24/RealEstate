@@ -74,22 +74,22 @@
 								<div class='card-info__detail'>
 									<div class='card-config'>
 										<span class='card-config__item card-config__price'> <%
- if (!r.getUnit().equals("Thỏa thuận")) {
- 	if (r.getPrice() < 1000000000) {
- 		out.print((int) (r.getPrice() / 1000000) + " triệu");
- 	} else {
- 		out.print(r.getPrice() / 1000000000 + " tỷ");
- 	}
-
- 	if (r.getUnit().equals("triệu")) {
- 		out.print("");
- 	} else {
- 		out.print(r.getUnit());
- 	}
- } else {
- 	out.print(r.getUnit());
- }
- %>
+										 if (!r.getUnit().equals("Thỏa thuận")) {
+										 	if (r.getPrice() < 1000000000) {
+										 		out.print((int) (r.getPrice() / 1000000) + " triệu");
+										 	} else {
+										 		out.print(r.getPrice() / 1000000000 + " tỷ");
+										 	}
+										
+										 	if (r.getUnit().equals("triệu")) {
+										 		out.print("");
+										 	} else {
+										 		out.print(" "+r.getUnit());
+										 	}
+										 } else {
+										 	out.print(r.getUnit());
+										 }
+										 %>
 										</span> <span class='card-config__item card-config__dot'>·</span> <span
 											class='card-config__item card-config__area'><%=r.getArea()%>
 											m²</span>

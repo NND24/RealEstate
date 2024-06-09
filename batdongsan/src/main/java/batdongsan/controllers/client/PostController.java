@@ -1,18 +1,15 @@
 package batdongsan.controllers.client;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,9 +39,6 @@ import batdongsan.models.ProvincesModel;
 import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
 import batdongsan.models.WardsModel;
-import eu.medsea.mimeutil.MimeType;
-import eu.medsea.mimeutil.MimeUtil;
-import eu.medsea.mimeutil.MimeUtil2;
 
 import batdongsan.utils.Vadilator;
 
@@ -230,13 +224,17 @@ public class PostController {
 				isError = true;
 			}
 
-			int amountImages = 0;
-			for (MultipartFile file : files) {
-				amountImages++;
-			}
-			if (amountImages < 4 || amountImages > 24) {
-				request.setAttribute("imageError", "Đăng tối thiểu 4 ảnh, tối đa 24 ảnh!");
-				isError = true;
+			if (files == null || files.length == 0) {
+				request.setAttribute("imageError", "Không có ảnh nào được tải lên!");
+			} else {
+				int amountImages = 0;
+				for (MultipartFile file : files) {
+					amountImages++;
+				}
+				if (amountImages < 4 || amountImages > 24) {
+					request.setAttribute("imageError", "Đăng tối thiểu 4 ảnh, tối đa 24 ảnh!");
+					isError = true;
+				}
 			}
 
 			if (user.getAccountBalance() - totalMoney < 0) {
@@ -311,6 +309,9 @@ public class PostController {
 				newRealEstate.setExpirationDate(expirationDate);
 				newRealEstate.setStatus("Chưa được duyệt");
 				newRealEstate.setTotalMoney(totalMoney);
+				
+				user.setAccountBalance(user.getAccountBalance() - totalMoney);
+				session.update(user);
 
 				session.save(newRealEstate);
 				t.commit();
@@ -588,13 +589,14 @@ public class PostController {
 				request.setAttribute("emailError", "Email không đúng định dạng!");
 				isError = true;
 			}
-
-			if (files != null && files.length > 1) {
+			
+			if (files == null || files.length == 0) {
+				request.setAttribute("imageError", "Không có ảnh nào được tải lên!");
+			} else {
 				int amountImages = 0;
 				for (MultipartFile file : files) {
 					amountImages++;
 				}
-				System.out.println(amountImages);
 				if (amountImages < 4 || amountImages > 24) {
 					request.setAttribute("imageError", "Đăng tối thiểu 4 ảnh, tối đa 24 ảnh!");
 					isError = true;
@@ -608,7 +610,7 @@ public class PostController {
 					for (MultipartFile file : files) {
 						String contentType = file.getContentType();
 						if (contentType != null && contentType.startsWith("image/")) {
-							String uploadDir = "D:/Workspace Java/DoAnLTW/batdongsan/src/main/webapp/images/";
+							String uploadDir = "D:/Workspace Java/BatDongSan/batdongsan/src/main/webapp/images/";
 							String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 							String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 							String filePath = uploadDir + uniqueFileName;

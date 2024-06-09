@@ -206,6 +206,7 @@
 							<p>Đơn vị</p>
 							<select name='unit'>
 						        <option value='VND'>VND</option>
+						        <option value='Triệu / tháng'>Triệu / tháng</option>
 						        <option value='Giá / m²'>Giá / m²</option>
 						        <option value='Thỏa thuận'>Thỏa thuận</option>
 						    </select>
@@ -255,7 +256,7 @@
 				</div>
 
 				<div class='input-wrapper'>
-					<h3>Hình ảnh & Video</h3>
+					<h3>Hình ảnh</h3>
 					<ul>
 						<li>Đăng tối thiểu 4 ảnh</li>
 						<li>Đăng tối đa 24 ảnh với tất cả các loại tin</li>
@@ -488,7 +489,7 @@
 					<div class="section-wrapper">
 						<span>Đơn giá / ngày</span>
 						<div>	
-							<input type="text" name="pricePerDay" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">
+							<input type="text" name="pricePerDay" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800"> đ
 						</div>	
 					</div>
 					<div class="section-wrapper">
@@ -507,14 +508,14 @@
 					<div class="section-wrapper">
 						<span>Phí đăng tin</span>
 						<div>						
-							<input type="text" name="fee" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">
+							<input type="text" name="fee" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800"> đ
 						</div>
 					</div>
 					<hr />
 					<div class="section-wrapper">
 						<span>Tổng tiền</span>
 						<div>
-							<input type="text" name="totalMoney" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">
+							<input type="text" name="totalMoney" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800"> đ
 						</div>
 					</div>
 					<%
@@ -654,6 +655,7 @@
 			    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 			    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
 
+			    $("input[name='typePost']").val("Tin thường");
 			    $("input[name='amountDate']").val(selectedDate);
 			    $("input[name='pricePerDay']").val(moneyPerDay); 
 			    $("input[name='fee']").val(date * moneyPerDay); 
@@ -688,6 +690,7 @@
 			    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 			    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
 
+			    $("input[name='typePost']").val("VIP Bạc");
 			    $("input[name='amountDate']").val(selectedDate);
 			    $("input[name='pricePerDay']").val(moneyPerDay); 
 			    $("input[name='fee']").val(date * moneyPerDay); 
@@ -721,6 +724,7 @@
 				    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 				    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
 
+				    $("input[name='typePost']").val("VIP Vàng");
 				    $("input[name='amountDate']").val(selectedDate);
 				    $("input[name='pricePerDay']").val(moneyPerDay); 
 				    $("input[name='fee']").val(date * moneyPerDay); 
@@ -754,6 +758,7 @@
 				    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 				    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
 
+				    $("input[name='typePost']").val("VIP Kim Cương");
 				    $("input[name='amountDate']").val(selectedDate);
 				    $("input[name='pricePerDay']").val(moneyPerDay); 
 				    $("input[name='fee']").val(date * moneyPerDay); 
@@ -849,12 +854,8 @@
 			var submittedDate = newDate.toISOString().split('T')[0];
 			$('#submittedDate').val(submittedDate);
 			$('input[name="submittedDate"]').val(submittedDate);
-			
-			
 		})
-		
-
-		
+				
 		$('#provinceId').change(function() {
 		    var provinceId = $(this).val();
 		    $.ajax({
@@ -924,9 +925,9 @@
 		
      // Format currency
         $(".post").on("mouseover", () => {
-        	formatCurrency($("input[name='pricePerDay']"));
-        	formatCurrency($("input[name='fee']"));
-        	formatCurrency($("input[name='totalMoney']"));
+        //	formatCurrency($("input[name='pricePerDay']"));
+        //	formatCurrency($("input[name='fee']"));
+        //	formatCurrency($("input[name='totalMoney']"));
         })
         
 		function formatNumber(n) {

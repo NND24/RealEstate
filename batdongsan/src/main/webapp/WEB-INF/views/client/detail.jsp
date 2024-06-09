@@ -72,7 +72,8 @@
 					<div class='short-info-container'>
 						<div>
 							<div class='short-info__item'>
-								<span class='title'>Mức giá</span> <span class='value'>
+								<span class='title'>Mức giá</span> 
+								<span class='value'>
 								<%
 								if(!realEstate.getUnit().equals("Thỏa thuận")) {
 									if(realEstate.getPrice() < 1000000000) {
@@ -84,7 +85,7 @@
 									if(realEstate.getUnit().equals("triệu")) {
 									    out.print("");
 									} else {
-									    out.print(realEstate.getUnit());
+										out.print(" " + realEstate.getUnit());
 									}
 								} else {
 									out.print(realEstate.getUnit());
@@ -140,7 +141,7 @@
 									if(realEstate.getUnit().equals("triệu")) {
 									    out.print("");
 									} else {
-									    out.print(realEstate.getUnit());
+										out.print(" " + realEstate.getUnit());
 									}
 								} else {
 									out.print(realEstate.getUnit());
@@ -240,7 +241,7 @@
 													if(realEstate.getUnit().equals("triệu")) {
 													    out.print("");
 													} else {
-													    out.print(realEstate.getUnit());
+														out.print(" " + realEstate.getUnit());
 													}
 												} else {
 													out.print(realEstate.getUnit());

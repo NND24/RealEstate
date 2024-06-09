@@ -100,7 +100,7 @@
 			</div>
 			<div class='postProduct__button main-button'>
 				<a
-					href='${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html'>Đăng
+					href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>Đăng
 					tin</a>
 			</div>
 		</div>

@@ -263,7 +263,7 @@
 											if(r.getUnit().equals("triệu")) {
 											    out.print("");
 											} else {
-											    out.print(r.getUnit());
+												out.print(" " + r.getUnit());
 											}
 										} else {
 											out.print(r.getUnit());

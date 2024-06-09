@@ -327,9 +327,26 @@
 	height: 24px;
 }
 
-.pagination-container {
+.pagination {
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 20px; 
+    margin: 20px 0;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
 }

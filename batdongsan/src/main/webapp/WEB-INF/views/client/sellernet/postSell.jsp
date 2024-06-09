@@ -253,7 +253,7 @@
 				</div>
 
 				<div class='input-wrapper'>
-					<h3>Hình ảnh & Video</h3>
+					<h3>Hình ảnh</h3>
 					<ul>
 						<li>Đăng tối thiểu 4 ảnh</li>
 						<li>Đăng tối đa 24 ảnh với tất cả các loại tin</li>
@@ -486,7 +486,7 @@
 					<div class="section-wrapper">
 						<span>Đơn giá / ngày</span>
 						<div>
-							<input type="text" name="pricePerDay" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">								
+							<input type="text" name="pricePerDay" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800"> đ								
 						</div>	
 					</div>
 					<div class="section-wrapper">
@@ -505,14 +505,14 @@
 					<div class="section-wrapper">
 						<span>Phí đăng tin</span>
 						<div>						
-							<input type="text" name="fee" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">		
+							<input type="text" name="fee" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800"> đ
 						</div>
 					</div>
 					<hr />
 					<div class="section-wrapper">
 						<span>Tổng tiền</span>
 						<div>
-							<input type="text" name="totalMoney" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800">				
+							<input type="text" name="totalMoney" readonly pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="2800"> đ			
 						</div>
 					</div>
 					<%
@@ -602,10 +602,7 @@
 		var expirationDate = next10day.toISOString().split('T')[0];
 		$('#expirationDate').val(expirationDate);
 		$('input[name="expirationDate"]').val(expirationDate);
-		
-		
-
-		
+			
 		$(".type-container").on("click", function() {
 		    $(".type-container").removeClass("active");
 		    $(".type-container .choose-btn").text("Chọn"); 
@@ -654,7 +651,8 @@
 
 			    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 			    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
-
+				
+			    $("input[name='typePost']").val("Tin thường");
 			    $("input[name='amountDate']").val(selectedDate);
 			    $("input[name='pricePerDay']").val(moneyPerDay); 
 			    $("input[name='fee']").val(date * moneyPerDay); 
@@ -688,6 +686,7 @@
 			    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 			    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
 
+			    $("input[name='typePost']").val("VIP Bạc");
 			    $("input[name='amountDate']").val(selectedDate);
 			    $("input[name='pricePerDay']").val(moneyPerDay); 
 			    $("input[name='fee']").val(date * moneyPerDay); 
@@ -721,6 +720,7 @@
 				    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 				    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
 
+				    $("input[name='typePost']").val("VIP Vàng");
 				    $("input[name='amountDate']").val(selectedDate);
 				    $("input[name='pricePerDay']").val(moneyPerDay); 
 				    $("input[name='fee']").val(date * moneyPerDay); 
@@ -754,6 +754,7 @@
 				    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
 				    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
 
+				    $("input[name='typePost']").val("VIP Kim Cương");
 				    $("input[name='amountDate']").val(selectedDate);
 				    $("input[name='pricePerDay']").val(moneyPerDay); 
 				    $("input[name='fee']").val(date * moneyPerDay); 
@@ -852,9 +853,7 @@
 			
 			
 		})
-		
-
-		
+				
 		$('#provinceId').change(function() {
 		    var provinceId = $(this).val();
 		    $.ajax({
@@ -924,9 +923,9 @@
                 
         // Format currency
         $(".post").on("mouseover", () => {
-        	formatCurrency($("input[name='pricePerDay']"));
-        	formatCurrency($("input[name='fee']"));
-        	formatCurrency($("input[name='totalMoney']"));
+      //  	formatCurrency($("input[name='pricePerDay']"));
+      //  	formatCurrency($("input[name='fee']"));
+      //  	formatCurrency($("input[name='totalMoney']"));
         })
         
 		function formatNumber(n) {
@@ -978,14 +977,14 @@
 		    right_side = right_side.substring(0, 2);
 		
 		    // join number by .
-		    input_val = left_side + "." + right_side + "đ";
+		    input_val = left_side + "." + right_side;
 		
 		  } else {
 		    // no decimal entered
 		    // add commas to number
 		    // remove all non-digits
 		    input_val = formatNumber(input_val);
-		    input_val = input_val + "đ";
+		    input_val = input_val;
 		    
 		  }
 		  
