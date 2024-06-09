@@ -9,10 +9,10 @@
 }
 
 .header-container {
-  padding: 17px 15px 17px;
-  display: flex;
-  justify-content: space-between;
-  background-color: white;
+  padding: 7px 15px 7px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
   box-shadow: 0px 4px 10px rgba(182, 182, 182, 0.18);
 }
 
@@ -24,9 +24,11 @@
 }
 
 .header-menu .left-menu img {
-  width: 160px;
-  height: 48px;
-  margin-top: 7px;
+  width: 94px;
+    height: 64px;
+        margin-right: 25px;
+    margin-left: 35px;
+    object-fit: cover;
 }
 
 .header-menu .right-menu .menu-container {

@@ -202,11 +202,11 @@
 					</div>
 				</div>
 
-				<div class='home__hot-news-banner'>
+			<!-- 	<div class='home__hot-news-banner'>
 					<img
 						src='https://tpc.googlesyndication.com/simgad/3748612651896058688'
 						alt='' />
-				</div>
+				</div>  -->
 			</div>
 		</div>
 

@@ -281,11 +281,10 @@ public class LoginController {
 				return "client/login/login";
 			}
 
-			String hql = "FROM UsersModel WHERE (email = :email OR phonenumber = :phonenumber) AND password = :password";
+			String hql = "FROM UsersModel WHERE (email = :email OR phonenumber = :phonenumber)";
 			Query<UsersModel> query = session.createQuery(hql);
 			query.setParameter("email", email);
 			query.setParameter("phonenumber", email);
-			query.setParameter("password", password);
 
 			UsersModel user = query.uniqueResult();
 

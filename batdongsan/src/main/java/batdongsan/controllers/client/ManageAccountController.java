@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.UsersModel;
+import batdongsan.utils.PasswordHashing;
 import batdongsan.utils.Vadilator;
 
 @Controller
@@ -202,7 +203,7 @@ public class ManageAccountController {
 
 			Boolean isError = false;
 
-			if (!password.equals(user.getPassword())) {
+			if (!PasswordHashing.checkPassword(password, user.getPassword())) {
 				request.setAttribute("passwordError", "Mật khẩu không khớp với mật khẩu cũ");
 				isError = true;
 			}
@@ -215,7 +216,8 @@ public class ManageAccountController {
 			request.setAttribute("edit", null);
 
 			if (!isError) {
-				user.setPassword(newPassword);
+				String hashPassword = PasswordHashing.hashPassword(newPassword);
+				user.setPassword(hashPassword);
 				session.update(user);
 				t.commit();
 				return "redirect:/sellernet/thong-tin-ca-nhan.html?setting=true";

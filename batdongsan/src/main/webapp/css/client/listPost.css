@@ -208,3 +208,26 @@
 .post-card .button-container .dropdown-menu i {
   margin-right: 10px;
 }
+
+.pagination {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    font-size: 14px;
+    line-height: 20px;
+    padding: 5px 11px;
+    background: #fff;
+    color: #505050 !important;
+    border-radius: 4px;
+    border: 1px solid #F2F2F2;
+}
+
+.pagination a.active {
+   border: 1px solid #2C2C2C;
+    background: #2C2C2C;
+    color: #fff !important;
+}

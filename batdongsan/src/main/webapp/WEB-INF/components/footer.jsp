@@ -4,7 +4,7 @@
       <div class='container'>
       <div class='row'>
           <div class='col-3 col-sm-6 col-lg-4'>
-            <img src="https://staticfile.batdongsan.com.vn/images/logo/standard/black/logo_gray-5.svg" />
+            <img style="width: 120px;" src="${pageContext.servletContext.contextPath}/images/logo2.png" />
           </div>
           <div class='col-3 col-sm-6 col-lg-2'>
             <div class="footer-with-icon">
