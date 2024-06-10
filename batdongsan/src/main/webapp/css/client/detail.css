@@ -498,7 +498,7 @@
 	font-size: 14px;
 	line-height: 20px;
 	color: #999;
-	margin: 0 8px;
+	margin: 0 -2px;
 	line-height: 26px;
 }
 
@@ -506,6 +506,10 @@
 	font-size: 14px;
 	line-height: 20px;
 	color: #505050;
+	-webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
 }
 
 .recommend-card .card-info-container .card-info__location i {
@@ -516,7 +520,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 0px;
+	margin-top: 15px;
 }
 
 .recommend-card .card-info-container .card-published-info {

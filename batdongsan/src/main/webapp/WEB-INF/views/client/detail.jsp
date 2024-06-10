@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="batdongsan.models.FavouriteModel"%>
 <%@page import="java.util.Collection"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -10,12 +11,12 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css?version=53"" type="text/css">
-<link rel="stylesheet" href="css/client/detail.css?version=51" type="text/css">
+<link rel="stylesheet" href="css/client/detail.css?version=52" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css?version=51" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../components/headerSellWithFilter.jsp"%>
+	<%@ include file="../../components/header.jsp"%>
 	<div class="detail">
 		<div class='container '>
 			<%
@@ -212,97 +213,89 @@
 					</div>
 					<div class='recommend-list-container'>
 						<div class='swiper mySwiper3'>
-							<div class='recommend-list-header'>
-								<h5 class='recommend-title'>Bất động sản dành cho bạn</h5>
-							</div>
-							<div class='swiper-wrapper'>
-								<div class='swiper-slide'>
-									<%
-									List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
-			
-									if (realEstates != null) {
-										for (RealEstateModel r : realEstates) {
-											String imageStr = (String) r.getImages();
-			
-											if (imageStr != null && !imageStr.isEmpty()) {
-												imageStr = imageStr.substring(1, imageStr.length() - 1);
-												String[] imgPaths = imageStr.split(",");
-									%>
-									<div class='recommend-card'>
-										<div class='card-image'>
-											<a
-												href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
-											<img src="images/<%=imgPaths[0]%>" alt='' />
-											</a>
-											<div class='card-image-feature'>
-												<i class='fa-regular fa-image'></i> <span><%= imgPaths.length %></span>
-											</div>
-										</div>
-										<div class='card-info-container'>
-											<a href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
-												<div class='card-info__title'><%=r.getTitle()%></div>
-											</a>
-											<div class='card-info__config'>
-												<span class='card-config__item card-config__price'>
-												<%
-												if(!realEstate.getUnit().equals("Thỏa thuận")) {
-													if(realEstate.getPrice() < 1000000000) {
-													    out.print((int)(realEstate.getPrice() / 1000000) + " triệu");
-													} else {
-													    out.print(realEstate.getPrice() / 1000000000 + " tỷ");
-													}
-												
-													if(realEstate.getUnit().equals("triệu")) {
-													    out.print("");
-													} else {
-														out.print(" " + realEstate.getUnit());
-													}
-												} else {
-													out.print(realEstate.getUnit());
-												}
-												%>
-												</span> 
-												<span class='card-config__item card-config__dot'>·</span>
-												<span class='card-config__item card-config__area'><%= r.getArea()%> m²</span>
-											</div>
-											<div class='card-info__location'>
-												<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>,
-														<%=r.getProvince().getName()%></span>
-											</div>
-											<div class='card-info__contact'>
-												<div class='card-published-info'  value="<%=r.getSubmittedDate()%>"></div>
-												<div class='card-contact-button__favorite'
-													value="<%=r.getRealEstateId()%>">
-													<%
-													Collection<FavouriteModel> favourites2 = r.getFavourite();
-													boolean isLogined2 = false;
-													if(user != null) {
-													    for (FavouriteModel favourite : favourites2) {
-													    	if(user.getUserId() == favourite.getUser().getUserId()) {
-													    		isLogined = true;
-													    		break;
-													    	}    
-													    }
-													}
-													%> 
-													<i class='fa-regular fa-heart'
-														style="display: <%= isLogined2 ? "none" : "block"%>;"></i>
-													<i class="fa-solid fa-heart"
-														style="color: #e03c31;display: <%= isLogined2 ? "block" : "none"%>;"></i>
-												</div>
-											</div>
-										</div>
-									</div>
-									<%
-									}
-									}
-									}
-									%>
-									
-								</div>
-							</div>
-							<div class='swiper-button-next'></div>
-							<div class='swiper-button-prev'></div>
+						    <div class='recommend-list-header'>
+						        <h5 class='recommend-title'>Bất động sản dành cho bạn</h5>
+						    </div>
+						    <div class='swiper-wrapper'>
+						        <%
+						        List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
+						
+						        if (realEstates != null) {
+						            for (RealEstateModel r : realEstates) {
+						                String imageStr = (String) r.getImages();
+						
+						                if (imageStr != null && !imageStr.isEmpty()) {
+						                    imageStr = imageStr.substring(1, imageStr.length() - 1);
+						                    String[] imgPaths = imageStr.split(",");
+						        %>
+						        <div class='swiper-slide'>
+						            <div class='recommend-card'>
+						                <div class='card-image'>
+						                    <a href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
+						                        <img src="images/<%=imgPaths[0].trim()%>" alt='' />
+						                    </a>
+						                    <div class='card-image-feature'>
+						                        <i class='fa-regular fa-image'></i> <span><%= imgPaths.length %></span>
+						                    </div>
+						                </div>
+						                <div class='card-info-container'>
+						                    <a href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
+						                        <div class='card-info__title'><%=r.getTitle()%></div>
+						                    </a>
+						                    <div class='card-info__config'>
+						                        <span class='card-config__item card-config__price'>
+						                        <%
+						                        if (!r.getUnit().equals("Thỏa thuận")) {
+						                            if (r.getPrice() < 1000000000) {
+						                                out.print((int) (r.getPrice() / 1000000) + " triệu");
+						                            } else {
+						                                out.print(r.getPrice() / 1000000000 + " tỷ");
+						                            }
+						
+						                            if (!r.getUnit().equals("triệu")) {
+						                                out.print(" " + r.getUnit());
+						                            }
+						                        } else {
+						                            out.print(r.getUnit());
+						                        }
+						                        %>
+						                        </span>
+						                        <span class='card-config__item card-config__dot'>·</span>
+						                        <span class='card-config__item card-config__area'><%= r.getArea()%> m²</span>
+						                    </div>
+						                    <div class='card-info__location'>
+						                        <i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>, <%=r.getProvince().getName()%></span>
+						                    </div>
+						                    <div class='card-info__contact'>
+						                        <div class='card-published-info' value="<%=r.getSubmittedDate()%>"></div>
+						                        <div class='card-contact-button__favorite' value="<%=r.getRealEstateId()%>">
+						                            <%
+																			Collection<FavouriteModel> favourites2 = r.getFavourite();
+																			boolean isLogined2 = false;
+																			if(user != null) {
+																			    for (FavouriteModel favourite : favourites2) {
+																			    	if(user.getUserId() == favourite.getUser().getUserId()) {
+																			    		isLogined = true;
+																			    		break;
+																			    	}    
+																			    }
+																			}
+																			%> 
+						                            <i class='fa-regular fa-heart' style="display: <%= isLogined2 ? "none" : "block"%>;"></i>
+						                            <i class="fa-solid fa-heart" style="color: #e03c31; display: <%= isLogined2 ? "block" : "none"%>;"></i>
+						                        </div>
+						                    </div>
+						                </div>
+						            </div>
+						        </div>
+						        <%
+						                }
+						            }
+						        }
+						        %>
+						    </div>
+						    <div class='swiper-button-next'></div>
+						    <div class='swiper-button-prev'></div>
 						</div>
 					</div>
 				</div>
@@ -400,12 +393,12 @@
 			},
 		});
 		var swiper3 = new Swiper(".mySwiper3", {
-			slidesPerView : 3,
-			spaceBetween : 15,
-			navigation : {
-				nextEl : ".swiper-button-next",
-				prevEl : ".swiper-button-prev",
-			},
+		    slidesPerView: 3,
+		    spaceBetween: 15,
+		    navigation: {
+		        nextEl: ".swiper-button-next",
+		        prevEl: ".swiper-button-prev",
+		    },
 		});
 		
 		$(document).ready(function() {

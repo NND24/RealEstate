@@ -10,8 +10,10 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
-<link rel="stylesheet" href="css/client/header.css?version=52" type="text/css">
-<link rel="stylesheet" href="css/client/home.css?version=50" type="text/css">
+<link rel="stylesheet" href="css/client/header.css?version=52"
+	type="text/css">
+<link rel="stylesheet" href="css/client/home.css?version=52"
+	type="text/css">
 <link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
@@ -69,25 +71,29 @@
 						<li><a data-toggle='tab' href='#tinTuc'> Tin tức </a></li>
 						<li><a data-toggle='tab' href='#bdsHcm'> BĐS TPHCM </a></li>
 						<li><a data-toggle='tab' href='#bdsHN'> BDS Hà Nội </a></li>
-						<a href='${pageContext.servletContext.contextPath}/tin-tuc.html' class='tabview'> <span>Xem thêm</span> <i
+						<a href='${pageContext.servletContext.contextPath}/tin-tuc.html'
+							class='tabview'> <span>Xem thêm</span> <i
 							class='fa-solid fa-arrow-right'></i>
 						</a>
 					</ul>
 					<%
-						List<NewsModel> listNews = (List<NewsModel>) request.getAttribute("listNews");
+					List<NewsModel> listNews = (List<NewsModel>) request.getAttribute("listNews");
 					List<NewsModel> listNewsHN = (List<NewsModel>) request.getAttribute("listNewsHN");
 					List<NewsModel> listNewsHCM = (List<NewsModel>) request.getAttribute("listNewsHCM");
 					%>
-					
+
 					<div class='tab-content'>
-					<% if(listNews != null) { %>
+						<%
+						if (listNews != null) {
+						%>
 						<div id='tinNoiBat' class='tab-pane fade in active'>
 							<div class='article-container'>
-								<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNews.get(0).getNewsId() %>.html' class='article-info-container'>
-									<img
-										src='${pageContext.servletContext.contextPath}/images/News/<%= listNews.get(0).getThumbnail() %>'
-										alt='' />
-									<h3><%= listNews.get(0).getTitle() %></h3>
+								<a
+									href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNews.get(0).getNewsId() %>.html'
+									class='article-info-container'> <img
+									src='${pageContext.servletContext.contextPath}/images/News/<%= listNews.get(0).getThumbnail() %>'
+									alt='' />
+									<h3><%=listNews.get(0).getTitle()%></h3>
 								</a>
 								<div class='article-list-container'>
 									<ul>
@@ -96,26 +102,29 @@
 											int i = 0;
 											for (NewsModel n : listNews) {
 												i++;
-												if(i == 7) {
-													break;
+												if (i == 7) {
+											break;
 												}
 										%>
-										<li>
-											<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%= n.getTitle() %></a>
+										<li><a
+											href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%=n.getTitle()%></a>
 										</li>
-										<% }
-										}%>
+										<%
+										}
+										}
+										%>
 									</ul>
 								</div>
 							</div>
 						</div>
 						<div id='tinTuc' class='tab-pane fade'>
 							<div class='article-container'>
-								<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNews.get(0).getNewsId() %>.html' class='article-info-container'>
-									<img
-										src='${pageContext.servletContext.contextPath}/images/News/<%= listNews.get(0).getThumbnail() %>'
-										alt='' />
-									<h3><%= listNews.get(0).getTitle() %></h3>
+								<a
+									href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNews.get(0).getNewsId() %>.html'
+									class='article-info-container'> <img
+									src='${pageContext.servletContext.contextPath}/images/News/<%= listNews.get(0).getThumbnail() %>'
+									alt='' />
+									<h3><%=listNews.get(0).getTitle()%></h3>
 								</a>
 								<div class='article-list-container'>
 									<ul>
@@ -124,29 +133,36 @@
 											int i = 0;
 											for (NewsModel n : listNews) {
 												i++;
-												if(i == 7) {
-													break;
+												if (i == 7) {
+											break;
 												}
 										%>
-										<li>
-											<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%= n.getTitle() %></a>
+										<li><a
+											href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%=n.getTitle()%></a>
 										</li>
-										<% }
-										}%>
+										<%
+										}
+										}
+										%>
 									</ul>
 								</div>
 							</div>
 						</div>
-						
-						<% } %>
-						<% if(listNewsHCM != null) { %>
+
+						<%
+						}
+						%>
+						<%
+						if (listNewsHCM != null) {
+						%>
 						<div id='bdsHcm' class='tab-pane fade'>
 							<div class='article-container'>
-								<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNewsHCM.get(0).getNewsId() %>.html' class='article-info-container'>
-									<img
-										src='${pageContext.servletContext.contextPath}/images/News/<%= listNewsHCM.get(0).getThumbnail() %>'
-										alt='' />
-									<h3><%= listNewsHCM.get(0).getTitle() %></h3>
+								<a
+									href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNewsHCM.get(0).getNewsId() %>.html'
+									class='article-info-container'> <img
+									src='${pageContext.servletContext.contextPath}/images/News/<%= listNewsHCM.get(0).getThumbnail() %>'
+									alt='' />
+									<h3><%=listNewsHCM.get(0).getTitle()%></h3>
 								</a>
 								<div class='article-list-container'>
 									<ul>
@@ -155,28 +171,35 @@
 											int i = 0;
 											for (NewsModel n : listNewsHCM) {
 												i++;
-												if(i == 7) {
-													break;
+												if (i == 7) {
+											break;
 												}
 										%>
-										<li>
-											<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%= n.getTitle() %></a>
+										<li><a
+											href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%=n.getTitle()%></a>
 										</li>
-										<% }
-										}%>
+										<%
+										}
+										}
+										%>
 									</ul>
 								</div>
 							</div>
 						</div>
-						<% } %>
-						<% if(listNewsHN != null) { %>
+						<%
+						}
+						%>
+						<%
+						if (listNewsHN != null) {
+						%>
 						<div id='bdsHN' class='tab-pane fade'>
 							<div class='article-container'>
-								<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNewsHN.get(0).getNewsId() %>.html' class='article-info-container'>
-									<img
-										src='${pageContext.servletContext.contextPath}/images/News/<%= listNewsHN.get(0).getThumbnail() %>'
-										alt='' />
-									<h3><%= listNewsHN.get(0).getTitle() %></h3>
+								<a
+									href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNewsHN.get(0).getNewsId() %>.html'
+									class='article-info-container'> <img
+									src='${pageContext.servletContext.contextPath}/images/News/<%= listNewsHN.get(0).getThumbnail() %>'
+									alt='' />
+									<h3><%=listNewsHN.get(0).getTitle()%></h3>
 								</a>
 								<div class='article-list-container'>
 									<ul>
@@ -185,24 +208,28 @@
 											int i = 0;
 											for (NewsModel n : listNewsHN) {
 												i++;
-												if(i == 7) {
-													break;
+												if (i == 7) {
+											break;
 												}
 										%>
-										<li>
-											<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%= n.getTitle() %></a>
+										<li><a
+											href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%=n.getTitle()%></a>
 										</li>
-										<% }
-										}%>
+										<%
+										}
+										}
+										%>
 									</ul>
 								</div>
 							</div>
 						</div>
-						<% } %>
+						<%
+						}
+						%>
 					</div>
 				</div>
 
-			<!-- 	<div class='home__hot-news-banner'>
+				<!-- 	<div class='home__hot-news-banner'>
 					<img
 						src='https://tpc.googlesyndication.com/simgad/3748612651896058688'
 						alt='' />
@@ -216,8 +243,10 @@
 				<div class='content__header'>
 					<h3 class='content__header--label'>Bất động sản dành cho bạn</h3>
 					<div class='content-container-link'>
-						<a href='${pageContext.servletContext.contextPath}/nha-dat-ban.html'>Tin nhà đất mới nhất</a> 
-						<span>|</span> <a href='${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html'>Tin
+						<a
+							href='${pageContext.servletContext.contextPath}/nha-dat-ban.html'>Tin
+							nhà đất mới nhất</a> <span>|</span> <a
+							href='${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html'>Tin
 							nhà đất cho thuê mới nhất</a>
 					</div>
 				</div>
@@ -230,20 +259,21 @@
 							int i = 0;
 							for (RealEstateModel r : listREForYou) {
 								i++;
-								if(i == 9) {
-									break;
+								if (i == 9) {
+							break;
 								}
 								String imageString = (String) r.getImages();
 
 								if (imageString != null && !imageString.isEmpty()) {
-								imageString = imageString.substring(1, imageString.length() - 1);
-								String[] imagePaths = imageString.split(",");
+							imageString = imageString.substring(1, imageString.length() - 1);
+							String[] imagePaths = imageString.split(",");
 						%>
 						<div class='col-lg-3'>
 							<div class='card'>
 								<a
 									href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
-									<img class='card-img-top' src="images/<%=imagePaths[0]%>" alt='' />
+									<img class='card-img-top' src="images/<%=imagePaths[0]%>"
+									alt='' />
 								</a>
 								<div class='card-info-container'>
 									<a
@@ -251,27 +281,25 @@
 										<h3 class='card-title'><%=r.getTitle()%></h3>
 									</a>
 									<div class='card-config'>
-										<span class='card-config-price'>
-										<%
-										if(!r.getUnit().equals("Thỏa thuận")) {
-											if(r.getPrice() < 1000000000) {
-											    out.print((int)(r.getPrice() / 1000000) + " triệu");
-											} else {
-											    out.print(r.getPrice() / 1000000000 + " tỷ");
-											}
-										
-											if(r.getUnit().equals("triệu")) {
-											    out.print("");
-											} else {
-												out.print(" " + r.getUnit());
-											}
-										} else {
-											out.print(r.getUnit());
-										}
-										%>
-										</span>
-										<i class='fa-solid fa-circle'></i> <span
-											class='card-config-area'><%= r.getArea()%> m²</span>
+										<span class='card-config-price'> <%
+ if (!r.getUnit().equals("Thỏa thuận")) {
+ 	if (r.getPrice() < 1000000000) {
+ 		out.print((int) (r.getPrice() / 1000000) + " triệu");
+ 	} else {
+ 		out.print(r.getPrice() / 1000000000 + " tỷ");
+ 	}
+
+ 	if (r.getUnit().equals("triệu")) {
+ 		out.print("");
+ 	} else {
+ 		out.print(" " + r.getUnit());
+ 	}
+ } else {
+ 	out.print(r.getUnit());
+ }
+ %>
+										</span> <i class='fa-solid fa-circle'></i> <span
+											class='card-config-area'><%=r.getArea()%> m²</span>
 									</div>
 									<div class='card-location'>
 										<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>,
@@ -279,26 +307,32 @@
 									</div>
 									<div class='card-contact'>
 										<span class='card-published-info' data-toggle='tooltip2'
-											data-placement='right' title='<%=r.getSubmittedDate()%>' value='<%=r.getSubmittedDate()%>'></span>
+											data-placement='right' title='<%=r.getSubmittedDate()%>'
+											value='<%=r.getSubmittedDate()%>'></span>
 										<button class='card-contact-button' data-toggle='tooltip'
-											data-placement='bottom' title='Bấm để lưu tin ' value="<%= r.getRealEstateId()%>">
-											<% 
+											data-placement='bottom' title='Bấm để lưu tin '
+											value="<%=r.getRealEstateId()%>">
+											<%
 											if (user != null) {
 												Boolean showHeart = false;
-												for(FavouriteModel fa : r.getFavourite()) {
-													 if(fa.getUser() == user) {
-														 showHeart = true;
-														 break;
-													 }
+												for (FavouriteModel fa : r.getFavourite()) {
+													if (fa.getUser() == user) {
+												showHeart = true;
+												break;
+													}
 												}
 											%>
-											<i class='fa-regular fa-heart' style="display: <%= showHeart ? "none" : "block" %>;"></i>
-											<i class="fa-solid fa-heart" style="color: #e03c31;display: <%= showHeart ? "block" : "none" %>;"></i>
+											<i class='fa-regular fa-heart'
+												style="display: <%=showHeart ? "none" : "block"%>;"></i> <i
+												class="fa-solid fa-heart"
+												style="color: #e03c31;display: <%=showHeart ? "block" : "none"%>;"></i>
 											<%
 											} else {
 											%>
 											<i class='fa-regular fa-heart' style="display:"block";"></i>
-											<% } %>
+											<%
+											}
+											%>
 										</button>
 									</div>
 								</div>
@@ -311,7 +345,7 @@
 						%>
 					</div>
 				</div>
-			<!--  	<div class='product-view-container'>
+				<!--  	<div class='product-view-container'>
 					<a href='${pageContext.servletContext.contextPath}/nha-dat-ban.html' class='product-view-more'>
 						<span>Xem thêm</span>
 					</a>
@@ -326,51 +360,58 @@
 					<h3 class='content__header--label'>Bất động sản theo địa điểm</h3>
 				</div>
 				<div class='place-container'>
-					<a href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=50" class='place-item place-big'>
-						<img
-							src='https://file4.batdongsan.com.vn/images/newhome/cities1/HCM-web-2.jpg'
-							alt='' />
+					<a
+						href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=50"
+						class='place-item place-big'> <img
+						src='https://file4.batdongsan.com.vn/images/newhome/cities1/HCM-web-2.jpg'
+						alt='' />
 						<div class='place-info'>
 							<span class='place-name'>TP. Hồ Chí Minh</span> <span
-								class='place-number'><%= request.getAttribute("amountREHCM") %> tin đăng</span>
+								class='place-number'><%=request.getAttribute("amountREHCM")%>
+								tin đăng</span>
 						</div>
 					</a>
 					<div class='place-small'>
 						<div class='row'>
-							<a href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=1" class='col-lg-6 place-item'>
-								<img
-									src='https://file4.batdongsan.com.vn/images/newhome/cities1/HN-web-2.jpg'
-									alt='' />
+							<a
+								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=1"
+								class='col-lg-6 place-item'> <img
+								src='https://file4.batdongsan.com.vn/images/newhome/cities1/HN-web-2.jpg'
+								alt='' />
 								<div class='place-info'>
 									<span class='place-name'>Hà Nội</span> <span
-										class='place-number'><%= request.getAttribute("amountREHN") %> tin đăng</span>
+										class='place-number'><%=request.getAttribute("amountREHN")%>
+										tin đăng</span>
 								</div>
-							</a>
-							<a href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=32" class='col-lg-6 place-item'>
-								<img
-									src='https://file4.batdongsan.com.vn/images/newhome/cities1/DDN-web-2.jpg'
-									alt='' />
+							</a> <a
+								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=32"
+								class='col-lg-6 place-item'> <img
+								src='https://file4.batdongsan.com.vn/images/newhome/cities1/DDN-web-2.jpg'
+								alt='' />
 								<div class='place-info'>
 									<span class='place-name'>Đà Nẵng</span> <span
-										class='place-number'><%= request.getAttribute("amountREDaNang") %> tin đăng</span>
+										class='place-number'><%=request.getAttribute("amountREDaNang")%>
+										tin đăng</span>
 								</div>
-							</a>
-							<a href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=47" class='col-lg-6 place-item'>
-								<img
-									src='https://file4.batdongsan.com.vn/images/newhome/cities1/BD-web-1.jpg'
-									alt='' />
+							</a> <a
+								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=47"
+								class='col-lg-6 place-item'> <img
+								src='https://file4.batdongsan.com.vn/images/newhome/cities1/BD-web-1.jpg'
+								alt='' />
 								<div class='place-info'>
 									<span class='place-name'>Bình Dương</span> <span
-										class='place-number'><%= request.getAttribute("amountREBD") %> tin đăng</span>
+										class='place-number'><%=request.getAttribute("amountREBD")%>
+										tin đăng</span>
 								</div>
-							</a>
-							<a href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=48" class='col-lg-6 place-item'>
-								<img
-									src='https://file4.batdongsan.com.vn/images/newhome/cities1/DNA-web-2.jpg'
-									alt='' />
+							</a> <a
+								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=48"
+								class='col-lg-6 place-item'> <img
+								src='https://file4.batdongsan.com.vn/images/newhome/cities1/DNA-web-2.jpg'
+								alt='' />
 								<div class='place-info'>
 									<span class='place-name'>Đồng Nai</span> <span
-										class='place-number'><%= request.getAttribute("amountREDongNai") %> tin đăng</span>
+										class='place-number'><%=request.getAttribute("amountREDongNai")%>
+										tin đăng</span>
 								</div>
 							</a>
 						</div>
@@ -379,89 +420,126 @@
 			</div>
 		</div>
 
+
+
 		<!-- NewsBlockContent -->
 		<div class='content-container white-background '>
 			<div class='container'>
-				<div class='content__header'>
-					<h3 class='content__header--label'>Tin tức bất động sản</h3>
-				</div>
-				
-				<div class='product-container '>
-					<div class='row'>
+				<div class='swiper mySwiper3'>
+					<div class='recommend-list-header'>
+						<h5 class='recommend-title'>Bất động sản dành cho bạn</h5>
+					</div>
+					<div class='swiper-wrapper'>
 						<%
 						if (listREForYou != null) {
 							int i = 0;
 							for (NewsModel n : listNews) {
-								i++;
-								if(i == 5) {
-									break;
-								}
 						%>
-						<div class='col-lg-3'>
-							<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html' class='card'>
-								<img class='card-img-top'
-									src='${pageContext.servletContext.contextPath}/images/News/<%= n.getThumbnail() %>'
-									alt='' />
+						<div class='swiper-slide'>
+							<a
+								href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'
+								class='card'> <img class='card-img-top'
+								src='${pageContext.servletContext.contextPath}/images/News/<%= n.getThumbnail() %>'
+								alt='' />
 								<div class='card-info-container'>
-									<h3 class='card-title'><%= n.getTitle() %></h3>
+									<h3 class='card-title'><%=n.getTitle()%></h3>
 								</div>
 							</a>
 						</div>
-						<% }
-						}%>
+						<%
+						}
+						}
+						%>
 					</div>
+					<div class='swiper-button-next'></div>
+					<div class='swiper-button-prev'></div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<%@ include file="../../components/footer.jsp"%>
-	
-	<script type="text/javascript">
-	$(document).ready(function() {
-		$(".card-published-info").each(function() {
-	        var submittedTime = $(this).attr("value").trim();
-	        var timeAgo = moment(submittedTime).locale('vi').fromNow(); 
-	        $(this).text(timeAgo);
-	    });
-		
-		// HANDLE ADD TO FAVOURITE
-	    $(".card-contact-button").on("click", function(e) {
-	    	 e.preventDefault();
 
-             <% if (user == null) { %>
-             swal({
-             	title: "Vui lòng đăng nhập để tiếp tục!",
-                 icon: "error",
-                 button: "OK"
-             });
-             <% } else { %>
-	        var regularHeartIcon = $(this).find(".fa-regular.fa-heart");
-	        var solidHeartIcon = $(this).find(".fa-solid.fa-heart");
-	        if (regularHeartIcon.css("display") === "block") {
-	        	regularHeartIcon.css("display", "none");
-	        	solidHeartIcon.css("display", "block");
-	        } else {
-	        	regularHeartIcon.css("display", "block");
-	        	solidHeartIcon.css("display", "none");
-	        }
-	        
-	        var realEstateId = $(this).attr("value");
-	        $.ajax({
-				type: 'GET',
-				url: '${pageContext.servletContext.contextPath}/addToFavourite.html',
-				data: {realEstateId: realEstateId},
-				dataType: 'text',
-				success: function(data) {
-					console.log("Thêm thành công");
-				},
-				error: function(xhr, status, error) {
-					console.log("Thêm thất bại")
-				}
-			});
-	        <% } %>
-	    });
-		
-	});
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							var swiper3 = new Swiper(".mySwiper3", {
+								slidesPerView : 4,
+								spaceBetween : 15,
+								navigation : {
+									nextEl : ".swiper-button-next",
+									prevEl : ".swiper-button-prev",
+								},
+							});
+
+							$(".card-published-info").each(
+									function() {
+										var submittedTime = $(this).attr(
+												"value").trim();
+										var timeAgo = moment(submittedTime)
+												.locale('vi').fromNow();
+										$(this).text(timeAgo);
+									});
+
+							// HANDLE ADD TO FAVOURITE
+							$(".card-contact-button")
+									.on(
+											"click",
+											function(e) {
+												e.preventDefault();
+	<%if (user == null) {%>
+		swal({
+													title : "Vui lòng đăng nhập để tiếp tục!",
+													icon : "error",
+													button : "OK"
+												});
+	<%} else {%>
+		var regularHeartIcon = $(this)
+														.find(
+																".fa-regular.fa-heart");
+												var solidHeartIcon = $(this)
+														.find(
+																".fa-solid.fa-heart");
+												if (regularHeartIcon
+														.css("display") === "block") {
+													regularHeartIcon.css(
+															"display", "none");
+													solidHeartIcon.css(
+															"display", "block");
+												} else {
+													regularHeartIcon.css(
+															"display", "block");
+													solidHeartIcon.css(
+															"display", "none");
+												}
+
+												var realEstateId = $(this)
+														.attr("value");
+												$
+														.ajax({
+															type : 'GET',
+															url : '${pageContext.servletContext.contextPath}/addToFavourite.html',
+															data : {
+																realEstateId : realEstateId
+															},
+															dataType : 'text',
+															success : function(
+																	data) {
+																console
+																		.log("Thêm thành công");
+															},
+															error : function(
+																	xhr,
+																	status,
+																	error) {
+																console
+																		.log("Thêm thất bại")
+															}
+														});
+	<%}%>
+		});
+
+						});
 	</script>
 </body>
 </html>

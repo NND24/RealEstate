@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
-<link rel="stylesheet" href="../css/client/header.css" type="text/css">
+<link rel="stylesheet" href="../css/client/header.css?version=51" type="text/css">
 <link rel="stylesheet" href="../css/client/news.css?version=50"
 	type="text/css">
 <link rel="stylesheet" href="../css/admin/detail.css"
