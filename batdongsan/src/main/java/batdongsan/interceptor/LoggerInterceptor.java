@@ -22,14 +22,12 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("LoggerInterceptor.postHandle()");
 	}
 	
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("LoggerInterceptor.afterCompletion()");
 	}
 	
 	private boolean isUserLoggedIn(HttpServletRequest request) {
@@ -37,7 +35,6 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
 	    if (cookies != null) {
 	        System.out.println("Cookies:");
 	        for (Cookie cookie : cookies) {
-	            System.out.println(cookie.getName() + ": " + cookie.getValue());
 	            if (cookie.getName().equals("id") && cookie.getValue() != null && !cookie.getValue().isEmpty()) {
 	                // Nếu cookie với tên là "id" tồn tại và có giá trị không rỗng, người dùng đã đăng nhập
 	                return true;

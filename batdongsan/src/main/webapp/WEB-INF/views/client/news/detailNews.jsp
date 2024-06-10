@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="../css/client/header.css?version=51" type="text/css">
 <link rel="stylesheet" href="../css/client/news.css?version=50"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/detail.css"
+<link rel="stylesheet" href="../css/admin/detail.css?version=60"
 	type="text/css">
 <link rel="stylesheet" href="../css/client/moreNews.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/footer.css" type="text/css">
@@ -25,9 +25,8 @@
 				<!-- Content -->
 				<div class='detail-content col-lg-12'>
 
-
 					<div class='breadcrumb'>
-						<a href='tin-tuc.html'> <i class="fa-solid fa-house"></i>
+						<a href='${pageContext.servletContext.contextPath}/tin-tuc.html'> <i class="fa-solid fa-house"></i>
 						</a> <span> > </span> <a href=''>${news.title}</a>
 					</div>
 					<h3 class='detail-content__title'>${news.title}</h3>

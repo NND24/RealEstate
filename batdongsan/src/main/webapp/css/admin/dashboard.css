@@ -323,6 +323,7 @@ body {
   margin-left: 280px;
   width: calc(100% - 280px);
   padding: 20px;
+  overflow: auto;
 }
 
 .admin .dashboard .header-wrapper {

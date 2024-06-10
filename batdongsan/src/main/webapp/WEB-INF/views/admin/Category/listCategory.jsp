@@ -1,6 +1,8 @@
 <%@ page pageEncoding="utf-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@page import="batdongsan.models.CategoryModel"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,27 +27,17 @@
 						id="addCategoryButton">Thêm mới</button></a>
 			</div>
 			<div class='search-wrapper'>
-				<div class='input-container'>
+				<div class='input-container search-input'>
 					<i class='fa-solid fa-magnifying-glass'></i> <input type='text'
 						id="searchInput" placeholder='Tìm kiếm theo tên'
 						value="${search != null ? search : ''}" />
 				</div>
-				<div class='filter-container'>
-					<form id="filterForm" method="get" action="">
-						<select name="filter" id="filter" onchange="this.form.submit()">
-							<option value=""
-								<c:if test="${filter == null || filter.isEmpty()}">selected</c:if>>Tất
-								cả</option>
-							<option value="sell"
-								<c:if test="${filter == 'sell'}">selected</c:if>>Nhà
-								đất bán</option>
-							<option value="rent"
-								<c:if test="${filter == 'rent'}">selected</c:if>>Nhà
-								đất cho thuê</option>
-						</select> <input type="hidden" name="search" id="hiddenSearch"
-							value="${search != null ? search : ''}" />
-					</form>
-				</div>
+				<%
+				List<CategoryModel> listOfNews = (List<CategoryModel>) request.getAttribute("categories");
+				Integer currentAllPage = (Integer) request.getAttribute("currentAllPage");
+				Integer totalAllPages = (Integer) request.getAttribute("totalAllPages");
+				Integer totalAllResults = (Integer) request.getAttribute("totalAllResults");
+				%>
 			</div>
 
 			<div class='table-wrapper'>
@@ -76,82 +68,63 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="pagination-container">
-				<nav aria-label="Page navigation">
-					<ul id="pagination" class="pagination"></ul>
-				</nav>
+			<!-- Phân trang -->
+			<div class="pagination">
+				<%
+				if (currentAllPage > 1) {
+				%>
+				<a
+					href="${pageContext.servletContext.contextPath}/admin/listCategory.html?pageAll=<%=currentAllPage - 1%>">
+					<i class="fa-solid fa-chevron-left"></i>
+				</a>
+				<%
+				}
+				%>
+
+				<%
+				for (int i = 1; i <= totalAllPages; i++) {
+				%>
+				<a
+					href="${pageContext.servletContext.contextPath}/admin/listCategory.html?pageAll=<%=i%>"
+					class="<%=i == currentAllPage ? "active" : ""%>"><%=i%></a>
+				<%
+				}
+				%>
+
+				<%
+				if (currentAllPage < totalAllPages) {
+				%>
+				<a
+					href="${pageContext.servletContext.contextPath}/admin/listCategory.html?pageAll=<%=currentAllPage + 1%>">
+					<i class="fa-solid fa-angle-right"></i>
+				</a>
+				<%
+				}
+				%>
 			</div>
 		</div>
 	</div>
-	<script>
-		$(document).ready(
-						function() {
-							var totalPages = $
-							{
-								totalPages
-							}
-							;
-							var currentPage = $
-							{
-								currentPage
-							}
-							;
-							var filter = "${filter}"; // Lấy filter hiện tại từ server
-							var searchText = "${search != null ? search : ''}"; // Lấy giá trị tìm kiếm hiện tại từ server
-
-							function loadPage(page) {
-								$
-										.get("listCategory.html", {
-											page : page,
-											filter : filter,
-											search : searchText
-										})
-										.done(
-												function(data) {
-													var newContent = $(data)
-															.find(
-																	'#categoryTable')
-															.html();
-													$('#categoryTable').html(
-															newContent);
-													$('#pagination')
-															.twbsPagination(
-																	'changeTotalPages',
-																	totalPages,
-																	page);
-												})
-										.fail(
-												function() {
-													console
-															.error('Error while fetching data from server.');
-												});
-							}
-
-							$('#pagination').twbsPagination({
-								totalPages : totalPages,
-								visiblePages : 5,
-								startPage : currentPage,
-								onPageClick : function(event, page) {
-									if (page !== currentPage) {
-										currentPage = page;
-										loadPage(page);
-									}
-								},
-								first : 'Đầu',
-								prev : '<i class="fas fa-angle-left"></i>',
-								next : '<i class="fas fa-angle-right"></i>',
-								last : 'Cuối'
-							});
-
-							$('#searchInput').on('keyup', function() {
-								searchText = $(this).val().toLowerCase();
-								$('#hiddenSearch').val(searchText); // Cập nhật giá trị tìm kiếm ẩn trong form
-								loadPage(1); // Load lại từ trang đầu tiên khi tìm kiếm
-							});
-
-							// Initial load
-							loadPage(currentPage);
-						});
+	<script type="text/javascript">
+	$(document).ready(function() {
+		let searchInput = $(".search-input input");
+		let searchInputButton = $(".search-input .fa-magnifying-glass");
+		
+		$(searchInputButton).on("click", handleSearch);
+		$(searchInput).on("keyup", function(event) {
+		    if (event.which === 13) { // Enter key code
+		        event.preventDefault(); // Prevent default form submission if necessary
+		        handleSearch();
+		    }
+		});
+		
+		function handleSearch() {
+			let url = "${pageContext.servletContext.contextPath}/admin/listCategory.html";
+			url += "?searchInput=" + searchInput.val();
+			window.location.href = url;
+		}
+	})
 	</script>
+
+
 </body>
 </html>
