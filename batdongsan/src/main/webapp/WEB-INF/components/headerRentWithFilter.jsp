@@ -1184,44 +1184,32 @@ $(document).ready(function() {
 	// HANDLE SEARCH BY SEARCH INPUT
 	let searchInput = $(".search-bar__input input");
 	let searchInputButton = $(".search-bar__input .fa-magnifying-glass");
-
+	
 	// HANDLE SEARCH
-	$(".list-search-select__search-button").click(() => {
+	$(searchInputButton).on("click", handleSearch);
+	$(searchInput).on("keyup", function(event) {
+	    if (event.which === 13) { // Enter key code
+	        event.preventDefault(); // Prevent default form submission if necessary
+	        handleSearch();
+	    }
+	});
+	
+	function handleSearch() {
 	    let listCategoryId = [];
 	    if (typeAll.checked) {
-			listCategoryId.push(12,13,14,15,16,17,18,19,20,21);
-		} else {
-			if (type1.checked) {
-				listCategoryId.push(12);
-			}
-			if (type2.checked) {
-				listCategoryId.push(13);
-			}
-			if (type3.checked) {
-				listCategoryId.push(14);
-			}
-			if (type4.checked) {
-				listCategoryId.push(15);
-			}
-			if (type5.checked) {
-				listCategoryId.push(16);
-			}
-			if (type6.checked) {
-				listCategoryId.push(17);
-			}
-			if (type7.checked) {
-				listCategoryId.push(18);
-			}
-			if (type8.checked) {
-				listCategoryId.push(19);
-			}
-			if (type9.checked) {
-				listCategoryId.push(20);
-			}
-			if (type10.checked) {
-				listCategoryId.push(21);
-			}
-		}
+	        listCategoryId.push(12, 13, 14, 15, 16, 17, 18, 19, 20, 21);
+	    } else {
+	        if (type1.checked) listCategoryId.push(12);
+	        if (type2.checked) listCategoryId.push(13);
+	        if (type3.checked) listCategoryId.push(14);
+	        if (type4.checked) listCategoryId.push(15);
+	        if (type5.checked) listCategoryId.push(16);
+	        if (type6.checked) listCategoryId.push(17);
+	        if (type7.checked) listCategoryId.push(18);
+	        if (type8.checked) listCategoryId.push(19);
+	        if (type9.checked) listCategoryId.push(20);
+	        if (type10.checked) listCategoryId.push(21);
+	    }
 	
 	    let listNumberOfBedrooms = [];
 	    $(".list__items.number-of-bedrooms .item.active").each((index, element) => {
@@ -1232,37 +1220,37 @@ $(document).ready(function() {
 	    $(".list__items.number-of-toilets .item.active").each((index, element) => {
 	        listNumberOfToilets.push(parseInt($(element).text()));
 	    });
-	    
+	
 	    let listDirections = [];
 	    $(".list__items.directions .item.active").each((index, element) => {
-	    	listDirections.push($(element).text());
+	        listDirections.push($(element).text());
 	    });
-	    
-	    var price = document.querySelectorAll(".price-range-slider .price-input input")
+	
+	    var price = document.querySelectorAll(".price-range-slider .price-input input");
 	    let minPrice;
 	    let maxPrice;
-	    
-	    if(price[0].value==="" && price[1].value==="") {
-	    	minPrice = -1;
-	    	maxPrice = -1;
+	
+	    if (price[0].value === "" && price[1].value === "") {
+	        minPrice = -1;
+	        maxPrice = -1;
 	    } else {
 	        minPrice = price[0].value * 1000000;
 	        maxPrice = price[1].value * 1000000;
 	    }
-	    
-	    var area = document.querySelectorAll(".area-range-slider .area-input input")
+	
+	    var area = document.querySelectorAll(".area-range-slider .area-input input");
 	    let minArea;
 	    let maxArea;
-	    
-	    if(area[0].value==="" && area[1].value==="") {
-	    	minArea = -1;
-	    	maxArea = -1;
+	
+	    if (area[0].value === "" && area[1].value === "") {
+	        minArea = -1;
+	        maxArea = -1;
 	    } else {
-	    	minArea = area[0].value;
+	        minArea = area[0].value;
 	        maxArea = area[1].value;
 	    }
 	
-	    let searchInput = $(".search-bar__input input").val();
+	    let searchInputVal = searchInput.val();
 	
 	    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
 	
@@ -1297,38 +1285,39 @@ $(document).ready(function() {
 	        url += "numberOfToilets=" + listNumberOfToilets.join(",");
 	        hasParameters = true;
 	    }
-	    
+	
 	    if (listDirections.length > 0) {
 	        url += hasParameters ? "&" : "?";
 	        url += "directions=" + listDirections.join(",");
 	        hasParameters = true;
 	    }
-	    
-	    if(provinceId !== null) {
+	
+	    if (typeof provinceId !== 'undefined' && provinceId !== null) {
 	        url += hasParameters ? "&" : "?";
 	        url += "provinceId=" + provinceId;
 	        hasParameters = true;
 	    }
-	    
-	    if(districtId !== null) {
+	
+	    if (typeof districtId !== 'undefined' && districtId !== null) {
 	        url += hasParameters ? "&" : "?";
 	        url += "districtId=" + districtId;
 	        hasParameters = true;
 	    }
-	    
-	    if(wardId !== null) {
+	
+	    if (typeof wardId !== 'undefined' && wardId !== null) {
 	        url += hasParameters ? "&" : "?";
 	        url += "wardId=" + wardId;
 	        hasParameters = true;
 	    }
-	    
-	    if(searchInput !== "") {
+	
+	    if (searchInputVal !== "") {
 	        url += hasParameters ? "&" : "?";
-	        url += "searchInput=" + searchInput;
+	        url += "searchInput=" + searchInputVal;
 	    }
 	
 	    window.location.href = url;
-	});
+	}
+
 
 
 	$("#reset-all-button").click(() => {

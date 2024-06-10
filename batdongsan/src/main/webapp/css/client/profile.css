@@ -177,3 +177,20 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.card-contact-button__phonenumber {
+	color: #fff;
+	background: #009ba1;
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.card-contact-button__phonenumber i {
+	margin-right: 8px;
+}
+
+.card-contact-button__phonenumber__dot {
+	margin: 0 4px;
+}

@@ -648,11 +648,19 @@
 		let searchInput = $(".search-input input");
 		let searchInputButton = $(".search-input .fa-magnifying-glass");
 		
-		searchInputButton.on("click", () => {
+		$(searchInputButton).on("click", handleSearch);
+		$(searchInput).on("keyup", function(event) {
+		    if (event.which === 13) { // Enter key code
+		        event.preventDefault(); // Prevent default form submission if necessary
+		        handleSearch();
+		    }
+		});
+		
+		function handleSearch() {
 			let url = "${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
 			url += "?searchInput=" + searchInput.val();
 			window.location.href = url;
-		})
+		}
 	})
 	</script>
 </body>

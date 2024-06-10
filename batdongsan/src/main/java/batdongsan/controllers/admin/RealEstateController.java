@@ -1,17 +1,7 @@
 package batdongsan.controllers.admin;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
@@ -21,19 +11,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import batdongsan.models.CategoryModel;
-import batdongsan.models.DistrictsModel;
-import batdongsan.models.FavouriteModel;
-import batdongsan.models.ProvincesModel;
 import batdongsan.models.RealEstateModel;
-import batdongsan.models.UsersModel;
-import batdongsan.models.WardsModel;
 
 @Controller
 @RequestMapping("/admin/")
@@ -43,30 +25,37 @@ public class RealEstateController {
 
 	@RequestMapping(value = { "quan-ly-bat-dong-san" }, method = RequestMethod.GET)
 	public String getListPostPage(HttpServletRequest request,
-			@RequestParam(name = "searchInput", required = false) String searchInput,
+	        @RequestParam(name = "searchInput", required = false) String searchInput,
 	        @RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
 	        @RequestParam(name = "size", defaultValue = "5") int size) {
-		Session session = factory.openSession();
-		try {
-			String hqlAll = "FROM RealEstateModel";
-			Query<RealEstateModel> queryAll = session.createQuery(hqlAll);
-			
-			int totalAllResults = queryAll.list().size();
+	    Session session = factory.openSession();
+	    try {
+	        String hqlAll = "FROM RealEstateModel r";
+	        if (searchInput != null && !searchInput.isEmpty()) {
+	            hqlAll += " WHERE r.address LIKE :searchInput OR r.title LIKE :searchInput OR r.description LIKE :searchInput";
+	        }
+	        Query<RealEstateModel> queryAll = session.createQuery(hqlAll, RealEstateModel.class);
+	        if (searchInput != null && !searchInput.isEmpty()) {
+	            queryAll.setParameter("searchInput", "%" + searchInput + "%");
+	        }
+
+	        int totalAllResults = queryAll.list().size();
 	        queryAll.setFirstResult((pageAll - 1) * size);
 	        queryAll.setMaxResults(size);
-			
-			List<RealEstateModel> allRealEstates = queryAll.list();
-			request.setAttribute("allRealEstates", allRealEstates);
-			
-			request.setAttribute("currentAllPage", pageAll);
+
+	        List<RealEstateModel> allRealEstates = queryAll.list();
+	        request.setAttribute("allRealEstates", allRealEstates);
+
+	        request.setAttribute("currentAllPage", pageAll);
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
-			
-			return "admin/listRealEstate";
-		} finally {
-			session.close();
-		}
+
+	        return "admin/listRealEstate";
+	    } finally {
+	        session.close();
+	    }
 	}
+
 	
 	@RequestMapping(value= {"/chi-tiet"}, method = RequestMethod.GET)
     public String getDetailPage(HttpServletRequest request, @RequestParam("realEstateId") int realEstateId) {

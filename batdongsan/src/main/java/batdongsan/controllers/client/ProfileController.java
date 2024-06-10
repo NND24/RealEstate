@@ -28,56 +28,58 @@ public class ProfileController {
 
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET)
 	public String getFavoutirePage(HttpServletRequest request,
-			@RequestParam(name = "userId") Integer userId) {
-		Session session = factory.openSession();
-		try {
-			Session currentSession = factory.getCurrentSession();
-			UsersModel userInfo = currentSession.find(UsersModel.class, userId);
-			request.setAttribute("userInfo", userInfo);
-			
-			String hqlSell = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
-			Query<RealEstateModel> querySell = session.createQuery(hqlSell);
-			querySell.setParameter("userId", userId);
-			querySell.setParameter("type", "Nhà đất bán");
-			querySell.setParameter("status", "Đang hiển thị");
-			List<RealEstateModel> sellRealEstates = querySell.list();
-			request.setAttribute("sellRealEstates", sellRealEstates);
-			
-			String hqlRent = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status='Đang hiển thị' AND user.userId = :userId AND cat.type LIKE :type";
-			Query<RealEstateModel> queryRent = session.createQuery(hqlRent);
-			queryRent.setParameter("userId", userId);
-			queryRent.setParameter("type", "Nhà đất cho thuê");
-			List<RealEstateModel> rentRealEstates = queryRent.list();
-			request.setAttribute("rentRealEstates", rentRealEstates);
-			
-			Cookie[] cookies = request.getCookies();
-			String currentUserId = null;
+	                               @RequestParam(name = "userId") Integer userId) {
+	    Session session = factory.openSession();
+	    try {
+	        Session currentSession = factory.getCurrentSession();
+	        UsersModel userInfo = currentSession.find(UsersModel.class, userId);
+	        request.setAttribute("userInfo", userInfo);
 
-			if (cookies != null) {
-				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals("userId")) {
-						currentUserId = cookie.getValue();
-						break;
-					}
-				}
-			}
+	        String hqlSell = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
+	        Query<RealEstateModel> querySell = session.createQuery(hqlSell);
+	        querySell.setParameter("userId", userId);
+	        querySell.setParameter("type", "Nhà đất bán");
+	        querySell.setParameter("status", "Đang hiển thị");
+	        List<RealEstateModel> sellRealEstates = querySell.list();
+	        request.setAttribute("sellRealEstates", sellRealEstates);
 
-			if (userId != null) {
-				String hqlUser = "FROM UsersModel WHERE userId = :userId";
-				Query<UsersModel> queryUser = session.createQuery(hqlUser);
-				queryUser.setParameter("userId", Integer.parseInt(currentUserId));
-				UsersModel user = queryUser.uniqueResult();
-				request.setAttribute("user", user);
-			} else {
-				UsersModel user = null;
-				request.setAttribute("user", user);
-			}
+	        String hqlRent = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
+	        Query<RealEstateModel> queryRent = session.createQuery(hqlRent);
+	        queryRent.setParameter("userId", userId);
+	        queryRent.setParameter("type", "Nhà đất cho thuê");
+	        queryRent.setParameter("status", "Đang hiển thị");
+	        List<RealEstateModel> rentRealEstates = queryRent.list();
+	        request.setAttribute("rentRealEstates", rentRealEstates);
 
-			return "client/profile";
-		} finally {
-			session.close();
-		}
+	        Cookie[] cookies = request.getCookies();
+	        String currentUserId = null;
+
+	        if (cookies != null) {
+	            for (Cookie cookie : cookies) {
+	                if (cookie.getName().equals("userId")) {
+	                    currentUserId = cookie.getValue();
+	                    break;
+	                }
+	            }
+	        }
+
+	        if (currentUserId != null) {
+	            String hqlUser = "FROM UsersModel WHERE userId = :userId";
+	            Query<UsersModel> queryUser = session.createQuery(hqlUser);
+	            queryUser.setParameter("userId", Integer.parseInt(currentUserId));
+	            UsersModel user = queryUser.uniqueResult();
+	            request.setAttribute("user", user);
+	        } else {
+	            UsersModel user = null;
+	            request.setAttribute("user", user);
+	        }
+
+	        return "client/profile";
+	    } finally {
+	        session.close();
+	    }
 	}
+
 	
 
 	@ModelAttribute("categoriesSell")

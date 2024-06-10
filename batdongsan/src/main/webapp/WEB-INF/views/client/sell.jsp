@@ -630,6 +630,10 @@
 				        let numberOfBedroom = listBedroom.join("-");
 				        title += numberOfBedroom + " phòng vệ sinh, ";
 				    }
+				    
+				    if (result['searchInput'] !== undefined) {
+				    	title += result['searchInput'] + ", ";
+				    }
 
 				    // Remove the trailing comma and space if it exists
 				    if (title.endsWith(", ")) {

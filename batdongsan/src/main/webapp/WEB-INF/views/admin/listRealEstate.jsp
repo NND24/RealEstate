@@ -29,7 +29,7 @@
 				<div class='filter-wrapper'>
 					<div class='search-input'>
 						<input type='text' id="searchInput"
-							placeholder='Tìm theo mã tin, tiêu đề' /> <i
+							placeholder='Tìm theo nội dung, tiêu đề' /> <i
 							class='fa-solid fa-magnifying-glass'></i>
 					</div>
 				</div>
@@ -155,7 +155,7 @@
 							if (currentAllPage > 1) {
 							%>
 							<a
-								href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=currentAllPage - 1%>">
+								href="${pageContext.servletContext.contextPath}/admin/quan-ly-bat-dong-san.html?pageAll=<%=currentAllPage - 1%>">
 								<i class="fa-solid fa-chevron-left"></i>
 							</a>
 							<%
@@ -166,7 +166,7 @@
 							for (int i = 1; i <= totalAllPages; i++) {
 							%>
 							<a
-								href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=i%>"
+								href="${pageContext.servletContext.contextPath}/admin/quan-ly-bat-dong-san.html?pageAll=<%=i%>"
 								class="<%=i == currentAllPage ? "active" : ""%>"><%=i%></a>
 							<%
 							}
@@ -176,7 +176,7 @@
 							if (currentAllPage < totalAllPages) {
 							%>
 							<a
-								href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html?pageAll=<%=currentAllPage + 1%>">
+								href="${pageContext.servletContext.contextPath}/admin/quan-ly-bat-dong-san.html?pageAll=<%=currentAllPage + 1%>">
 								<i class="fa-solid fa-angle-right"></i>
 							</a>
 							<%
@@ -188,5 +188,26 @@
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		let searchInput = $(".search-input input");
+		let searchInputButton = $(".search-input .fa-magnifying-glass");
+		
+		$(searchInputButton).on("click", handleSearch);
+		$(searchInput).on("keyup", function(event) {
+		    if (event.which === 13) { // Enter key code
+		        event.preventDefault(); // Prevent default form submission if necessary
+		        handleSearch();
+		    }
+		});
+		
+		function handleSearch() {
+			let url = "${pageContext.servletContext.contextPath}/admin/quan-ly-bat-dong-san.html";
+			url += "?searchInput=" + searchInput.val();
+			window.location.href = url;
+		}
+	})
+	</script>
 </body>
 </html>
