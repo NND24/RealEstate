@@ -1,6 +1,8 @@
 <%@ page pageEncoding="utf-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@page import="batdongsan.models.NewsModel"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +28,12 @@
 						placeholder='Tìm theo mã tin, tiêu đề' />
 				</div>
 			</div>
+					<%
+						List<NewsModel> listOfNews = (List<NewsModel>) request.getAttribute("allNews");
+						Integer currentAllPage = (Integer) request.getAttribute("currentAllPage");
+						Integer totalAllPages = (Integer) request.getAttribute("totalAllPages");
+						Integer totalAllResults = (Integer) request.getAttribute("totalAllResults");
+					%>
 			<div class='post-container'>
 				<div class='tab-content' id="news-container">
 					<c:forEach var="n" items="${listOfNews}">
@@ -64,11 +72,40 @@
 
 				</div>
 			</div>
-			<div class="pagination-container">
-				<nav aria-label="Page navigation">
-					<ul id="pagination" class="pagination"></ul>
-				</nav>
-			</div>
+			<!-- Phân trang -->
+						<div class="pagination">
+							<%
+							if (currentAllPage > 1) {
+							%>
+							<a
+								href="${pageContext.servletContext.contextPath}/tin-tuc/danh-sach.html?pageAll=<%=currentAllPage - 1%>">
+								<i class="fa-solid fa-chevron-left"></i>
+							</a>
+							<%
+							}
+							%>
+
+							<%
+							for (int i = 1; i <= totalAllPages; i++) {
+							%>
+							<a
+								href="${pageContext.servletContext.contextPath}/tin-tuc/danh-sach.html?pageAll=<%=i%>"
+								class="<%=i == currentAllPage ? "active" : ""%>"><%=i%></a>
+							<%
+							}
+							%>
+
+							<%
+							if (currentAllPage < totalAllPages) {
+							%>
+							<a
+								href="${pageContext.servletContext.contextPath}/tin-tuc/danh-sach.html?pageAll=<%=currentAllPage + 1%>">
+								<i class="fa-solid fa-angle-right"></i>
+							</a>
+							<%
+							}
+							%>
+						</div>
 		</div>
 	</div>
 	<input type="hidden" id="totalPages" value="${totalPages}" />
@@ -76,56 +113,23 @@
 	<%@ include file="../../../components/footer.jsp"%>
 	<script>
 	$(document).ready(function() {
-	    var totalPages = parseInt('${totalPages}');
-	    var currentPage = parseInt('${currentPage}');
-
-	    function loadPage(page, searchText) {
-	        $.get("danh-sach.html", { page: page, search: searchText })
-	            .done(function(data) {
-	                var newContent = $(data).find('#news-container').html();
-	                $('#news-container').html(newContent);
-
-	                // Cập nhật totalPages và currentPage từ nội dung trả về
-	                totalPages = parseInt($(data).find('#totalPages').val());
-	                currentPage = parseInt($(data).find('#currentPage').val());
-
-	                // Kiểm tra và cập nhật pagination
-	                $('#pagination').twbsPagination('destroy');
-	                initPagination(totalPages, currentPage);
-	            })
-	            .fail(function() {
-	                console.error('Error while fetching data from server.');
-	            });
-	    }
-
-	    function initPagination(totalPages, startPage) {
-	        $('#pagination').twbsPagination({
-	            totalPages: totalPages,
-	            visiblePages: 5,
-	            startPage: startPage,
-	            onPageClick: function(event, page) {
-	                if (page !== currentPage) {
-	                    currentPage = page;
-	                    var searchText = $('#searchInput').val();
-	                    loadPage(page, searchText);
-	                }
-	            },
-	            first: 'Đầu',
-	            prev: '<i class="fas fa-angle-left"></i>',
-	            next: '<i class="fas fa-angle-right"></i>',
-	            last: 'Cuối'
-	        });
-	    }
-
-	    // Initial load
-	    initPagination(totalPages, currentPage);
-
-	    // Chức năng tìm kiếm
-	    $('#searchInput').on('keyup', function() {
-	        var searchText = $(this).val().toLowerCase();
-	        loadPage(1, searchText);
-	    });
-	});
+		let searchInput = $(".search-input input");
+		let searchInputButton = $(".search-input .fa-magnifying-glass");
+		
+		$(searchInputButton).on("click", handleSearch);
+		$(searchInput).on("keyup", function(event) {
+		    if (event.which === 13) { // Enter key code
+		        event.preventDefault(); // Prevent default form submission if necessary
+		        handleSearch();
+		    }
+		});
+		
+		function handleSearch() {
+			let url = "${pageContext.servletContext.contextPath}/tin-tuc/danh-sach.html";
+			url += "?searchInput=" + searchInput.val();
+			window.location.href = url;
+		}
+	})
 </script>
 </body>
 </html>

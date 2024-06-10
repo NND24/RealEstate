@@ -1,6 +1,8 @@
 <%@ page pageEncoding="utf-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@page import="batdongsan.models.EmployeeModel"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,11 +29,18 @@
 						id="addEmployeeButton">Thêm mới</button></a>
 			</div>
 			<div class='search-wrapper'>
-				<div class='input-container'>
-					<i class='fa-solid fa-magnifying-glass'></i> <input type='text' id="searchInput"
-						placeholder='Mã hoặc tên nhân viên ...' />
+				<div class='input-container search-input'>
+					<i class='fa-solid fa-magnifying-glass'></i> <input type='text'
+						id="searchInput" placeholder='Tìm kiếm theo tên'
+						value="${search != null ? search : ''}" />
 				</div>
 			</div>
+			<%
+				List<EmployeeModel> employees = (List<EmployeeModel>) request.getAttribute("employees");
+				Integer currentAllPage = (Integer) request.getAttribute("currentAllPage");
+				Integer totalAllPages = (Integer) request.getAttribute("totalAllPages");
+				Integer totalAllResults = (Integer) request.getAttribute("totalAllResults");
+				%>
 			<div class='table-wrapper'>
 				<table class='table table-hover table-striped'>
 					<thead>
@@ -68,134 +77,60 @@
 				</table>
 
 			</div>
-			<div class="pagination-container">
-				<nav aria-label="Page navigation">
-					<ul id="pagination" class="pagination"></ul>
-				</nav>
+			<!-- Phân trang -->
+			<div class="pagination">
+				<%
+				if (currentAllPage > 1) {
+				%>
+				<a
+					href="${pageContext.servletContext.contextPath}/admin/listEmployee.html?pageAll=<%=currentAllPage - 1%>">
+					<i class="fa-solid fa-chevron-left"></i>
+				</a>
+				<%
+				}
+				%>
+
+				<%
+				for (int i = 1; i <= totalAllPages; i++) {
+				%>
+				<a
+					href="${pageContext.servletContext.contextPath}/admin/listEmployee.html?pageAll=<%=i%>"
+					class="<%=i == currentAllPage ? "active" : ""%>"><%=i%></a>
+				<%
+				}
+				%>
+
+				<%
+				if (currentAllPage < totalAllPages) {
+				%>
+				<a
+					href="${pageContext.servletContext.contextPath}/admin/listEmployee.html?pageAll=<%=currentAllPage + 1%>">
+					<i class="fa-solid fa-angle-right"></i>
+				</a>
+				<%
+				}
+				%>
 			</div>
-			<!-- ADDMODAL -->
-			<div class='add-modal' style="display: none;" id="addModelForm">
-				<div class='modal-wrapper'>
-					<div class='modal-container'>
-						<h1>Thêm nhân viên</h1>
-						${message}
-						<form:form action="listEmployee/addEmployee.html"
-							modelAttribute="employee" method="post" id="employeeForm">
-							<div class='input-container'>
-								<div class='form-item'>
-									<p>Tên nhân viên</p>
-									<div class='input-wrapper'>
-										<form:input path="fullname" placeholder='Nhập tên' />
-										<form:errors class="errorMessage errorCtrlMessage"
-											path="fullname" />
-									</div>
-								</div>
-								<div class='form-item'>
-									<p>Email</p>
-									<div class='input-wrapper'>
-										<form:input path="email" placeholder='Email' />
-										<form:errors class="errorMessage errorCtrlMessage"
-											path="email" />
-									</div>
-								</div>
-							</div>
-
-							<div class='input-container'>
-								<div class='form-item'>
-									<p>Ngày sinh</p>
-									<div class='input-wrapper'>
-										<form:input path="birthday" type="date" placeholder='Địa chỉ' />
-									</div>
-								</div>
-								<div class='form-item'>
-									<p>Số điện thoại</p>
-									<div class='input-wrapper'>
-										<form:input path="phoneNumber" placeholder='Số điện thoại' />
-										<form:errors class="errorMessage errorCtrlMessage"
-											path="phoneNumber" />
-									</div>
-								</div>
-							</div>
-
-							<div class='input-container'>
-								<div class='form-item'>
-									<p>Địa chỉ</p>
-									<div class='input-wrapper'>
-										<form:input path="address" placeholder='Địa chỉ' />
-									</div>
-								</div>
-								<div class='form-item'>
-									<p>Căn cước công dân</p>
-									<div class='input-wrapper'>
-										<form:input path="cccd" placeholder='9 hoặc 12 số' />
-										<form:errors class="errorMessage errorCtrlMessage" path="cccd" />
-									</div>
-								</div>
-							</div>
-							<div class='button-wrapper'>
-								<div></div>
-								<button class='continue-button' id='submitButton'>
-									<span>Xác nhận</span>
-								</button>
-							</div>
-						</form:form>
-
-					</div>
-				</div>
-				<button class='close-btn' id="closeAddModelButton">
-					<i class='fa-solid fa-xmark'></i>
-				</button>
-			</div>
-			<!-- END -->
-
 		</div>
 		<script>
-		$(document).ready(function () {
-		    var totalPages = ${totalPages};
-		    var currentPage = ${currentPage};
-
-		    function initPagination() {
-		        $('#pagination').twbsPagination({
-		            totalPages: totalPages,
-		            visiblePages: 5,
-		            startPage: currentPage,
-		            onPageClick: function (event, page) {
-		                console.info('Page ' + page + ' clicked.');
-		                $.get("listEmployee.html", { page: page })
-		                .done(function(data) {
-		                    $('#employeeTable').html($(data).find('#employeeTable').html());
-		                    currentPage = page;
-		                })
-		                .fail(function() {
-		                    console.error('Error while fetching data from server.');
-		                });
-		            },
-		            first: 'Đầu',
-		            prev: '<i class="fas fa-angle-left"></i>',
-		            next: '<i class="fas fa-angle-right"></i>',
-		            last: 'Cuối'
-		        });
-		    }
-
-		    // Initialize pagination
-		    initPagination();
-		    
-		    $('#searchInput').on('keyup', function () {
-		        var searchText = $(this).val().toLowerCase(); // Lấy giá trị của ô input và chuyển đổi thành chữ thường
-		        $('#employeeTable tr').each(function () {
-		        	var employeeId = $(this).find('th').text().trim().toLowerCase(); // Lấy mã nhân viên từ cột đầu tiên trong dòng
-		        	console.log("Employee ID:", employeeId); 
-		        	var employeeName = $(this).find('td:eq(0)').text().trim().toLowerCase();
-		            console.log("Employee Name:", employeeName); 
-		     
-		            if (employeeId.includes(searchText) || employeeName.includes(searchText)) {
-		                $(this).show(); // Hiện nhân viên nếu tìm thấy kết quả
-		            } else {
-		                $(this).hide(); // Ẩn nhân viên nếu không tìm thấy kết quả
-		            }
-		        });
-		    });
-		});
+		$(document).ready(function() {
+			let searchInput = $(".search-input input");
+			let searchInputButton = $(".search-input .fa-magnifying-glass");
+			
+			$(searchInputButton).on("click", handleSearch);
+			$(searchInput).on("keyup", function(event) {
+			    if (event.which === 13) { // Enter key code
+			        event.preventDefault(); // Prevent default form submission if necessary
+			        handleSearch();
+			    }
+			});
+			
+			function handleSearch() {
+				let url = "${pageContext.servletContext.contextPath}/admin/listEmployee.html";
+				url += "?searchInput=" + searchInput.val();
+				window.location.href = url;
+			}
+		})
 		</script>
 </body>
 </html>

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import batdongsan.models.CategoryModel;
@@ -37,101 +38,45 @@ public class CategoryController {
 	SessionFactory factory;
 
 	@RequestMapping("listCategory")
-	public String index(ModelMap model, HttpServletRequest request) {
+	public String index(ModelMap model, HttpServletRequest request,
+			@RequestParam(name = "searchInput", required = false) String searchInput,
+            @RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
+            @RequestParam(name = "size", defaultValue = "5") int size) {
 		Session session = factory.openSession();
-		// Phân trang
-		int pageSize = 6;
-		String pageParam = request.getParameter("page");
-		int currentPage = 1;
-		if (pageParam != null && !pageParam.isEmpty()) {
-			currentPage = Integer.parseInt(pageParam);
-		}
-		int startIndex = (currentPage - 1) * pageSize;
+		try {
+			String hql = "FROM CategoryModel c WHERE 1=1";
+	        if (searchInput != null && !searchInput.isEmpty()) {
+	            hql += " AND (c.name LIKE :searchInput OR c.type LIKE :searchInput)";
+	        }
+	        hql += " ORDER BY categoryId ASC";
+	        Query<CategoryModel> queryAll = session.createQuery(hql, CategoryModel.class);
+	        if (searchInput != null && !searchInput.isEmpty()) {
+	            queryAll.setParameter("searchInput", "%" + searchInput + "%");
+	        }
+	        int totalAllResults = queryAll.list().size();
+	        queryAll.setFirstResult((pageAll - 1) * size);
+	        queryAll.setMaxResults(size);
 
-		String filter = request.getParameter("filter");
-		String search = request.getParameter("search");
-		String hql = "FROM CategoryModel c";
-		boolean hasWhereClause = false;
+	        List<CategoryModel> allCategories = queryAll.list();
 
-		if (filter != null && !filter.isEmpty()) {
-			switch (filter) {
-			case "sell":
-				hql += " WHERE c.type = :type";
-				hasWhereClause = true;
-				break;
-			case "rent":
-				hql += hasWhereClause ? " AND c.type = :type" : " WHERE c.type = :type";
-				hasWhereClause = true;
-				break;
-			default:
-				break;
-			}
-		}
+	        request.setAttribute("categories", allCategories);
+	        request.setAttribute("currentAllPage", pageAll);
+	        request.setAttribute("totalAllResults", totalAllResults);
+	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 
-		if (search != null && !search.isEmpty()) {
-			hql += hasWhereClause ? " AND (LOWER(c.name) LIKE :search OR LOWER(c.type) LIKE :search)"
-					: " WHERE LOWER(c.name) LIKE :search OR LOWER(c.type) LIKE :search";
-		}
-
-		hql += " ORDER BY c.type ASC, c.categoryId ASC";
-		Query query = session.createQuery(hql);
-
-		if (filter != null && !filter.isEmpty()) {
-			query.setParameter("type", filter.equals("sell") ? "Nhà đất bán" : "Nhà đất cho thuê");
-		}
-		if (search != null && !search.isEmpty()) {
-			query.setParameter("search", "%" + search.toLowerCase() + "%");
-		}
-
-		query.setFirstResult(startIndex);
-		query.setMaxResults(pageSize);
-		List<CategoryModel> list = query.list();
-
-		// Tính toán tổng số trang
-		String countHql = "SELECT count(c.categoryId) FROM CategoryModel c";
-		hasWhereClause = false;
-
-		if (filter != null && !filter.isEmpty()) {
-			countHql += " WHERE c.type = :type";
-			hasWhereClause = true;
-		}
-
-		if (search != null && !search.isEmpty()) {
-			countHql += hasWhereClause ? " AND (LOWER(c.name) LIKE :search OR LOWER(c.type) LIKE :search)"
-					: " WHERE LOWER(c.name) LIKE :search OR LOWER(c.type) LIKE :search";
-		}
-
-		Query countQuery = session.createQuery(countHql);
-		if (filter != null && !filter.isEmpty()) {
-			countQuery.setParameter("type", filter.equals("sell") ? "Nhà đất bán" : "Nhà đất cho thuê");
-		}
-		if (search != null && !search.isEmpty()) {
-			countQuery.setParameter("search", "%" + search.toLowerCase() + "%");
-		}
-
-		Long countResult = (Long) countQuery.uniqueResult();
-		int totalPages = (int) Math.ceil((double) countResult / pageSize);
-
-		model.addAttribute("categories", list);
-		model.addAttribute("category", new CategoryModel());
-		model.addAttribute("totalCategory", countResult);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("totalPages", totalPages);
-		model.addAttribute("filter", filter);
-		model.addAttribute("search", search); // Add search attribute for view
-		
-		EmployeeModel emp = getEmployeeFromCookies(request);
-        if (emp != null) {
-        	model.addAttribute("loginEmp", emp);
-        	List<Integer> permissions = getPermissions(emp.getId(), session);
-            model.addAttribute("permissions", permissions);
-        } else {
-            model.addAttribute("employee", null);
-            model.addAttribute("permissions", Collections.emptyList());
-        }
-		
-		session.close();
-		return "admin/Category/listCategory";
+	        EmployeeModel emp = getEmployeeFromCookies(request);
+	        if (emp != null) {
+	            model.addAttribute("loginEmp", emp);
+	            List<Integer> permissions = getPermissions(emp.getId(), session);
+	            model.addAttribute("permissions", permissions);
+	        } else {
+	            model.addAttribute("employee", null);
+	            model.addAttribute("permissions", Collections.emptyList());
+	        }
+	        return "admin/Category/listCategory";
+	    } finally {
+	    	session.close();
+	    }		
 	}
 
 	// Thêm danh mục

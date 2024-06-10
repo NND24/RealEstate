@@ -40,117 +40,94 @@ public class NewsClientController {
 
 		model.addAttribute("firstFourNews", firstFourNews);
 		model.addAttribute("initialNews", fullNewsList.subList(4, Math.min(9, fullNewsList.size())));
-		
+
 		Cookie[] cookies = request.getCookies();
-        String userId = null;
+		String userId = null;
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("userId")) {
-                    userId = cookie.getValue();
-                    break;
-                }
-            }
-        }
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("userId")) {
+					userId = cookie.getValue();
+					break;
+				}
+			}
+		}
 
-        if (userId != null) {
-            String hqlUser = "FROM UsersModel WHERE userId = :userId";
-            Query<UsersModel> queryUser = session.createQuery(hqlUser);
-            queryUser.setParameter("userId", Integer.parseInt(userId));
-            UsersModel user = queryUser.uniqueResult();
-            request.setAttribute("user", user);
-        } else {
-            UsersModel user = null;
-            request.setAttribute("user", user);
-        }
+		if (userId != null) {
+			String hqlUser = "FROM UsersModel WHERE userId = :userId";
+			Query<UsersModel> queryUser = session.createQuery(hqlUser);
+			queryUser.setParameter("userId", Integer.parseInt(userId));
+			UsersModel user = queryUser.uniqueResult();
+			request.setAttribute("user", user);
+		} else {
+			UsersModel user = null;
+			request.setAttribute("user", user);
+		}
 
 		session.close();
 		return "client/news/news";
 	}
 
 	@RequestMapping(value = { "/tin-tuc/danh-sach" }, method = RequestMethod.GET)
-	public String moreNews(ModelMap model, HttpServletRequest request) {
-	    Session session = factory.openSession();
+	public String moreNews(ModelMap model, HttpServletRequest request,
+			@RequestParam(name = "searchInput", required = false) String searchInput,
+			@RequestParam(name = "filter", required = false) Boolean filter,
+			@RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
+			@RequestParam(name = "size", defaultValue = "5") int size) {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM NewsModel WHERE status = true";
+			if (searchInput != null && !searchInput.isEmpty()) {
+				hql += " AND (n.title LIKE :searchInput)";
+			}
+			hql += " ORDER BY dateUploaded DESC";
+			Query<NewsModel> queryAll = session.createQuery(hql, NewsModel.class);
+			if (searchInput != null && !searchInput.isEmpty()) {
+				queryAll.setParameter("searchInput", "%" + searchInput + "%");
+			}
+			if (filter != null) {
+				queryAll.setParameter("filter", filter);
+			}
+			int totalAllResults = queryAll.list().size();
+			queryAll.setFirstResult((pageAll - 1) * size);
+			queryAll.setMaxResults(size);
 
-	    // Phân trang
-	    int pageSize = 5;
-	    String pageParam = request.getParameter("page");
-	    int currentPage = 1;
-	    if (pageParam != null && !pageParam.isEmpty()) {
-	        currentPage = Integer.parseInt(pageParam);
-	    }
-	    int startIndex = (currentPage - 1) * pageSize;
+			List<NewsModel> allNews = queryAll.list();
 
-	    // Lấy tham số search từ request
-	    String search = request.getParameter("search");
-	    String hql = "FROM NewsModel WHERE status = true"; // Chỉ lấy các tin có trạng thái là true
+			request.setAttribute("listOfNews", allNews);
+			request.setAttribute("currentAllPage", pageAll);
+			request.setAttribute("totalAllResults", totalAllResults);
+			request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
+			
+			Cookie[] cookies = request.getCookies();
+			String userId = null;
 
-	    // Thêm điều kiện tìm kiếm nếu có
-	    if (search != null && !search.isEmpty()) {
-	        hql += " AND (title LIKE :search OR shortDescription LIKE :search)";
-	    }
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("userId")) {
+						userId = cookie.getValue();
+						break;
+					}
+				}
+			}
 
-	    hql += " ORDER BY dateUploaded DESC";
-	    Query query = session.createQuery(hql);
-	    query.setFirstResult(startIndex);
-	    query.setMaxResults(pageSize);
+			if (userId != null) {
+				String hqlUser = "FROM UsersModel WHERE userId = :userId";
+				Query<UsersModel> queryUser = session.createQuery(hqlUser);
+				queryUser.setParameter("userId", Integer.parseInt(userId));
+				UsersModel user = queryUser.uniqueResult();
+				request.setAttribute("user", user);
+			} else {
+				UsersModel user = null;
+				request.setAttribute("user", user);
+			}
+			
+			return "client/news/listNews";
+		} finally {
+			session.close();
+		}
 
-	    // Thiết lập giá trị cho tham số tìm kiếm nếu có
-	    if (search != null && !search.isEmpty()) {
-	        query.setParameter("search", "%" + search + "%");
-	    }
-
-	    List<NewsModel> list = query.list();
-
-	    // Tính toán tổng số trang
-	    String countHql = "SELECT count(n.id) FROM NewsModel n WHERE status = true"; // Đếm tổng số tin có status là true
-	    if (search != null && !search.isEmpty()) {
-	        countHql += " AND (title LIKE :search OR shortDescription LIKE :search)";
-	    }
-	    Query countQuery = session.createQuery(countHql);
-
-	    // Thiết lập giá trị cho tham số tìm kiếm nếu có
-	    if (search != null && !search.isEmpty()) {
-	        countQuery.setParameter("search", "%" + search + "%");
-	    }
-
-	    Long countResult = (Long) countQuery.uniqueResult();
-	    int totalPages = (int) Math.ceil((double) countResult / pageSize);
-
-	    model.addAttribute("listOfNews", list);
-	    model.addAttribute("news", new NewsModel());
-	    model.addAttribute("totalNews", countResult);
-	    model.addAttribute("currentPage", currentPage);
-	    model.addAttribute("totalPages", totalPages);
-	    model.addAttribute("search", search); // Thêm tham số tìm kiếm vào model
-	    
-	    Cookie[] cookies = request.getCookies();
-        String userId = null;
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("userId")) {
-                    userId = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
-        if (userId != null) {
-            String hqlUser = "FROM UsersModel WHERE userId = :userId";
-            Query<UsersModel> queryUser = session.createQuery(hqlUser);
-            queryUser.setParameter("userId", Integer.parseInt(userId));
-            UsersModel user = queryUser.uniqueResult();
-            request.setAttribute("user", user);
-        } else {
-            UsersModel user = null;
-            request.setAttribute("user", user);
-        }
-
-	    session.close();
-	    return "client/news/listNews";
 	}
-
 
 	// Chi tiết tin
 	@RequestMapping(value = "/tin-tuc/{newsId}", method = RequestMethod.GET)
@@ -161,30 +138,30 @@ public class NewsClientController {
 				return "redirect:/admin/listNews.html";
 			}
 			model.addAttribute("news", news);
-			
+
 			Cookie[] cookies = request.getCookies();
-	        String userId = null;
+			String userId = null;
 
-	        if (cookies != null) {
-	            for (Cookie cookie : cookies) {
-	                if (cookie.getName().equals("userId")) {
-	                    userId = cookie.getValue();
-	                    break;
-	                }
-	            }
-	        }
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("userId")) {
+						userId = cookie.getValue();
+						break;
+					}
+				}
+			}
 
-	        if (userId != null) {
-	            String hqlUser = "FROM UsersModel WHERE userId = :userId";
-	            Query<UsersModel> queryUser = session.createQuery(hqlUser);
-	            queryUser.setParameter("userId", Integer.parseInt(userId));
-	            UsersModel user = queryUser.uniqueResult();
-	            request.setAttribute("user", user);
-	        } else {
-	            UsersModel user = null;
-	            request.setAttribute("user", user);
-	        }
-			
+			if (userId != null) {
+				String hqlUser = "FROM UsersModel WHERE userId = :userId";
+				Query<UsersModel> queryUser = session.createQuery(hqlUser);
+				queryUser.setParameter("userId", Integer.parseInt(userId));
+				UsersModel user = queryUser.uniqueResult();
+				request.setAttribute("user", user);
+			} else {
+				UsersModel user = null;
+				request.setAttribute("user", user);
+			}
+
 			return "client/news/detailNews";
 		} catch (Exception e) {
 			return "redirect:/tin-tuc.html";

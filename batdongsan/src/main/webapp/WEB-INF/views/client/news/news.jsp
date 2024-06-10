@@ -53,10 +53,11 @@
 								src='${pageContext.servletContext.contextPath}/images/News/${firstFourNews[0].thumbnail}'
 								alt='' />
 							<div class='main-article__textOverlay'>
-								<span class='article-date'>${firstFourNews[0].dateUploaded}•
+								<span class='article-date'>${firstFourNews[0].newsId}•
 									Tin tức</span>
-								<a href="tin-tuc/${firstFourNews[0].newsId}.html"><h3 class='article-title'>${firstFourNews[0].title}</h3></a>
-								
+								<a href="tin-tuc/${firstFourNews[0].newsId}.html">
+									<h3 class='article-title'>${firstFourNews[0].title}</h3>
+								</a>
 								<p class='article-description'>${firstFourNews[0].shortDescription}</p>
 							</div>
 							<div class='main-article__backgroundOverlay'></div>
@@ -67,8 +68,10 @@
 				<div class='col-lg-4 col-md-12 col-sm-12'>
 					<c:forEach var="news" items="${firstFourNews}" begin="1" end="3">
 						<div class='article-right-content'>
-							<span class='article-date'>${news.dateUploaded}</span> <a href="tin-tuc/${news.newsId}.html"
-								class='card-info__title'>${news.title}</a>
+							<span class='article-date'>${news.dateUploaded}</span> 
+							<a href="tin-tuc/${news.newsId}.html"
+								class='card-info__title'>${news.title}
+							</a>
 						</div>
 					</c:forEach>
 				</div>
@@ -86,15 +89,17 @@
 										alt='' /> <span class='card-highlight'>Tin tức</span>
 								</div>
 								<div class='card-info-container'>
-									<span class='article-date'>${news.dateUploaded}</span> <a href="tin-tuc/${news.newsId}.html"
-										class='card-info__title'>${news.title}</a>
+									<span class='article-date'>${news.dateUploaded}</span> 
+									<a href="tin-tuc/${news.newsId}.html"
+										class='card-info__title'>${news.title}
+									</a>
 									<div class='card-description'>${news.shortDescription}</div>
 								</div>
 							</div>
 						</c:forEach>
 					</div>
 					<div class="pagination">
-					<a href="tin-tuc/danh-sach.html"><button id="load-more-btn" class="btn btn-primary">Xem thêm</button></a>
+					<a href="tin-tuc/danh-sach.html"><button id="load-more-btn" class="btn btn-primary">Xem thêm tin</button></a>
 						
 					</div>
 				</div>

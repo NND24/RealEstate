@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.PermissionModel;
+import batdongsan.models.RealEstateModel;
 import batdongsan.models.RoleModel;
 import batdongsan.utils.PasswordHashing;
 import batdongsan.utils.Vadilator;
@@ -42,49 +43,46 @@ public class EmployeeController {
 	SessionFactory factory;
 
 	@RequestMapping(value = "listEmployee", method = RequestMethod.GET)
-	public String index(ModelMap model, HttpServletRequest request) {
+	public String index(ModelMap model, HttpServletRequest request, 
+			@RequestParam(name = "searchInput", required = false) String searchInput,
+	        @RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
+	        @RequestParam(name = "size", defaultValue = "5") int size) {
 		Session session = factory.openSession();
+		try {
+			String hql = "FROM EmployeeModel e";
+	        if (searchInput != null && !searchInput.isEmpty()) {
+	        	hql += " WHERE e.id LIKE :searchInput OR e.fullname LIKE :searchInput OR e.email LIKE :searchInput";
+	        }
+	        hql += " ORDER BY createDate DESC";
+	        Query<EmployeeModel> queryAll = session.createQuery(hql, EmployeeModel.class);
+	        if (searchInput != null && !searchInput.isEmpty()) {
+	            queryAll.setParameter("searchInput", "%" + searchInput + "%");
+	        }
 
-		// Phân trang
-		int pageSize = 6;
-		String pageParam = request.getParameter("page");
-		int currentPage = 1;
-		if (pageParam != null && !pageParam.isEmpty()) {
-			currentPage = Integer.parseInt(pageParam);
-		}
-		int startIndex = (currentPage - 1) * pageSize;
+	        int totalAllResults = queryAll.list().size();
+	        queryAll.setFirstResult((pageAll - 1) * size);
+	        queryAll.setMaxResults(size);
 
-		// Lấy dữ liệu với phân trang
-		String hql = "FROM EmployeeModel ORDER BY createDate DESC";
-		Query query = session.createQuery(hql);
-		query.setFirstResult(startIndex);
-		query.setMaxResults(pageSize);
-		List<EmployeeModel> employeesForPage = query.list();
+	        List<EmployeeModel> employees = queryAll.list();
+	        request.setAttribute("employees", employees);
+	        request.setAttribute("currentAllPage", pageAll);
+	        request.setAttribute("totalAllResults", totalAllResults);
+	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
+	        
+	        EmployeeModel emp = getEmployeeFromCookies(request);         
+	        if (emp != null) {
+	        	model.addAttribute("loginEmp", emp);
+	        	List<Integer> permissions = getPermissions(emp.getId(), session);
+	            model.addAttribute("permissions", permissions);
+	        } else {
+	            model.addAttribute("employee", null);
+	            model.addAttribute("permissions", Collections.emptyList());
+	        }
 
-		// Tính toán tổng số trang
-		Query countQuery = session.createQuery("SELECT count(e.id) FROM EmployeeModel e");
-		Long countResult = (Long) countQuery.uniqueResult();
-		int totalPages = (int) Math.ceil((double) countResult / pageSize);
-		;
-
-		model.addAttribute("employees", employeesForPage);
-		model.addAttribute("employee", new EmployeeModel());
-		model.addAttribute("employeeCount", countResult);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("totalPages", totalPages);
-		
-		EmployeeModel emp = getEmployeeFromCookies(request);         
-        if (emp != null) {
-        	model.addAttribute("loginEmp", emp);
-        	List<Integer> permissions = getPermissions(emp.getId(), session);
-            model.addAttribute("permissions", permissions);
-        } else {
-            model.addAttribute("employee", null);
-            model.addAttribute("permissions", Collections.emptyList());
-        }
-		
-		session.close();
-		return "admin/Employee/listEmployee";
+	        return "admin/Employee/listEmployee";
+	    } finally {
+	        session.close();
+	    }
 	}
 
 	// Thêm nhân viên

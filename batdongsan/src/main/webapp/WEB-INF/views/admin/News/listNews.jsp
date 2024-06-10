@@ -1,12 +1,14 @@
 <%@ page pageEncoding="utf-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@page import="batdongsan.models.NewsModel"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>Quản lý tin tức</title>
-<link rel="stylesheet" href="../css/admin/listNews.css?version=58"
+<link rel="stylesheet" href="../css/admin/listNews.css?version=59"
 	type="text/css">
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
@@ -32,20 +34,28 @@
 							placeholder='Tìm theo mã tin, tiêu đề' /> <i
 							class='fa-solid fa-magnifying-glass'></i>
 					</div>
+					<%
+						List<NewsModel> listOfNews = (List<NewsModel>) request.getAttribute("listOfNews");
+						Integer currentAllPage = (Integer) request.getAttribute("currentAllPage");
+						Integer totalAllPages = (Integer) request.getAttribute("totalAllPages");
+						Integer totalAllResults = (Integer) request.getAttribute("totalAllResults");
+					%>
 					<div class='dropdown'>
 						<button class='btn dropdown-toggle' type='button'
 							data-toggle='dropdown'>
-							<i class="fa-solid fa-tags"></i> <span  id="filter-display"> <c:choose>
-									<c:when test="${filter == null}">Tất cả</c:when>
-									<c:when test="${filter == 'approved'}">Đã duyệt</c:when>
-									<c:when test="${filter == 'hidden'}">Đã ẩn</c:when>
-								</c:choose>
+							<i class="fa-solid fa-tags"></i> 
+							<span id="filter-display">
+    							<c:choose>
+        							<c:when test="${filter == null}">Tất cả</c:when>
+        							<c:when test="${filter == true}">Đã duyệt</c:when>
+        							<c:when test="${filter == false}">Đã ẩn</c:when>
+    							</c:choose>
 							</span> <i class='fa-solid fa-angle-down'></i>
 						</button>
 						<ul class='dropdown-menu'>
 							<li><a href='listNews.html?filter='>Tất cả</a></li>
-							<li><a href='listNews.html?filter=approved'>Đã duyệt</a></li>
-							<li><a href='listNews.html?filter=hidden'>Đã ẩn</a></li>
+							<li><a href='listNews.html?filter=true'>Đã duyệt</a></li>
+							<li><a href='listNews.html?filter=false'>Đã ẩn</a></li>
 						</ul>
 					</div>
 				</div>
@@ -125,77 +135,64 @@
 
 					</div>
 				</div>
-				<div class="pagination-container">
-					<nav aria-label="Page navigation">
-						<ul id="pagination" class="pagination"></ul>
-					</nav>
-				</div>
+				<!-- Phân trang -->
+						<div class="pagination">
+							<%
+							if (currentAllPage > 1) {
+							%>
+							<a
+								href="${pageContext.servletContext.contextPath}/admin/listNews.html?pageAll=<%=currentAllPage - 1%>">
+								<i class="fa-solid fa-chevron-left"></i>
+							</a>
+							<%
+							}
+							%>
+
+							<%
+							for (int i = 1; i <= totalAllPages; i++) {
+							%>
+							<a
+								href="${pageContext.servletContext.contextPath}/admin/listNews.html?pageAll=<%=i%>"
+								class="<%=i == currentAllPage ? "active" : ""%>"><%=i%></a>
+							<%
+							}
+							%>
+
+							<%
+							if (currentAllPage < totalAllPages) {
+							%>
+							<a
+								href="${pageContext.servletContext.contextPath}/admin/listNews.html?pageAll=<%=currentAllPage + 1%>">
+								<i class="fa-solid fa-angle-right"></i>
+							</a>
+							<%
+							}
+							%>
+						</div>
 			</div>
 		</div>
 
 
 	</div>
-	<script>
+	<script type="text/javascript">
 	$(document).ready(function() {
-
-	    var totalPages = ${totalPages};
-	    var currentPage = ${currentPage};
-	    var filter = "${filter}"; // Lấy filter hiện tại từ server
-
-	    function loadPage(page) {
-	        $.get("danh-sach.html", { page: page, filter: filter })
-	            .done(function(data) {
-	                var newContent = $(data).find('#news-container').html();
-	                $('#news-container').html(newContent);
-	                $('#pagination').twbsPagination('changeTotalPages', totalPages, page);
-	            })
-	            .fail(function() {
-	                console.error('Error while fetching data from server.');
-	            });
-	    }
-
-	    $('#pagination').twbsPagination({
-	        totalPages: totalPages,
-	        visiblePages: 5,
-	        startPage: currentPage,
-	        onPageClick: function(event, page) {
-	            if (page !== currentPage) {
-	                currentPage = page;
-	                loadPage(page);
-	            }
-	        },
-	        first: 'Đầu',
-	        prev: '<i class="fas fa-angle-left"></i>',
-	        next: '<i class="fas fa-angle-right"></i>',
-	        last: 'Cuối'
-	    });
-
-	    // Initial load
-	    loadPage(currentPage);
-
-	    // Chức năng tìm kiếm
-	    $('#searchInput').on('keyup', function() {
-	        var searchText = $(this).val().toLowerCase();
-	        $('#news-container .admin-post-card').each(function() {
-	            var newsId = $(this).find('.detail-item .secondary').first().text().toLowerCase();
-	            var newsTitle = $(this).find('.header').text().toLowerCase();
-	            if (newsId.includes(searchText) || newsTitle.includes(searchText)) {
-	                $(this).show();
-	            } else {
-	                $(this).hide();
-	            }
-	        });
-	    });
-
-	    // Chức năng lọc trạng thái
-	    $('.dropdown-menu a').on('click', function() {
-	        filter = $(this).attr('href').split('=')[1];
-	        $('#filter-display').text($(this).text());
-	        loadPage(currentPage);
-	        return false;
-	    });
-	});
-
+		let searchInput = $(".search-input input");
+		let searchInputButton = $(".search-input .fa-magnifying-glass");
+		
+		$(searchInputButton).on("click", handleSearch);
+		$(searchInput).on("keyup", function(event) {
+		    if (event.which === 13) { // Enter key code
+		        event.preventDefault(); // Prevent default form submission if necessary
+		        handleSearch();
+		    }
+		});
+		
+		function handleSearch() {
+			let url = "${pageContext.servletContext.contextPath}/admin/listNews.html";
+			url += "?searchInput=" + searchInput.val();
+			window.location.href = url;
+		}
+	})
 	</script>
 </body>
 </html>

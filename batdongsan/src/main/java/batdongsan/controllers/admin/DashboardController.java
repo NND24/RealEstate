@@ -1,5 +1,6 @@
 package batdongsan.controllers.admin;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import batdongsan.models.CategoryModel;
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.PermissionModel;
@@ -32,6 +35,7 @@ public class DashboardController {
 	public String index(ModelMap model, HttpServletRequest request) {
 		Session session = factory.openSession();
 		try {
+			// Fetching total counts
 			String hqlTotalEmployees = "SELECT COUNT(e) FROM EmployeeModel e";
 			Query<Long> queryTotalEmployees = session.createQuery(hqlTotalEmployees, Long.class);
 			Long countEmployees = queryTotalEmployees.uniqueResult();
@@ -44,7 +48,6 @@ public class DashboardController {
 			Query<Long> queryTotalNews = session.createQuery(hqlTotalNews, Long.class);
 			Long countNews = queryTotalNews.uniqueResult();
 
-//            String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM RealEstateModel re WHERE MONTH(re.submittedDate) = MONTH(GETDATE()) AND YEAR(re.submittedDate) = YEAR(GETDATE())";
 			String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM RealEstateModel re";
 			Query<Long> queryTotalRevenue = session.createQuery(hqlTotalRevenue, Long.class);
 			Long totalRevenue = queryTotalRevenue.uniqueResult();
@@ -54,57 +57,78 @@ public class DashboardController {
 			model.addAttribute("totalArticles", countNews);
 			model.addAttribute("totalRevenue", totalRevenue != null ? totalRevenue : 0);
 
-			// Dữ liệu biểu đồ cho tổng số tiền theo từng tháng (trong vòng 6 tháng gần nhất)
-            String hqlTotalMoneyPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), SUM(re.totalMoney) " +
-                                           "FROM RealEstateModel re " +
-                                           "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) " +
-                                           "GROUP BY MONTH(re.submittedDate), YEAR(re.submittedDate) " +
-                                           "ORDER BY YEAR(re.submittedDate), MONTH(re.submittedDate)";
-            Query<Object[]> queryTotalMoneyPerMonth = session.createQuery(hqlTotalMoneyPerMonth, Object[].class);
-            List<Object[]> totalMoneyPerMonth = queryTotalMoneyPerMonth.getResultList();
-            
-            // Dữ liệu biểu đồ cho số bài đăng theo từng tháng (trong vòng 6 tháng gần nhất)
-            String hqlTotalPostsPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), COUNT(re) " +
-                                           "FROM RealEstateModel re " +
-                                           "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) " +
-                                           "GROUP BY MONTH(re.submittedDate), YEAR(re.submittedDate) " +
-                                           "ORDER BY YEAR(re.submittedDate), MONTH(re.submittedDate)";
-            Query<Object[]> queryTotalPostsPerMonth = session.createQuery(hqlTotalPostsPerMonth, Object[].class);
-            List<Object[]> totalPostsPerMonth = queryTotalPostsPerMonth.getResultList();
-            
-            System.out.println("Total Money Per Month:");
-            for (Object[] item : totalMoneyPerMonth) {
-                for (Object obj : item) {
-                    System.out.print(obj + " ");
-                }
-                System.out.println();
-            }
+			// Data for charts: Total posts per month (last 6 months)
+			String hqlTotalPostsPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), COUNT(re) "
+					+ "FROM RealEstateModel re " + "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) "
+					+ "GROUP BY MONTH(re.submittedDate), YEAR(re.submittedDate) "
+					+ "ORDER BY YEAR(re.submittedDate), MONTH(re.submittedDate)";
+			Query<Object[]> queryTotalPostsPerMonth = session.createQuery(hqlTotalPostsPerMonth, Object[].class);
+			List<Object[]> totalPostsPerMonth = queryTotalPostsPerMonth.getResultList();
 
-            // In ra giá trị của totalPostsPerMonth
-            System.out.println("Total Posts Per Month:");
-            for (Object[] item : totalPostsPerMonth) {
-                for (Object obj : item) {
-                    System.out.print(obj + " ");
-                }
-                System.out.println();
-            }
-            
-            // Chuyển dữ liệu thành JSON
-            model.addAttribute("totalMoneyPerMonth", totalMoneyPerMonth);
-            model.addAttribute("totalPostsPerMonth", totalPostsPerMonth);
-            
-            EmployeeModel emp = getEmployeeFromCookies(request, session);         
-            if (emp != null) {
-            	model.addAttribute("loginEmp", emp);
-                // Kiểm tra quyền
-//                boolean hasPermissions = checkPermissions(emp.getId(), session);
-            	List<Integer> permissions = getPermissions(emp.getId(), session);
-                model.addAttribute("permissions", permissions);
-            } else {
-                model.addAttribute("employee", null);
-                model.addAttribute("permissions", Collections.emptyList());
-            }
+			// Data for charts: Total money per month (last 6 months)
+			String hqlTotalMoneyPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), SUM(re.totalMoney) "
+					+ "FROM RealEstateModel re " + "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) "
+					+ "GROUP BY MONTH(re.submittedDate), YEAR(re.submittedDate) "
+					+ "ORDER BY YEAR(re.submittedDate), MONTH(re.submittedDate)";
+			Query<Object[]> queryTotalMoneyPerMonth = session.createQuery(hqlTotalMoneyPerMonth, Object[].class);
+			List<Object[]> totalMoneyPerMonth = queryTotalMoneyPerMonth.getResultList();
 
+			// Prepare data for Google Charts
+			List<Map<String, Object>> postsChartData = new ArrayList<>();
+			for (Object[] row : totalPostsPerMonth) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("month", row[0]);
+				map.put("year", row[1]);
+				map.put("count", row[2]);
+				postsChartData.add(map);
+			}
+
+			List<Map<String, Object>> moneyChartData = new ArrayList<>();
+			for (Object[] row : totalMoneyPerMonth) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("month", row[0]);
+				map.put("year", row[1]);
+				map.put("amount", row[2]);
+				moneyChartData.add(map);
+			}
+
+			// Convert chartData to JSON
+			ObjectMapper mapper = new ObjectMapper();
+			String jsonPostsChartData = mapper.writeValueAsString(postsChartData);
+			String jsonMoneyChartData = mapper.writeValueAsString(moneyChartData);
+
+			// Add chart data to the model
+			model.addAttribute("postsChartData", jsonPostsChartData);
+			model.addAttribute("moneyChartData", jsonMoneyChartData);
+
+			System.out.println("Total Posts Per Month:");
+			for (Object[] item : totalPostsPerMonth) {
+				for (Object obj : item) {
+					System.out.print(obj + " ");
+				}
+				System.out.println();
+			}
+
+			System.out.println("Total Money Per Month:");
+			for (Object[] item : totalMoneyPerMonth) {
+				for (Object obj : item) {
+					System.out.print(obj + " ");
+				}
+				System.out.println();
+			}
+
+			EmployeeModel emp = getEmployeeFromCookies(request, session);
+			if (emp != null) {
+				model.addAttribute("loginEmp", emp);
+				List<Integer> permissions = getPermissions(emp.getId(), session);
+				model.addAttribute("permissions", permissions);
+			} else {
+				model.addAttribute("employee", null);
+				model.addAttribute("permissions", Collections.emptyList());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			session.close();
 		}
