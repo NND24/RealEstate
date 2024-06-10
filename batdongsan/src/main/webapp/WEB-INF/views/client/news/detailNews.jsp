@@ -6,22 +6,24 @@
 <head>
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
+<link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/client/header.css" type="text/css">
 <link rel="stylesheet" href="../css/client/news.css?version=50"
 	type="text/css">
 <link rel="stylesheet" href="../css/admin/detail.css"
 	type="text/css">
 <link rel="stylesheet" href="../css/client/moreNews.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/footer.css" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
-	<%@ include file="../../../components/header.jsp"%>
+	<%@ include file="../../../components/headerNews.jsp"%>
 	<!-- ListNews -->
 	<div class='detail'>
 		<div class='container '>
 			<div class='row'>
 				<!-- Content -->
-				<div class='detail-content col-lg-9'>
+				<div class='detail-content col-lg-12'>
 
 
 					<div class='breadcrumb'>

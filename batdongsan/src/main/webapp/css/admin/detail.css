@@ -324,6 +324,7 @@
 
 .detail{
 	overflow: auto;
+	    margin-top: 20px;
 }
 
 .detail-content .swiper-slide {

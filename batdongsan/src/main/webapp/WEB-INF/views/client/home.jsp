@@ -69,7 +69,7 @@
 						<li><a data-toggle='tab' href='#tinTuc'> Tin tức </a></li>
 						<li><a data-toggle='tab' href='#bdsHcm'> BĐS TPHCM </a></li>
 						<li><a data-toggle='tab' href='#bdsHN'> BDS Hà Nội </a></li>
-						<a href='${pageContext.servletContext.contextPath}/nha-dat-ban.html' class='tabview'> <span>Xem thêm</span> <i
+						<a href='${pageContext.servletContext.contextPath}/tin-tuc.html' class='tabview'> <span>Xem thêm</span> <i
 							class='fa-solid fa-arrow-right'></i>
 						</a>
 					</ul>
@@ -83,7 +83,7 @@
 					<% if(listNews != null) { %>
 						<div id='tinNoiBat' class='tab-pane fade in active'>
 							<div class='article-container'>
-								<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= listNews.get(0).getNewsId() %>' class='article-info-container'>
+								<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNews.get(0).getNewsId() %>.html' class='article-info-container'>
 									<img
 										src='${pageContext.servletContext.contextPath}/images/News/<%= listNews.get(0).getThumbnail() %>'
 										alt='' />
@@ -101,7 +101,7 @@
 												}
 										%>
 										<li>
-											<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= n.getNewsId() %>'><%= n.getTitle() %></a>
+											<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%= n.getTitle() %></a>
 										</li>
 										<% }
 										}%>
@@ -111,7 +111,7 @@
 						</div>
 						<div id='tinTuc' class='tab-pane fade'>
 							<div class='article-container'>
-								<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= listNews.get(0).getNewsId() %>' class='article-info-container'>
+								<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNews.get(0).getNewsId() %>.html' class='article-info-container'>
 									<img
 										src='${pageContext.servletContext.contextPath}/images/News/<%= listNews.get(0).getThumbnail() %>'
 										alt='' />
@@ -129,7 +129,7 @@
 												}
 										%>
 										<li>
-											<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= n.getNewsId() %>'><%= n.getTitle() %></a>
+											<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%= n.getTitle() %></a>
 										</li>
 										<% }
 										}%>
@@ -142,7 +142,7 @@
 						<% if(listNewsHCM != null) { %>
 						<div id='bdsHcm' class='tab-pane fade'>
 							<div class='article-container'>
-								<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= listNewsHCM.get(0).getNewsId() %>' class='article-info-container'>
+								<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNewsHCM.get(0).getNewsId() %>.html' class='article-info-container'>
 									<img
 										src='${pageContext.servletContext.contextPath}/images/News/<%= listNewsHCM.get(0).getThumbnail() %>'
 										alt='' />
@@ -160,7 +160,7 @@
 												}
 										%>
 										<li>
-											<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= n.getNewsId() %>'><%= n.getTitle() %></a>
+											<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%= n.getTitle() %></a>
 										</li>
 										<% }
 										}%>
@@ -172,7 +172,7 @@
 						<% if(listNewsHN != null) { %>
 						<div id='bdsHN' class='tab-pane fade'>
 							<div class='article-container'>
-								<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= listNewsHN.get(0).getNewsId() %>' class='article-info-container'>
+								<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= listNewsHN.get(0).getNewsId() %>.html' class='article-info-container'>
 									<img
 										src='${pageContext.servletContext.contextPath}/images/News/<%= listNewsHN.get(0).getThumbnail() %>'
 										alt='' />
@@ -190,7 +190,7 @@
 												}
 										%>
 										<li>
-											<a href='${pageContext.servletContext.contextPath}/tin-tuc.html?<%= n.getNewsId() %>'><%= n.getTitle() %></a>
+											<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html'><%= n.getTitle() %></a>
 										</li>
 										<% }
 										}%>
@@ -398,14 +398,14 @@
 								}
 						%>
 						<div class='col-lg-3'>
-							<div class='card'>
+							<a href='${pageContext.servletContext.contextPath}/tin-tuc/<%= n.getNewsId() %>.html' class='card'>
 								<img class='card-img-top'
 									src='${pageContext.servletContext.contextPath}/images/News/<%= n.getThumbnail() %>'
 									alt='' />
 								<div class='card-info-container'>
 									<h3 class='card-title'><%= n.getTitle() %></h3>
 								</div>
-							</div>
+							</a>
 						</div>
 						<% }
 						}%>

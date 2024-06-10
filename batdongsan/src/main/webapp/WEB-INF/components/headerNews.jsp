@@ -34,7 +34,7 @@
 										${c.name}</li> </a>
 							</c:forEach>
 						</ul></li>
-					<li class='menu__item'><a
+					<li class='menu__item' style="border-bottom: 2px solid rgb(228, 54, 54);"><a
 						href="${pageContext.servletContext.contextPath}/tin-tuc.html">Tin tức</a></li>
 				</ul>
 			</div>

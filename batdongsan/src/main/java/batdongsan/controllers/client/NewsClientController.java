@@ -3,6 +3,7 @@ package batdongsan.controllers.client;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
+import batdongsan.models.UsersModel;
 
 @Controller
 public class NewsClientController {
@@ -28,7 +30,7 @@ public class NewsClientController {
 	SessionFactory factory;
 
 	@RequestMapping(value = { "/tin-tuc" }, method = RequestMethod.GET)
-	public String getNewsPage(ModelMap model) {
+	public String getNewsPage(ModelMap model, HttpServletRequest request) {
 		Session session = factory.openSession();
 		String hql = "SELECT n FROM NewsModel n WHERE n.status = true ORDER BY n.dateUploaded DESC";
 		Query<NewsModel> query = session.createQuery(hql, NewsModel.class);
@@ -38,6 +40,29 @@ public class NewsClientController {
 
 		model.addAttribute("firstFourNews", firstFourNews);
 		model.addAttribute("initialNews", fullNewsList.subList(4, Math.min(9, fullNewsList.size())));
+		
+		Cookie[] cookies = request.getCookies();
+        String userId = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (userId != null) {
+            String hqlUser = "FROM UsersModel WHERE userId = :userId";
+            Query<UsersModel> queryUser = session.createQuery(hqlUser);
+            queryUser.setParameter("userId", Integer.parseInt(userId));
+            UsersModel user = queryUser.uniqueResult();
+            request.setAttribute("user", user);
+        } else {
+            UsersModel user = null;
+            request.setAttribute("user", user);
+        }
 
 		session.close();
 		return "client/news/news";
@@ -98,6 +123,29 @@ public class NewsClientController {
 	    model.addAttribute("currentPage", currentPage);
 	    model.addAttribute("totalPages", totalPages);
 	    model.addAttribute("search", search); // Thêm tham số tìm kiếm vào model
+	    
+	    Cookie[] cookies = request.getCookies();
+        String userId = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    userId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (userId != null) {
+            String hqlUser = "FROM UsersModel WHERE userId = :userId";
+            Query<UsersModel> queryUser = session.createQuery(hqlUser);
+            queryUser.setParameter("userId", Integer.parseInt(userId));
+            UsersModel user = queryUser.uniqueResult();
+            request.setAttribute("user", user);
+        } else {
+            UsersModel user = null;
+            request.setAttribute("user", user);
+        }
 
 	    session.close();
 	    return "client/news/listNews";
@@ -113,6 +161,30 @@ public class NewsClientController {
 				return "redirect:/admin/listNews.html";
 			}
 			model.addAttribute("news", news);
+			
+			Cookie[] cookies = request.getCookies();
+	        String userId = null;
+
+	        if (cookies != null) {
+	            for (Cookie cookie : cookies) {
+	                if (cookie.getName().equals("userId")) {
+	                    userId = cookie.getValue();
+	                    break;
+	                }
+	            }
+	        }
+
+	        if (userId != null) {
+	            String hqlUser = "FROM UsersModel WHERE userId = :userId";
+	            Query<UsersModel> queryUser = session.createQuery(hqlUser);
+	            queryUser.setParameter("userId", Integer.parseInt(userId));
+	            UsersModel user = queryUser.uniqueResult();
+	            request.setAttribute("user", user);
+	        } else {
+	            UsersModel user = null;
+	            request.setAttribute("user", user);
+	        }
+			
 			return "client/news/detailNews";
 		} catch (Exception e) {
 			return "redirect:/tin-tuc.html";
