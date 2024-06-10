@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" type="image/png" href="${pageContext.servletContext.contextPath}/images/favicon.png" />
 <title>Quản lý tin tức</title>
 <link rel="stylesheet" href="../css/admin/listNews.css?version=59"
 	type="text/css">
