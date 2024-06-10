@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,23 +26,23 @@ import batdongsan.models.NewsModel;
 public class NewsClientController {
 	@Autowired
 	SessionFactory factory;
-	
+
 	@RequestMapping(value = { "/tin-tuc" }, method = RequestMethod.GET)
-    public String getNewsPage(ModelMap model) {
-        Session session = factory.openSession();
-        String hql = "SELECT n FROM NewsModel n WHERE n.status = true ORDER BY n.dateUploaded DESC";
-        Query<NewsModel> query = session.createQuery(hql, NewsModel.class);
+	public String getNewsPage(ModelMap model) {
+		Session session = factory.openSession();
+		String hql = "SELECT n FROM NewsModel n WHERE n.status = true ORDER BY n.dateUploaded DESC";
+		Query<NewsModel> query = session.createQuery(hql, NewsModel.class);
 
-        List<NewsModel> fullNewsList = query.getResultList();
-        List<NewsModel> firstFourNews = fullNewsList.subList(0, Math.min(4, fullNewsList.size()));
+		List<NewsModel> fullNewsList = query.getResultList();
+		List<NewsModel> firstFourNews = fullNewsList.subList(0, Math.min(4, fullNewsList.size()));
 
-        model.addAttribute("firstFourNews", firstFourNews);
-        model.addAttribute("initialNews", fullNewsList.subList(4, Math.min(9, fullNewsList.size())));
+		model.addAttribute("firstFourNews", firstFourNews);
+		model.addAttribute("initialNews", fullNewsList.subList(4, Math.min(9, fullNewsList.size())));
 
-        session.close();
-        return "client/news/news";
-    }
-	
+		session.close();
+		return "client/news/news";
+	}
+
 	@RequestMapping(value = { "/tin-tuc/danh-sach" }, method = RequestMethod.GET)
 	public String moreNews(ModelMap model, HttpServletRequest request) {
 	    Session session = factory.openSession();
@@ -55,45 +56,39 @@ public class NewsClientController {
 	    }
 	    int startIndex = (currentPage - 1) * pageSize;
 
-	    // Lấy tham số filter từ request
-	    String filter = request.getParameter("filter");
+	    // Lấy tham số search từ request
+	    String search = request.getParameter("search");
 	    String hql = "FROM NewsModel WHERE status = true"; // Chỉ lấy các tin có trạng thái là true
 
-	    // Thêm điều kiện vào HQL nếu có filter
-	    if (filter != null) {
-	        switch (filter) {
-	            case "approved":
-	                // Không cần thêm điều kiện ở đây vì đã chỉ lấy các tin có status là true ở trên
-	                break;
-	            case "hidden":
-	                // Không cần thêm điều kiện ở đây vì đã chỉ lấy các tin có status là true ở trên
-	                break;
-	            default:
-	                break;
-	        }
+	    // Thêm điều kiện tìm kiếm nếu có
+	    if (search != null && !search.isEmpty()) {
+	        hql += " AND (title LIKE :search OR shortDescription LIKE :search)";
 	    }
 
 	    hql += " ORDER BY dateUploaded DESC";
 	    Query query = session.createQuery(hql);
 	    query.setFirstResult(startIndex);
 	    query.setMaxResults(pageSize);
+
+	    // Thiết lập giá trị cho tham số tìm kiếm nếu có
+	    if (search != null && !search.isEmpty()) {
+	        query.setParameter("search", "%" + search + "%");
+	    }
+
 	    List<NewsModel> list = query.list();
 
 	    // Tính toán tổng số trang
 	    String countHql = "SELECT count(n.id) FROM NewsModel n WHERE status = true"; // Đếm tổng số tin có status là true
-	    if (filter != null) {
-	        switch (filter) {
-	            case "approved":
-	                // Không cần thêm điều kiện ở đây vì đã chỉ lấy các tin có status là true ở trên
-	                break;
-	            case "hidden":
-	                // Không cần thêm điều kiện ở đây vì đã chỉ lấy các tin có status là true ở trên
-	                break;
-	            default:
-	                break;
-	        }
+	    if (search != null && !search.isEmpty()) {
+	        countHql += " AND (title LIKE :search OR shortDescription LIKE :search)";
 	    }
 	    Query countQuery = session.createQuery(countHql);
+
+	    // Thiết lập giá trị cho tham số tìm kiếm nếu có
+	    if (search != null && !search.isEmpty()) {
+	        countQuery.setParameter("search", "%" + search + "%");
+	    }
+
 	    Long countResult = (Long) countQuery.uniqueResult();
 	    int totalPages = (int) Math.ceil((double) countResult / pageSize);
 
@@ -102,12 +97,26 @@ public class NewsClientController {
 	    model.addAttribute("totalNews", countResult);
 	    model.addAttribute("currentPage", currentPage);
 	    model.addAttribute("totalPages", totalPages);
-	    
-	    
+	    model.addAttribute("search", search); // Thêm tham số tìm kiếm vào model
+
 	    session.close();
 	    return "client/news/listNews";
 	}
 
 
+	// Chi tiết tin
+	@RequestMapping(value = "/tin-tuc/{newsId}", method = RequestMethod.GET)
+	public String getDetail(ModelMap model, @PathVariable("newsId") String newsId, HttpServletRequest request) {
+		try (Session session = factory.openSession()) {
+			NewsModel news = session.get(NewsModel.class, newsId);
+			if (news == null) {
+				return "redirect:/admin/listNews.html";
+			}
+			model.addAttribute("news", news);
+			return "client/news/detailNews";
+		} catch (Exception e) {
+			return "redirect:/tin-tuc.html";
+		}
+	}
 
 }
