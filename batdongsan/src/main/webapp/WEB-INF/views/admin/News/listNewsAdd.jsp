@@ -50,9 +50,11 @@
 						<c:forEach var="n" items="${listOfNews}">
 							<div class='admin-post-card'>
 								<div>
+								<div class="img-wrapper">
 									<img
 										src="${pageContext.servletContext.contextPath}/images/News/${n.thumbnail}"
 										alt="" />
+										</div>
 									<div class='post-content-container'>
 										<div>
 											<h4 class='header'>${n.title}</h4>
@@ -87,30 +89,24 @@
 								<div>
 									<div class='blank-container'></div>
 									<div class='button-container'>
-										<div class='button-item'>
-											<a href='listNews/approve/${n.newsId}.html'><i
-												class='fa-regular fa-flag'></i> <span>Duyệt tin</span></a>
-										</div>
-										<div class='button-item'>
-											<a href="listNews/detailNews/${n.newsId}.html"><i
-												class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span></a>
+										<a href='listNews/approve/${n.newsId}.html'
+											class='button-item'> <i class='fa-regular fa-flag'></i> <span>Duyệt
+												tin</span>
+										</a> <a href="listNews/detailNews/${n.newsId}.html"
+											class='button-item'> <i class="fa-solid fa-circle-info"></i>
+											<span>Chi tiết</span>
 
-										</div>
-										<div class='button-item'>
-											<a href='listNews/hide/${n.newsId}.html'><i
-												class='fa-solid fa-pencil'></i> <span>Ẩn tin</span></a>
-										</div>
-										<div class='button-item'>
-											<a href='listNews/delete/${n.newsId}.html'><i
-												class='fa-regular fa-share-from-square'></i> <span>Xóa
-													tin</span></a>
-										</div>
+										</a> <a href='listNews/hide/${n.newsId}.html' class='button-item'>
+											<i class="fa-regular fa-eye-slash"></i> <span>Ẩn tin</span>
+										</a> <a href='listNews/delete/${n.newsId}.html'
+											class='button-item'> <i
+											class='fa-regular fa-share-from-square'></i> <span>Xóa
+												tin</span>
+										</a> <a href='listNews/update/${n.newsId}.html'
+											class='button-item'> <i class='fa-solid fa-pencil'></i> <span>Sửa
+												tin</span>
 
-										<div class='button-item'>
-											<a href='listNews/update/${n.newsId}.html'> <i
-												class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
-											</a>
-										</div>
+										</a>
 									</div>
 								</div>
 							</div>

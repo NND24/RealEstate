@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/admin/headerAdmin.css"
 	type="text/css">
-<link rel="stylesheet" href="../css/admin/listPost.css?version=56"
+<link rel="stylesheet" href="../css/admin/listPost.css?version=57"
 	type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
@@ -118,8 +118,7 @@
 										<span>Chi tiết</span>
 									</a> <a href=<%if (r.getStatus().equals("Chưa được duyệt")) {%>
 										"" <%} else {%> "${pageContext.servletContext.contextPath}/admin/hideDisplayRealEstate.html?realEstateId=<%=r.getRealEstateId()%>
-										" <%}%> class='button-item'> <i
-										class='fa-solid fa-pencil'></i> <span><%=r.getStatus().equals("Ẩn") ? "Hiển thị" : "Ẩn"%>
+										" <%}%> class='button-item'> <i class="fa-regular fa-eye-slash"></i> <span><%=r.getStatus().equals("Ẩn") ? "Hiển thị" : "Ẩn"%>
 											tin</span>
 									</a> <a
 										href="${pageContext.servletContext.contextPath}/admin/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>"

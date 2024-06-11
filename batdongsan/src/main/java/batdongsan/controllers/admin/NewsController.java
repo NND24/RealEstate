@@ -148,7 +148,7 @@ public class NewsController {
 				news.setNewsId(newsId);
 
 				if (!file.isEmpty()) {
-					String uploadDir = "D:/Workspace/BDS/RealEstate/batdongsan/src/main/webapp/images/News/";
+					String uploadDir = "D:/Workspace Java/BatDongSan/batdongsan/src/main/webapp/images/News/";
 					String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 					String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 					String filePath = uploadDir + uniqueFileName;
@@ -181,66 +181,73 @@ public class NewsController {
 	}
 
 	// Duyệt tin
-	@RequestMapping(value = "listNews/approve/{newsId}", method = RequestMethod.GET)
-	public String approveNews(ModelMap model, @PathVariable("newsId") String newsId) {
-		Session session = factory.openSession();
-		Transaction t = null;
-		try {
-			t = session.beginTransaction();
-			NewsModel newsToUpdate = session.get(NewsModel.class, newsId); // Lấy tin tức cần cập nhật từ cơ sở dữ liệu
-			if (newsToUpdate != null) {
-				// Thực hiện cập nhật trạng thái tin tức ở đây
-				newsToUpdate.setStatus(true); // Giả sử thuộc tính trạng thái là status và giá trị mới là "approved"
-				session.update(newsToUpdate); // Cập nhật tin tức
-				t.commit(); // Commit giao dịch sau khi cập nhật thành công
-			} else {
-				model.addAttribute("message", "Tin tức không tồn tại!");
+		@RequestMapping(value = "listNews/approve/{newsId}", method = RequestMethod.GET)
+		public String approveNews(ModelMap model, @PathVariable("newsId") String newsId) {
+			Session session = factory.openSession();
+			Transaction t = null;
+			try {
+				t = session.beginTransaction();
+				String hql = "FROM NewsModel WHERE newsId = :newsId";
+		        Query<NewsModel> query = session.createQuery(hql);
+		        query.setParameter("newsId", newsId);
+		        NewsModel newsToUpdate = query.uniqueResult();
+		        
+				if (newsToUpdate != null) {
+					// Thực hiện cập nhật trạng thái tin tức ở đây
+					newsToUpdate.setStatus(true); // Giả sử thuộc tính trạng thái là status và giá trị mới là "approved"
+					session.update(newsToUpdate); // Cập nhật tin tức
+					t.commit(); // Commit giao dịch sau khi cập nhật thành công
+				} else {
+					model.addAttribute("message", "Tin tức không tồn tại!");
+				}
+			} catch (Exception e) {
+				if (t != null) {
+					t.rollback(); // Rollback giao dịch nếu có lỗi xảy ra
+				}
+				model.addAttribute("message", "Cập nhật trạng thái tin tức thất bại!");
+			} finally {
+				session.close();
 			}
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback(); // Rollback giao dịch nếu có lỗi xảy ra
-			}
-			model.addAttribute("message", "Cập nhật trạng thái tin tức thất bại!");
-		} finally {
-			session.close();
+			return "redirect:/admin/listNews.html";
 		}
-		return "redirect:/admin/listNews.html";
-	}
 
-	// Ẩn tin
-	@RequestMapping(value = "listNews/hide/{newsId}", method = RequestMethod.GET)
-	public String hideNews(ModelMap model, @PathVariable("newsId") String newsId) {
-		Session session = factory.openSession();
-		Transaction t = null;
-		try {
-			t = session.beginTransaction();
-			NewsModel newsToUpdate = session.get(NewsModel.class, newsId);
-			if (newsToUpdate != null) {
-				newsToUpdate.setStatus(false);
-				session.update(newsToUpdate); 
-				t.commit();
-			} else {
-				model.addAttribute("message", "Tin tức không tồn tại!");
+		// Ẩn tin
+		@RequestMapping(value = "listNews/hide/{newsId}", method = RequestMethod.GET)
+		public String hideNews(ModelMap model, @PathVariable("newsId") String newsId) {
+			Session session = factory.openSession();
+			Transaction t = null;
+			try {
+				t = session.beginTransaction();
+				String hql = "FROM NewsModel WHERE newsId = :newsId";
+		        Query<NewsModel> query = session.createQuery(hql);
+		        query.setParameter("newsId", newsId);
+		        NewsModel newsToUpdate = query.uniqueResult();
+				if (newsToUpdate != null) {
+					newsToUpdate.setStatus(false);
+					session.update(newsToUpdate); 
+					t.commit();
+				} else {
+					model.addAttribute("message", "Tin tức không tồn tại!");
+				}
+			} catch (Exception e) {
+				if (t != null) {
+					t.rollback(); // Rollback giao dịch nếu có lỗi xảy ra
+				}
+				System.out.println("Cập nhật trạng thái tin tức thất bại: " + e.getMessage());
+				model.addAttribute("message", "Cập nhật trạng thái tin tức thất bại!");
+				String allNewsHql = "FROM NewsModel";
+	            Query<NewsModel> allNewsQuery = session.createQuery(allNewsHql, NewsModel.class);
+	            List<NewsModel> allNewsList = allNewsQuery.list();
+	            System.out.println("Tất cả các tin tức:");
+	            for (NewsModel news : allNewsList) {
+	            	System.out.println(news.getNewsId());
+	                System.out.println(news);
+	            }
+			} finally {
+				session.close();
 			}
-		} catch (Exception e) {
-			if (t != null) {
-				t.rollback(); // Rollback giao dịch nếu có lỗi xảy ra
-			}
-			System.out.println("Cập nhật trạng thái tin tức thất bại: " + e.getMessage());
-			model.addAttribute("message", "Cập nhật trạng thái tin tức thất bại!");
-			String allNewsHql = "FROM NewsModel";
-            Query<NewsModel> allNewsQuery = session.createQuery(allNewsHql, NewsModel.class);
-            List<NewsModel> allNewsList = allNewsQuery.list();
-            System.out.println("Tất cả các tin tức:");
-            for (NewsModel news : allNewsList) {
-            	System.out.println(news.getNewsId());
-                System.out.println(news);
-            }
-		} finally {
-			session.close();
+			return "redirect:/admin/listNews.html";
 		}
-		return "redirect:/admin/listNews.html";
-	}
 
 	// Xóa tin
 	@RequestMapping(value = "listNews/delete/{newsId}", method = RequestMethod.GET)
@@ -295,7 +302,13 @@ public class NewsController {
 
 		// Lấy đối tượng NewsModel từ cơ sở dữ liệu
 		Session session = factory.openSession();
-		NewsModel news = (NewsModel) session.get(NewsModel.class, newsId);
+
+		String hql = "FROM NewsModel WHERE newsId = :newsId";
+        Query<NewsModel> query = session.createQuery(hql);
+        query.setParameter("newsId", newsId);
+        NewsModel news = query.uniqueResult();
+		session.close();
+
 		if (news == null) {
 			model.addAttribute("message", "Không tìm thấy tin tức với ID: " + newsId);
 			return "redirect:/admin/listNews.html";
@@ -329,7 +342,7 @@ public class NewsController {
 				String filePath = null;
 				String newPathThumbnail = null;
 				if (file != null && !file.isEmpty()) {
-					String uploadDir = "D:/Workspace/BDS/RealEstate/batdongsan/src/main/webapp/images/News/";
+					String uploadDir = "D:/Workspace Java/BatDongSan/batdongsan/src/main/webapp/images/News/";
 					String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 					String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 					filePath = uploadDir + uniqueFileName;
@@ -372,7 +385,10 @@ public class NewsController {
 	@RequestMapping(value = "/listNews/detailNews/{newsId}", method = RequestMethod.GET)
 	public String getDetail(ModelMap model, @PathVariable("newsId") String newsId, HttpServletRequest request) {
 		try (Session session = factory.openSession()) {
-			NewsModel news = session.get(NewsModel.class, newsId);
+			String hql = "FROM NewsModel WHERE newsId = :newsId";
+	        Query<NewsModel> query = session.createQuery(hql);
+	        query.setParameter("newsId", newsId);
+	        NewsModel news = query.uniqueResult();
 			if (news == null) {
 				return "redirect:/admin/listNews.html";
 			}

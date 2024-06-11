@@ -71,17 +71,17 @@ public class ListPostController {
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    queryAll.setParameter("searchInput", "%" + searchInput + "%");
 	                }
-	                
-	    	        int totalAllResults = queryAll.list().size();
-	    	        queryAll.setFirstResult((pageAll - 1) * size);
-	    	        queryAll.setMaxResults(size);
-	                
+
+	                int totalAllResults = queryAll.list().size();
+	                queryAll.setFirstResult((pageAll - 1) * size);
+	                queryAll.setMaxResults(size);
+
 	                List<RealEstateModel> allRealEstates = queryAll.list();
 	                request.setAttribute("allRealEstates", allRealEstates);
-	                
-	    	        request.setAttribute("currentAllPage", pageAll);
-	    	        request.setAttribute("totalAllResults", totalAllResults);
-	    	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
+
+	                request.setAttribute("currentAllPage", pageAll);
+	                request.setAttribute("totalAllResults", totalAllResults);
+	                request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 
 	                // Fetch expired real estates
 	                String hqlExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate < :today";
@@ -94,11 +94,11 @@ public class ListPostController {
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    queryExpired.setParameter("searchInput", "%" + searchInput + "%");
 	                }
-	                
+
 	                int totalExpiredResults = queryExpired.list().size();
 	                queryExpired.setFirstResult((pageExpired - 1) * size);
 	                queryExpired.setMaxResults(size);
-	                
+
 	                List<RealEstateModel> expiredRealEstates = queryExpired.list();
 	                request.setAttribute("expiredRealEstates", expiredRealEstates);
 
@@ -111,10 +111,10 @@ public class ListPostController {
 	                // Construct the range for near-expiration dates
 	                LocalDate startDate = LocalDate.now().plusDays(1);
 	                LocalDate endDate = LocalDate.now().plusDays(3);
-	                
+
 	                request.setAttribute("currentExpiredPage", pageExpired);
-	    	        request.setAttribute("totalExpiredResults", totalExpiredResults);
-	    	        request.setAttribute("totalExpiredPages", (int) Math.ceil((double) totalExpiredResults / size));
+	                request.setAttribute("totalExpiredResults", totalExpiredResults);
+	                request.setAttribute("totalExpiredPages", (int) Math.ceil((double) totalExpiredResults / size));
 
 	                // Fetch near-expired real estates
 	                String hqlNearExpired = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate >= :startDate AND re.expirationDate <= :endDate";
@@ -128,39 +128,40 @@ public class ListPostController {
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    queryNearExpired.setParameter("searchInput", "%" + searchInput + "%");
 	                }
-	                
+
 	                int totalNearExpiredResults = queryNearExpired.list().size();
 	                queryNearExpired.setFirstResult((pageNearExpired - 1) * size);
 	                queryNearExpired.setMaxResults(size);
-	                
+
 	                List<RealEstateModel> nearExpiredRealEstates = queryNearExpired.list();
 	                request.setAttribute("nearExpiredRealEstates", nearExpiredRealEstates);
-	                
+
 	                request.setAttribute("currentNearExpiredPage", pageNearExpired);
-	    	        request.setAttribute("totalNearExpiredResults", totalNearExpiredResults);
-	    	        request.setAttribute("totalNearExpiredPages", (int) Math.ceil((double) totalNearExpiredResults / size));
+	                request.setAttribute("totalNearExpiredResults", totalNearExpiredResults);
+	                request.setAttribute("totalNearExpiredPages", (int) Math.ceil((double) totalNearExpiredResults / size));
 
 	                // Fetch real estates that are currently displayed
-	                String hqlDisplay = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status";
+	                String hqlDisplay = "SELECT re FROM RealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId";
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlDisplay += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
 	                Query<RealEstateModel> queryDisplay = session.createQuery(hqlDisplay, RealEstateModel.class);
+	                queryDisplay.setParameter("userId", parsedUserId);
 	                queryDisplay.setParameter("status", "Đang hiển thị");
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    queryDisplay.setParameter("searchInput", "%" + searchInput + "%");
 	                }
-	                
+
 	                int totalDisplayResults = queryDisplay.list().size();
 	                queryDisplay.setFirstResult((pageDisplay - 1) * size);
 	                queryDisplay.setMaxResults(size);
-	                
+
 	                List<RealEstateModel> displayRealEstates = queryDisplay.list();
 	                request.setAttribute("displayRealEstates", displayRealEstates);
-	                
+
 	                request.setAttribute("currentDisplayPage", pageDisplay);
-	    	        request.setAttribute("totalDisplayResults", totalDisplayResults);
-	    	        request.setAttribute("totalDisplayPages", (int) Math.ceil((double) totalDisplayResults / size));
+	                request.setAttribute("totalDisplayResults", totalDisplayResults);
+	                request.setAttribute("totalDisplayPages", (int) Math.ceil((double) totalDisplayResults / size));
 
 	                t.commit();
 	            } else {
@@ -174,6 +175,7 @@ public class ListPostController {
 	        }
 	    }
 	}
+
 
 
 	@RequestMapping(value = "deleteRealEstate", method = RequestMethod.GET)

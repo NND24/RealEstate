@@ -118,7 +118,7 @@ public class NewsClientController {
 				request.setAttribute("user", user);
 			}
 			
-			return "client/news/listNews";
+			return "client/news/listNews2";
 		} finally {
 			session.close();
 		}
@@ -129,7 +129,10 @@ public class NewsClientController {
 	@RequestMapping(value = "/tin-tuc/{newsId}", method = RequestMethod.GET)
 	public String getDetail(ModelMap model, @PathVariable("newsId") String newsId, HttpServletRequest request) {
 		try (Session session = factory.openSession()) {
-			NewsModel news = session.get(NewsModel.class, newsId);
+			String hql = "FROM NewsModel WHERE newsId = :newsId";
+	        Query<NewsModel> query = session.createQuery(hql);
+	        query.setParameter("newsId", newsId);
+	        NewsModel news = query.uniqueResult();
 			if (news == null) {
 				return "redirect:/admin/listNews.html";
 			}

@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="../css/client/index.css" type="text/css">
 <link rel="stylesheet" href="../css/client/header.css?version=53"" type="text/css">
 <link rel="stylesheet" href="../css/client/sellernet.css?version=54" type="text/css">
-<link rel="stylesheet" href="../css/client/listPost.css?version=54" type="text/css">
+<link rel="stylesheet" href="../css/client/listPost.css?version=56" type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
 </head>

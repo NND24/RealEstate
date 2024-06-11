@@ -37,6 +37,7 @@
   border: 1px solid #eee;
   border-radius: 6px;
   display: flex;
+  overflow: hidden;
 }
 
 .list-post .filter-wrapper .search-input input {

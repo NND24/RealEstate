@@ -7,10 +7,13 @@
 <meta charset="utf-8">
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
-<link rel="stylesheet" href="css/client/header.css?version=52" type="text/css">
-<link rel="stylesheet" href="css/client/news.css?version=50"
+<link rel="stylesheet" href="css/client/header.css?version=52"
 	type="text/css">
-	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/client/footer.css" type="text/css">
+<link rel="stylesheet" href="css/client/news.css?version=51"
+	type="text/css">
+<link rel="stylesheet"
+	href="${pageContext.servletContext.contextPath}/css/client/footer.css"
+	type="text/css">
 <%@ include file="../../../../links/links.jsp"%>
 </head>
 <body>
@@ -21,7 +24,7 @@
 				<div class='row'>
 					<div class='col-lg-10 col-md-10 col-sm-10 col-10'>
 						<div class='searchBar-breadcrumb-wrapper'>
-							<a href=''> <i class='fa-solid fa-house-chimney'></i>
+							<a href='${pageContext.servletContext.contextPath}/trang-chu.html'> <i class='fa-solid fa-house-chimney'></i>
 							</a> <i class='fa-solid fa-angle-right'></i> <a href=''>Tin tức</a>
 						</div>
 					</div>
@@ -47,17 +50,16 @@
 
 			<div class='row'>
 				<div class='col-lg-8 col-md-12 col-sm-12'>
-					<a>
+					<a href="${pageContext.servletContext.contextPath}/tin-tuc/${firstFourNews[0].newsId}.html">
 						<div class='main-article'>
 							<img
 								src='${pageContext.servletContext.contextPath}/images/News/${firstFourNews[0].thumbnail}'
 								alt='' />
 							<div class='main-article__textOverlay'>
-								<span class='article-date'>${firstFourNews[0].newsId}•
-									Tin tức</span>
-								<a href="tin-tuc/${firstFourNews[0].newsId}.html">
+								<span class='article-date'>${firstFourNews[0].dateUploaded} •
+									Tin tức</span> <div>
 									<h3 class='article-title'>${firstFourNews[0].title}</h3>
-								</a>
+								</div>
 								<p class='article-description'>${firstFourNews[0].shortDescription}</p>
 							</div>
 							<div class='main-article__backgroundOverlay'></div>
@@ -68,10 +70,9 @@
 				<div class='col-lg-4 col-md-12 col-sm-12'>
 					<c:forEach var="news" items="${firstFourNews}" begin="1" end="3">
 						<div class='article-right-content'>
-							<span class='article-date'>${news.dateUploaded}</span> 
-							<a href="tin-tuc/${news.newsId}.html"
-								class='card-info__title'>${news.title}
-							</a>
+							<span class='article-date'>${news.dateUploaded}</span> <a
+								href="${pageContext.servletContext.contextPath}/tin-tuc/${news.newsId}.html"
+								class='card-info__title'>${news.title} </a>
 						</div>
 					</c:forEach>
 				</div>
@@ -82,25 +83,24 @@
 					<h2 class='article-list-heading'>Các tin khác</h2>
 					<div id="additional-news-wrapper" class="additional-news-wrapper">
 						<c:forEach var="news" items="${initialNews}">
-							<div class='news-card'>
+							<a href="${pageContext.servletContext.contextPath}/tin-tuc/${news.newsId}.html" class='news-card'>
 								<div class='card-img-container'>
 									<img
 										src='${pageContext.servletContext.contextPath}/images/News/${news.thumbnail}'
 										alt='' /> <span class='card-highlight'>Tin tức</span>
 								</div>
 								<div class='card-info-container'>
-									<span class='article-date'>${news.dateUploaded}</span> 
-									<a href="tin-tuc/${news.newsId}.html"
-										class='card-info__title'>${news.title}
-									</a>
+									<span class='article-date'>${news.dateUploaded}</span> <div
+										 class='card-info__title'>${news.title}
+									</div>
 									<div class='card-description'>${news.shortDescription}</div>
 								</div>
-							</div>
+							</a>
 						</c:forEach>
 					</div>
-					<div class="pagination">
-					<a href="tin-tuc/danh-sach.html"><button id="load-more-btn" class="btn btn-primary">Xem thêm tin</button></a>
-						
+					<div class="load-more">
+						<a href="tin-tuc/danh-sach.html"><button id="load-more-btn"
+								class="btn btn-primary">Xem thêm tin</button></a>
 					</div>
 				</div>
 			</div>
@@ -108,5 +108,28 @@
 	</div>
 
 	<%@ include file="../../../components/footer.jsp"%>
+	
+	<script>
+		$(document)
+				.ready(
+						function() {
+							let searchInput = $(".searchBar-wrapper input");
+							let searchInputButton = $(".searchBar-wrapper .fa-magnifying-glass");
+
+							$(searchInputButton).on("click", handleSearch);
+							$(searchInput).on("keyup", function(event) {
+								if (event.which === 13) { // Enter key code
+									event.preventDefault(); // Prevent default form submission if necessary
+									handleSearch();
+								}
+							});
+
+							function handleSearch() {
+								let url = "${pageContext.servletContext.contextPath}/tin-tuc/danh-sach.html";
+								url += "?searchInput=" + searchInput.val();
+								window.location.href = url;
+							}
+						})
+	</script>
 </body>
 </html>
