@@ -111,7 +111,7 @@
 				<div class="col-md-3">
 					<div class="card card-sales">
 						<h3>Tổng doanh thu</h3>
-						<p>${totalRevenue}VNĐ</p>
+						<p>${totalRevenue} VNĐ</p>
 					</div>
 				</div>
 				<div class="col-md-3">

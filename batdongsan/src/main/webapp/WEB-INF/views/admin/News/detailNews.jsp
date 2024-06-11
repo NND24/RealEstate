@@ -1,9 +1,14 @@
 <%@ page pageEncoding="utf-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@page import="batdongsan.models.NewsModel"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
-<title>Chi tiết tin tức</title>
+<link rel="icon" type="image/png" href="${pageContext.servletContext.contextPath}/images/favicon.png" />
+<title>Quản lý tin tức</title>
 <link rel="stylesheet" href="../../../css/admin/headerAdmin.css?version=53"
 	type="text/css">
 <link rel="stylesheet" href="../../../css/admin/detail.css?version=55"
@@ -14,6 +19,7 @@
 	<%@ include file="../../../components/headerAdmin.jsp"%>
 	<div class='admin'>
 		<%@ include file="../../../components/sidebarAdmin.jsp"%>
+
 		<!-- Detail -->
 		<div class='detail'>
 			<div class='container '>
@@ -55,39 +61,40 @@
 				</div>
 			</div>
 		</div>
-	</div>
 
+
+	</div>
 	<script type="text/javascript">
-		var swiper = new Swiper(".mySwiper", {
-			spaceBetween : 10,
-			slidesPerView : 6,
-			freeMode : true,
-			watchSlidesProgress : true,
-		});
-		var swiper2 = new Swiper(".mySwiper2", {
-			spaceBetween : 10,
-			navigation : {
-				nextEl : ".swiper-button-next",
-				prevEl : ".swiper-button-prev",
-			},
-			thumbs : {
-				swiper : swiper,
-			},
-			pagination : {
-				el : ".swiper-pagination",
-				type : "fraction",
-			},
-		});
-		var swiper3 = new Swiper(".mySwiper3", {
-			slidesPerView : 3,
-			spaceBetween : 15,
-			navigation : {
-				nextEl : ".swiper-button-next",
-				prevEl : ".swiper-button-prev",
-			},
-		});
+	<script type="text/javascript">
+	var swiper = new Swiper(".mySwiper", {
+		spaceBetween : 10,
+		slidesPerView : 6,
+		freeMode : true,
+		watchSlidesProgress : true,
+	});
+	var swiper2 = new Swiper(".mySwiper2", {
+		spaceBetween : 10,
+		navigation : {
+			nextEl : ".swiper-button-next",
+			prevEl : ".swiper-button-prev",
+		},
+		thumbs : {
+			swiper : swiper,
+		},
+		pagination : {
+			el : ".swiper-pagination",
+			type : "fraction",
+		},
+	});
+	var swiper3 = new Swiper(".mySwiper3", {
+		slidesPerView : 3,
+		spaceBetween : 15,
+		navigation : {
+			nextEl : ".swiper-button-next",
+			prevEl : ".swiper-button-prev",
+		},
+	});
 
 	</script>
 </body>
 </html>
-
