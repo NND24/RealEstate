@@ -109,8 +109,8 @@
 												class='fa-regular fa-flag'></i> <span>Duyệt tin</span></a>
 										</div>
 										<div class='button-item'>
-											<a href="listNews/detailNews/${n.newsId}.html"><i
-												class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span></a>
+											<a href="listNews/detailNews/${n.newsId}.html"><i 
+												class="fa-solid fa-circle-info"></i> <span>Chi tiết</span></a>
 
 										</div>
 										<div class='button-item'>

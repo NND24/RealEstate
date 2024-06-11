@@ -1,9 +1,11 @@
 package batdongsan.controllers.admin;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -51,11 +53,15 @@ public class DashboardController {
 			String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM RealEstateModel re";
 			Query<Long> queryTotalRevenue = session.createQuery(hqlTotalRevenue, Long.class);
 			Long totalRevenue = queryTotalRevenue.uniqueResult();
-
+			
+			NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+			numberFormat.setGroupingUsed(true); // Sử dụng dấu phân cách hàng nghìn
+			String formattedTotalRevenue = numberFormat.format(totalRevenue != null ? totalRevenue : 0);
+			
 			model.addAttribute("totalUsers", countEmployees);
 			model.addAttribute("totalPosts", countRealEstates);
 			model.addAttribute("totalArticles", countNews);
-			model.addAttribute("totalRevenue", totalRevenue != null ? totalRevenue : 0);
+			model.addAttribute("totalRevenue", formattedTotalRevenue);
 
 			// Data for charts: Total posts per month (last 6 months)
 			String hqlTotalPostsPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), COUNT(re) "

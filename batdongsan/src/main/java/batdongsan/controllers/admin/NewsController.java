@@ -165,7 +165,7 @@ public class NewsController {
 				news.setNewsId(newsId);
 
 				if (!file.isEmpty()) {
-					String uploadDir = "D:/Workspace/Java/BDS/RealEstate/batdongsan/src/main/webapp/images/News/";
+					String uploadDir = "D:/Workspace/BDS/RealEstate/batdongsan/src/main/webapp/images/News/";
 					String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 					String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 					String filePath = uploadDir + uniqueFileName;
@@ -355,7 +355,7 @@ public class NewsController {
 				String filePath = null;
 				String newPathThumbnail = null;
 				if (file != null && !file.isEmpty()) {
-					String uploadDir = "D:/Workspace/Java/BDS/RealEstate/batdongsan/src/main/webapp/images/News/";
+					String uploadDir = "D:/Workspace/BDS/RealEstate/batdongsan/src/main/webapp/images/News/";
 					String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 					String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
 					filePath = uploadDir + uniqueFileName;
@@ -404,14 +404,14 @@ public class NewsController {
 			}
 			model.addAttribute("news", news);
 			EmployeeModel emp = getEmployeeFromCookies(request);
-			if (emp != null) {
-				model.addAttribute("loginEmp", emp);
-				List<Integer> permissions = getPermissions(emp.getId(), session);
-				model.addAttribute("permissions", permissions);
-			} else {
-				model.addAttribute("employee", null);
-				model.addAttribute("permissions", Collections.emptyList());
-			}
+	        if (emp != null) {
+	            model.addAttribute("loginEmp", emp);
+	            List<Integer> permissions = getPermissions(emp.getId(), session);
+	            model.addAttribute("permissions", permissions);
+	        } else {
+	            model.addAttribute("employee", null);
+	            model.addAttribute("permissions", Collections.emptyList());
+	        }
 			return "admin/News/detailNews";
 		} catch (Exception e) {
 			return "redirect:/admin/listNews.html";
