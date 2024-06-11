@@ -220,15 +220,15 @@ public class EmployeeController {
 		List<EmployeeModel> list = query.list();
 		model.addAttribute("employees", list);
 		model.addAttribute("employee", new EmployeeModel());
-
 		EmployeeModel emp = (EmployeeModel) session.get(EmployeeModel.class, id);
+		model.addAttribute("employee", emp);
 		EmployeeModel empLog = getEmployeeFromCookies(request);         
         if (empLog != null) {
         	model.addAttribute("loginEmp", empLog);
         	List<Integer> permissions = getPermissions(empLog.getId(), session);
             model.addAttribute("permissions", permissions);
         } else {
-            model.addAttribute("employee", null);
+            model.addAttribute("loginEmp", null);
             model.addAttribute("permissions", Collections.emptyList());
         }
 		return "admin/Employee/listEmployeeUpdate";
@@ -331,7 +331,7 @@ public class EmployeeController {
 
 	// Phân quyền
 	@RequestMapping(value = "listEmployee/authorization/{id}", method = RequestMethod.GET)
-	public String authorization(@PathVariable("id") String id, ModelMap model, HttpServletRequest request) {
+	public String authorization(@PathVariable("id") String id, ModelMap model) {
 		Session session = factory.openSession();
 		String hql = "FROM EmployeeModel WHERE status = :status ORDER BY createDate DESC";
 		Query query = session.createQuery(hql);
@@ -343,8 +343,8 @@ public class EmployeeController {
 		model.addAttribute("employee", emp);
 
 		// Lấy danh sách vai trò chỉ cho nhân viên được chỉ định
-		List<RoleModel> roles = session
-				.createQuery("SELECT p.role FROM PermissionModel p WHERE p.employee.id = :employeeId")
+		List<RoleModel> roles = session.createQuery(
+				"SELECT p.role FROM PermissionModel p WHERE p.employee.id = :employeeId")
 				.setParameter("employeeId", id).list();
 		model.addAttribute("roles", roles);
 
@@ -362,20 +362,11 @@ public class EmployeeController {
 		PermissionModel permission = new PermissionModel();
 		permission.setEmployee(emp); // Set id của nhân viên cho permission
 		model.addAttribute("permissions", permission);
-		EmployeeModel empLogin = getEmployeeFromCookies(request);        
-        if (emp != null) {
-        	model.addAttribute("loginEmp", empLogin);
-        	List<Integer> permissions = getPermissions(empLogin.getId(), session);
-            model.addAttribute("permissions", permissions);
-        } else {
-            model.addAttribute("employee", null);
-            model.addAttribute("permissions", Collections.emptyList());
-        }
 		session.close();
 		return "admin/Employee/listEmployeeAuthorization";
 	}
 
-	@RequestMapping(value = "listEmployee/authorization/listEmployee/authorization", method = RequestMethod.POST)
+	@RequestMapping(value = "listEmployee/authorization/confirm", method = RequestMethod.POST)
 	public String updatePermissions(ModelMap model, @RequestParam("permissionIds") List<Integer> permissionIds,
 			@RequestParam(value = "unselectedPermissionIds", required = false) List<Integer> unselectedPermissionIds) {
 		Session session = factory.openSession();

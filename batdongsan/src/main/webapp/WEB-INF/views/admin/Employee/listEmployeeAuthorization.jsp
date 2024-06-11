@@ -74,7 +74,7 @@
 				<div class='modal-container'>
 					<h1>Phân quyền</h1>
 					${message}
-					<form:form action="listEmployee/authorization.html"
+					<form:form action="confirm.html"
 						modelAttribute="permissions" method="post" id="authorizationForm">
 						<table class='table table-hover table-striped'>
 							<thead>
