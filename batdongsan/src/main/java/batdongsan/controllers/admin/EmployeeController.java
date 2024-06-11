@@ -49,12 +49,14 @@ public class EmployeeController {
 	        @RequestParam(name = "size", defaultValue = "5") int size) {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM EmployeeModel e";
+			EmployeeModel empCurrent = getEmployeeFromCookies(request);
+			String hql = "FROM EmployeeModel e WHERE e.id != :id ";
 	        if (searchInput != null && !searchInput.isEmpty()) {
-	        	hql += " WHERE e.id LIKE :searchInput OR e.fullname LIKE :searchInput OR e.email LIKE :searchInput";
+	        	hql += " AND e.id LIKE :searchInput OR e.fullname LIKE :searchInput OR e.email LIKE :searchInput";
 	        }
 	        hql += " ORDER BY createDate DESC";
 	        Query<EmployeeModel> queryAll = session.createQuery(hql, EmployeeModel.class);
+	        queryAll.setParameter("id", empCurrent.getId());
 	        if (searchInput != null && !searchInput.isEmpty()) {
 	            queryAll.setParameter("searchInput", "%" + searchInput + "%");
 	        }
@@ -69,15 +71,7 @@ public class EmployeeController {
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 	        
-	        EmployeeModel emp = getEmployeeFromCookies(request);         
-	        if (emp != null) {
-	        	model.addAttribute("loginEmp", emp);
-	        	List<Integer> permissions = getPermissions(emp.getId(), session);
-	            model.addAttribute("permissions", permissions);
-	        } else {
-	            model.addAttribute("employee", null);
-	            model.addAttribute("permissions", Collections.emptyList());
-	        }
+	        showOnSidebarAndHeader(model, request, session);
 
 	        return "admin/Employee/listEmployee";
 	    } finally {
@@ -110,7 +104,7 @@ public class EmployeeController {
 	@Transactional
 	@RequestMapping(value = "listEmployee/addEmployee", method = RequestMethod.POST)
 	public String addEmployee(ModelMap model, @ModelAttribute("employee") EmployeeModel employee,
-			BindingResult errors) {
+			BindingResult errors, HttpServletRequest request) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 
@@ -142,6 +136,7 @@ public class EmployeeController {
 				Query query = session.createQuery(hql);
 				List<EmployeeModel> list = query.list();
 				model.addAttribute("employees", list);
+				showOnSidebarAndHeader(model, request, session);
 				session.close();
 				return "admin/Employee/listEmployeeAdd";
 			} else {
@@ -270,7 +265,7 @@ public class EmployeeController {
 			Query query = session.createQuery(hql);
 			List<EmployeeModel> list = query.list();
 			model.addAttribute("employees", list);
-			session.close();
+			showOnSidebarAndHeader(model, request, session);
 			return "admin/Employee/listEmployeeUpdate";
 		}
 		try {
@@ -318,14 +313,7 @@ public class EmployeeController {
         model.addAttribute("loginEmp", empLogin);
 		model.addAttribute("status", emp.isStatus());
 		model.addAttribute("employee", emp);      
-        if (empLogin != null) {
-        	model.addAttribute("loginEmp", empLogin);
-        	List<Integer> permissions = getPermissions(empLogin.getId(), session);
-            model.addAttribute("permissions", permissions);
-        } else {
-            model.addAttribute("employee", null);
-            model.addAttribute("permissions", Collections.emptyList());
-        }
+		showOnSidebarAndHeader(model, request, session);
 		
 		return "admin/Employee/listEmployeeDetail";
 	}
@@ -484,6 +472,18 @@ public class EmployeeController {
 	    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
 	    queryPermissions.setParameter("idEmp", empId);
 	    return queryPermissions.getResultList();
+	}
+	
+	private void showOnSidebarAndHeader(ModelMap model, HttpServletRequest request, Session session) {
+		EmployeeModel emp = getEmployeeFromCookies(request);
+        if (emp != null) {
+            model.addAttribute("loginEmp", emp);
+            List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 	}
 	
 
