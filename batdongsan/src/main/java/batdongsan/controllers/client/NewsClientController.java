@@ -71,12 +71,11 @@ public class NewsClientController {
 	@RequestMapping(value = { "/tin-tuc/danh-sach" }, method = RequestMethod.GET)
 	public String moreNews(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "searchInput", required = false) String searchInput,
-			@RequestParam(name = "filter", required = false) Boolean filter,
 			@RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
 			@RequestParam(name = "size", defaultValue = "5") int size) {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM NewsModel WHERE status = true";
+			String hql = "FROM NewsModel n WHERE status = true";
 			if (searchInput != null && !searchInput.isEmpty()) {
 				hql += " AND (n.title LIKE :searchInput)";
 			}
@@ -84,9 +83,6 @@ public class NewsClientController {
 			Query<NewsModel> queryAll = session.createQuery(hql, NewsModel.class);
 			if (searchInput != null && !searchInput.isEmpty()) {
 				queryAll.setParameter("searchInput", "%" + searchInput + "%");
-			}
-			if (filter != null) {
-				queryAll.setParameter("filter", filter);
 			}
 			int totalAllResults = queryAll.list().size();
 			queryAll.setFirstResult((pageAll - 1) * size);
@@ -122,7 +118,7 @@ public class NewsClientController {
 				request.setAttribute("user", user);
 			}
 			
-			return "client/news/listNews";
+			return "client/news/listNews2";
 		} finally {
 			session.close();
 		}
@@ -133,7 +129,10 @@ public class NewsClientController {
 	@RequestMapping(value = "/tin-tuc/{newsId}", method = RequestMethod.GET)
 	public String getDetail(ModelMap model, @PathVariable("newsId") String newsId, HttpServletRequest request) {
 		try (Session session = factory.openSession()) {
-			NewsModel news = session.get(NewsModel.class, newsId);
+			String hql = "FROM NewsModel WHERE newsId = :newsId";
+	        Query<NewsModel> query = session.createQuery(hql);
+	        query.setParameter("newsId", newsId);
+	        NewsModel news = query.uniqueResult();
 			if (news == null) {
 				return "redirect:/admin/listNews.html";
 			}

@@ -25,7 +25,7 @@
 							<a
 								href='${pageContext.servletContext.contextPath}/admin/quan-ly-bat-dong-san.html'>
 								<div>
-									<i class="fa-regular fa-building"></i> <span> Quản lý đăng</span>
+									<i class="fa-regular fa-building"></i> <span> Quản lý bài đăng</span>
 								</div>
 							</a>
 						</h4>
