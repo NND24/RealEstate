@@ -239,6 +239,7 @@ public class EmployeeController {
 			HttpServletRequest request) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
+		EmployeeModel existingEmp = (EmployeeModel) session.get(EmployeeModel.class, employee.getId());
 		// Kiểm tra họ và tên
 		if (employee.getFullname().isEmpty()) {
 			errors.rejectValue("fullname", "employee", "Vui lòng nhập họ và tên!");
@@ -248,7 +249,7 @@ public class EmployeeController {
 			errors.rejectValue("email", "employee", "Vui lòng nhập email!");
 		} else if (!Vadilator.isValidEmail(employee.getEmail())) {
 			errors.rejectValue("email", "employee", "Email không hợp lệ");
-		} else if (checkEmpExists(employee.getEmail())) {
+		} else if (checkEmpExists(employee.getEmail()) && !existingEmp.getEmail().equals(employee.getEmail())) {
 			errors.rejectValue("email", "employee", "Email đã tồn tại");
 		}
 		// Kiểm tra số điện thoại
@@ -273,7 +274,7 @@ public class EmployeeController {
 			return "admin/Employee/listEmployeeUpdate";
 		}
 		try {
-			EmployeeModel existingEmp = (EmployeeModel) session.get(EmployeeModel.class, employee.getId());
+			
 			if (existingEmp != null) {
 				existingEmp.setFullname(employee.getFullname());
 				existingEmp.setEmail(employee.getEmail());

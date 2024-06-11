@@ -1,7 +1,9 @@
 package batdongsan.controllers.admin;
 
+import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import batdongsan.models.EmployeeModel;
 import batdongsan.models.RealEstateModel;
 
 @Controller
@@ -24,7 +27,7 @@ public class RealEstateController {
 	SessionFactory factory;
 
 	@RequestMapping(value = { "quan-ly-bat-dong-san" }, method = RequestMethod.GET)
-	public String getListPostPage(HttpServletRequest request,
+	public String getListPostPage(HttpServletRequest request, ModelMap model,
 	        @RequestParam(name = "searchInput", required = false) String searchInput,
 	        @RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
 	        @RequestParam(name = "size", defaultValue = "5") int size) {
@@ -49,7 +52,17 @@ public class RealEstateController {
 	        request.setAttribute("currentAllPage", pageAll);
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
-
+	        
+	        EmployeeModel emp = getEmployeeFromCookies(request);
+	        if (emp != null) {
+	            model.addAttribute("loginEmp", emp);
+	            List<Integer> permissions = getPermissions(emp.getId(), session);
+	            model.addAttribute("permissions", permissions);
+	        } else {
+	            model.addAttribute("employee", null);
+	            model.addAttribute("permissions", Collections.emptyList());
+	        }
+	        
 	        return "admin/listRealEstate";
 	    } finally {
 	        session.close();
@@ -58,7 +71,7 @@ public class RealEstateController {
 
 	
 	@RequestMapping(value= {"/chi-tiet"}, method = RequestMethod.GET)
-    public String getDetailPage(HttpServletRequest request, @RequestParam("realEstateId") int realEstateId) {
+    public String getDetailPage(HttpServletRequest request, @RequestParam("realEstateId") int realEstateId, ModelMap model) {
     	Session session = factory.openSession();
 		try {
 			String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
@@ -67,6 +80,16 @@ public class RealEstateController {
 			RealEstateModel realEsate = query.getSingleResult();
 			
 			request.setAttribute("realEstate", realEsate);
+			
+			EmployeeModel emp = getEmployeeFromCookies(request);
+	        if (emp != null) {
+	            model.addAttribute("loginEmp", emp);
+	            List<Integer> permissions = getPermissions(emp.getId(), session);
+	            model.addAttribute("permissions", permissions);
+	        } else {
+	            model.addAttribute("employee", null);
+	            model.addAttribute("permissions", Collections.emptyList());
+	        }
 			
 			return "admin/detailRealEstate";
 		} finally {
@@ -152,6 +175,40 @@ public class RealEstateController {
 	    } finally {
 	        session.close();
 	    }
+	}
+	
+	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
+		Session session = factory.openSession();
+		Cookie[] cookies = request.getCookies();
+		String empId = null;
+
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("id")) {
+					empId = cookie.getValue();
+					System.out.println(empId);
+					break;
+				}
+			}
+		}
+
+		if (empId != null) {
+			String hqlEmp = "FROM EmployeeModel WHERE id = :id";
+			Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
+			queryEmp.setParameter("id", empId);
+			EmployeeModel emp = queryEmp.uniqueResult();
+			return emp;
+		} else {
+			System.out.println("Không tìm thấy");
+			return null;
+		}
+	}
+	
+	private List<Integer> getPermissions(String empId, Session session) {
+	    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
+	    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
+	    queryPermissions.setParameter("idEmp", empId);
+	    return queryPermissions.getResultList();
 	}
 
 }
