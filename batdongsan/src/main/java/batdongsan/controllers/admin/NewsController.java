@@ -74,16 +74,8 @@ public class NewsController {
 	        request.setAttribute("currentAllPage", pageAll);
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
-
-	        EmployeeModel emp = getEmployeeFromCookies(request);
-	        if (emp != null) {
-	            model.addAttribute("loginEmp", emp);
-	            List<Integer> permissions = getPermissions(emp.getId(), session);
-	            model.addAttribute("permissions", permissions);
-	        } else {
-	            model.addAttribute("employee", null);
-	            model.addAttribute("permissions", Collections.emptyList());
-	        }
+	        showOnSidebarAndHeader(model,request,session);
+	        
 	        return "admin/News/listNews";
 	    } finally {
 	        session.close();
@@ -100,15 +92,7 @@ public class NewsController {
 		model.addAttribute("listOfNews", list);
 		model.addAttribute("news", new NewsModel());
 
-		EmployeeModel emp = getEmployeeFromCookies(request);
-		if (emp != null) {
-			model.addAttribute("loginEmp", emp);
-			List<Integer> permissions = getPermissions(emp.getId(), session);
-			model.addAttribute("permissions", permissions);
-		} else {
-			model.addAttribute("employee", null);
-			model.addAttribute("permissions", Collections.emptyList());
-		}
+		showOnSidebarAndHeader(model,request,session);
 		session.close();
 		return "admin/News/listNewsAdd";
 	}
@@ -144,16 +128,15 @@ public class NewsController {
 		}
 
 		if (hasErrors) {
-			loadListOfNews(model);
 			model.addAttribute("message", "Có lỗi");
 			model.addAttribute("news", news);
-
 			// Load danh sách tin tức để hiển thị lại trong trường hợp có lỗi
 			Session session = factory.openSession();
 			String hql = "FROM NewsModel ORDER BY dateUploaded DESC";
 			Query query = session.createQuery(hql);
 			List<NewsModel> list = query.list();
 			model.addAttribute("listOfNews", list);
+			showOnSidebarAndHeader(model,request,session);
 			session.close();
 
 			return "admin/News/listNewsAdd";
@@ -297,15 +280,7 @@ public class NewsController {
 		model.addAttribute("news", news);
 		String description = news.getDescription();
 		model.addAttribute("description", description);
-		EmployeeModel emp = getEmployeeFromCookies(request);
-		if (emp != null) {
-			model.addAttribute("loginEmp", emp);
-			List<Integer> permissions = getPermissions(emp.getId(), session);
-			model.addAttribute("permissions", permissions);
-		} else {
-			model.addAttribute("employee", null);
-			model.addAttribute("permissions", Collections.emptyList());
-		}
+		showOnSidebarAndHeader(model,request,session);
 		return "admin/News/listNewsUpdate";
 	}
 
@@ -321,8 +296,6 @@ public class NewsController {
 		// Lấy đối tượng NewsModel từ cơ sở dữ liệu
 		Session session = factory.openSession();
 		NewsModel news = (NewsModel) session.get(NewsModel.class, newsId);
-		session.close();
-
 		if (news == null) {
 			model.addAttribute("message", "Không tìm thấy tin tức với ID: " + newsId);
 			return "redirect:/admin/listNews.html";
@@ -343,13 +316,14 @@ public class NewsController {
 		if (hasErrors) {
 			model.addAttribute("message", "Có lỗi");
 			model.addAttribute("news", news);
-
 			// Load danh sách tin tức để hiển thị lại trong trường hợp có lỗi
-			loadListOfNews(model);
-
+			String hql = "FROM NewsModel ORDER BY dateUploaded DESC";
+			Query query = session.createQuery(hql);
+			List<NewsModel> list = query.list();
+			model.addAttribute("listOfNews", list);
+			showOnSidebarAndHeader(model,request,session);
 			return "admin/News/listNewsUpdate";
 		} else {
-			session = factory.openSession();
 			Transaction t = session.beginTransaction();
 			try {
 				String filePath = null;
@@ -403,15 +377,7 @@ public class NewsController {
 				return "redirect:/admin/listNews.html";
 			}
 			model.addAttribute("news", news);
-			EmployeeModel emp = getEmployeeFromCookies(request);
-	        if (emp != null) {
-	            model.addAttribute("loginEmp", emp);
-	            List<Integer> permissions = getPermissions(emp.getId(), session);
-	            model.addAttribute("permissions", permissions);
-	        } else {
-	            model.addAttribute("employee", null);
-	            model.addAttribute("permissions", Collections.emptyList());
-	        }
+			showOnSidebarAndHeader(model,request,session);
 			return "admin/News/detailNews";
 		} catch (Exception e) {
 			return "redirect:/admin/listNews.html";
@@ -448,12 +414,10 @@ public class NewsController {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("id")) {
 					empId = cookie.getValue();
-					System.out.println(empId);
 					break;
 				}
 			}
 		}
-
 		if (empId != null) {
 			String hqlEmp = "FROM EmployeeModel WHERE id = :id";
 			Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
@@ -461,7 +425,6 @@ public class NewsController {
 			EmployeeModel emp = queryEmp.uniqueResult();
 			return emp;
 		} else {
-			System.out.println("Không tìm thấy");
 			return null;
 		}
 	}
@@ -471,6 +434,18 @@ public class NewsController {
 		Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
 		queryPermissions.setParameter("idEmp", empId);
 		return queryPermissions.getResultList();
+	}
+	
+	private void showOnSidebarAndHeader(ModelMap model, HttpServletRequest request, Session session) {
+		EmployeeModel emp = getEmployeeFromCookies(request);
+        if (emp != null) {
+            model.addAttribute("loginEmp", emp);
+            List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 	}
 
 }

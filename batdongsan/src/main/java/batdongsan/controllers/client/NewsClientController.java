@@ -71,12 +71,11 @@ public class NewsClientController {
 	@RequestMapping(value = { "/tin-tuc/danh-sach" }, method = RequestMethod.GET)
 	public String moreNews(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "searchInput", required = false) String searchInput,
-			@RequestParam(name = "filter", required = false) Boolean filter,
 			@RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
 			@RequestParam(name = "size", defaultValue = "5") int size) {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM NewsModel WHERE status = true";
+			String hql = "FROM NewsModel n WHERE status = true";
 			if (searchInput != null && !searchInput.isEmpty()) {
 				hql += " AND (n.title LIKE :searchInput)";
 			}
@@ -84,9 +83,6 @@ public class NewsClientController {
 			Query<NewsModel> queryAll = session.createQuery(hql, NewsModel.class);
 			if (searchInput != null && !searchInput.isEmpty()) {
 				queryAll.setParameter("searchInput", "%" + searchInput + "%");
-			}
-			if (filter != null) {
-				queryAll.setParameter("filter", filter);
 			}
 			int totalAllResults = queryAll.list().size();
 			queryAll.setFirstResult((pageAll - 1) * size);

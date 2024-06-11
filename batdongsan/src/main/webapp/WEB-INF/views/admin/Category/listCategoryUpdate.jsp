@@ -72,7 +72,6 @@
 			<div class='modal-wrapper'>
 				<div class='modal-container'>
 					<h1>Chỉnh sửa danh mục</h1>
-					${message}
 					<form:form action="${category.categoryId}.html"
 						modelAttribute="category" method="post">
 						<div class='input-container'>

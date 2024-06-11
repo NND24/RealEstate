@@ -64,15 +64,7 @@ public class CategoryController {
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 
-	        EmployeeModel emp = getEmployeeFromCookies(request);
-	        if (emp != null) {
-	            model.addAttribute("loginEmp", emp);
-	            List<Integer> permissions = getPermissions(emp.getId(), session);
-	            model.addAttribute("permissions", permissions);
-	        } else {
-	            model.addAttribute("employee", null);
-	            model.addAttribute("permissions", Collections.emptyList());
-	        }
+	        showOnSidebarAndHeader(model,request,session);
 	        return "admin/Category/listCategory";
 	    } finally {
 	    	session.close();
@@ -93,13 +85,13 @@ public class CategoryController {
             model.addAttribute("employee", null);
             model.addAttribute("permissions", Collections.emptyList());
         }
-        
+        showOnSidebarAndHeader(model,request,session);
 		return "admin/Category/listCategoryAdd";
 	}
 
 	@Transactional
 	@RequestMapping(value = "listCategory/addCategory", method = RequestMethod.POST)
-	public String addCategory(ModelMap model, @ModelAttribute("category") CategoryModel category,
+	public String addCategory(ModelMap model, @ModelAttribute("category") CategoryModel category, HttpServletRequest request,
 			BindingResult errors) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
@@ -107,11 +99,11 @@ public class CategoryController {
 			errors.rejectValue("name", "category", "Vui lòng nhập tên danh mục!");
 		}
 		if (errors.hasErrors()) {
-			model.addAttribute("message", "Có lỗi");
 			String hql = "FROM CategoryModel";
 			Query query = session.createQuery(hql);
 			List<CategoryModel> list = query.list();
 			model.addAttribute("categories", list);
+			showOnSidebarAndHeader(model, request, session);
 			return "admin/Category/listCategoryAdd";
 		} else {
 			try {
@@ -141,15 +133,7 @@ public class CategoryController {
 		model.addAttribute("category", new CategoryModel());
 		CategoryModel category = (CategoryModel) session.get(CategoryModel.class, categoryId);
 		model.addAttribute("category", category);
-		EmployeeModel emp = getEmployeeFromCookies(request);
-        if (emp != null) {
-        	model.addAttribute("loginEmp", emp);
-        	List<Integer> permissions = getPermissions(emp.getId(), session);
-            model.addAttribute("permissions", permissions);
-        } else {
-            model.addAttribute("employee", null);
-            model.addAttribute("permissions", Collections.emptyList());
-        }
+		showOnSidebarAndHeader(model,request,session);
 		return "admin/Category/listCategoryUpdate";
 	}
 
@@ -162,8 +146,11 @@ public class CategoryController {
 			errors.rejectValue("name", "category", "Vui lòng nhập tên danh mục!");
 		}
 		if (errors.hasErrors()) {
-			model.addAttribute("message", "Có lỗi");
-			loadListOfCategory(model);
+			String hql = "FROM CategoryModel";
+			Query query = session.createQuery(hql);
+			List<CategoryModel> list = query.list();
+			model.addAttribute("categories", list);
+			showOnSidebarAndHeader(model, request, session);
 			return "admin/Category/listCategoryUpdate";
 		}
 		try {
@@ -259,5 +246,17 @@ public class CategoryController {
 		    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
 		    queryPermissions.setParameter("idEmp", empId);
 		    return queryPermissions.getResultList();
+		}
+		
+		private void showOnSidebarAndHeader(ModelMap model, HttpServletRequest request, Session session) {
+			EmployeeModel emp = getEmployeeFromCookies(request);
+	        if (emp != null) {
+	            model.addAttribute("loginEmp", emp);
+	            List<Integer> permissions = getPermissions(emp.getId(), session);
+	            model.addAttribute("permissions", permissions);
+	        } else {
+	            model.addAttribute("employee", null);
+	            model.addAttribute("permissions", Collections.emptyList());
+	        }
 		}
 }

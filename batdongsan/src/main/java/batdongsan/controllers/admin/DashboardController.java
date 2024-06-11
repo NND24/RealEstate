@@ -107,31 +107,7 @@ public class DashboardController {
 			model.addAttribute("postsChartData", jsonPostsChartData);
 			model.addAttribute("moneyChartData", jsonMoneyChartData);
 
-			System.out.println("Total Posts Per Month:");
-			for (Object[] item : totalPostsPerMonth) {
-				for (Object obj : item) {
-					System.out.print(obj + " ");
-				}
-				System.out.println();
-			}
-
-			System.out.println("Total Money Per Month:");
-			for (Object[] item : totalMoneyPerMonth) {
-				for (Object obj : item) {
-					System.out.print(obj + " ");
-				}
-				System.out.println();
-			}
-
-			EmployeeModel emp = getEmployeeFromCookies(request, session);
-			if (emp != null) {
-				model.addAttribute("loginEmp", emp);
-				List<Integer> permissions = getPermissions(emp.getId(), session);
-				model.addAttribute("permissions", permissions);
-			} else {
-				model.addAttribute("employee", null);
-				model.addAttribute("permissions", Collections.emptyList());
-			}
+			showOnSidebarAndHeader(model,request,session);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -140,7 +116,7 @@ public class DashboardController {
 		}
 		return "admin/dashboard";
 	}
-	
+	//=================================================
 	// lấy id Nhân viên từ khi đăng nhập
 	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request, Session session) {
 	    Cookie[] cookies = request.getCookies();
@@ -194,7 +170,7 @@ public class DashboardController {
 			model.addAttribute("totalArticles", countNews);
 			model.addAttribute("totalRevenue", totalRevenue != null ? totalRevenue : 0);
 
-			// Dữ liệu biểu đồ cho tổng số tiền theo từng tháng (trong vòng 6 tháng gần nhất)
+			// Dữ liệu biểu đồ cho tổng số tiền theo từng tháng 
             String hqlTotalMoneyPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), SUM(re.totalMoney) " +
                                            "FROM RealEstateModel re " +
                                            "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) " +
@@ -203,7 +179,7 @@ public class DashboardController {
             Query<Object[]> queryTotalMoneyPerMonth = session.createQuery(hqlTotalMoneyPerMonth, Object[].class);
             List<Object[]> totalMoneyPerMonth = queryTotalMoneyPerMonth.getResultList();
             
-            // Dữ liệu biểu đồ cho số bài đăng theo từng tháng (trong vòng 6 tháng gần nhất)
+            // Dữ liệu biểu đồ cho số bài đăng theo từng tháng 
             String hqlTotalPostsPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), COUNT(re) " +
                                            "FROM RealEstateModel re " +
                                            "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) " +
@@ -212,36 +188,11 @@ public class DashboardController {
             Query<Object[]> queryTotalPostsPerMonth = session.createQuery(hqlTotalPostsPerMonth, Object[].class);
             List<Object[]> totalPostsPerMonth = queryTotalPostsPerMonth.getResultList();
             
-            System.out.println("Total Money Per Month:");
-            for (Object[] item : totalMoneyPerMonth) {
-                for (Object obj : item) {
-                    System.out.print(obj + " ");
-                }
-                System.out.println();
-            }
-
-            // In ra giá trị của totalPostsPerMonth
-            System.out.println("Total Posts Per Month:");
-            for (Object[] item : totalPostsPerMonth) {
-                for (Object obj : item) {
-                    System.out.print(obj + " ");
-                }
-                System.out.println();
-            }
-            
             // Chuyển dữ liệu thành JSON
             model.addAttribute("totalMoneyPerMonth", totalMoneyPerMonth);
             model.addAttribute("totalPostsPerMonth", totalPostsPerMonth);
             
-            EmployeeModel emp = getEmployeeFromCookies(request, session);         
-            if (emp != null) {
-            	model.addAttribute("loginEmp", emp);
-            	List<Integer> permissions = getPermissions(emp.getId(), session);
-                model.addAttribute("permissions", permissions);
-            } else {
-                model.addAttribute("employee", null);
-                model.addAttribute("permissions", Collections.emptyList());
-            }
+            showOnSidebarAndHeader(model,request,session);
 
 		} finally {
 			session.close();
@@ -249,28 +200,47 @@ public class DashboardController {
 		return "admin/changePassword";
 	}
 	
-	
-	private boolean checkPermissions(String empId, Session session) {
-	    String hqlPermissions = "FROM PermissionModel WHERE idEmp = :idEmp AND status = true";
-	    Query<PermissionModel> queryPermissions = session.createQuery(hqlPermissions, PermissionModel.class);
-	    queryPermissions.setParameter("idEmp", empId);
-	    List<PermissionModel> activePermissions = queryPermissions.getResultList();
-	    for (PermissionModel item : activePermissions) {
-	        System.out.println("Permission ID: " + item.getPermissionId());
-	        System.out.println("Permission ID: " + item.isStatus());
-	        System.out.println("Permission ID: " + item.getRole().getRoleName());
-	        // In các thuộc tính khác của PermissionModel nếu có
-
-	        System.out.println(); // In một dòng trống giữa các mục
-	    }
-	    return !activePermissions.isEmpty();
-	}
-	
 	private List<Integer> getPermissions(String empId, Session session) {
 	    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
 	    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
 	    queryPermissions.setParameter("idEmp", empId);
 	    return queryPermissions.getResultList();
+	}
+	
+	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
+		Session session = factory.openSession();
+		Cookie[] cookies = request.getCookies();
+		String empId = null;
+
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("id")) {
+					empId = cookie.getValue();
+					break;
+				}
+			}
+		}
+		if (empId != null) {
+			String hqlEmp = "FROM EmployeeModel WHERE id = :id";
+			Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
+			queryEmp.setParameter("id", empId);
+			EmployeeModel emp = queryEmp.uniqueResult();
+			return emp;
+		} else {
+			return null;
+		}
+	}
+	
+	private void showOnSidebarAndHeader(ModelMap model, HttpServletRequest request, Session session) {
+		EmployeeModel emp = getEmployeeFromCookies(request);
+        if (emp != null) {
+            model.addAttribute("loginEmp", emp);
+            List<Integer> permissions = getPermissions(emp.getId(), session);
+            model.addAttribute("permissions", permissions);
+        } else {
+            model.addAttribute("employee", null);
+            model.addAttribute("permissions", Collections.emptyList());
+        }
 	}
 
 }
