@@ -255,7 +255,10 @@ public class NewsController {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			NewsModel newsToDelete = session.get(NewsModel.class, newsId);
+			String hql = "FROM NewsModel WHERE newsId = :newsId";
+	        Query<NewsModel> query = session.createQuery(hql);
+	        query.setParameter("newsId", newsId);
+	        NewsModel newsToDelete = query.uniqueResult();
 			if (newsToDelete != null) {
 				session.delete(newsToDelete);
 				t.commit();
@@ -307,7 +310,6 @@ public class NewsController {
         Query<NewsModel> query = session.createQuery(hql);
         query.setParameter("newsId", newsId);
         NewsModel news = query.uniqueResult();
-		session.close();
 
 		if (news == null) {
 			model.addAttribute("message", "Không tìm thấy tin tức với ID: " + newsId);
@@ -330,9 +332,9 @@ public class NewsController {
 			model.addAttribute("message", "Có lỗi");
 			model.addAttribute("news", news);
 			// Load danh sách tin tức để hiển thị lại trong trường hợp có lỗi
-			String hql = "FROM NewsModel ORDER BY dateUploaded DESC";
-			Query query = session.createQuery(hql);
-			List<NewsModel> list = query.list();
+			String hql1 = "FROM NewsModel ORDER BY dateUploaded DESC";
+			Query query1 = session.createQuery(hql1);
+			List<NewsModel> list = query1.list();
 			model.addAttribute("listOfNews", list);
 			showOnSidebarAndHeader(model,request,session);
 			return "admin/News/listNewsUpdate";

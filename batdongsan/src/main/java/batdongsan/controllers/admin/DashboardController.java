@@ -38,7 +38,7 @@ public class DashboardController {
 		Session session = factory.openSession();
 		try {
 			// Fetching total counts
-			String hqlTotalEmployees = "SELECT COUNT(e) FROM EmployeeModel e";
+			String hqlTotalEmployees = "SELECT COUNT(e) FROM UsersModel e";
 			Query<Long> queryTotalEmployees = session.createQuery(hqlTotalEmployees, Long.class);
 			Long countEmployees = queryTotalEmployees.uniqueResult();
 

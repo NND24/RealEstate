@@ -172,8 +172,12 @@ public class LoginAdminController {
 			query.setParameter("email", email);
 
 			EmployeeModel emp = query.uniqueResult();
-
+			
 			if (emp != null) {
+				if (!isWorking(emp.getId(), session)) {
+					request.setAttribute("error", "Tài khoản không tồn tại!");
+					return "admin/loginAdmin/loginAdmin";
+				}
 				if (!PasswordHashing.checkPassword(password, emp.getPassword())) {
 					request.setAttribute("error", "Mật khẩu hoặc email không chính xác!");
 					return "admin/loginAdmin/loginAdmin";
@@ -279,6 +283,19 @@ public class LoginAdminController {
 	        }
 	    }
 	    return false;
+	}
+	
+	private boolean isWorking(String id, Session session) {
+		String hql = "FROM EmployeeModel WHERE id = :id AND status = :status";
+		Query<EmployeeModel> query = session.createQuery(hql, EmployeeModel.class);
+        query.setParameter("id", id);
+        query.setParameter("status", true);
+        EmployeeModel emp = query.uniqueResult();
+        if(emp != null) {
+        	return true;
+        } else {
+        	return false;
+        }
 	}
 
 }

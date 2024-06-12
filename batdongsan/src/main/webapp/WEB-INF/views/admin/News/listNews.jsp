@@ -114,8 +114,7 @@
 										</a> <a href='listNews/hide/${n.newsId}.html' class='button-item'>
 											<i class="fa-regular fa-eye-slash"></i> <span>Ẩn tin</span>
 										</a> <a href='listNews/delete/${n.newsId}.html'
-											class='button-item'> <i
-											class='fa-regular fa-share-from-square'></i> <span>Xóa
+											class='button-item'> <i class="fa-regular fa-trash-can"></i> <span>Xóa
 												tin</span>
 										</a> <a href='listNews/update/${n.newsId}.html'
 											class='button-item'> <i class='fa-solid fa-pencil'></i> <span>Sửa
