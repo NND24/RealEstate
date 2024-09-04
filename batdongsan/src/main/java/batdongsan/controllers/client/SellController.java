@@ -59,7 +59,7 @@ public class SellController {
 	        @RequestParam(name = "areaHighToLow", required = false) String areaHighToLow,
 	        @RequestParam(name = "page", defaultValue = "1") int page,
 	        @RequestParam(name = "size", defaultValue = "10") int size) {
-	    
+	    System.out.println("get");
 	    Session session = factory.openSession();
 	    Transaction t = session.beginTransaction();
 	    try {

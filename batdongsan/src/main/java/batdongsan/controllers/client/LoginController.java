@@ -119,11 +119,6 @@ public class LoginController {
 	            query.setParameter("email", email);
 	            UsersModel user = query.uniqueResult();
 
-	            if (user != null) {
-	                request.setAttribute("error", "Email đã tồn tại!");
-	                return "client/login/register";
-	            }
-
 	            String from = "BDS";
 	            MimeMessage mail = mailer.createMimeMessage();
 	            MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");

@@ -134,7 +134,7 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row" style=" display: flex;align-items: center;justify-content: space-between;">
 				<div class="col-md-5 offset-md-1">
 					<div id="posts_chart_div" style="width: 100%; height: 500px;"></div>
 				</div>
