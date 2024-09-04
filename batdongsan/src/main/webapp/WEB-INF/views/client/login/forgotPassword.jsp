@@ -28,9 +28,8 @@
 				<div class='right-wrapper'>
 					<div class='form-wrapper'>
 						<div>
-							<h5>Xin chào bạn</h5>
-							<h3>Đăng ký tài khoản mới</h3>
-							<form action='mailer/checkRegisterEmail.html' method="POST">
+							<h3>Khôi phục mật khẩu</h3>
+							<form action='mailer/checkForgotPassEmail.html' method="POST">
 								<div class='input-wrapper'>
 									<i class="fa-regular fa-envelope"></i> <input type="email"
 										placeholder='Nhập email' name="to" id="email"

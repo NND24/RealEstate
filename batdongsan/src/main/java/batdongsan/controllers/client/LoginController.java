@@ -44,16 +44,14 @@ public class LoginController {
 
 	@RequestMapping(value = { "/dang-ky" }, method = RequestMethod.GET)
 	public String getRegisterPage(HttpServletRequest request) {
-		request.setAttribute("currentPage", "register");
 		page = "register";
 		return "client/login/register";
 	}
 
 	@RequestMapping(value = { "/khoi-phuc-mat-khau" }, method = RequestMethod.GET)
 	public String getForgotPasswordPage(HttpServletRequest request) {
-		request.setAttribute("currentPage", "forgotPassword");
 		page = "forgotPassword";
-		return "client/login/register";
+		return "client/login/forgotPassword";
 	}
 
 	@RequestMapping(value = { "/xac-nhan" }, method = RequestMethod.GET)
@@ -101,8 +99,8 @@ public class LoginController {
 		return "redirect:/xac-nhan.html";
 	}
 
-	@RequestMapping("/mailer/checkAndSend")
-	public String checkAndSend(ModelMap model, @RequestParam("to") String to, HttpServletRequest request) {
+	@RequestMapping("/mailer/checkRegisterEmail")
+	public String checkRegisterEmail(ModelMap model, @RequestParam("to") String to, HttpServletRequest request) {
 	    try (Session session = factory.openSession()) {
 	        Transaction t = session.beginTransaction();
 	        request.setAttribute("currentPage", "register");
@@ -118,6 +116,11 @@ public class LoginController {
 	            Query<UsersModel> query = session.createQuery(hql);
 	            query.setParameter("email", email);
 	            UsersModel user = query.uniqueResult();
+	            
+	            if (user != null) {
+	                request.setAttribute("error", "Email đã tồn tại!");
+	                return "client/login/register";
+	            }
 
 	            String from = "BDS";
 	            MimeMessage mail = mailer.createMimeMessage();
@@ -136,7 +139,7 @@ public class LoginController {
 	            httpSession.setAttribute("verifyCode", verifyCode);
 	            httpSession.setAttribute("registerEmail", to);
 
-	            t.commit(); // Commit the transaction after successful email send
+	            t.commit();
 	            return "redirect:/xac-nhan.html";
 	        } catch (Exception ex) {
 	            t.rollback();
@@ -148,6 +151,57 @@ public class LoginController {
 	    }
 	}
 
+	@RequestMapping("/mailer/checkForgotPassEmail")
+	public String checkForgotPassEmail(ModelMap model, @RequestParam("to") String to, HttpServletRequest request) {
+	    try (Session session = factory.openSession()) {
+	        Transaction t = session.beginTransaction();
+	        request.setAttribute("currentPage", "register");
+	        String email = to;
+
+	        if (email == null || email.isEmpty()) {
+	        	 request.setAttribute("error", "Email không được bỏ trống!");
+	                return "client/login/register";
+	        }
+
+	        try {
+	            String hql = "FROM UsersModel WHERE email = :email";
+	            Query<UsersModel> query = session.createQuery(hql);
+	            query.setParameter("email", email);
+	            UsersModel user = query.uniqueResult();
+	            
+	            if (user == null) {
+	                request.setAttribute("error", "Email không tồn tại!");
+	                return "client/login/forgotPassword";
+	            }
+
+	            String from = "BDS";
+	            MimeMessage mail = mailer.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
+	            helper.setFrom(from, from);
+	            helper.setTo(to);
+	            helper.setReplyTo(from, from);
+	            helper.setSubject("Mã xác nhận tài khoản");
+
+	            int verifyCode = generateRandomNumber();
+	            helper.setText("Mã xác nhận: " + verifyCode, true);
+
+	            mailer.send(mail);
+
+	            HttpSession httpSession = request.getSession();
+	            httpSession.setAttribute("verifyCode", verifyCode);
+	            httpSession.setAttribute("registerEmail", to);
+
+	            t.commit();
+	            return "redirect:/xac-nhan.html";
+	        } catch (Exception ex) {
+	            t.rollback();
+	            return "redirect:/khoi-phuc-mat-khau.html";
+	        }
+	    } catch (Exception e) {
+	        model.addAttribute("message", "Đã xảy ra lỗi khi mở phiên làm việc!");
+	        return "redirect:/khoi-phuc-mat-khau.html";
+	    }
+	}
 
 	public static int generateRandomNumber() {
 		Random rand = new Random();
