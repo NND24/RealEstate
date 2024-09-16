@@ -365,7 +365,6 @@
 
 .search-select-container .dropdown-menu .menu-list {
   max-height: 290px;
-  overflow-y: scroll;
   overflow-x: hidden;
 }
 

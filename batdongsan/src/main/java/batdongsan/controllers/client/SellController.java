@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.DistrictsModel;
+import batdongsan.models.HCMDistrictsModel;
+import batdongsan.models.HCMWardsModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.ProvincesModel;
 import batdongsan.models.RealEstateModel;
@@ -572,7 +574,7 @@ public class SellController {
 	public List<CategoryModel> getTypesSell() {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
+			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
 			Query<CategoryModel> query = session.createQuery(hql);
 			query.setParameter("type", "Nhà đất bán");
 			List<CategoryModel> categories = query.list();
@@ -604,12 +606,12 @@ public class SellController {
 		}
 	}
 
-	@ModelAttribute("provinces")
-	public List<ProvincesModel> getProvinces() {
+	@ModelAttribute("districts")
+	public List<HCMDistrictsModel> getProvinces() {
 		Session session = factory.openSession();
-		String hql = "FROM ProvincesModel";
-		Query<ProvincesModel> query = session.createQuery(hql);
-		List<ProvincesModel> list = query.list();
+		String hql = "FROM HCMDistrictsModel";
+		Query<HCMDistrictsModel> query = session.createQuery(hql);
+		List<HCMDistrictsModel> list = query.list();
 		session.close();
 		return list;
 	}
@@ -648,14 +650,14 @@ public class SellController {
 	public ResponseEntity<byte[]> getWardsByDistrict(@RequestParam("districtId") int districtId) {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM WardsModel WHERE districtId = :districtId";
-			Query<WardsModel> query = session.createQuery(hql);
+			String hql = "FROM HCMWardsModel WHERE districtId = :districtId";
+			Query<HCMWardsModel> query = session.createQuery(hql);
 			query.setParameter("districtId", districtId);
-			List<WardsModel> list = query.list();
+			List<HCMWardsModel> list = query.list();
 
 			// Tạo một chuỗi text từ danh sách district
 			StringBuilder result = new StringBuilder();
-			for (WardsModel ward : list) {
+			for (HCMWardsModel ward : list) {
 				result.append(ward.getWardId()).append(":").append(ward.getName()).append("\n");
 			}
 
@@ -695,10 +697,10 @@ public class SellController {
 	public String getDistrictById(@RequestParam("districtId") int districtId) {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM DistrictsModel WHERE provinceId = :provinceId";
-			Query<DistrictsModel> query = session.createQuery(hql);
+			String hql = "FROM HCMDistrictsModel WHERE provinceId = :provinceId";
+			Query<HCMDistrictsModel> query = session.createQuery(hql);
 			query.setParameter("districtId", districtId);
-			DistrictsModel district = query.uniqueResult();
+			HCMDistrictsModel district = query.uniqueResult();
 
 			return district.getName();
 		} catch (Exception e) {
@@ -707,16 +709,16 @@ public class SellController {
 			session.close();
 		}
 	}
-
+ 
 	@ResponseBody
 	@GetMapping("/getWardById")
 	public String getWardById(@RequestParam("wardId") int wardId) {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM WardsModel WHERE wardId = :wardId";
-			Query<WardsModel> query = session.createQuery(hql);
+			String hql = "FROM HCMWardsModel WHERE wardId = :wardId";
+			Query<HCMWardsModel> query = session.createQuery(hql);
 			query.setParameter("wardId", wardId);
-			WardsModel ward = query.uniqueResult();
+			HCMWardsModel ward = query.uniqueResult();
 
 			return ward.getName();
 		} catch (Exception e) {

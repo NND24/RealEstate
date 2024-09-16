@@ -18,13 +18,13 @@
 						href="${pageContext.servletContext.contextPath}/nha-dat-ban.html">Nhà
 							đất bán</a>
 						<ul class='list-container'>
-							<c:forEach var="c" items="${categoriesSell}">
+								<c:forEach var="c" items="${categoriesSell}">
 								<a
 									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>
 										${c.name}</li> </a>
-							</c:forEach>
+							</c:forEach> 
 						</ul></li>
-					<li class='menu__item'><a
+				<!--	<li class='menu__item'><a
 						href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html">Nhà
 							đất cho thuê</a>
 						<ul class='list-container'>
@@ -33,7 +33,7 @@
 									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>
 										${c.name}</li> </a>
 							</c:forEach>
-						</ul></li>
+						</ul></li> -->
 					<li class='menu__item' style="border-bottom: 2px solid rgb(228, 54, 54);"><a
 						href="${pageContext.servletContext.contextPath}/tin-tuc.html">Tin tức</a></li>
 				</ul>

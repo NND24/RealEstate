@@ -39,7 +39,7 @@
 									<li data-category-id="${c.categoryId}"">${c.name}</li>
 								</a>
 							</c:forEach>
-						</ul></li>
+						</ul></li> -->
 					<li class="menu__item"><a
 						href="${pageContext.servletContext.contextPath}/tin-tuc.html">Tin tức</a></li>
 				</ul>

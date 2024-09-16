@@ -18,18 +18,18 @@
 			</div>
 			<div class="right-menu">
 				<ul class="menu-container">
-					<li class="menu__item" style="border-bottom: 2px solid rgb(228, 54, 54);"><a
+					<li class="menu__item"
+						style="border-bottom: 2px solid rgb(228, 54, 54);"><a
 						href="${pageContext.servletContext.contextPath}/nha-dat-ban.html">Nhà
 							đất bán</a>
-						<ul class="list-container">
-							<c:forEach var="c" items="${categoriesSell}">
+						<ul class='list-container'>
+								<c:forEach var="c" items="${categoriesSell}">
 								<a
-									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}">
-									<li data-category-id="${c.categoryId}"">${c.name}</li>
-								</a>
-							</c:forEach>
-						</ul></li>
-					<li class="menu__item"><a
+									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>
+										${c.name}</li> </a>
+							</c:forEach> 
+						</ul></li>  
+					<!--	<li class="menu__item"><a
 						href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html">Nhà
 							đất cho thuê</a>
 						<ul class="list-container">
@@ -39,9 +39,10 @@
 									<li data-category-id="${c.categoryId}"">${c.name}</li>
 								</a>
 							</c:forEach>
-						</ul></li>
+						</ul></li> -->
 					<li class="menu__item"><a
-						href="${pageContext.servletContext.contextPath}/tin-tuc.html">Tin tức</a></li>
+						href="${pageContext.servletContext.contextPath}/tin-tuc.html">Tin
+							tức</a></li>
 				</ul>
 			</div>
 		</div>
@@ -53,8 +54,10 @@
 		%>
 		<div class="control-menu">
 			<div class="user-option-container">
-				<a href="${pageContext.servletContext.contextPath}/dang-nhap.html" class="main-button"> Đăng nhập </a> <span class="line"></span>
-				<a href="${pageContext.servletContext.contextPath}/dang-ky.html" class="main-button"> Đăng ký </a>
+				<a href="${pageContext.servletContext.contextPath}/dang-nhap.html"
+					class="main-button"> Đăng nhập </a> <span class="line"></span> <a
+					href="${pageContext.servletContext.contextPath}/dang-ky.html"
+					class="main-button"> Đăng ký </a>
 			</div>
 		</div>
 		<%
@@ -62,11 +65,11 @@
 		%>
 		<div class='control-menu logined'>
 			<a href="${pageContext.servletContext.contextPath}/tin-da-luu.html">
-				<i class='fa-regular fa-heart'></i> 
+				<i class='fa-regular fa-heart'></i>
 			</a>
 			<!--  	<i class='fa-regular fa-bell'></i> -->
 			<div class='user-option-container'>
-			<!-- <span class='avatar'>
+				<!-- <span class='avatar'>
 					<h3>U</h3>
 				 </span> -->
 				<img class="avatar" alt="" src="images/<%= user.getAvatar() %>" />
@@ -74,32 +77,39 @@
 
 				<div class='model-container'>
 					<div class='model-item'>
-						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
+						<a
+							href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">
 							<i class='fa-solid fa-list-ul'></i> <span>Quản lý tin đăng</span>
 						</a>
 					</div>
 					<div class='model-item'>
-					<a href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?edit=true">
-						<i class="fa-regular fa-user"></i> <span>Thay đổi thông
-							tin cá nhân</span>
-							</a>
+						<a
+							href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?edit=true">
+							<i class="fa-regular fa-user"></i> <span>Thay đổi thông
+								tin cá nhân</span>
+						</a>
 					</div>
 					<div class='model-item'>
-					<a href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?setting=true">
-						<i class="fa-solid fa-lock"></i> <span>Thay đổi mật khẩu</span>
-							</a>
+						<a
+							href="${pageContext.servletContext.contextPath}/sellernet/thong-tin-ca-nhan.html?setting=true">
+							<i class="fa-solid fa-lock"></i> <span>Thay đổi mật khẩu</span>
+						</a>
 					</div>
-					<a class='model-item' href="${pageContext.servletContext.contextPath}/sellernet/nap-tien.html">
+					<a class='model-item'
+						href="${pageContext.servletContext.contextPath}/sellernet/nap-tien.html">
 						<i class="fa-regular fa-credit-card"></i> <span>Nạp tiền</span>
 					</a>
 					<hr />
 					<div class='model-item logout'>
-						<i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Đăng xuất</span>
+						<i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Đăng
+							xuất</span>
 					</div>
 				</div>
 			</div>
 			<div class='postProduct__button main-button'>
-				<a href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>Đăng tin</a>
+				<a
+					href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>Đăng
+					tin</a>
 			</div>
 		</div>
 		<%
@@ -112,10 +122,10 @@
 			<div class="search-bar__tab">
 				<a href="${pageContext.servletContext.contextPath}/nha-dat-ban.html"
 					class="tab-box <%if ("sell".equals(request.getAttribute("page"))) {%> tab-box--actived<%}%>">Bán</a>
-				<a
+				<!--  	<a
 					href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html"
 					class="tab-box <%if ("rent".equals(request.getAttribute("page"))) {%> tab-box--actived<%}%>">Cho
-					thuê</a>
+					thuê</a> -->
 
 			</div>
 			<div class="search-bar__input">
@@ -139,7 +149,7 @@
 								<i class="fa-solid fa-house"></i> <span>Tất cả nhà đất </span>
 							</div> <input type="checkbox" id="check-all"
 							<%List<Integer> categoryIdsList = (List<Integer>) request.getAttribute("categoryIds");
-							if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11))) {%>
+							if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(1,2,3,4))) {%>
 							checked <%}%> /> <span class="checkmark"> </span>
 						</label>
 						<div class="separate"></div>
@@ -152,14 +162,23 @@
 							checked <%}%> /> <span class="checkmark"></span>
 						</label>
 						<div class="separate"></div>
+
 						<label for="2" id="check-type-of-house" class="type-item">
 							<div>
-								<i class="fa-solid fa-house-user"></i> <span>Các loại nhà
-									bán </span>
+								<i class="fa-solid fa-house-user"></i> <span>Nhà ở </span>
+							</div> <input type="checkbox" id="2" value="2"
+							<%if (categoryIdsList != null && categoryIdsList.contains(2)) {%>
+							checked <%}%> /> <span class="checkmark"></span>
+						</label>
+
+						<!-- 	<label for="2" id="check-type-of-house" class="type-item">
+							<div>
+								<i class="fa-solid fa-house-user"></i> <span>Nhà ở </span>
 							</div> <input type="checkbox" id="2"
 							<%if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(2, 3, 4, 5))) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="3" class="type-item">
+						</label> 
+						<label for="3" class="type-item">
 							<div>
 								<i></i> <span>Nhà riêng</span>
 							</div> <input type="checkbox" id="3" value="2"
@@ -183,16 +202,38 @@
 							</div> <input type="checkbox" id="6" value="5"
 							<%if (categoryIdsList != null && categoryIdsList.contains(5)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label>
+						</label> -->
 						<div class="separate"></div>
-						<label for="7" class="type-item" id="check-type-of-land">
+						
+						<label for="3" class="type-item" id="check-type-of-land">
+							<div>
+								<i class="fa-solid fa-panorama"></i> <span>Các loại đất
+									bán</span>
+							</div> <input type="checkbox" id="3" value="3"
+							<%if (categoryIdsList != null && categoryIdsList.contains(3)) {%>
+							checked <%}%> /> <span class="checkmark"></span>
+						</label>
+						
+						<div class="separate"></div>
+						
+						<label for="4" class="type-item" id="check-type-of-land">
+							<div>
+								<i class="fa-solid fa-shop"></i> <span>Văn phòng, mặt bằng kinh doanh</span>
+							</div> <input type="checkbox" id="4" value="4"
+							<%if (categoryIdsList != null && categoryIdsList.contains(4)) {%>
+							checked <%}%> /> <span class="checkmark"></span>
+						</label>
+
+					<!--	<label for="7" class="type-item" id="check-type-of-land">
 							<div>
 								<i class="fa-solid fa-panorama"></i> <span>Các loại đất
 									bán</span>
 							</div> <input type="checkbox" id="7"
 							<%if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(6, 7))) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="8" class="type-item">
+						</label>
+
+						 	<label for="8" class="type-item">
 							<div>
 								<i></i> <span>Đất nền dự án</span>
 							</div> <input type="checkbox" id="8" value="6"
@@ -204,8 +245,8 @@
 							</div> <input type="checkbox" id="9" value="7"
 							<%if (categoryIdsList != null && categoryIdsList.contains(7)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label>
-						<div class="separate"></div>
+						</label>  -->
+						<!-- 	<div class="separate"></div>
 						<label for="10" class="type-item" id="check-type-of-farm">
 							<div>
 								<i class="fa-solid fa-tractor"></i> <span>Trang trại, khu
@@ -237,7 +278,7 @@
 							</div> <input type="checkbox" id="13" value="11"
 							<%if (categoryIdsList != null && categoryIdsList.contains(11)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
-						</label>
+						</label>  -->
 					</div>
 
 					<div class="list-search-select-footer">
@@ -262,23 +303,18 @@
 					</div>
 					<p id="list-address">Tất cả</p>
 				</div>
+				
 				<div class="dropdown-menu menu-address">
 					<div class="menu-list">
-						<div class="listing-search-button" id="button-choose-province">
-							<div class="listing-search-title">Tỉnh/Thành</div>
-							<div class="listing-search-current-text"></div>
-							<i class="fa-solid fa-angle-right"></i> <i
-								class="fa-solid fa-xmark"></i>
-						</div>
 						<div class="listing-search-button" id="button-choose-district">
 							<div class="listing-search-title">Quận/Huyện</div>
-							<div class="listing-search-current-text">Hà Nội</div>
+							<div class="listing-search-current-text"></div>
 							<i class="fa-solid fa-angle-right"></i> <i
 								class="fa-solid fa-xmark"></i>
 						</div>
 						<div class="listing-search-button" id="button-choose-ward">
 							<div class="listing-search-title">Phường/Xã</div>
-							<div class="listing-search-current-text">Hà Nội</div>
+							<div class="listing-search-current-text"></div>
 							<i class="fa-solid fa-angle-right"></i> <i
 								class="fa-solid fa-xmark"></i>
 						</div>
@@ -294,25 +330,19 @@
 						</div>
 					</div>
 				</div>
-				<div class="dropdown-menu" id="province-menu">
-					<p class="menu-title">Chọn Tỉnh/Thành</p>
-					<i class="fa-solid fa-xmark close-menu-button"
-						id="close-province-menu"></i>
-					<div class="menu-list list-provinces">
-						<label provinceId="all"> <span>Tất cả Tỉnh/Thành</span>
-						</label>
-						<c:forEach var="p" items="${provinces}">
-							<label provinceId="${p.provinceId}"> <span>${p.name}</span>
-								<i class="fa-solid fa-angle-right"></i>
-							</label>
-						</c:forEach>
-					</div>
-				</div>
 				<div class="dropdown-menu" id="district-menu">
 					<p class="menu-title">Chọn Quận/Huyện</p>
 					<i class="fa-solid fa-xmark close-menu-button"
 						id="close-district-menu"></i>
-					<div class="menu-list list-districts"></div>
+					<div class="menu-list list-districts">
+						<label districtId="all"> <span>Tất cả Quận/Huyện</span>
+						</label>
+						<c:forEach var="p" items="${districts}">
+							<label districtId="${p.districtId}"> <span>${p.name}</span>
+								<i class="fa-solid fa-angle-right"></i>
+							</label>
+						</c:forEach>
+					</div>
 				</div>
 				<div class="dropdown-menu" id="ward-menu">
 					<p class="menu-title">Chọn Phường/Xã</p>
@@ -335,90 +365,133 @@
 				String unit = (String) request.getAttribute("unit");
 				BigInteger minPrice = BigInteger.valueOf(-1); // Initialize with -1
 				BigInteger maxPrice = BigInteger.valueOf(-1); // Initialize with -1
-				
+
 				Object minPriceObj = request.getAttribute("minPrice");
 				Object maxPriceObj = request.getAttribute("maxPrice");
-				
+
 				if (minPriceObj != null && maxPriceObj != null) {
-				    if (minPriceObj instanceof Float && maxPriceObj instanceof Float) {
-				        minPriceFloat = BigDecimal.valueOf((Float) minPriceObj);
-				        maxPriceFloat = BigDecimal.valueOf((Float) maxPriceObj);
-				        BigDecimal divisor = new BigDecimal("1000000"); // Divisor
-				        minPrice = minPriceFloat.divide(divisor).toBigInteger(); // Divide and convert to BigInteger
-				        maxPrice = maxPriceFloat.divide(divisor).toBigInteger(); // Divide and convert to BigInteger
-				    }
+					if (minPriceObj instanceof Float && maxPriceObj instanceof Float) {
+						minPriceFloat = BigDecimal.valueOf((Float) minPriceObj);
+						maxPriceFloat = BigDecimal.valueOf((Float) maxPriceObj);
+						BigDecimal divisor = new BigDecimal("1000000"); // Divisor
+						minPrice = minPriceFloat.divide(divisor).toBigInteger(); // Divide and convert to BigInteger
+						maxPrice = maxPriceFloat.divide(divisor).toBigInteger(); // Divide and convert to BigInteger
+					}
 				}
 				%>
 
 
 				<div class="dropdown-menu menu-price">
-				    <div class="menu-list">
-				        <div class="range-slider-container price-range-slider">
-				            <div class="price-input">
-				                <div class="field">
-				                    <input type="number" class="input-min"
-				                        value="<%= (minPriceFloat == null || minPriceFloat.intValue() < 0) ? "Từ" : minPrice %>"
-				                        placeholder="Từ" />
-				                </div>
-				                <i class="fa-solid fa-arrow-right"></i>
-				                <div class="field">
-				                    <input type="number" class="input-max"
-				                        value="<%= (maxPriceFloat == null || maxPriceFloat.intValue() < 0) ? "Đến" : maxPrice %>"
-				                        placeholder="Đến" />
-				                </div>
-				            </div>
-				            <div class="slider">
-				                <div class="progress"></div>
-				            </div>
-				            <div class="range-input">
-				                <input type="range" class="range-min" min="0" max="59900"
-				                    value="<%= (minPriceFloat == null || minPriceFloat.intValue() < 0) ? 0 : minPrice %>"
-				                    step="100" /> 
-				                <input type="range" class="range-max" min="100" max="60000"
-				                    value="<%= (maxPriceFloat == null || maxPriceFloat.intValue() < 0) ? 60000 : maxPrice %>"
-				                    step="100" />
-				            </div>
-				        </div>
-				        <div class="separate"></div>
-				        <label value="all"> <span class="<%= (minPriceFloat == null && maxPriceFloat == null && unit != null && !unit.equals("thoa-thuan")) ? "active" : "" %>">Tất cả mức giá</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 0 && maxPrice.intValue() == 500) ? "active" : "" %>">Dưới 500 triệu</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 500 && maxPrice.intValue() == 800) ? "active" : "" %>">500 - 800 triệu</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 800 && maxPrice.intValue() == 1000) ? "active" : "" %>">800 triệu - 1 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 1000 && maxPrice.intValue() == 2000) ? "active" : "" %>">1 - 2 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 2000 && maxPrice.intValue() == 3000) ? "active" : "" %>">2 - 3 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 3000 && maxPrice.intValue() == 5000) ? "active" : "" %>">3 - 5 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 5000 && maxPrice.intValue() == 7000) ? "active" : "" %>">5 - 7 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 7000 && maxPrice.intValue() == 10000) ? "active" : "" %>">7 - 10 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 10000 && maxPrice.intValue() == 20000) ? "active" : "" %>">10 - 20 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 20000 && maxPrice.intValue() == 30000) ? "active" : "" %>">20 - 30 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 30000 && maxPrice.intValue() == 40000) ? "active" : "" %>">30 - 40 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 40000 && maxPrice.intValue() == 60000) ? "active" : "" %>">40 - 60 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 60000 && maxPrice.intValue() == 600000) ? "active" : "" %>">Trên 60 tỷ</span>
-				        </label>
-				        <label> <span class="<%= (unit != null && unit.equals("thoa-thuan")) ? "active" : "" %>">Thỏa thuận</span>
-				        </label>
-				    </div>
-				    <div class="list-search-select-footer">
-				        <div class="list-search-select__reset-button" id="reset-search-price">
-				            <i class="fa-solid fa-rotate"></i> <span>Đặt lại</span>
-				        </div>
-				        <div class="list-search-select__search-button">
-				            <i class="fa-solid fa-magnifying-glass"></i> <span>Tìm kiếm</span>
-				        </div>
-				    </div>
+					<div class="menu-list">
+						<div class="range-slider-container price-range-slider">
+							<div class="price-input">
+								<div class="field">
+									<input type="number" class="input-min"
+										value="<%=(minPriceFloat == null || minPriceFloat.intValue() < 0) ? "Từ" : minPrice%>"
+										placeholder="Từ" />
+								</div>
+								<i class="fa-solid fa-arrow-right"></i>
+								<div class="field">
+									<input type="number" class="input-max"
+										value="<%=(maxPriceFloat == null || maxPriceFloat.intValue() < 0) ? "Đến" : maxPrice%>"
+										placeholder="Đến" />
+								</div>
+							</div>
+							<div class="slider">
+								<div class="progress"></div>
+							</div>
+							<div class="range-input">
+								<input type="range" class="range-min" min="0" max="59900"
+									value="<%=(minPriceFloat == null || minPriceFloat.intValue() < 0) ? 0 : minPrice%>"
+									step="100" /> <input type="range" class="range-max" min="100"
+									max="60000"
+									value="<%=(maxPriceFloat == null || maxPriceFloat.intValue() < 0) ? 60000 : maxPrice%>"
+									step="100" />
+							</div>
+						</div>
+						<div class="separate"></div>
+						<label value="all"> <span
+							class="<%=(minPriceFloat == null && maxPriceFloat == null && unit != null && !unit.equals("thoa-thuan")) ? "active" : ""%>">Tất
+								cả mức giá</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 0 && maxPrice.intValue() == 500)
+		? "active"
+		: ""%>">Dưới
+								500 triệu</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 500 && maxPrice.intValue() == 800)
+		? "active"
+		: ""%>">500
+								- 800 triệu</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 800 && maxPrice.intValue() == 1000)
+		? "active"
+		: ""%>">800
+								triệu - 1 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 1000 && maxPrice.intValue() == 2000)
+		? "active"
+		: ""%>">1
+								- 2 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 2000 && maxPrice.intValue() == 3000)
+		? "active"
+		: ""%>">2
+								- 3 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 3000 && maxPrice.intValue() == 5000)
+		? "active"
+		: ""%>">3
+								- 5 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 5000 && maxPrice.intValue() == 7000)
+		? "active"
+		: ""%>">5
+								- 7 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 7000 && maxPrice.intValue() == 10000)
+				? "active"
+				: ""%>">7
+								- 10 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 10000 && maxPrice.intValue() == 20000)
+				? "active"
+				: ""%>">10
+								- 20 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 20000 && maxPrice.intValue() == 30000)
+				? "active"
+				: ""%>">20
+								- 30 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 30000 && maxPrice.intValue() == 40000)
+				? "active"
+				: ""%>">30
+								- 40 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 40000 && maxPrice.intValue() == 60000)
+				? "active"
+				: ""%>">40
+								- 60 tỷ</span>
+						</label> <label> <span
+							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 60000
+		&& maxPrice.intValue() == 600000) ? "active" : ""%>">Trên
+								60 tỷ</span>
+						</label> <label> <span
+							class="<%=(unit != null && unit.equals("thoa-thuan")) ? "active" : ""%>">Thỏa
+								thuận</span>
+						</label>
+					</div>
+					<div class="list-search-select-footer">
+						<div class="list-search-select__reset-button"
+							id="reset-search-price">
+							<i class="fa-solid fa-rotate"></i> <span>Đặt lại</span>
+						</div>
+						<div class="list-search-select__search-button">
+							<i class="fa-solid fa-magnifying-glass"></i> <span>Tìm
+								kiếm</span>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -712,7 +785,7 @@ $(document).ready(function() {
 	});
 
 	window.addEventListener('load', () => {
-		<% if(minPriceFloat != null && maxPriceFloat != null) { %>
+		<%if (minPriceFloat != null && maxPriceFloat != null) {%>
 			let minVal,
 				maxVal;
 
@@ -722,7 +795,7 @@ $(document).ready(function() {
 			priceRange.style.right = 100 - (maxVal / priceRangeInput[1].max) * 100 + "%";
 
 			updateListPrice(minVal, maxVal);
-		<% } %>
+		<%}%>
         });
 
 	// AREA RANGE SLIDER
@@ -814,15 +887,6 @@ $(document).ready(function() {
 	var type2 = document.getElementById("2");
 	var type3 = document.getElementById("3");
 	var type4 = document.getElementById("4");
-	var type5 = document.getElementById("5");
-	var type6 = document.getElementById("6");
-	var type7 = document.getElementById("7");
-	var type8 = document.getElementById("8");
-	var type9 = document.getElementById("9");
-	var type10 = document.getElementById("10");
-	var type11 = document.getElementById("11");
-	var type12 = document.getElementById("12");
-	var type13 = document.getElementById("13");
 
 	document.getElementById("all").addEventListener("click", () => {
 		if (typeAll.checked) {
@@ -830,79 +894,12 @@ $(document).ready(function() {
 			type2.checked = true;
 			type3.checked = true;
 			type4.checked = true;
-			type5.checked = true;
-			type6.checked = true;
-			type7.checked = true;
-			type8.checked = true;
-			type9.checked = true;
-			type10.checked = true;
-			type11.checked = true;
-			type12.checked = true;
-			type13.checked = true;
 		} else {
 			type1.checked = false;
 			type2.checked = false;
 			type3.checked = false;
 			type4.checked = false;
-			type5.checked = false;
-			type6.checked = false;
-			type7.checked = false;
-			type8.checked = false;
-			type9.checked = false;
-			type10.checked = false;
-			type11.checked = false;
-			type12.checked = false;
-			type13.checked = false;
 		}
-	});
-
-	document.getElementById("check-type-of-house").addEventListener("click", () => {
-		if (type2.checked) {
-			type3.checked = true;
-			type4.checked = true;
-			type5.checked = true;
-			type6.checked = true;
-		} else {
-			type3.checked = false;
-			type4.checked = false;
-			type5.checked = false;
-			type6.checked = false;
-		}
-	});
-
-	document.getElementById("check-type-of-land").addEventListener("click", () => {
-		if (type7.checked) {
-			type8.checked = true;
-			type9.checked = true;
-		} else {
-			type8.checked = false;
-			type9.checked = false;
-		}
-	});
-
-	document.getElementById("check-type-of-farm").addEventListener("click", () => {
-		if (type10.checked) {
-			type11.checked = true;
-		} else {
-			type11.checked = false;
-		}
-	});
-
-	document.getElementById("reset-search-type").addEventListener("click", () => {
-		typeAll.checked = false;
-		type1.checked = false;
-		type2.checked = false;
-		type3.checked = false;
-		type4.checked = false;
-		type5.checked = false;
-		type6.checked = false;
-		type7.checked = false;
-		type8.checked = false;
-		type9.checked = false;
-		type10.checked = false;
-		type11.checked = false;
-		type12.checked = false;
-		type13.checked = false;
 	});
 
 	let selectedTypes = [];
@@ -930,11 +927,9 @@ $(document).ready(function() {
 	function checkSelectedTypes() {
 		if (typeAll.checked) {
 			selectedTypes = [
-				"Bất động sản khác",
-				"Kho, nhà xưởng",
-				"Trang trại, khu nghỉ dưỡng",
-				"Các loại đất bán",
-				"Các loại nhà bán",
+				"Văn phòng, mặt bằng kinh doanh",
+				"Đất",
+				"Nhà ở",
 				"Căn hộ chung cư",
 			];
 		} else if (
@@ -942,33 +937,15 @@ $(document).ready(function() {
 			!type1.checked &&
 			!type2.checked &&
 			!type3.checked &&
-			!type4.checked &&
-			!type5.checked &&
-			!type6.checked &&
-			!type7.checked &&
-			!type8.checked &&
-			!type9.checked &&
-			!type10.checked &&
-			!type11.checked &&
-			!type12.checked &&
-			!type13.checked
+			!type4.checked
 		) {
 			selectedTypes = [];
 		} else {
 			selectedTypes = [
 				type1.checked ? "Căn hộ chung cư" : "",
-				type2.checked ? "Các loại nhà bán" : "",
-				!type2.checked && type3.checked ? "Nhà riêng" : "",
-				!type2.checked && type4.checked ? "Nhà biệt thự, liền kề" : "",
-				!type2.checked && type5.checked ? "Nhà mặt phố" : "",
-				!type2.checked && type6.checked ? "Shophouse, nhà phố thương mại" : "",
-				type7.checked ? "Các loại đất bán" : "",
-				!type7.checked && type8.checked ? "Đất nền dự án" : "",
-				!type7.checked && type9.checked ? "Bán đất" : "",
-				type10.checked ? "Trang trại, khu nghỉ dưỡng" : "",
-				!type10.checked && type11.checked ? "Condotel" : "",
-				type12.checked ? "Kho, nhà xưởng" : "",
-				type13.checked ? "Bất động sản khác" : "",
+				type2.checked ? "Nhà ở" : "",
+				type3.checked ? "Đất" : "",
+				type4.checked ? "Văn phòng, mặt bằng kinh doanh" : "",
 			];
 		}
 	}
@@ -982,36 +959,11 @@ $(document).ready(function() {
 				!type1.checked ||
 				!type2.checked ||
 				!type3.checked ||
-				!type4.checked ||
-				!type5.checked ||
-				!type6.checked ||
-				!type7.checked ||
-				!type8.checked ||
-				!type9.checked ||
-				!type10.checked ||
-				!type11.checked ||
-				!type12.checked ||
-				!type13.checked
+				!type4.checked
 			) {
 				typeAll.checked = false;
 			} else {
 				typeAll.checked = true;
-			}
-
-			if (!type3.checked || !type4.checked || !type5.checked || !type6.checked) {
-				type2.checked = false;
-			} else {
-				type2.checked = true;
-			}
-
-			if (!type8.checked || !type9.checked) {
-				type7.checked = false;
-			} else {
-				type7.checked = true;
-			}
-
-			if (!type11.checked) {
-				type10.checked = false;
 			}
 
 			checkSelectedTypes();
@@ -1058,53 +1010,6 @@ $(document).ready(function() {
 	
 	const listAddress = $("#list-address");
 
-	$('.list-provinces').on('click', 'label', function() {
-		$("#province-menu").css("display", "none");
-		
-		provinceId = $(this).attr('provinceId');
-
-		if (provinceId === "all") {
-			$("#button-choose-province").removeClass("has-value");
-			listAddress.text("Tất cả");
-		} else {
-			$("#button-choose-province").addClass("has-value");
-			$("#button-choose-district").removeClass("has-value");
-			$("#button-choose-ward").removeClass("has-value");
-
-			districtId = null;
-			wardId = null;
-			
-			$("#button-choose-province .listing-search-current-text").text($(this).text());
-			listAddress.text($(this).text());
-			
-
-			$.ajax({
-				type: 'GET',
-				url: '${pageContext.servletContext.contextPath}/getDistrictsByProvince.html',
-				data: { provinceId: provinceId },
-				dataType: 'text',
-				success: function(data) {
-					var lines = data.split('\n');
-					$.each(lines, function(index, line) {
-						if (index < lines.length - 1) {
-							var parts = line.split(':');
-							$('.list-districts').append(
-								"<label districtId='" + parts[0] + "'>" +
-								"<span>" + parts[1] + "</span>" +
-								"<i class='fa-solid fa-angle-right'></i>" +
-								"</label>"
-							);
-						}
-					});
-					flagDistrict = true;
-				},
-				error: function(xhr, status, error) {
-					console.error("Error occurred:", error);
-				}
-			});
-		}
-	});
-
 
 	$('.list-districts').on('click', 'label', function() {
 		$("#district-menu").css("display", "none");
@@ -1113,7 +1018,7 @@ $(document).ready(function() {
 
 		if (districtId === null) {
 			$("#button-choose-district").removeClass("has-value");
-			listAddress.text($("#button-choose-province .listing-search-current-text").text());
+			listAddress.text($("#button-choose-district .listing-search-current-text").text());
 		} else {
 			$("#button-choose-district").addClass("has-value");
 			$("#button-choose-ward").removeClass("has-value");
@@ -1121,7 +1026,7 @@ $(document).ready(function() {
 			wardId = null;
 			
 			$("#button-choose-district .listing-search-current-text").text($(this).text());
-			listAddress.text($("#button-choose-province .listing-search-current-text").text() + ", " + $(this).text());
+			listAddress.text($("#button-choose-district .listing-search-current-text").text());
 
 			$.ajax({
 				type: 'GET',
@@ -1157,11 +1062,11 @@ $(document).ready(function() {
 
 		if (wardId === null) {
 			$("#button-choose-ward").removeClass("has-value");
-			listAddress.text($("#button-choose-province .listing-search-current-text").text() + ", " + $("#button-choose-district .listing-search-current-text").text());
+			listAddress.text($("#button-choose-district .listing-search-current-text").text());
 		} else {
 			$("#button-choose-ward").addClass("has-value");
 			$("#button-choose-ward .listing-search-current-text").text($(this).text());
-			listAddress.text($("#button-choose-province .listing-search-current-text").text() + ", " + $("#button-choose-district .listing-search-current-text").text() + ", " + $(this).text());
+			listAddress.text($("#button-choose-district .listing-search-current-text").text() + ", " + $(this).text());
 		}
 	});
 	
@@ -1174,52 +1079,28 @@ $(document).ready(function() {
 		$("#province-menu").css("display", "none");
 	});
 	
-	$("#button-choose-province .fa-xmark").on("click", (event) => {
+	$("#button-choose-district .fa-xmark").on("click", (event) => {
 		event.stopPropagation();
 		
-		 provinceId = null;
-		 districtId = null;
+		districtId = null;
 		 wardId = null;
 		 
-		 $("#button-choose-province").removeClass("has-value");
 		 $("#button-choose-district").removeClass("has-value");
 		 $("#button-choose-ward").removeClass("has-value");
 		
-		 $("#button-choose-province .listing-search-current-text").text("");
 		 $("#button-choose-district .listing-search-current-text").text("");
 		 $("#button-choose-ward .listing-search-current-text").text("");
 		 
-		 listAddress.text("Toàn quốc");
+		 listAddress.text("Toàn thành phố");
 	})
 
 	$("#button-choose-district").on("click", () => {
-		if (provinceId === "all" || provinceId === null || !flagDistrict) {
-			console.log("Chưa chọn tỉnh thành")
-		} else {
-			$("#district-menu").css("display", "block");
-		}
+		$("#district-menu").css("display", "block");
 	});
 
 	$("#close-district-menu").on("click", () => {
 		$("#district-menu").css("display", "none");
 	});
-	
-	$("#button-choose-district .fa-xmark").on("click", (event) => {
-		event.stopPropagation();
-		
-		 $("#district-menu").css("display", "none"); 
-		
-		 districtId = null;
-		 wardId = null;
-		 
-		 $("#button-choose-district").removeClass("has-value");
-		 $("#button-choose-ward").removeClass("has-value");
-		
-		 $("#button-choose-district .listing-search-current-text").text("");
-		 $("#button-choose-ward .listing-search-current-text").text("");
-		 
-		 listAddress.text($("#button-choose-province .listing-search-current-text").text());
-	})
 
 	$("#button-choose-ward").on("click", () => {
 		if (districtId === null || !flagWard) {
@@ -1244,30 +1125,29 @@ $(document).ready(function() {
 		
 		 $("#button-choose-ward .listing-search-current-text").text("");
 		 
-		 listAddress.text($("#button-choose-province .listing-search-current-text").text() + ", " + $("#button-choose-district .listing-search-current-text").text());
+		 listAddress.text($("#button-choose-district .listing-search-current-text").text());
 	})
 	
 	$("#reset-search-address").on("click", () => {
-		 provinceId = null;
 		 districtId = null;
 		 wardId = null;
 		 
-		 $("#button-choose-province").removeClass("has-value");
 		 $("#button-choose-district").removeClass("has-value");
 		 $("#button-choose-ward").removeClass("has-value");
 		
-		 $("#button-choose-province .listing-search-current-text").text("");
 		 $("#button-choose-district .listing-search-current-text").text("");
 		 $("#button-choose-ward .listing-search-current-text").text("");
 		 
-		 listAddress.text("Toàn quốc");
+		 listAddress.text("Toàn thành phố");
 	})
 	
 	// HANDLE SEARCH BY SEARCH INPUT
 	let searchInput = $(".search-bar__input input");
 	let searchInputButton = $(".search-bar__input .fa-magnifying-glass");
+	let searchButton = $(".list-search-select__search-button");
 	
 	// HANDLE SEARCH
+	$(searchButton).on("click", handleSearch);
 	$(searchInputButton).on("click", handleSearch);
 	$(searchInput).on("keyup", function(event) {
 	    if (event.which === 13) { // Enter key code
@@ -1279,18 +1159,12 @@ $(document).ready(function() {
 	function handleSearch() {
 	    let listCategoryId = [];
 	    if (typeAll.checked) {
-	        listCategoryId.push(12, 13, 14, 15, 16, 17, 18, 19, 20, 21);
+	        listCategoryId.push(1, 2, 3, 4);
 	    } else {
-	        if (type1.checked) listCategoryId.push(12);
-	        if (type2.checked) listCategoryId.push(13);
-	        if (type3.checked) listCategoryId.push(14);
-	        if (type4.checked) listCategoryId.push(15);
-	        if (type5.checked) listCategoryId.push(16);
-	        if (type6.checked) listCategoryId.push(17);
-	        if (type7.checked) listCategoryId.push(18);
-	        if (type8.checked) listCategoryId.push(19);
-	        if (type9.checked) listCategoryId.push(20);
-	        if (type10.checked) listCategoryId.push(21);
+	        if (type1.checked) listCategoryId.push(1);
+	        if (type2.checked) listCategoryId.push(2);
+	        if (type3.checked) listCategoryId.push(3);
+	        if (type4.checked) listCategoryId.push(4);
 	    }
 	
 	    let listNumberOfBedrooms = [];
@@ -1410,7 +1284,7 @@ $(document).ready(function() {
 	$(".menu-price label").click((e) => {
 		let listCategoryId = [];
 	    if (typeAll.checked) {
-			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+			listCategoryId.push(1, 2, 3, 4);
 		} else {
 			if (type1.checked) {
 				listCategoryId.push(1);
@@ -1420,30 +1294,6 @@ $(document).ready(function() {
 			}
 			if (type4.checked) {
 				listCategoryId.push(3);
-			}
-			if (type5.checked) {
-				listCategoryId.push(4);
-			}
-			if (type6.checked) {
-				listCategoryId.push(5);
-			}
-			if (type8.checked) {
-				listCategoryId.push(6);
-			}
-			if (type9.checked) {
-				listCategoryId.push(7);
-			}
-			if (type10.checked) {
-				listCategoryId.push(8);
-			}
-			if (type11.checked) {
-				listCategoryId.push(9);
-			}
-			if (type12.checked) {
-				listCategoryId.push(10);
-			}
-			if (type13.checked) {
-				listCategoryId.push(11);
 			}
 		}
 
@@ -1602,40 +1452,19 @@ $(document).ready(function() {
 	$(".menu-area label").click((e) => {
 		let listCategoryId = [];
 	    if (typeAll.checked) {
-			listCategoryId.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+			listCategoryId.push(1, 2, 3, 4);
 		} else {
 			if (type1.checked) {
 				listCategoryId.push(1);
 			}
-			if (type3.checked) {
+			if (type2.checked) {
 				listCategoryId.push(2);
 			}
-			if (type4.checked) {
+			if (type3.checked) {
 				listCategoryId.push(3);
 			}
-			if (type5.checked) {
+			if (type4.checked) {
 				listCategoryId.push(4);
-			}
-			if (type6.checked) {
-				listCategoryId.push(5);
-			}
-			if (type8.checked) {
-				listCategoryId.push(6);
-			}
-			if (type9.checked) {
-				listCategoryId.push(7);
-			}
-			if (type10.checked) {
-				listCategoryId.push(8);
-			}
-			if (type11.checked) {
-				listCategoryId.push(9);
-			}
-			if (type12.checked) {
-				listCategoryId.push(10);
-			}
-			if (type13.checked) {
-				listCategoryId.push(11);
 			}
 		}
 
@@ -1776,31 +1605,6 @@ $(document).ready(function() {
 			type2.checked = true;
 			type3.checked = true;
 			type4.checked = true;
-			type5.checked = true;
-			type6.checked = true;
-			type7.checked = true;
-			type8.checked = true;
-			type9.checked = true;
-			type10.checked = true;
-			type11.checked = true;
-			type12.checked = true;
-			type13.checked = true;
-		}
-
-		if (type2.checked) {
-			type3.checked = true;
-			type4.checked = true;
-			type5.checked = true;
-			type6.checked = true;
-		}
-
-		if (type7.checked) {
-			type8.checked = true;
-			type9.checked = true;
-		}
-
-		if (type10.checked) {
-			type11.checked = true;
 		}
 
 		checkSelectedTypes();
@@ -1862,25 +1666,6 @@ $(document).ready(function() {
 		    	$(".amount-search-more").css("display", "block").text(amountSearchMore)
 		    }
 		    		    
-		    if(result['provinceId'] !== undefined) {
-		    	provinceId = result['provinceId']
-		    	
-		    	$.ajax({
-					type: 'GET',
-					url: '${pageContext.servletContext.contextPath}/getProvinceById.html',
-					data: { provinceId: result['provinceId'] },
-					dataType: 'text',
-					success: function(data) {
-						$("#button-choose-province").addClass("has-value");						
-						$("#button-choose-province .listing-search-current-text").text(data);
-						listAddress.text($("#button-choose-province .listing-search-current-text").text() + ", " + $("#button-choose-district .listing-search-current-text").text() + ", " + $("#button-choose-ward .listing-search-current-text").text());
-					},
-					error: function(xhr, status, error) {
-						console.error("Error occurred:", error);
-					}
-				});
-		    }
-		    
 		    if(result['districtId'] !== undefined) {
 		    	districtId = result['districtId']
 		    	
@@ -1892,6 +1677,7 @@ $(document).ready(function() {
 					success: function(data) {
 						$("#button-choose-district").addClass("has-value");						
 						$("#button-choose-district .listing-search-current-text").text(data);
+						listAddress.text($("#button-choose-district .listing-search-current-text").text() + ", " + $("#button-choose-ward .listing-search-current-text").text());
 					},
 					error: function(xhr, status, error) {
 						console.error("Error occurred:", error);
