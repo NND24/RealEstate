@@ -35,6 +35,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.DistrictsModel;
+import batdongsan.models.HCMDistrictsModel;
+import batdongsan.models.HCMWardsModel;
 import batdongsan.models.ProvincesModel;
 import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
@@ -50,7 +52,8 @@ public class PostController {
 	SessionFactory factory;
 
 	@RequestMapping(value = "dang-tin/ban", method = RequestMethod.GET)
-	public String getSellPage(ModelMap model, HttpServletRequest request) {
+	public String getSellPage(ModelMap model, HttpServletRequest request,
+	                          @RequestParam(name = "categoryId", required = false) Integer categoryId) {
 		Session session = factory.openSession();
 		Cookie[] cookies = request.getCookies();
 		UsersModel user = null;
@@ -68,17 +71,18 @@ public class PostController {
 			}
 		}
 
-		String hqlCat = "FROM CategoryModel WHERE type = :type";
+		String hqlCat = "FROM CategoryModel WHERE type = :type AND status=0";
 		Query<CategoryModel> queryCat = session.createQuery(hqlCat);
 		queryCat.setParameter("type", "Nhà đất bán");
 		List<CategoryModel> categories = queryCat.list();
 
-		String hqlPro = "FROM ProvincesModel";
-		Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
-		List<ProvincesModel> provinces = queryPro.list();
+		String hqlDistrict = "FROM HCMDistrictsModel";
+		Query<HCMDistrictsModel> queryPro = session.createQuery(hqlDistrict);
+		List<HCMDistrictsModel> districts = queryPro.list();
 
 		request.setAttribute("categories", categories);
-		request.setAttribute("provinces", provinces);
+		request.setAttribute("category", categoryId);
+		request.setAttribute("districts", districts);
 		request.setAttribute("user", user);
 		model.addAttribute("realEstate", new RealEstateModel());
 		return "client/sellernet/postSell";
@@ -122,7 +126,6 @@ public class PostController {
 	@RequestMapping(value = "addNewRealEstate", method = RequestMethod.POST)
 	public String addNewRealEstate(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "image") MultipartFile[] files, @RequestParam(name = "categoryId") Integer categoryId,
-			@RequestParam(name = "provinceId") Integer provinceId,
 			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
 			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
 			@RequestParam(name = "description") String description, @RequestParam(name = "typePost") String typePost,
@@ -274,7 +277,6 @@ public class PostController {
 				Session currentSession = factory.getCurrentSession();
 
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-				ProvincesModel province = currentSession.find(ProvincesModel.class, provinceId);
 				DistrictsModel district = currentSession.find(DistrictsModel.class, districtId);
 				WardsModel ward = currentSession.find(WardsModel.class, wardId);
 
@@ -282,7 +284,6 @@ public class PostController {
 				RealEstateModel newRealEstate = new RealEstateModel();
 
 				newRealEstate.setCategory(category);
-				newRealEstate.setProvince(province);
 				newRealEstate.setDistrict(district);
 				newRealEstate.setWard(ward);
 				newRealEstate.setUser(user);
@@ -330,12 +331,12 @@ public class PostController {
 				queryCat.setParameter("type", "Nhà đất bán");
 				List<CategoryModel> categories = queryCat.list();
 
-				String hqlPro = "FROM ProvincesModel";
-				Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
-				List<ProvincesModel> provinces = queryPro.list();
+				String hqlDistrict = "FROM HCMDistrictsModel";
+				Query<HCMDistrictsModel> queryDistrict = session.createQuery(hqlDistrict);
+				List<HCMDistrictsModel> districts = queryDistrict.list();
 
 				request.setAttribute("categories", categories);
-				request.setAttribute("provinces", provinces);
+				request.setAttribute("districts", districts);
 				request.setAttribute("user", user);
 
 				RealEstateModel newRealEstate = new RealEstateModel();
@@ -423,12 +424,12 @@ public class PostController {
 		queryCat.setParameter("type", "Nhà đất bán");
 		List<CategoryModel> categories = queryCat.list();
 
-		String hqlPro = "FROM ProvincesModel";
-		Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
-		List<ProvincesModel> provinces = queryPro.list();
+		String hqlDistrict = "FROM HCMDistrictsModel";
+		Query<HCMDistrictsModel> queryDistrict = session.createQuery(hqlDistrict);
+		List<HCMDistrictsModel> districts = queryDistrict.list();
 
 		request.setAttribute("categories", categories);
-		request.setAttribute("provinces", provinces);
+		request.setAttribute("districts", districts);
 		request.setAttribute("user", user);
 
 		String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
@@ -661,7 +662,7 @@ public class PostController {
 			} else {
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
 
-				String hqlCat = "FROM CategoryModel WHERE type = :type";
+				String hqlCat = "FROM CategoryModel WHERE type = :type AND status=0";
 				Query<CategoryModel> queryCat = session.createQuery(hqlCat);
 				queryCat.setParameter("type", "Nhà đất bán");
 				List<CategoryModel> categories = queryCat.list();
@@ -716,7 +717,7 @@ public class PostController {
 
 				model.addAttribute("realEstate", newRealEstate);
 				if (category.getType().equals("Nhà đất bán")) {
-					String hqlCat1 = "FROM CategoryModel WHERE type = :type";
+					String hqlCat1 = "FROM CategoryModel WHERE type = :type AND status=0";
 					Query<CategoryModel> queryCat1 = session.createQuery(hqlCat1);
 					queryCat1.setParameter("type", "Nhà đất bán");
 					List<CategoryModel> categories1 = queryCat1.list();
@@ -733,7 +734,7 @@ public class PostController {
 					request.setAttribute("realEstate", editedRealEstate);
 					return "client/sellernet/editSellPost";
 				} else {
-					String hqlCat2 = "FROM CategoryModel WHERE type = :type";
+					String hqlCat2 = "FROM CategoryModel WHERE type = :type AND status=0";
 					Query<CategoryModel> queryCat2 = session.createQuery(hqlCat2);
 					queryCat2.setParameter("type", "Nhà đất cho thuê");
 					List<CategoryModel> categories2 = queryCat.list();
@@ -795,14 +796,14 @@ public class PostController {
 	public ResponseEntity<byte[]> getWardsByDistrict(@RequestParam("districtId") int districtId) {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM WardsModel WHERE districtId = :districtId";
-			Query<WardsModel> query = session.createQuery(hql);
+			String hql = "FROM HCMWardsModel WHERE districtId = :districtId";
+			Query<HCMWardsModel> query = session.createQuery(hql);
 			query.setParameter("districtId", districtId);
-			List<WardsModel> list = query.list();
+			List<HCMWardsModel> list = query.list();
 
 			// Tạo một chuỗi text từ danh sách district
 			StringBuilder result = new StringBuilder();
-			for (WardsModel ward : list) {
+			for (HCMWardsModel ward : list) {
 				result.append(ward.getWardId()).append(":").append(ward.getName()).append("\n");
 			}
 
@@ -823,7 +824,7 @@ public class PostController {
 	public List<CategoryModel> getTypesSell() {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
+			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
 			Query<CategoryModel> query = session.createQuery(hql);
 			query.setParameter("type", "Nhà đất bán");
 			List<CategoryModel> categories = query.list();

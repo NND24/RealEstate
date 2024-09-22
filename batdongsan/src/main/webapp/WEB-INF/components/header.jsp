@@ -23,7 +23,7 @@
 									href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?categoryIds=${c.categoryId}"><li>
 										${c.name}</li> </a>
 							</c:forEach> 
-						</ul>></li>
+						</ul></li>
 
 					<!--  	<li class='menu__item'><a
 						href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html">Nhà
@@ -98,7 +98,7 @@
 			</div>
 			<div class='postProduct__button main-button'>
 				<a
-					href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>Đăng
+					href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html?categoryId=1'>Đăng
 					tin</a>
 			</div>
 		</div>

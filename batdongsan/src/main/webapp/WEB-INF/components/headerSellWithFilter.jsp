@@ -108,7 +108,7 @@
 			</div>
 			<div class='postProduct__button main-button'>
 				<a
-					href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>Đăng
+					href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html?categoryId=1'>Đăng
 					tin</a>
 			</div>
 		</div>

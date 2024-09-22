@@ -1,3 +1,4 @@
+<%@page import="batdongsan.models.HCMDistrictsModel"%>
 <%@page import="batdongsan.models.ProvincesModel"%>
 <%@page import="java.util.List"%>
 <%@page import="batdongsan.models.CategoryModel"%>
@@ -38,9 +39,9 @@
 						<li class='active'><a
 							href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>
 								Bán </a></li>
-						<li><a
+					<!-- 	<li><a
 							href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/cho-thue.html'>
-								Cho thuê </a></li>
+								Cho thuê </a></li>  -->
 					</ul>
 
 					<div class='tab-content'>
@@ -50,17 +51,22 @@
 									Loại bất động sản <span>*</span>
 								</p>
 								<%
-								List<CategoryModel> categories = (List<CategoryModel>) request.getAttribute("categories");
+								    Integer category = (Integer) request.getAttribute("category");
+								    List<CategoryModel> categories = (List<CategoryModel>) request.getAttribute("categories");
 								%>
-								<select name="categoryId">
-									<%
-									for (CategoryModel cat : categories) {
-									%>
-									<option value="<%=cat.getCategoryId()%>"><%=cat.getName()%></option>
-									<%
-									}
-									%>
+								<select name="categoryId" onchange="window.location.href=this.value;">
+								    <%
+								    for (CategoryModel cat : categories) {
+								        String selected = (cat.getCategoryId() == category) ? "selected" : ""; // Using == for primitive comparison
+								    %>
+								    <option value="${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html?categoryId=<%= cat.getCategoryId() %>" <%=selected%>>
+								        <%=cat.getName()%>
+								    </option>
+								    <%
+								    }
+								    %>
 								</select>
+
 							</div>
 						</div>
 					</div>
@@ -68,35 +74,20 @@
 					<div class='address-container'>
 						<div class='form-item'>
 							<p>
-								Tỉnh, thành phố <span>*</span>
+								Quận, huyện <span>*</span>
 							</p>
 							<%
-							List<ProvincesModel> provinces = (List<ProvincesModel>) request.getAttribute("provinces");
+							List<HCMDistrictsModel> districts = (List<HCMDistrictsModel>) request.getAttribute("districts");
 							%>
-							<select name="provinceId" id="provinceId">
+							<select name=districteId" id="districtId">
 								<%
-								for (ProvincesModel pro : provinces) {
+								for (HCMDistrictsModel district : districts) {
 								%>
-								<option value="<%=pro.getProvinceId()%>"><%=pro.getName()%></option>
+								<option value="<%=district.getDistrictId()%>"><%=district.getName()%></option>
 								<%
 								}
 								%>
 							</select>
-						</div>
-
-						<div class='form-item'>
-							<p>
-								Quận, huyện <span>*</span>
-							</p>
-							<select name='districtId' id="districtId">
-								<option value="0">---Quận, huyện---</option>
-							</select>
-							<%
-							    String districtError = (String) request.getAttribute("districtError");
-							%>
-							<p class="error" style="<%= (districtError != null && !districtError.isEmpty()) ? "display: block;" : "display: none;" %>">
-							    <%= districtError %>
-							</p>
 						</div>
 					</div>
 
@@ -115,7 +106,6 @@
 							    <%= wardError %>
 							</p>
 						</div>
-						<div class='form-item'></div>
 					</div>
 
 					<div class='form-item'>
@@ -165,6 +155,9 @@
 					</div>
 				</div>
 
+				<%
+				if (category==1) {
+				%>
 				<div class='input-wrapper'>
 					<h3>Thông tin bất động sản</h3>
 
@@ -173,7 +166,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="area" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="area" id="size" placeholder="Nhập diện tích, VD: 80" />
 							<span>m²</span>
 						</div>
 						<%
@@ -184,6 +177,70 @@
 						</p>
 					</div>
 
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Số phòng ngủ</p>
+							<div class='input-container'>
+								<form:input path="numberOfBedrooms" id="rooms"
+									placeholder="Nhập số phòng, VD: 2" />
+								<span>phòng</span>
+							</div>
+						</div>
+						<div class='form-item'>
+							<p>Số phòng tắm, vệ sinh</p>
+							<div class='input-container'>
+								<form:input path="numberOfToilets" id="toilets"
+									placeholder="Nhập số phòng, VD: 2" />
+								<span>phòng</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Số tầng</p>
+							<div class='input-container'>
+								<form:input path="numberOfToilets" id="floors"
+									placeholder="Nhập số tầng, VD: 2" />
+								<span>tầng</span>
+							</div>
+						</div>
+						<div class='form-item'>
+							<p>Loại hình nhà ở</p>
+							<select name='house_type' id="house_type">
+								<option value=''>---Loại nhà---</option>
+								<option value='Nhà ngõ, hẻm'>Nhà ngõ, hẻm</option>
+								<option value='Nhà mặt phố, mặt tiền'>Nhà mặt phố, mặt tiền</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Nội thất</p>
+							<select name='interior' id="furnishing_sell">
+								<option value=''>---Nội thất---</option>
+								<option value='Hoàn thiện cơ bản'>Hoàn thiện cơ bản</option>
+								<option value='Nội thất đầy đủ'>Nội thất đầy đủn</option>
+							</select>
+						</div>
+						<div class='form-item'>
+							<p>Hướng nhà</p>
+							<select name='direction'>
+								<option value=''>---Hướng nhà---</option>
+								<option value='Bắc'>Bắc</option>
+								<option value='Đông-Bắc'>Đông-Bắc</option>
+								<option value='Đông'>Đông</option>
+								<option value='Đông-Nam'>Đông-Nam</option>
+								<option value='Nam'>Nam</option>
+								<option value='Tây-Nam'>Tây-Nam</option>
+								<option value='Tây'>Tây</option>
+								<option value='Tây-Bắc'>Tây-Bắc</option>
+							</select>
+						</div>
+					</div>
+					
+					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
 							<p>
@@ -204,53 +261,183 @@
 							<p>Đơn vị</p>
 							<select name='unit'>
 						        <option value='VND'>VND</option>
-						        <option value='Giá / m²'>Giá / m²</option>
-						        <option value='Thỏa thuận'>Thỏa thuận</option>
 						    </select>
 						</div>
 					</div>
+				</div>
+				<% } else if (category==2) { %>
+				<div class='input-wrapper'>
+					<h3>Thông tin bất động sản</h3>
 
 					<div class='form-item'>
-						<p>Nội thất</p>
-						<select name='interior'>
-							<option value=''>---Nội thất---</option>
-							<option value='Đầy đủ'>Đầy đủ</option>
-							<option value='Cơ bản'>Cơ bản</option>
-							<option value='Không nột thất'>Không nội thất</option>
-						</select>
+						<p>
+							Diện tích <span>*</span>
+						</p>
+						<div class='input-container'>
+							<form:input path="area" placeholder="Nhập diện tích, VD: 80" />
+							<span>m²</span>
+						</div>
+						<%
+						    String areaError = (String) request.getAttribute("areaError");
+						%>
+						<p class="error" style="<%= (areaError != null && !areaError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= areaError %>
+						</p>
 					</div>
 
-					<div class='form-item'>
-						<p>Số phòng ngủ</p>
-						<div class='input-container'>
-							<form:input path="numberOfBedrooms"
-								placeholder="Nhập số phòng, VD: 2" />
-							<span>phòng</span>
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Số phòng ngủ</p>
+							<div class='input-container'>
+								<form:input path="numberOfBedrooms"
+									placeholder="Nhập số phòng, VD: 2" />
+								<span>phòng</span>
+							</div>
+						</div>
+						<div class='form-item'>
+							<p>Số phòng tắm, vệ sinh</p>
+							<div class='input-container'>
+								<form:input path="numberOfToilets"
+									placeholder="Nhập số phòng, VD: 2" />
+								<span>phòng</span>
+							</div>
 						</div>
 					</div>
+					
 					<div class='form-item'>
-						<p>Số phòng tắm, vệ sinh</p>
-						<div class='input-container'>
-							<form:input path="numberOfToilets"
-								placeholder="Nhập số phòng, VD: 2" />
-							<span>phòng</span>
-						</div>
-					</div>
-					<div class='form-item'>
-						<p>Hướng nhà</p>
-						<select name='direction'>
-							<option value=''>---Hướng nhà---</option>
-							<option value='Bắc'>Bắc</option>
-							<option value='Đông-Bắc'>Đông-Bắc</option>
-							<option value='Đông'>Đông</option>
-							<option value='Đông-Nam'>Đông-Nam</option>
-							<option value='Nam'>Nam</option>
-							<option value='Tây-Nam'>Tây-Nam</option>
-							<option value='Tây'>Tây</option>
-							<option value='Tây-Bắc'>Tây-Bắc</option>
+						<p>Tình trạng bất động sản</p>
+						<select name='property_status'>
+							<option value=''>---Tình trạng---</option>
+							<option value='Đã bàn giao'>Đã bàn giao</option>
+							<option value='Chưa bàn giao'>Chưa bàn giao</option>
 						</select>
+					</div>
+										
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Nội thất</p>
+							<select name='interior'>
+								<option value=''>---Nội thất---</option>
+								<option value='Đầy đủ'>Đầy đủ</option>
+								<option value='Cơ bản'>Cơ bản</option>
+								<option value='Không nột thất'>Không nội thất</option>
+							</select>
+						</div>
+						<div class='form-item'>
+							<p>Hướng ban công</p>
+							<select name='direction'>
+								<option value=''>---Hướng ban công---</option>
+								<option value='Bắc'>Bắc</option>
+								<option value='Đông-Bắc'>Đông-Bắc</option>
+								<option value='Đông'>Đông</option>
+								<option value='Đông-Nam'>Đông-Nam</option>
+								<option value='Nam'>Nam</option>
+								<option value='Tây-Nam'>Tây-Nam</option>
+								<option value='Tây'>Tây</option>
+								<option value='Tây-Bắc'>Tây-Bắc</option>
+							</select>
+						</div>
+					</div>
+					
+					<p id="result"  class="error"></p>
+					<div class='money-wrapper'>
+						<div class='form-item'>
+							<p>
+								Mức giá <span>*</span>
+							</p>
+							<div class='input-container'>
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+							</div>
+							<%
+						    String priceError = (String) request.getAttribute("priceError");
+							%>
+							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= priceError %>
+							</p>
+						</div>
+
+						<div class='form-item'>
+							<p>Đơn vị</p>
+							<select name='unit'>
+						        <option value='VND'>VND</option>
+						    </select>
+						</div>
 					</div>
 				</div>
+				<% } else if (category==3) { %>
+				<div class='input-wrapper'>
+					<h3>Thông tin bất động sản</h3>
+
+					<div class='form-item'>
+						<p>
+							Diện tích <span>*</span>
+						</p>
+						<div class='input-container'>
+							<form:input path="area" placeholder="Nhập diện tích, VD: 80" />
+							<span>m²</span>
+						</div>
+						<%
+						    String areaError = (String) request.getAttribute("areaError");
+						%>
+						<p class="error" style="<%= (areaError != null && !areaError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= areaError %>
+						</p>
+					</div>
+															
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Nội thất</p>
+							<select name='interior'>
+								<option value=''>---Nội thất---</option>
+								<option value='Đầy đủ'>Đầy đủ</option>
+								<option value='Cơ bản'>Cơ bản</option>
+								<option value='Không nột thất'>Không nội thất</option>
+							</select>
+						</div>
+						<div class='form-item'>
+							<p>Hướng nhà</p>
+							<select name='direction'>
+								<option value=''>---Hướng nhà---</option>
+								<option value='Bắc'>Bắc</option>
+								<option value='Đông-Bắc'>Đông-Bắc</option>
+								<option value='Đông'>Đông</option>
+								<option value='Đông-Nam'>Đông-Nam</option>
+								<option value='Nam'>Nam</option>
+								<option value='Tây-Nam'>Tây-Nam</option>
+								<option value='Tây'>Tây</option>
+								<option value='Tây-Bắc'>Tây-Bắc</option>
+							</select>
+						</div>
+					</div>
+					
+					<p id="result"  class="error"></p>
+					<div class='money-wrapper'>
+						<h4 id="result">Giá khuyến nghị cho bất động sản của bạn là: 6.000.000.000đ</h4>
+						<div class='form-item'>
+							<p>
+								Mức giá <span>*</span>
+							</p>
+							<div class='input-container'>
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+							</div>
+							<%
+						    String priceError = (String) request.getAttribute("priceError");
+							%>
+							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= priceError %>
+							</p>
+						</div>
+
+						<div class='form-item'>
+							<p>Đơn vị</p>
+							<select name='unit'>
+						        <option value='VND'>VND</option>
+						    </select>
+						</div>
+					</div>
+				</div>
+				<% } %>
+				
 
 				<div class='input-wrapper'>
 					<h3>Hình ảnh</h3>
@@ -534,6 +721,111 @@
 	</div>
 
 	<script type="text/javascript">
+	
+	document.getElementById('price').addEventListener('input', async function() {
+	    const districtElement = document.getElementById('districtId');
+	    const wardElement = document.getElementById('wardId');
+	    const sizeElement = document.getElementById('size');
+	    const roomsElement = document.getElementById('rooms');
+	    const toiletsElement = document.getElementById('toilets');
+	    const floorsElement = document.getElementById('floors');
+	    const houseTypeElement = document.getElementById('house_type');
+	    const furnishingSellElement = document.getElementById('furnishing_sell');
+	    
+	    let ward = "";
+	    let district;
+	    let size = 0;
+	    let rooms = 0;
+	    let toilets = 0;
+	    let floors = 0;
+	    let house_type = "";
+	    let furnishing_sell = "";
+
+	    if (wardElement && wardElement.selectedIndex !== -1) {
+	    	if(wardElement.options[wardElement.selectedIndex].textContent === "---Phường, xã---") {
+	    		ward =  "";
+	    	} else {
+		        ward = wardElement.options[wardElement.selectedIndex].textContent;
+	    	}
+	    } else {
+	    	ward =  "";
+	    }
+	    
+	    if (districtElement && districtElement.selectedIndex !== -1) {
+	        district = districtElement.options[districtElement.selectedIndex].textContent;
+	    } 
+
+	    if (sizeElement && sizeElement.value) {
+	    	size = sizeElement.value;
+	    } 
+	    
+	    if (roomsElement && roomsElement.value) {
+	        rooms = roomsElement.value;
+	    } 
+	    
+	    if (toiletsElement && toiletsElement.value) {
+	       toilets = toiletsElement.value;
+	    } 
+	    
+	    if (floorsElement && floorsElement.value) {
+	        floors = floorsElement.value;
+	    } 
+	    
+	    if (houseTypeElement && houseTypeElement.selectedIndex !== -1) {
+	    	if(houseTypeElement.options[houseTypeElement.selectedIndex].textContent === "---Loại nhà---") {
+	    		house_type =  "Nhà ngõ, hẻm";
+	    	} else {
+		        house_type = houseTypeElement.options[houseTypeElement.selectedIndex].textContent;
+	    	}
+	    } else {
+	    	house_type =  "Nhà ngõ, hẻm";
+	    }
+	    
+	    if (furnishingSellElement && furnishingSellElement.selectedIndex !== -1) {
+	    	if(furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent === "---Nội thất---") {
+	    		furnishing_sell =  "Hoàn thiện cơ bản";
+	    	} else {
+		       furnishing_sell = furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent;
+	    	}
+	    } else {
+	    	furnishing_sell =  "Hoàn thiện cơ bản";
+	    }
+	    
+	    if(ward!=="" && size!==0) {
+	    	 const data = {
+	          		ward: ward,
+	         		district: district,
+	         		size: parseFloat(size),
+	         		rooms: parseInt(rooms),
+	         		toilets: parseInt(toilets),
+	         		floors: parseInt(floors),
+	         		house_type: house_type,
+	         		furnishing_sell: furnishing_sell
+	         };
+
+	         try {
+	             const response = await fetch('http://localhost:5000/housePredict', {
+	                 method: 'POST',
+	                 headers: {
+	                     'Content-Type': 'application/json'
+	                 },
+	                 body: JSON.stringify(data)
+	             });
+
+	             const result = await response.json();
+	             document.getElementById('result').style.display = "block";
+	             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+	         } catch (error) {
+	        	 document.getElementById('result').style.display = "none";
+	             console.error('Error predicting price:', error);
+	             document.getElementById('result').innerText = 'Error predicting price.';
+	         }
+	    } else {
+	    	document.getElementById('result').style.display = "none";
+	    }
+       
+	});
+	
 	var images = [];
 	function image_select() {
 		var image = document.getElementById("image").files;
@@ -914,7 +1206,7 @@
 
             if(district !== "---Quận, huyện---" && ward !== "---Phường, xã---") {
             	// Construct the address
-	            var address = ward.trim() + ", " + district.trim() + ", " + province.trim();           
+	            var address = ward.trim() + ", " + district.trim() + ", Thành phố Hồ Chí Minh";           
 	            
 	            // Update the detail-address element
 	            $("#detail-address").val($("#detail-address").val() + address);

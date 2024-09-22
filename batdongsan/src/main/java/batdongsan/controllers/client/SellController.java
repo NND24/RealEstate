@@ -592,7 +592,7 @@ public class SellController {
 	public List<CategoryModel> getTypesRent() {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
+			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
 			Query<CategoryModel> query = session.createQuery(hql);
 			query.setParameter("type", "Nhà đất cho thuê");
 			List<CategoryModel> categories = query.list();
