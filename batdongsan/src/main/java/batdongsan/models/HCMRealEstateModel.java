@@ -35,7 +35,7 @@ public class HCMRealEstateModel {
 	@ManyToOne
 	@JoinColumn(name = "wardId")
 	private HCMWardsModel ward;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	private UsersModel user;
@@ -47,10 +47,16 @@ public class HCMRealEstateModel {
 	private float size;
 	private float price;
 	private String unit;
-	private String interior;
+	private String furnishingSell;
 	private String direction;
+	private String balconyDirection;
 	private int rooms;
 	private int toilets;
+	private int floors;
+	private String type;
+	private String propertyStatus;
+	private String propertyLegalDocument;
+	private String characteristics;
 	private String images;
 	private String contactName;
 	private String phoneNumber;
@@ -63,7 +69,7 @@ public class HCMRealEstateModel {
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date expirationDate;
-	
+
 	private String status;
 	private int totalMoney;
 
@@ -114,7 +120,53 @@ public class HCMRealEstateModel {
 		this.description = description;
 	}
 
-	
+	public String getBalconyDirection() {
+		return balconyDirection;
+	}
+
+	public void setBalconyDirection(String balconyDirection) {
+		this.balconyDirection = balconyDirection;
+	}
+
+	public int getFloors() {
+		return floors;
+	}
+
+	public void setFloors(int floors) {
+		this.floors = floors;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getPropertyStatus() {
+		return propertyStatus;
+	}
+
+	public void setPropertyStatus(String propertyStatus) {
+		this.propertyStatus = propertyStatus;
+	}
+
+	public String getPropertyLegalDocument() {
+		return propertyLegalDocument;
+	}
+
+	public void setPropertyLegalDocument(String propertyLegalDocument) {
+		this.propertyLegalDocument = propertyLegalDocument;
+	}
+
+	public String getCharacteristics() {
+		return characteristics;
+	}
+
+	public void setCharacteristics(String characteristics) {
+		this.characteristics = characteristics;
+	}
 
 	public float getSize() {
 		return size;
@@ -140,12 +192,14 @@ public class HCMRealEstateModel {
 		this.unit = unit;
 	}
 
-	public String getInterior() {
-		return interior;
+	
+
+	public String getFurnishingSell() {
+		return furnishingSell;
 	}
 
-	public void setInterior(String interior) {
-		this.interior = interior;
+	public void setFurnishingSell(String furnishingSell) {
+		this.furnishingSell = furnishingSell;
 	}
 
 	public int getRooms() {
@@ -275,6 +329,5 @@ public class HCMRealEstateModel {
 	public void setUser(UsersModel user) {
 		this.user = user;
 	}
-	
-	
+
 }

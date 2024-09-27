@@ -34,13 +34,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import batdongsan.models.CategoryModel;
-import batdongsan.models.DistrictsModel;
 import batdongsan.models.HCMDistrictsModel;
+import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.HCMWardsModel;
-import batdongsan.models.ProvincesModel;
-import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
-import batdongsan.models.WardsModel;
 
 import batdongsan.utils.Vadilator;
 
@@ -77,14 +74,14 @@ public class PostController {
 		List<CategoryModel> categories = queryCat.list();
 
 		String hqlDistrict = "FROM HCMDistrictsModel";
-		Query<HCMDistrictsModel> queryPro = session.createQuery(hqlDistrict);
-		List<HCMDistrictsModel> districts = queryPro.list();
+		Query<HCMDistrictsModel> queryDis = session.createQuery(hqlDistrict);
+		List<HCMDistrictsModel> districts = queryDis.list();
 
 		request.setAttribute("categories", categories);
 		request.setAttribute("category", categoryId);
 		request.setAttribute("districts", districts);
 		request.setAttribute("user", user);
-		model.addAttribute("realEstate", new RealEstateModel());
+		model.addAttribute("realEstate", new HCMRealEstateModel());
 		return "client/sellernet/postSell";
 	}
 
@@ -112,14 +109,14 @@ public class PostController {
 		queryCat.setParameter("type", "Nhà đất cho thuê");
 		List<CategoryModel> categories = queryCat.list();
 
-		String hqlPro = "FROM ProvincesModel";
-		Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
-		List<ProvincesModel> provinces = queryPro.list();
+		String hqlDistrict = "FROM HCMDistrictsModel";
+		Query<HCMDistrictsModel> queryDis = session.createQuery(hqlDistrict);
+		List<HCMDistrictsModel> districts = queryDis.list();
 
 		request.setAttribute("categories", categories);
-		request.setAttribute("provinces", provinces);
+		request.setAttribute("districts", districts);
 		request.setAttribute("user", user);
-		model.addAttribute("realEstate", new RealEstateModel());
+		model.addAttribute("realEstate", new HCMRealEstateModel());
 		return "client/sellernet/postRent";
 	}
 
@@ -129,11 +126,19 @@ public class PostController {
 			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
 			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
 			@RequestParam(name = "description") String description, @RequestParam(name = "typePost") String typePost,
-			@RequestParam(name = "area") String area, @RequestParam(name = "price") String price,
-			@RequestParam(name = "unit") String unit, @RequestParam(name = "interior") String interior,
-			@RequestParam(name = "numberOfBedrooms") int numberOfBedrooms,
-			@RequestParam(name = "numberOfToilets") int numberOfToilets,
-			@RequestParam(name = "direction") String direction, @RequestParam(name = "contactName") String contactName,
+			@RequestParam(name = "size") String size, @RequestParam(name = "price") String price,
+			@RequestParam(name = "unit") String unit, 
+			@RequestParam(name = "furnishingSell", required = false) String furnishingSell,
+			@RequestParam(name = "rooms", required = false) Integer rooms, 
+			@RequestParam(name = "toilets", required = false) Integer toilets,
+			@RequestParam(name = "floors", required = false) Integer floors,
+			@RequestParam(name = "direction", required = false) String direction, 
+			@RequestParam(name = "balconyDirection", required = false) String balconyDirection, 
+			@RequestParam(name = "type", required = false) String type, 
+			@RequestParam(name = "propertyStatus", required = false) String propertyStatus,
+			@RequestParam(name = "propertyLegalDocument", required = false) String propertyLegalDocument, 
+			@RequestParam(name = "characteristics", required = false) String characteristics,
+			@RequestParam(name = "contactName") String contactName,
 			@RequestParam(name = "phoneNumber") String phoneNumber, @RequestParam(name = "email") String email,
 			@RequestParam(name = "submittedDate") String submittedDateString,
 			@RequestParam(name = "expirationDate") String expirationDateString,
@@ -184,14 +189,14 @@ public class PostController {
 				isError = true;
 			}
 
-			if (area.isEmpty()) {
-				request.setAttribute("areaError", "Diện tích không được để trống!");
+			if (size.isEmpty()) {
+				request.setAttribute("sizeError", "Diện tích không được để trống!");
 				isError = true;
-			} else if (!area.matches("\\d+(\\.\\d+)?")) {
-				request.setAttribute("areaError", "Diện tích phải là số!");
+			} else if (!size.matches("\\d+(\\.\\d+)?")) {
+				request.setAttribute("sizeError", "Diện tích phải là số!");
 				isError = true;
-			} else if (Float.parseFloat(area) <= 0) {
-				request.setAttribute("areaError", "Diện tích phải lớn hơn 0!");
+			} else if (Float.parseFloat(size) <= 0) {
+				request.setAttribute("sizeError", "Diện tích phải lớn hơn 0!");
 				isError = true;
 			}
 
@@ -277,11 +282,11 @@ public class PostController {
 				Session currentSession = factory.getCurrentSession();
 
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-				DistrictsModel district = currentSession.find(DistrictsModel.class, districtId);
-				WardsModel ward = currentSession.find(WardsModel.class, wardId);
+				HCMDistrictsModel district = currentSession.find(HCMDistrictsModel.class, districtId);
+				HCMWardsModel ward = currentSession.find(HCMWardsModel.class, wardId);
 
 				// Commit transaction and set success message
-				RealEstateModel newRealEstate = new RealEstateModel();
+				HCMRealEstateModel newRealEstate = new HCMRealEstateModel();
 
 				newRealEstate.setCategory(category);
 				newRealEstate.setDistrict(district);
@@ -291,13 +296,25 @@ public class PostController {
 				newRealEstate.setTitle(title);
 				newRealEstate.setDescription(description);
 				newRealEstate.setTypePost(typePost);
-				newRealEstate.setArea(Float.parseFloat(area));
+				newRealEstate.setSize(Float.parseFloat(size));
 				newRealEstate.setPrice(Float.parseFloat(price));
 				newRealEstate.setUnit(unit);
-				newRealEstate.setInterior(interior);
+				newRealEstate.setFurnishingSell(furnishingSell);
 				newRealEstate.setDirection(direction);
-				newRealEstate.setNumberOfBedrooms(numberOfBedrooms);
-				newRealEstate.setNumberOfToilets(numberOfToilets);
+				newRealEstate.setBalconyDirection(balconyDirection);
+				if (floors != null) {
+				    newRealEstate.setFloors(floors);
+				}
+				if (rooms != null) {
+				    newRealEstate.setRooms(rooms);
+				}
+				if (toilets != null) {
+				    newRealEstate.setToilets(toilets);
+				}
+				newRealEstate.setType(type);
+				newRealEstate.setPropertyStatus(propertyStatus);
+				newRealEstate.setPropertyLegalDocument(propertyLegalDocument);
+				newRealEstate.setCharacteristics(characteristics);
 				newRealEstate.setImages(images);
 				newRealEstate.setContactName(contactName);
 				newRealEstate.setPhoneNumber(phoneNumber);
@@ -316,12 +333,13 @@ public class PostController {
 
 				session.save(newRealEstate);
 				t.commit();
-
-				if (category.getType().equals("Nhà đất bán")) {
-					return "redirect:/sellernet/dang-tin/ban.html";
-				} else {
-					return "redirect:/sellernet/dang-tin/cho-thue.html";
-				}
+				
+				return "redirect:/sellernet/dang-tin/ban.html?categoryId="+categoryId;
+//				if (category.getType().equals("Nhà đất bán")) {
+//					return "redirect:/sellernet/dang-tin/ban.html";
+//				} else {
+//					return "redirect:/sellernet/dang-tin/cho-thue.html";
+//				}
 			} else {
 				Session currentSession = factory.getCurrentSession();
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
@@ -336,10 +354,11 @@ public class PostController {
 				List<HCMDistrictsModel> districts = queryDistrict.list();
 
 				request.setAttribute("categories", categories);
+				request.setAttribute("category", categoryId);
 				request.setAttribute("districts", districts);
 				request.setAttribute("user", user);
 
-				RealEstateModel newRealEstate = new RealEstateModel();
+				HCMRealEstateModel newRealEstate = new HCMRealEstateModel();
 
 				if (!address.trim().equals("")) {
 					newRealEstate.setAddress(address);
@@ -353,19 +372,31 @@ public class PostController {
 					newRealEstate.setDescription(description);
 				}
 
-				if (!area.isEmpty() && area.matches("\\d+(\\.\\d+)?") && Float.parseFloat(area) > 0) {
-					newRealEstate.setArea(Float.parseFloat(area));
+				if (!size.isEmpty() && size.matches("\\d+(\\.\\d+)?") && Float.parseFloat(size) > 0) {
+					newRealEstate.setSize(Float.parseFloat(size));
 				}
 
 				if (!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Float.parseFloat(price) > 0) {
-					newRealEstate.setArea(Float.parseFloat(area));
+					newRealEstate.setSize(Float.parseFloat(size));
 				}
 
 				newRealEstate.setUnit(unit);
-				newRealEstate.setInterior(interior);
+				newRealEstate.setFurnishingSell(furnishingSell);
 				newRealEstate.setDirection(direction);
-				newRealEstate.setNumberOfBedrooms(numberOfBedrooms);
-				newRealEstate.setNumberOfToilets(numberOfToilets);
+				newRealEstate.setBalconyDirection(balconyDirection);
+				if (floors != null) {
+				    newRealEstate.setFloors(floors);
+				}
+				if (rooms != null) {
+				    newRealEstate.setRooms(rooms);
+				}
+				if (toilets != null) {
+				    newRealEstate.setToilets(toilets);
+				}
+				newRealEstate.setType(type);
+				newRealEstate.setPropertyStatus(propertyStatus);
+				newRealEstate.setPropertyLegalDocument(propertyLegalDocument);
+				newRealEstate.setCharacteristics(characteristics);
 
 				if (!contactName.trim().equals("")) {
 					newRealEstate.setContactName(contactName);
@@ -380,16 +411,17 @@ public class PostController {
 				}
 
 				model.addAttribute("realEstate", newRealEstate);
-				if (category.getType().equals("Nhà đất bán")) {
-					return "client/sellernet/postSell";
-				} else {
-					return "client/sellernet/postRent";
-				}
+				return "client/sellernet/postSell";
+//				if (category.getType().equals("Nhà đất bán")) {
+//					return "client/sellernet/postSell";
+//				} else {
+//					return "client/sellernet/postRent";
+//				}
 			}
 		} catch (Exception e) {
 			t.rollback();
 			e.printStackTrace();
-			return "redirect:/sellernet/dang-tin/ban.html";
+			return "redirect:/sellernet/dang-tin/ban.html?categoryId="+categoryId;
 		} finally {
 			session.close();
 		}
@@ -432,10 +464,10 @@ public class PostController {
 		request.setAttribute("districts", districts);
 		request.setAttribute("user", user);
 
-		String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-		Query<RealEstateModel> query = session.createQuery(hql);
+		String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+		Query<HCMRealEstateModel> query = session.createQuery(hql);
 		query.setParameter("realEstateId", realEstateId);
-		RealEstateModel RealEstate = query.uniqueResult();
+		HCMRealEstateModel RealEstate = query.uniqueResult();
 		model.addAttribute("realEstate", RealEstate);
 		request.setAttribute("realEstate", RealEstate);
 		return "client/sellernet/editSellPost";
@@ -468,18 +500,18 @@ public class PostController {
 		queryCat.setParameter("type", "Nhà đất cho thuê");
 		List<CategoryModel> categories = queryCat.list();
 
-		String hqlPro = "FROM ProvincesModel";
-		Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
-		List<ProvincesModel> provinces = queryPro.list();
+		String hqlDistrict = "FROM HCMDistrictsModel";
+		Query<HCMDistrictsModel> queryDis = session.createQuery(hqlDistrict);
+		List<HCMDistrictsModel> districts = queryDis.list();
 
 		request.setAttribute("categories", categories);
-		request.setAttribute("provinces", provinces);
+		request.setAttribute("districts", districts);
 		request.setAttribute("user", user);
 
-		String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-		Query<RealEstateModel> query = session.createQuery(hql);
+		String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+		Query<HCMRealEstateModel> query = session.createQuery(hql);
 		query.setParameter("realEstateId", realEstateId);
-		RealEstateModel RealEstate = query.uniqueResult();
+		HCMRealEstateModel RealEstate = query.uniqueResult();
 		model.addAttribute("realEstate", RealEstate);
 		request.setAttribute("realEstate", RealEstate);
 		return "client/sellernet/editRentPost";
@@ -492,12 +524,17 @@ public class PostController {
 			@RequestParam(name = "provinceId") Integer provinceId,
 			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
 			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
-			@RequestParam(name = "description") String description, @RequestParam(name = "area") String area,
+			@RequestParam(name = "description") String description, @RequestParam(name = "size") String size,
 			@RequestParam(name = "price") String price, @RequestParam(name = "unit") String unit,
-			@RequestParam(name = "interior") String interior,
-			@RequestParam(name = "numberOfBedrooms") int numberOfBedrooms,
-			@RequestParam(name = "numberOfToilets") int numberOfToilets,
-			@RequestParam(name = "direction") String direction, @RequestParam(name = "contactName") String contactName,
+			@RequestParam(name = "furnishingSell") String furnishingSell,
+			@RequestParam(name = "rooms") int rooms, @RequestParam(name = "toilets") int toilets,
+			@RequestParam(name = "floors", required = false) int floors,
+			@RequestParam(name = "direction") String direction, 
+			@RequestParam(name = "balconyDirection", required = false) String balconyDirection, 
+			@RequestParam(name = "type") String type, @RequestParam(name = "propertyStatus", required = false) String propertyStatus,
+			@RequestParam(name = "propertyLegalDocument", required = false) String propertyLegalDocument, 
+			@RequestParam(name = "characteristics", required = false) String characteristics,
+			@RequestParam(name = "contactName") String contactName,
 			@RequestParam(name = "phoneNumber") String phoneNumber, @RequestParam(name = "email") String email) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
@@ -519,7 +556,7 @@ public class PostController {
 			}
 
 			Session currentSession = factory.getCurrentSession();
-			RealEstateModel editedRealEstate = currentSession.find(RealEstateModel.class, editedRealEstateId);
+			HCMRealEstateModel editedRealEstate = currentSession.find(HCMRealEstateModel.class, editedRealEstateId);
 
 			boolean isError = false;
 
@@ -548,14 +585,14 @@ public class PostController {
 				isError = true;
 			}
 
-			if (area.isEmpty()) {
-				request.setAttribute("areaError", "Diện tích không được để trống!");
+			if (size.isEmpty()) {
+				request.setAttribute("sizeError", "Diện tích không được để trống!");
 				isError = true;
-			} else if (!area.matches("\\d+(\\.\\d+)?")) {
-				request.setAttribute("areaError", "Diện tích phải là số!");
+			} else if (!size.matches("\\d+(\\.\\d+)?")) {
+				request.setAttribute("sizeError", "Diện tích phải là số!");
 				isError = true;
-			} else if (Float.parseFloat(area) <= 0) {
-				request.setAttribute("areaError", "Diện tích phải lớn hơn 0!");
+			} else if (Float.parseFloat(size) <= 0) {
+				request.setAttribute("sizeError", "Diện tích phải lớn hơn 0!");
 				isError = true;
 			}
 
@@ -630,25 +667,30 @@ public class PostController {
 				}
 
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-				ProvincesModel province = currentSession.find(ProvincesModel.class, provinceId);
-				DistrictsModel district = currentSession.find(DistrictsModel.class, districtId);
-				WardsModel ward = currentSession.find(WardsModel.class, wardId);
+				HCMDistrictsModel district = currentSession.find(HCMDistrictsModel.class, districtId);
+				HCMWardsModel ward = currentSession.find(HCMWardsModel.class, wardId);
 
 				editedRealEstate.setCategory(category);
-				editedRealEstate.setProvince(province);
 				editedRealEstate.setDistrict(district);
 				editedRealEstate.setWard(ward);
 				editedRealEstate.setUser(user);
 				editedRealEstate.setAddress(address);
 				editedRealEstate.setTitle(title);
 				editedRealEstate.setDescription(description);
-				editedRealEstate.setArea(Float.parseFloat(area));
+				editedRealEstate.setSize(Float.parseFloat(size));
 				editedRealEstate.setPrice(Float.parseFloat(price));
 				editedRealEstate.setUnit(unit);
-				editedRealEstate.setInterior(interior);
+				editedRealEstate.setFurnishingSell(furnishingSell);
 				editedRealEstate.setDirection(direction);
-				editedRealEstate.setNumberOfBedrooms(numberOfBedrooms);
-				editedRealEstate.setNumberOfToilets(numberOfToilets);
+				editedRealEstate.setBalconyDirection(balconyDirection);
+				editedRealEstate.setRooms(rooms);
+				editedRealEstate.setToilets(toilets);
+				editedRealEstate.setFloors(floors);
+				editedRealEstate.setType(type);
+				editedRealEstate.setPropertyStatus(propertyStatus);
+				editedRealEstate.setPropertyLegalDocument(propertyLegalDocument);
+				editedRealEstate.setCharacteristics(characteristics);
+
 				if (files != null && files.length > 0 && !images.isEmpty() && !images.equals("[]")) {
 					editedRealEstate.setImages(images);
 				}
@@ -668,14 +710,15 @@ public class PostController {
 				List<CategoryModel> categories = queryCat.list();
 
 				String hqlPro = "FROM ProvincesModel";
-				Query<ProvincesModel> queryPro = session.createQuery(hqlPro);
-				List<ProvincesModel> provinces = queryPro.list();
+				Query<HCMDistrictsModel> queryDis = session.createQuery(hqlPro);
+				List<HCMDistrictsModel> districts = queryDis.list();
 
 				request.setAttribute("categories", categories);
-				request.setAttribute("provinces", provinces);
+				request.setAttribute("category", categoryId);
+				request.setAttribute("districts", districts);
 				request.setAttribute("user", user);
 
-				RealEstateModel newRealEstate = new RealEstateModel();
+				HCMRealEstateModel newRealEstate = new HCMRealEstateModel();
 
 				if (!address.trim().equals("")) {
 					newRealEstate.setAddress(address);
@@ -689,19 +732,25 @@ public class PostController {
 					newRealEstate.setDescription(description);
 				}
 
-				if (!area.isEmpty() && area.matches("\\d+(\\.\\d+)?") && Float.parseFloat(area) > 0) {
-					newRealEstate.setArea(Float.parseFloat(area));
+				if (!size.isEmpty() && size.matches("\\d+(\\.\\d+)?") && Float.parseFloat(size) > 0) {
+					newRealEstate.setSize(Float.parseFloat(size));
 				}
 
 				if (!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Float.parseFloat(price) > 0) {
-					newRealEstate.setArea(Float.parseFloat(area));
+					newRealEstate.setSize(Float.parseFloat(size));
 				}
 
 				newRealEstate.setUnit(unit);
-				newRealEstate.setInterior(interior);
+				newRealEstate.setFurnishingSell(furnishingSell);
 				newRealEstate.setDirection(direction);
-				newRealEstate.setNumberOfBedrooms(numberOfBedrooms);
-				newRealEstate.setNumberOfToilets(numberOfToilets);
+				newRealEstate.setBalconyDirection(balconyDirection);
+				newRealEstate.setRooms(rooms);
+				newRealEstate.setToilets(toilets);
+				newRealEstate.setFloors(floors);
+				newRealEstate.setType(type);
+				newRealEstate.setPropertyStatus(propertyStatus);
+				newRealEstate.setPropertyLegalDocument(propertyLegalDocument);
+				newRealEstate.setCharacteristics(characteristics);
 
 				if (!contactName.trim().equals("")) {
 					newRealEstate.setContactName(contactName);
@@ -722,12 +771,13 @@ public class PostController {
 					queryCat1.setParameter("type", "Nhà đất bán");
 					List<CategoryModel> categories1 = queryCat1.list();
 
-					String hqlPro1 = "FROM ProvincesModel";
-					Query<ProvincesModel> queryPro1 = session.createQuery(hqlPro1);
-					List<ProvincesModel> provinces1 = queryPro1.list();
+					String hqlDis1 = "FROM HCMDistrictsModel";
+					Query<HCMDistrictsModel> queryDis1 = session.createQuery(hqlDis1);
+					List<HCMDistrictsModel> districts1 = queryDis1.list();
 
 					request.setAttribute("categories", categories1);
-					request.setAttribute("provinces", provinces1);
+					request.setAttribute("category", categoryId);
+					request.setAttribute("districts", districts1);
 					request.setAttribute("user", user);
 
 					model.addAttribute("realEstate", editedRealEstate);
@@ -739,12 +789,13 @@ public class PostController {
 					queryCat2.setParameter("type", "Nhà đất cho thuê");
 					List<CategoryModel> categories2 = queryCat.list();
 
-					String hqlPro2 = "FROM ProvincesModel";
-					Query<ProvincesModel> queryPro2 = session.createQuery(hqlPro2);
-					List<ProvincesModel> provinces2 = queryPro2.list();
+					String hqlDis2 = "FROM HCMDistrictsModel";
+					Query<HCMDistrictsModel> queryDis2 = session.createQuery(hqlDis2);
+					List<HCMDistrictsModel> districts2 = queryDis2.list();
 
 					request.setAttribute("categories", categories2);
-					request.setAttribute("provinces", provinces2);
+					request.setAttribute("category", categoryId);
+					request.setAttribute("districts", districts2);
 					request.setAttribute("user", user);
 
 					model.addAttribute("realEstate", editedRealEstate);
@@ -768,13 +819,13 @@ public class PostController {
 		Session session = factory.openSession();
 		try {
 			String hql = "FROM DistrictsModel WHERE provinceId = :provinceId";
-			Query<DistrictsModel> query = session.createQuery(hql);
+			Query<HCMDistrictsModel> query = session.createQuery(hql);
 			query.setParameter("provinceId", provinceId);
-			List<DistrictsModel> list = query.list();
+			List<HCMDistrictsModel> list = query.list();
 
 			// Tạo một chuỗi text từ danh sách district
 			StringBuilder result = new StringBuilder();
-			for (DistrictsModel district : list) {
+			for (HCMDistrictsModel district : list) {
 				result.append(district.getDistrictId()).append(":").append(district.getName()).append("\n");
 			}
 
