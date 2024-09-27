@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.NewsModel;
-import batdongsan.models.RealEstateModel;
+import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.UsersModel;
 
 @Controller
@@ -49,10 +49,10 @@ public class HomeController {
 			}
 			
 			// Fetch expired real estates
-            String hqlExpired = "SELECT re FROM RealEstateModel re WHERE re.expirationDate < :today";
-            Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
+            String hqlExpired = "SELECT re FROM HCMRealEstateModel re WHERE re.expirationDate < :today";
+            Query<HCMRealEstateModel> queryExpired = session.createQuery(hqlExpired, HCMRealEstateModel.class);
             queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
-            List<RealEstateModel> expiredRealEstates = queryExpired.list();
+            List<HCMRealEstateModel> expiredRealEstates = queryExpired.list();
 
             // Update status of all real estates to "Ẩn"
             expiredRealEstates.forEach(re -> {
@@ -60,16 +60,16 @@ public class HomeController {
                 session.merge(re);
             });
 
-			String hqlREForYou = "FROM RealEstateModel re WHERE re.status = :status ";
+			String hqlREForYou = "FROM HCMRealEstateModel re WHERE re.status = :status ";
 			if (user != null) {
 				hqlREForYou += " AND NOT EXISTS (SELECT 1 FROM FavouriteModel fa WHERE fa.realEstate = id AND fa.user = :user)";
 			}
-			Query<RealEstateModel> queryREForYou = session.createQuery(hqlREForYou);
+			Query<HCMRealEstateModel> queryREForYou = session.createQuery(hqlREForYou);
 			queryREForYou.setParameter("status", "Đang hiển thị");
 			if (user != null) {
 				queryREForYou.setParameter("user", user);
 			}
-			List<RealEstateModel> listREForYou = queryREForYou.list();
+			List<HCMRealEstateModel> listREForYou = queryREForYou.list();
 			request.setAttribute("listREForYou", listREForYou);
 			
 			int amountREHCM = 0;
@@ -78,20 +78,20 @@ public class HomeController {
 			int amountREBD = 0;
 			int amountREDongNai = 0;
 			
-			for(RealEstateModel re : listREForYou) {
-				if(re.getProvince().getProvinceId()==50) {
+			for(HCMRealEstateModel re : listREForYou) {
+				if(re.getDistrict().getDistrictId()==1) {
 					amountREHCM++;
 				}
-				if(re.getProvince().getProvinceId()==1) {
+				if(re.getDistrict().getDistrictId()==2) {
 					amountREHN++;
 				}
-				if(re.getProvince().getProvinceId()==32) {
+				if(re.getDistrict().getDistrictId()==3) {
 					amountREDaNang++;
 				}
-				if(re.getProvince().getProvinceId()==47) {
+				if(re.getDistrict().getDistrictId()==4) {
 					amountREBD++;
 				}
-				if(re.getProvince().getProvinceId()==48) {
+				if(re.getDistrict().getDistrictId()==5) {
 					amountREDongNai++;
 				}
 			}

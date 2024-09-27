@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import batdongsan.models.CategoryModel;
-import batdongsan.models.RealEstateModel;
+import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.UsersModel;
 
 @Controller
@@ -28,21 +28,21 @@ public class DetailController {
     public String index(HttpServletRequest request, @RequestParam("realEstateId") int realEstateId) {
     	Session session = factory.openSession();
 		try {
-			String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-			Query<RealEstateModel> query = session.createQuery(hql);
+			String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+			Query<HCMRealEstateModel> query = session.createQuery(hql);
 			query.setParameter("realEstateId", realEstateId);
-			RealEstateModel realEsate = query.getSingleResult();
+			HCMRealEstateModel realEsate = query.getSingleResult();
 			
 			request.setAttribute("realEstate", realEsate);
 			
-			String hql1 = "SELECT re FROM RealEstateModel re JOIN re.category cat WHERE re.status = :status AND cat.type LIKE :type";
+			String hql1 = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat WHERE re.status = :status AND cat.type LIKE :type";
 	        
-			Query<RealEstateModel> query1 = session.createQuery(hql1);
+			Query<HCMRealEstateModel> query1 = session.createQuery(hql1);
 			
 			query1.setParameter("type", realEsate.getCategory().getType());
 			query1.setParameter("status", "Đang hiển thị");
 			
-	        List<RealEstateModel> realEstates = query1.list();
+	        List<HCMRealEstateModel> realEstates = query1.list();
 
 	        request.setAttribute("realEstates", realEstates);
 	        request.setAttribute("page", "sell");

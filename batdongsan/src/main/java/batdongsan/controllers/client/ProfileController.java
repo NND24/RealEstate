@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import batdongsan.models.CategoryModel;
-import batdongsan.models.RealEstateModel;
+import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.UsersModel;
 
 @Controller
@@ -35,20 +35,20 @@ public class ProfileController {
 	        UsersModel userInfo = currentSession.find(UsersModel.class, userId);
 	        request.setAttribute("userInfo", userInfo);
 
-	        String hqlSell = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
-	        Query<RealEstateModel> querySell = session.createQuery(hqlSell);
+	        String hqlSell = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
+	        Query<HCMRealEstateModel> querySell = session.createQuery(hqlSell);
 	        querySell.setParameter("userId", userId);
 	        querySell.setParameter("type", "Nhà đất bán");
 	        querySell.setParameter("status", "Đang hiển thị");
-	        List<RealEstateModel> sellRealEstates = querySell.list();
+	        List<HCMRealEstateModel> sellRealEstates = querySell.list();
 	        request.setAttribute("sellRealEstates", sellRealEstates);
 
-	        String hqlRent = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
-	        Query<RealEstateModel> queryRent = session.createQuery(hqlRent);
+	        String hqlRent = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
+	        Query<HCMRealEstateModel> queryRent = session.createQuery(hqlRent);
 	        queryRent.setParameter("userId", userId);
 	        queryRent.setParameter("type", "Nhà đất cho thuê");
 	        queryRent.setParameter("status", "Đang hiển thị");
-	        List<RealEstateModel> rentRealEstates = queryRent.list();
+	        List<HCMRealEstateModel> rentRealEstates = queryRent.list();
 	        request.setAttribute("rentRealEstates", rentRealEstates);
 
 	        Cookie[] cookies = request.getCookies();

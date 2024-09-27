@@ -299,22 +299,16 @@ public class PostController {
 				newRealEstate.setSize(Float.parseFloat(size));
 				newRealEstate.setPrice(Float.parseFloat(price));
 				newRealEstate.setUnit(unit);
-				newRealEstate.setFurnishingSell(furnishingSell);
-				newRealEstate.setDirection(direction);
-				newRealEstate.setBalconyDirection(balconyDirection);
-				if (floors != null) {
-				    newRealEstate.setFloors(floors);
-				}
-				if (rooms != null) {
-				    newRealEstate.setRooms(rooms);
-				}
-				if (toilets != null) {
-				    newRealEstate.setToilets(toilets);
-				}
+				newRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
+				newRealEstate.setDirection(direction != null ? direction : "");
+				newRealEstate.setBalconyDirection(balconyDirection != null ? balconyDirection : "");
+			    newRealEstate.setFloors(floors != null ? floors : 0);
+			    newRealEstate.setRooms(rooms != null ? rooms : 0);
+			    newRealEstate.setToilets(toilets != null ? toilets : 0);
 				newRealEstate.setType(type);
-				newRealEstate.setPropertyStatus(propertyStatus);
-				newRealEstate.setPropertyLegalDocument(propertyLegalDocument);
-				newRealEstate.setCharacteristics(characteristics);
+				newRealEstate.setPropertyStatus(propertyStatus != null ? propertyStatus : "");
+				newRealEstate.setPropertyLegalDocument(propertyLegalDocument != null ? propertyLegalDocument : "");
+				newRealEstate.setCharacteristics(characteristics != null ? characteristics : "");
 				newRealEstate.setImages(images);
 				newRealEstate.setContactName(contactName);
 				newRealEstate.setPhoneNumber(phoneNumber);
@@ -381,22 +375,16 @@ public class PostController {
 				}
 
 				newRealEstate.setUnit(unit);
-				newRealEstate.setFurnishingSell(furnishingSell);
-				newRealEstate.setDirection(direction);
-				newRealEstate.setBalconyDirection(balconyDirection);
-				if (floors != null) {
-				    newRealEstate.setFloors(floors);
-				}
-				if (rooms != null) {
-				    newRealEstate.setRooms(rooms);
-				}
-				if (toilets != null) {
-				    newRealEstate.setToilets(toilets);
-				}
+				newRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
+				newRealEstate.setDirection(direction != null ? direction : "");
+				newRealEstate.setBalconyDirection(balconyDirection != null ? balconyDirection : "");
+				newRealEstate.setFloors(floors != null ? floors : 0);
+			    newRealEstate.setRooms(rooms != null ? rooms : 0);
+			    newRealEstate.setToilets(toilets != null ? toilets : 0);
 				newRealEstate.setType(type);
-				newRealEstate.setPropertyStatus(propertyStatus);
-				newRealEstate.setPropertyLegalDocument(propertyLegalDocument);
-				newRealEstate.setCharacteristics(characteristics);
+				newRealEstate.setPropertyStatus(propertyStatus != null ? propertyStatus : "");
+				newRealEstate.setPropertyLegalDocument(propertyLegalDocument != null ? propertyLegalDocument : "");
+				newRealEstate.setCharacteristics(characteristics != null ? characteristics : "");
 
 				if (!contactName.trim().equals("")) {
 					newRealEstate.setContactName(contactName);
@@ -470,6 +458,7 @@ public class PostController {
 		HCMRealEstateModel RealEstate = query.uniqueResult();
 		model.addAttribute("realEstate", RealEstate);
 		request.setAttribute("realEstate", RealEstate);
+		request.setAttribute("category", RealEstate.getCategory().getCategoryId());
 		return "client/sellernet/editSellPost";
 	}
 
@@ -519,19 +508,20 @@ public class PostController {
 
 	@RequestMapping(value = "editRealEstate", method = RequestMethod.POST)
 	public String editRealEstate(ModelMap model, HttpServletRequest request,
-			@RequestParam(name = "image", required = false) MultipartFile[] files,
-			@RequestParam(name = "categoryId") Integer categoryId,
-			@RequestParam(name = "provinceId") Integer provinceId,
+			@RequestParam(name = "image") MultipartFile[] files, @RequestParam(name = "categoryId") Integer categoryId,
 			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
 			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
-			@RequestParam(name = "description") String description, @RequestParam(name = "size") String size,
-			@RequestParam(name = "price") String price, @RequestParam(name = "unit") String unit,
-			@RequestParam(name = "furnishingSell") String furnishingSell,
-			@RequestParam(name = "rooms") int rooms, @RequestParam(name = "toilets") int toilets,
-			@RequestParam(name = "floors", required = false) int floors,
-			@RequestParam(name = "direction") String direction, 
+			@RequestParam(name = "description") String description,
+			@RequestParam(name = "size") String size, @RequestParam(name = "price") String price,
+			@RequestParam(name = "unit") String unit, 
+			@RequestParam(name = "furnishingSell", required = false) String furnishingSell,
+			@RequestParam(name = "rooms", required = false) Integer rooms, 
+			@RequestParam(name = "toilets", required = false) Integer toilets,
+			@RequestParam(name = "floors", required = false) Integer floors,
+			@RequestParam(name = "direction", required = false) String direction, 
 			@RequestParam(name = "balconyDirection", required = false) String balconyDirection, 
-			@RequestParam(name = "type") String type, @RequestParam(name = "propertyStatus", required = false) String propertyStatus,
+			@RequestParam(name = "type", required = false) String type, 
+			@RequestParam(name = "propertyStatus", required = false) String propertyStatus,
 			@RequestParam(name = "propertyLegalDocument", required = false) String propertyLegalDocument, 
 			@RequestParam(name = "characteristics", required = false) String characteristics,
 			@RequestParam(name = "contactName") String contactName,
@@ -679,17 +669,17 @@ public class PostController {
 				editedRealEstate.setDescription(description);
 				editedRealEstate.setSize(Float.parseFloat(size));
 				editedRealEstate.setPrice(Float.parseFloat(price));
-				editedRealEstate.setUnit(unit);
-				editedRealEstate.setFurnishingSell(furnishingSell);
-				editedRealEstate.setDirection(direction);
-				editedRealEstate.setBalconyDirection(balconyDirection);
-				editedRealEstate.setRooms(rooms);
-				editedRealEstate.setToilets(toilets);
-				editedRealEstate.setFloors(floors);
+				editedRealEstate.setUnit(unit);				
+				editedRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
+				editedRealEstate.setDirection(direction != null ? direction : "");
+				editedRealEstate.setBalconyDirection(balconyDirection != null ? balconyDirection : "");
+				editedRealEstate.setFloors(floors != null ? floors : 0);
+				editedRealEstate.setRooms(rooms != null ? rooms : 0);
+				editedRealEstate.setToilets(toilets != null ? toilets : 0);
 				editedRealEstate.setType(type);
-				editedRealEstate.setPropertyStatus(propertyStatus);
-				editedRealEstate.setPropertyLegalDocument(propertyLegalDocument);
-				editedRealEstate.setCharacteristics(characteristics);
+				editedRealEstate.setPropertyStatus(propertyStatus != null ? propertyStatus : "");
+				editedRealEstate.setPropertyLegalDocument(propertyLegalDocument != null ? propertyLegalDocument : "");
+				editedRealEstate.setCharacteristics(characteristics != null ? characteristics : "");
 
 				if (files != null && files.length > 0 && !images.isEmpty() && !images.equals("[]")) {
 					editedRealEstate.setImages(images);
@@ -741,16 +731,16 @@ public class PostController {
 				}
 
 				newRealEstate.setUnit(unit);
-				newRealEstate.setFurnishingSell(furnishingSell);
-				newRealEstate.setDirection(direction);
-				newRealEstate.setBalconyDirection(balconyDirection);
-				newRealEstate.setRooms(rooms);
-				newRealEstate.setToilets(toilets);
-				newRealEstate.setFloors(floors);
-				newRealEstate.setType(type);
-				newRealEstate.setPropertyStatus(propertyStatus);
-				newRealEstate.setPropertyLegalDocument(propertyLegalDocument);
-				newRealEstate.setCharacteristics(characteristics);
+				editedRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
+				editedRealEstate.setDirection(direction != null ? direction : "");
+				editedRealEstate.setBalconyDirection(balconyDirection != null ? balconyDirection : "");
+				editedRealEstate.setFloors(floors != null ? floors : 0);
+				editedRealEstate.setRooms(rooms != null ? rooms : 0);
+				editedRealEstate.setToilets(toilets != null ? toilets : 0);
+				editedRealEstate.setType(type);
+				editedRealEstate.setPropertyStatus(propertyStatus != null ? propertyStatus : "");
+				editedRealEstate.setPropertyLegalDocument(propertyLegalDocument != null ? propertyLegalDocument : "");
+				editedRealEstate.setCharacteristics(characteristics != null ? characteristics : "");
 
 				if (!contactName.trim().equals("")) {
 					newRealEstate.setContactName(contactName);

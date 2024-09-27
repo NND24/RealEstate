@@ -3,7 +3,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.time.ZoneId"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
-<%@page import="batdongsan.models.RealEstateModel"%>
+<%@page import="batdongsan.models.HCMRealEstateModel"%>
 <%@page import="java.util.List"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -40,25 +40,25 @@
 					<ul class='nav nav-tabs'>
 						<%		
 							// All realEstate
-							List<RealEstateModel> allRealEstates = (List<RealEstateModel>) request.getAttribute("allRealEstates");
+							List<HCMRealEstateModel> allRealEstates = (List<HCMRealEstateModel>) request.getAttribute("allRealEstates");
 							Integer currentAllPage = (Integer) request.getAttribute("currentAllPage");
 							Integer totalAllPages = (Integer) request.getAttribute("totalAllPages");
 							Integer totalAllResults = (Integer) request.getAttribute("totalAllResults");
 						
 							// Expired realEstates
-							List<RealEstateModel> expiredRealEstates = (List<RealEstateModel>) request.getAttribute("expiredRealEstates");
+							List<HCMRealEstateModel> expiredRealEstates = (List<HCMRealEstateModel>) request.getAttribute("expiredRealEstates");
 							Integer currentExpiredPage = (Integer) request.getAttribute("currentExpiredPage");
 							Integer totalExpiredResults = (Integer) request.getAttribute("totalExpiredResults");
 							Integer totalExpiredPages = (Integer) request.getAttribute("totalExpiredPages");
 							
 							// Near ExpiredRealEstates
-							List<RealEstateModel> nearExpiredRealEstates = (List<RealEstateModel>) request.getAttribute("nearExpiredRealEstates");
+							List<HCMRealEstateModel> nearExpiredRealEstates = (List<HCMRealEstateModel>) request.getAttribute("nearExpiredRealEstates");
 							Integer currentNearExpiredPage = (Integer) request.getAttribute("currentNearExpiredPage");
 							Integer totalNearExpiredResults = (Integer) request.getAttribute("totalNearExpiredResults");
 							Integer totalNearExpiredPages = (Integer) request.getAttribute("totalNearExpiredPages");
 							
 							// Display RealEstates
-							List<RealEstateModel> displayRealEstates = (List<RealEstateModel>) request.getAttribute("displayRealEstates");
+							List<HCMRealEstateModel> displayRealEstates = (List<HCMRealEstateModel>) request.getAttribute("displayRealEstates");
 							Integer currentDisplayPage = (Integer) request.getAttribute("currentDisplayPage");
 							Integer totalDisplayResults = (Integer) request.getAttribute("totalDisplayResults");
 							Integer totalDisplayPages = (Integer) request.getAttribute("totalDisplayPages");
@@ -74,7 +74,7 @@
 						<div id='home' class='tab-pane fade in active'>
 							<%									
 							if (allRealEstates != null) {								
-								for (RealEstateModel r : allRealEstates) {
+								for (HCMRealEstateModel r : allRealEstates) {
 									String imageString = (String) r.getImages();
 		
 									if (imageString != null && !imageString.isEmpty()) {
@@ -215,7 +215,7 @@
 						<div id='menu1' class='tab-pane fade'>
 							<%							
 							if (expiredRealEstates != null) {
-								for (RealEstateModel r : expiredRealEstates) {
+								for (HCMRealEstateModel r : expiredRealEstates) {
 									String imageString = (String) r.getImages();
 		
 									if (imageString != null && !imageString.isEmpty()) {
@@ -356,7 +356,7 @@
 						<div id='menu2' class='tab-pane fade'>
 							<%									
 							if (nearExpiredRealEstates != null) {
-								for (RealEstateModel r : nearExpiredRealEstates) {
+								for (HCMRealEstateModel r : nearExpiredRealEstates) {
 									String imageString = (String) r.getImages();
 		
 									if (imageString != null && !imageString.isEmpty()) {
@@ -498,7 +498,7 @@
 						<div id='menu3' class='tab-pane fade'>
 							<%									
 							if (displayRealEstates != null) {
-								for (RealEstateModel r : displayRealEstates) {
+								for (HCMRealEstateModel r : displayRealEstates) {
 									String imageString = (String) r.getImages();
 		
 									if (imageString != null && !imageString.isEmpty()) {

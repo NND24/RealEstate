@@ -359,12 +359,12 @@
 				</div>
 				<div class='place-container'>
 					<a
-						href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=50"
+						href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?districtId=1"
 						class='place-item place-big'> <img
 						src='https://file4.batdongsan.com.vn/images/newhome/cities1/HCM-web-2.jpg'
 						alt='' />
 						<div class='place-info'>
-							<span class='place-name'>TP. Hồ Chí Minh</span> <span
+							<span class='place-name'>Quận 1</span> <span
 								class='place-number'><%=request.getAttribute("amountREHCM")%>
 								tin đăng</span>
 						</div>
@@ -372,42 +372,42 @@
 					<div class='place-small'>
 						<div class='row'>
 							<a
-								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=1"
+								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?districtId=2"
 								class='col-lg-6 place-item'> <img
 								src='https://file4.batdongsan.com.vn/images/newhome/cities1/HN-web-2.jpg'
 								alt='' />
 								<div class='place-info'>
-									<span class='place-name'>Hà Nội</span> <span
+									<span class='place-name'>Quận 2</span> <span
 										class='place-number'><%=request.getAttribute("amountREHN")%>
 										tin đăng</span>
 								</div>
 							</a> <a
-								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=32"
+								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?districtId=3"
 								class='col-lg-6 place-item'> <img
 								src='https://file4.batdongsan.com.vn/images/newhome/cities1/DDN-web-2.jpg'
 								alt='' />
 								<div class='place-info'>
-									<span class='place-name'>Đà Nẵng</span> <span
+									<span class='place-name'>Quận 3</span> <span
 										class='place-number'><%=request.getAttribute("amountREDaNang")%>
 										tin đăng</span>
 								</div>
 							</a> <a
-								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=47"
+								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?districtId=4"
 								class='col-lg-6 place-item'> <img
 								src='https://file4.batdongsan.com.vn/images/newhome/cities1/BD-web-1.jpg'
 								alt='' />
 								<div class='place-info'>
-									<span class='place-name'>Bình Dương</span> <span
+									<span class='place-name'>Quận 4</span> <span
 										class='place-number'><%=request.getAttribute("amountREBD")%>
 										tin đăng</span>
 								</div>
 							</a> <a
-								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?provinceId=48"
+								href="${pageContext.servletContext.contextPath}/nha-dat-ban.html?districtId=5"
 								class='col-lg-6 place-item'> <img
 								src='https://file4.batdongsan.com.vn/images/newhome/cities1/DNA-web-2.jpg'
 								alt='' />
 								<div class='place-info'>
-									<span class='place-name'>Đồng Nai</span> <span
+									<span class='place-name'>Quận 6</span> <span
 										class='place-number'><%=request.getAttribute("amountREDongNai")%>
 										tin đăng</span>
 								</div>

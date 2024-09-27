@@ -1,4 +1,5 @@
-<%@page import="batdongsan.models.RealEstateModel"%>
+<%@page import="batdongsan.models.HCMDistrictsModel"%>
+<%@page import="batdongsan.models.HCMRealEstateModel"%>
 <%@page import="batdongsan.models.ProvincesModel"%>
 <%@page import="java.util.List"%>
 <%@page import="batdongsan.models.CategoryModel"%>
@@ -30,7 +31,7 @@
 			<form:form action="sellernet/editRealEstate.html" modelAttribute="realEstate"
 				method="POST" enctype="multipart/form-data">
 				<% 
-				RealEstateModel realEstate = (RealEstateModel) request.getAttribute("realEstate");
+				HCMRealEstateModel realEstate = (HCMRealEstateModel) request.getAttribute("realEstate");
 				%>
 
 				<div class='input-wrapper'>
@@ -38,10 +39,12 @@
 					<h3>Thông tin cơ bản</h3>
 
 					<ul class='nav nav-tabs'>
-						<li class='active'><a>
+						<li class='active'><a
+							href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html'>
 								Bán </a></li>
-						<li><a>
-								Cho thuê </a></li>
+					<!-- 	<li><a
+							href='${pageContext.servletContext.contextPath}/sellernet/dang-tin/cho-thue.html'>
+								Cho thuê </a></li>  -->
 					</ul>
 
 					<div class='tab-content'>
@@ -51,17 +54,23 @@
 									Loại bất động sản <span>*</span>
 								</p>
 								<%
-								List<CategoryModel> categories = (List<CategoryModel>) request.getAttribute("categories");
+								    Integer category = (Integer) request.getAttribute("category");
+								    List<CategoryModel> categories = (List<CategoryModel>) request.getAttribute("categories");
 								%>
-								<select name="categoryId">
-									<%
-									for (CategoryModel cat : categories) {
-									%>
-									<option <%= realEstate.getCategory().getName()==cat.getName() ? "selected" : "" %> value="<%=cat.getCategoryId()%>"><%=cat.getName()%></option>
-									<%
-									}
-									%>
+								<select name="categoryId" onchange="window.location.href='<%= pageContext.getServletContext().getContextPath() %>/sellernet/dang-tin/ban.html?categoryId=' + this.value;">
+								    <%
+								    for (CategoryModel cat : categories) {
+								        String selected = (cat.getCategoryId() == category) ? "selected" : "";
+								    %>
+								    <option value="<%= cat.getCategoryId() %>" <%= selected %>>
+								        <%= cat.getName() %>
+								    </option>
+								    <%
+								    }
+								    %>
 								</select>
+
+
 							</div>
 						</div>
 					</div>
@@ -69,35 +78,20 @@
 					<div class='address-container'>
 						<div class='form-item'>
 							<p>
-								Tỉnh, thành phố <span>*</span>
+								Quận, huyện <span>*</span>
 							</p>
 							<%
-							List<ProvincesModel> provinces = (List<ProvincesModel>) request.getAttribute("provinces");
+							List<HCMDistrictsModel> districts = (List<HCMDistrictsModel>) request.getAttribute("districts");
 							%>
-							<select name="provinceId" id="provinceId">
+							<select name='districtId' id="districtId">
 								<%
-								for (ProvincesModel pro : provinces) {
+								for (HCMDistrictsModel district : districts) {
 								%>
-								<option <%= realEstate.getProvince().getName()==pro.getName() ? "selected" : "" %> value="<%=pro.getProvinceId()%>"><%=pro.getName()%></option>
+								<option <%= realEstate.getDistrict().getName()==district.getName() ? "selected" : "" %> value="<%=district.getDistrictId()%>"><%=district.getName()%></option>
 								<%
 								}
 								%>
 							</select>
-						</div>
-
-						<div class='form-item'>
-							<p>
-								Quận, huyện <span>*</span>
-							</p>
-							<select name='districtId' id="districtId">
-								<option>---Quận, huyện---</option>
-							</select>
-							<%
-							    String districtError = (String) request.getAttribute("districtError");
-							%>
-							<p class="error" style="<%= (districtError != null && !districtError.isEmpty()) ? "display: block;" : "display: none;" %>">
-							    <%= districtError %>
-							</p>
 						</div>
 					</div>
 
@@ -107,7 +101,7 @@
 								Phường, xã <span>*</span>
 							</p>
 							<select name='wardId' id="wardId">
-								<option>---Phường, xã---</option>
+								<option value="0">---Phường, xã---</option>
 							</select>
 							<%
 							    String wardError = (String) request.getAttribute("wardError");
@@ -116,7 +110,6 @@
 							    <%= wardError %>
 							</p>
 						</div>
-						<div class='form-item'></div>
 					</div>
 
 					<div class='form-item'>
@@ -137,7 +130,6 @@
 					</div>
 				</div>
 
-				<!-- Copy -->
 				<div class='input-wrapper'>
 					<h3>Thông tin bài viết</h3>
 					<div class='form-item'>
@@ -166,6 +158,10 @@
 					</div>
 				</div>
 
+
+				<%
+				if (category==1) {
+				%>
 				<div class='input-wrapper'>
 					<h3>Thông tin bất động sản</h3>
 
@@ -174,24 +170,117 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="area" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
 							<span>m²</span>
 						</div>
 						<%
-						    String areaError = (String) request.getAttribute("areaError");
+						    String sizeError = (String) request.getAttribute("sizeError");
 						%>
-						<p class="error" style="<%= (areaError != null && !areaError.isEmpty()) ? "display: block;" : "display: none;" %>">
-						    <%= areaError %>
+						<p class="error" style="<%= (sizeError != null && !sizeError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= sizeError %>
 						</p>
 					</div>
 
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Số phòng ngủ</p>
+							<div class='input-container'>
+								<form:input path="rooms" id="rooms"
+									placeholder="Nhập số phòng, VD: 2" />
+								<span>phòng</span>
+							</div>
+						</div>
+						<div class='form-item'>
+							<p>Số phòng tắm, vệ sinh</p>
+							<div class='input-container'>
+								<form:input path="toilets" id="toilets"
+									placeholder="Nhập số phòng, VD: 2" />
+								<span>phòng</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Số tầng</p>
+							<div class='input-container'>
+								<form:input path="floors" id="floors"
+									placeholder="Nhập số tầng, VD: 2" />
+								<span>tầng</span>
+							</div>
+						</div>
+						<div class='form-item'>
+							<p>Loại hình nhà ở</p>
+							<select name='type' id="type">
+								<option <%= (realEstate.getType() != null && realEstate.getType().equals("Nhà ngõ, hẻm")) ? "selected" : "" %> value='Nhà ngõ, hẻm'>Nhà ngõ, hẻm</option>
+								<option <%= realEstate.getType().equals("Nhà mặt phố, mặt tiềnm") ? "selected" : "" %> value='Nhà mặt phố, mặt tiền'>Nhà mặt phố, mặt tiền</option>
+								<option <%= realEstate.getType().equals("Nhà phố liền kề") ? "selected" : "" %> value='Nhà phố liền kề'>Nhà phố liền kề</option>
+								<option <%= realEstate.getType().equals("Nhà biệt thự") ? "selected" : "" %> value='Nhà biệt thự'>Nhà biệt thự</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class='form-item'>
+						<p>Đặc điểm nhà/đất</p>
+						<select name='characteristics' id="characteristics">
+							<option <%= (realEstate.getCharacteristics() != null && realEstate.getCharacteristics().equals("")) ? "selected" : "" %> value=''>---Đặc điểm nhà/đất---</option>
+							<option <%= realEstate.getCharacteristics().equals("Hẻm xe hơi") ? "selected" : "" %> value='Hẻm xe hơi'>Hẻm xe hơi</option>
+							<option <%= realEstate.getCharacteristics().equals("Nhà nở hậu") ? "selected" : "" %> value='Nhà nở hậu'>Nhà nở hậu</option>
+							<option <%= realEstate.getCharacteristics().equals("Nhà tóp hậu") ? "selected" : "" %> value='Nhà tóp hậu'>Nhà tóp hậu</option>
+							<option <%= realEstate.getCharacteristics().equals("Nhà dính quy hoạch / lộ giới'>Nhà dính quy hoạch / lộ giới") ? "selected" : "" %> value='Nhà dính quy hoạch / lộ giới'>Nhà dính quy hoạch / lộ giới</option>
+							<option <%= realEstate.getCharacteristics().equals("Nhà chưa hoàn công") ? "selected" : "" %> value='Nhà chưa hoàn công'>Nhà chưa hoàn công</option>
+							<option <%= realEstate.getCharacteristics().equals("Nhà nát") ? "selected" : "" %> value='Nhà nát'>Nhà nát</option>
+							<option <%= realEstate.getCharacteristics().equals("Đất chưa chuyển thổ") ? "selected" : "" %> value='Đất chưa chuyển thổ'>Đất chưa chuyển thổ</option>
+						</select>
+					</div>
+					
+					<div class='form-item'>
+						<p>Giấy tờ pháp lý</p>
+						<select name='propertyLegalDocument' id="property_legal_document">
+							<option <%= realEstate.getPropertyLegalDocument().equals("") ? "selected" : "" %> value=''>---Giấy tờ pháp lý---</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Đã có sổ") ? "selected" : "" %>  value='Đã có sổ'>Đã có sổ</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Đang chờ sổ") ? "selected" : "" %>  value='Đang chờ sổ'>Đang chờ sổ</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Không có sổ") ? "selected" : "" %>  value='Không có sổ'>Không có sổ</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Sổ chung / công chứng vi bằng'>Sổ chung / công chứng vi bằng") ? "selected" : "" %>  value='Sổ chung / công chứng vi bằng'>Sổ chung / công chứng vi bằng</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Giấy tờ viết tay") ? "selected" : "" %>  value='Giấy tờ viết tay'>Giấy tờ viết tay</option>
+						</select>
+					</div>
+					
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Nội thất</p>
+							<select name='furnishingSell' id="furnishing_sell">
+								<option <%= (realEstate.getFurnishingSell() != null && realEstate.getFurnishingSell().equals("")) ? "selected" : "" %> value=''>---Nội thất---</option>
+								<option <%= realEstate.getFurnishingSell().equals("Hoàn thiện cơ bản") ? "selected" : "" %> value='Hoàn thiện cơ bản'>Hoàn thiện cơ bản</option>
+								<option <%= realEstate.getFurnishingSell().equals("Nội thất đầy đủ") ? "selected" : "" %> value='Nội thất đầy đủ'>Nội thất đầy đủ</option>
+								<option <%= realEstate.getFurnishingSell().equals("Nội thất cao cấp") ? "selected" : "" %> value='Nội thất cao cấp'>Nội thất cao cấp</option>
+								<option <%= realEstate.getFurnishingSell().equals("Bàn giao thô") ? "selected" : "" %> value='Bàn giao thô'>Bàn giao thô</option>
+							</select>
+						</div>
+						<div class='form-item'>
+							<p>Hướng nhà</p>
+							<select name='direction' id='direction'>
+								<option <%= realEstate.getDirection().equals("") ? "selected" : "" %> value=''>---Hướng nhà---</option>
+								<option <%= realEstate.getDirection().equals("Bắc") ? "selected" : "" %> value='Bắc'>Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông Bắc") ? "selected" : "" %> value='Đông Bắc'>Đông Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông") ? "selected" : "" %> value='Đông'>Đông</option>
+								<option <%= realEstate.getDirection().equals("Đông Nam") ? "selected" : "" %> value='Đông Nam'>Đông Nam</option>
+								<option <%= realEstate.getDirection().equals("Nam") ? "selected" : "" %> value='Nam'>Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây Nam") ? "selected" : "" %> value='Tây Nam'>Tây Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây") ? "selected" : "" %> value='Tây'>Tây</option>
+								<option <%= realEstate.getDirection().equals("Tây Bắc") ? "selected" : "" %> value='Tây Bắc'>Tây Bắc</option>
+							</select>
+						</div>
+					</div>
+					
+					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
 							<p>
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<input value="<%= String.format("%.0f", realEstate.getPrice()) %>" name="price" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -210,49 +299,357 @@
 						    </select>
 						</div>
 					</div>
+				</div>
+				<% } else if (category==2) { %>
+				<div class='input-wrapper'>
+					<h3>Thông tin bất động sản</h3>
 
 					<div class='form-item'>
-						<p>Nội thất</p>
-						<select name='interior'>
-							<option <%= realEstate.getInterior().equals("") ? "selected" : "" %> value=''>---Nội thất---</option>
-							<option <%= realEstate.getInterior().equals("Đầy đủ") ? "selected" : "" %> value='Đầy đủ'>Đầy đủ</option>
-							<option <%= realEstate.getInterior().equals("Cơ bản") ? "selected" : "" %> value='Cơ bản'>Cơ bản</option>
-							<option <%= realEstate.getInterior().equals("Không nội thất") ? "selected" : "" %> value='Không nội thất'>Không nội thất</option>
-						</select>
+						<p>
+							Diện tích <span>*</span>
+						</p>
+						<div class='input-container'>
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<span>m²</span>
+						</div>
+						<%
+						    String sizeError = (String) request.getAttribute("sizeError");
+						%>
+						<p class="error" style="<%= (sizeError != null && !sizeError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= sizeError %>
+						</p>
 					</div>
 
-					<div class='form-item'>
-						<p>Số phòng ngủ</p>
-						<div class='input-container'>
-							<form:input path="numberOfBedrooms"
-								placeholder="Nhập số phòng, VD: 2" />
-							<span>phòng</span>
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Số phòng ngủ</p>
+							<div class='input-container'>
+								<form:input path="rooms" id="rooms"
+									placeholder="Nhập số phòng, VD: 2" />
+								<span>phòng</span>
+							</div>
+						</div>
+						<div class='form-item'>
+							<p>Số phòng tắm, vệ sinh</p>
+							<div class='input-container'>
+								<form:input path="toilets" id="toilets"
+									placeholder="Nhập số phòng, VD: 2" />
+								<span>phòng</span>
+							</div>
 						</div>
 					</div>
+					
 					<div class='form-item'>
-						<p>Số phòng tắm, vệ sinh</p>
-						<div class='input-container'>
-							<form:input path="numberOfToilets"
-								placeholder="Nhập số phòng, VD: 2" />
-							<span>phòng</span>
-						</div>
-					</div>
-					<div class='form-item'>
-						<p>Hướng nhà</p>
-						<select name='direction'>
-							<option <%= realEstate.getDirection().equals("") ? "selected" : "" %> value=''>---Hướng nhà---</option>
-							<option <%= realEstate.getDirection().equals("Bắc") ? "selected" : "" %> value='Bắc'>Bắc</option>
-							<option <%= realEstate.getDirection().equals("Đông Bắc") ? "selected" : "" %> value='Đông Bắc'>Đông Bắc</option>
-							<option <%= realEstate.getDirection().equals("Đông") ? "selected" : "" %> value='Đông'>Đông</option>
-							<option <%= realEstate.getDirection().equals("Đông Nam") ? "selected" : "" %> value='Đông Nam'>Đông Nam</option>
-							<option <%= realEstate.getDirection().equals("Nam") ? "selected" : "" %> value='Nam'>Nam</option>
-							<option <%= realEstate.getDirection().equals("Tây Nam") ? "selected" : "" %> value='Tây Nam'>Tây Nam</option>
-							<option <%= realEstate.getDirection().equals("Tây") ? "selected" : "" %> value='Tây'>Tây</option>
-							<option <%= realEstate.getDirection().equals("Tây Bắc") ? "selected" : "" %> value='Tây Bắc'>Tây Bắc</option>
+						<p>Tình trạng bất động sản</p>
+						<select name='propertyStatus' id="property_status">
+							<option <%= (realEstate.getPropertyStatus() != null && realEstate.getPropertyStatus().equals("")) ? "selected" : "" %> value=''>---Tình trạng---</option>
+							<option <%= realEstate.getPropertyStatus().equals("Đã bàn giao") ? "selected" : "" %> value='Đã bàn giao'>Đã bàn giao</option>
+							<option <%= realEstate.getPropertyStatus().equals("Chưa bàn giao") ? "selected" : "" %> value='Chưa bàn giao'>Chưa bàn giao</option>
 						</select>
+					</div>
+					
+					
+					<div class='form-item'>
+						<p>Giấy tờ pháp lý</p>
+						<select name='propertyLegalDocument' id="property_legal_document">
+							<option <%= (realEstate.getPropertyLegalDocument() != null && realEstate.getPropertyLegalDocument().equals("")) ? "selected" : "" %> value=''>---Giấy tờ pháp lý---</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Hợp đồng đặt cọc") ? "selected" : "" %> value='Hợp đồng đặt cọc'>Hợp đồng đặt cọc</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Hợp đồng mua bán") ? "selected" : "" %> value='Hợp đồng mua bán'>Hợp đồng mua bán</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Sổ hồng riêng") ? "selected" : "" %> value='Sổ hồng riêng'>Sổ hồng riêng</option>
+							<option <%= realEstate.getPropertyLegalDocument().equals("Đang chờ sổ") ? "selected" : "" %> value='Đang chờ sổ'>Đang chờ sổ</option>
+						</select>
+					</div>
+										
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Loại hình căn hộ</p>
+							<select name='type' id="type">
+								<option <%= (realEstate.getType() != null && realEstate.getType().equals("Chung cư")) ? "selected" : "" %> value='Chung cư'>Chung cư</option>
+								<option <%= realEstate.getType().equals("Duplex") ? "selected" : "" %> value='Duplex'>Duplex</option>
+								<option <%= realEstate.getType().equals("Penthouse") ? "selected" : "" %> value='Penthouse'>Penthouse</option>
+								<option <%= realEstate.getType().equals("Căn hộ dịch vụ, mini") ? "selected" : "" %> value='Căn hộ dịch vụ, mini'>Căn hộ dịch vụ, mini</option>
+								<option <%= realEstate.getType().equals("Tập thể, cư xá") ? "selected" : "" %> value='Tập thể, cư xá'>Tập thể, cư xá</option>
+								<option <%= realEstate.getType().equals("Officetel") ? "selected" : "" %> value='Officetel'>Officetel</option>
+							</select>
+						</div>
+					
+						<div class='form-item'>
+							<p>Nội thất</p>
+							<select name='furnishingSell' id="furnishing_sell">
+								<option <%= realEstate.getFurnishingSell().equals("") ? "selected" : "" %> value=''>---Nội thất---</option>
+								<option <%= realEstate.getFurnishingSell().equals("Hoàn thiện cơ bản") ? "selected" : "" %> value='Hoàn thiện cơ bản'>Hoàn thiện cơ bản</option>
+								<option <%= realEstate.getFurnishingSell().equals("Nội thất đầy đủ") ? "selected" : "" %> value='Nội thất đầy đủ'>Nội thất đầy đủ</option>
+								<option <%= realEstate.getFurnishingSell().equals("Nội thất cao cấp") ? "selected" : "" %> value='Nội thất cao cấp'>Nội thất cao cấp</option>
+								<option <%= realEstate.getFurnishingSell().equals("Bàn giao thô") ? "selected" : "" %> value='Bàn giao thô'>Bàn giao thô</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Hướng cửa chính</p>
+							<select name='direction' id='direction'>
+								<option <%= realEstate.getDirection().equals("") ? "selected" : "" %> value=''>---Hướng nhà---</option>
+								<option <%= realEstate.getDirection().equals("Bắc") ? "selected" : "" %> value='Bắc'>Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông Bắc") ? "selected" : "" %> value='Đông Bắc'>Đông Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông") ? "selected" : "" %> value='Đông'>Đông</option>
+								<option <%= realEstate.getDirection().equals("Đông Nam") ? "selected" : "" %> value='Đông Nam'>Đông Nam</option>
+								<option <%= realEstate.getDirection().equals("Nam") ? "selected" : "" %> value='Nam'>Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây Nam") ? "selected" : "" %> value='Tây Nam'>Tây Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây") ? "selected" : "" %> value='Tây'>Tây</option>
+								<option <%= realEstate.getDirection().equals("Tây Bắc") ? "selected" : "" %> value='Tây Bắc'>Tây Bắc</option>
+							</select>
+						</div>
+						<div class='form-item'>
+							<p>Hướng ban công</p>
+							<select name='balconyDirection' id='balconyDirection'>
+								<option <%= realEstate.getDirection().equals("") ? "selected" : "" %> value=''>---Hướng nhà---</option>
+								<option <%= realEstate.getDirection().equals("Bắc") ? "selected" : "" %> value='Bắc'>Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông Bắc") ? "selected" : "" %> value='Đông Bắc'>Đông Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông") ? "selected" : "" %> value='Đông'>Đông</option>
+								<option <%= realEstate.getDirection().equals("Đông Nam") ? "selected" : "" %> value='Đông Nam'>Đông Nam</option>
+								<option <%= realEstate.getDirection().equals("Nam") ? "selected" : "" %> value='Nam'>Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây Nam") ? "selected" : "" %> value='Tây Nam'>Tây Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây") ? "selected" : "" %> value='Tây'>Tây</option>
+								<option <%= realEstate.getDirection().equals("Tây Bắc") ? "selected" : "" %> value='Tây Bắc'>Tây Bắc</option>
+							</select>
+						</div>
+					</div>
+					
+					<p id="result"  class="error"></p>
+					<div class='money-wrapper'>
+						<div class='form-item'>
+							<p>
+								Mức giá <span>*</span>
+							</p>
+							<div class='input-container'>
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+							</div>
+							<%
+						    String priceError = (String) request.getAttribute("priceError");
+							%>
+							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= priceError %>
+							</p>
+						</div>
+
+						<div class='form-item'>
+							<p>Đơn vị</p>
+							<select name='unit'>
+						        <option <%= realEstate.getUnit().equals("VND") ? "selected" : "" %> value='VND'>VND</option>
+						        <option <%= realEstate.getUnit().equals("Giá / m²") ? "selected" : "" %> value='Giá / m²'>Giá / m²</option>
+						        <option <%= realEstate.getUnit().equals("Thỏa thuận") ? "selected" : "" %> value='Thỏa thuận'>Thỏa thuận</option>
+						    </select>
+						</div>
 					</div>
 				</div>
+				<% } else if (category==3) { %>
+				<div class='input-wrapper'>
+					<h3>Thông tin bất động sản</h3>
 
+					<div class='form-item'>
+						<p>
+							Diện tích <span>*</span>
+						</p>
+						<div class='input-container'>
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<span>m²</span>
+						</div>
+						<%
+						    String sizeError = (String) request.getAttribute("sizeError");
+						%>
+						<p class="error" style="<%= (sizeError != null && !sizeError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= sizeError %>
+						</p>
+					</div>
+					
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Loại hình văn phòng</p>
+							<select name='type' id="type">
+								<option <%= realEstate.getType().equals("Văn phòng") ? "selected" : "" %> value='Văn phòng'>Văn phòng</option>
+								<option <%= realEstate.getType().equals("Shophouse") ? "selected" : "" %> value='Shophouse'>Shophouse</option>
+								<option <%= realEstate.getType().equals("Officetel") ? "selected" : "" %> value='Officetel'>Officetel</option>
+							</select>
+						</div>
+					
+						<div class='form-item'>
+							<p>Nội thất</p>
+							<select name='furnishingSell' id="furnishing_sell">
+								<option <%= (realEstate.getFurnishingSell() != null && realEstate.getFurnishingSell().equals("")) ? "selected" : "" %> value=''>---Nội thất---</option>
+								<option <%= realEstate.getFurnishingSell().equals("Hoàn thiện cơ bản") ? "selected" : "" %> value='Hoàn thiện cơ bản'>Hoàn thiện cơ bản</option>
+								<option <%= realEstate.getFurnishingSell().equals("Nội thất đầy đủ") ? "selected" : "" %> value='Nội thất đầy đủ'>Nội thất đầy đủ</option>
+								<option <%= realEstate.getFurnishingSell().equals("Nội thất cao cấp") ? "selected" : "" %> value='Nội thất cao cấp'>Nội thất cao cấp</option>
+								<option <%= realEstate.getFurnishingSell().equals("Bàn giao thô") ? "selected" : "" %> value='Bàn giao thô'>Bàn giao thô</option>
+							</select>
+						</div>
+					</div>
+															
+					<div class='contact-wrapper'>
+					
+						<div class='form-item'>
+							<p>Giấy tờ pháp lý</p>
+							<select name='propertyLegalDocument' id="property_legal_document">
+								<option <%= realEstate.getPropertyLegalDocument().equals("") ? "selected" : "" %> value=''>---Giấy tờ pháp lý---</option>
+								<option <%= realEstate.getPropertyLegalDocument().equals("Đã có sổ") ? "selected" : "" %> value='Đã có sổ'>Đã có sổ</option>
+								<option <%= realEstate.getPropertyLegalDocument().equals("Đang chờ sổ") ? "selected" : "" %> value='Đang chờ sổ'>Đang chờ sổ</option>
+								<option <%= realEstate.getPropertyLegalDocument().equals("Giấy tờ khác") ? "selected" : "" %> value='Giấy tờ khác'>Giấy tờ khác</option>
+							</select>
+						</div>
+						
+						<div class='form-item'>
+							<p>Hướng nhà</p>
+							<select name='direction' id='direction'>
+								<option <%= realEstate.getDirection().equals("") ? "selected" : "" %> value=''>---Hướng nhà---</option>
+								<option <%= realEstate.getDirection().equals("Bắc") ? "selected" : "" %> value='Bắc'>Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông Bắc") ? "selected" : "" %> value='Đông Bắc'>Đông Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông") ? "selected" : "" %> value='Đông'>Đông</option>
+								<option <%= realEstate.getDirection().equals("Đông Nam") ? "selected" : "" %> value='Đông Nam'>Đông Nam</option>
+								<option <%= realEstate.getDirection().equals("Nam") ? "selected" : "" %> value='Nam'>Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây Nam") ? "selected" : "" %> value='Tây Nam'>Tây Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây") ? "selected" : "" %> value='Tây'>Tây</option>
+								<option <%= realEstate.getDirection().equals("Tây Bắc") ? "selected" : "" %> value='Tây Bắc'>Tây Bắc</option>
+							</select>
+						</div>
+					</div>
+					
+					<p id="result"  class="error"></p>
+					<div class='money-wrapper'>
+						<div class='form-item'>
+							<p>
+								Mức giá <span>*</span>
+							</p>
+							<div class='input-container'>
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+							</div>
+							<%
+						    String priceError = (String) request.getAttribute("priceError");
+							%>
+							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= priceError %>
+							</p>
+						</div>
+
+						<div class='form-item'>
+							<p>Đơn vị</p>
+							<select name='unit'>
+						        <option <%= realEstate.getUnit().equals("VND") ? "selected" : "" %> value='VND'>VND</option>
+						        <option <%= realEstate.getUnit().equals("Giá / m²") ? "selected" : "" %> value='Giá / m²'>Giá / m²</option>
+						        <option <%= realEstate.getUnit().equals("Thỏa thuận") ? "selected" : "" %> value='Thỏa thuận'>Thỏa thuận</option>
+						    </select>
+						</div>
+					</div>
+				</div>
+				<% } else if (category==4) { %>
+				<div class='input-wrapper'>
+					<h3>Thông tin bất động sản</h3>
+
+					<div class='form-item'>
+						<p>
+							Diện tích <span>*</span>
+						</p>
+						<div class='input-container'>
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<span>m²</span>
+						</div>
+						<%
+						    String sizeError = (String) request.getAttribute("sizeError");
+						%>
+						<p class="error" style="<%= (sizeError != null && !sizeError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						    <%= sizeError %>
+						</p>
+					</div>
+					
+					<div class='contact-wrapper'>
+						<div class='form-item'>
+							<p>Loại hình đất</p>
+							<select name='type' id="type">
+								<option <%= realEstate.getType().equals("Đất công nghiệp") ? "selected" : "" %> value='Đất công nghiệp'>Đất công nghiệp</option>
+								<option <%= realEstate.getType().equals("Đất nông nghiệp") ? "selected" : "" %> value='Đất nông nghiệp'>Đất nông nghiệp</option>
+								<option <%= realEstate.getType().equals("Đất nền dự án") ? "selected" : "" %> value='Đất nền dự án'>Đất nền dự án</option>
+								<option <%= realEstate.getType().equals("Đất thổ cư") ? "selected" : "" %> value='Đất thổ cư'>Đất thổ cư</option>
+							</select>
+						</div>
+						
+						<div class='form-item'>
+							<p>Đặc điểm nhà/đất</p>
+							<select name='characteristics' id="characteristics">
+								<option <%= (realEstate.getCharacteristics() != null && realEstate.getCharacteristics().equals("")) ? "selected" : "" %> value=''>---Đặc điểm nhà/đất---</option>
+								<option <%= realEstate.getCharacteristics().equals("Mặt tiền") ? "selected" : "" %> value='Mặt tiền'>Mặt tiền</option>
+								<option <%= realEstate.getCharacteristics().equals("Hẻm xe hơi") ? "selected" : "" %> value='Hẻm xe hơi'>Hẻm xe hơi</option>
+								<option <%= realEstate.getCharacteristics().equals("Nở hậu") ? "selected" : "" %> value='Nở hậu'>Nở hậu</option>
+								<option <%= realEstate.getCharacteristics().equals("Chưa có thổ cư") ? "selected" : "" %> value='Chưa có thổ cư'>Chưa có thổ cư</option>
+								<option <%= realEstate.getCharacteristics().equals("Thổ cư 1 phần") ? "selected" : "" %> value='Thổ cư 1 phần'>Thổ cư 1 phần</option>
+								<option <%= realEstate.getCharacteristics().equals("Thổ cư toàn bộ") ? "selected" : "" %> value='Thổ cư toàn bộ'>Thổ cư toàn bộ</option>
+								<option <%= realEstate.getCharacteristics().equals("Không có thổ cư") ? "selected" : "" %> value='Không có thổ cư'>Không có thổ cư</option>
+							</select>
+						</div>
+					</div>
+															
+					<div class='contact-wrapper'>
+					
+						<div class='form-item'>
+							<p>Giấy tờ pháp lý</p>
+							<select name='propertyLegalDocument' id="property_legal_document">
+								<option <%= realEstate.getPropertyLegalDocument().equals("") ? "selected" : "" %> value=''>---Giấy tờ pháp lý---</option>
+								<option <%= realEstate.getPropertyLegalDocument().equals("Đã có sổ") ? "selected" : "" %> value='Đã có sổ'>Đã có sổ</option>
+								<option <%= realEstate.getPropertyLegalDocument().equals("Đang chờ sổ") ? "selected" : "" %> value='Đang chờ sổ'>Đang chờ sổ</option>
+								<option <%= realEstate.getPropertyLegalDocument().equals("Giấy tờ khác") ? "selected" : "" %> value='Giấy tờ khác'>Không có sổ</option>
+								<option <%= realEstate.getPropertyLegalDocument().equals("Sổ chung / công chứng vi bằng'>Sổ chung / công chứng vi bằng") ? "selected" : "" %> value='Sổ chung / công chứng vi bằng'>Sổ chung / công chứng vi bằng</option>
+								<option <%= realEstate.getPropertyLegalDocument().equals("Giấy tờ viết tay") ? "selected" : "" %> value='Giấy tờ viết tay'>Giấy tờ viết tay</option>
+							</select>
+						</div>
+						
+						<div class='form-item'>
+							<p>Hướng đất</p>
+							<select name='direction' id='direction'>
+								<option <%= realEstate.getDirection().equals("") ? "selected" : "" %> value=''>---Hướng nhà---</option>
+								<option <%= realEstate.getDirection().equals("Bắc") ? "selected" : "" %> value='Bắc'>Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông Bắc") ? "selected" : "" %> value='Đông Bắc'>Đông Bắc</option>
+								<option <%= realEstate.getDirection().equals("Đông") ? "selected" : "" %> value='Đông'>Đông</option>
+								<option <%= realEstate.getDirection().equals("Đông Nam") ? "selected" : "" %> value='Đông Nam'>Đông Nam</option>
+								<option <%= realEstate.getDirection().equals("Nam") ? "selected" : "" %> value='Nam'>Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây Nam") ? "selected" : "" %> value='Tây Nam'>Tây Nam</option>
+								<option <%= realEstate.getDirection().equals("Tây") ? "selected" : "" %> value='Tây'>Tây</option>
+								<option <%= realEstate.getDirection().equals("Tây Bắc") ? "selected" : "" %> value='Tây Bắc'>Tây Bắc</option>
+							</select>
+						</div>
+					</div>
+					
+					<p id="result"  class="error"></p>
+					<div class='money-wrapper'>
+						<div class='form-item'>
+							<p>
+								Mức giá <span>*</span>
+							</p>
+							<%
+								float price = realEstate.getPrice(); 
+								java.text.DecimalFormat df = new java.text.DecimalFormat("#"); 
+							    String formattedPrice = df.format(price);
+							%>
+							<div class='input-container'>
+								<form:input path="price" value="<%= formattedPrice %>" placeholder="Nhập giá, VD 12000000" />
+							</div>
+							<%
+						    String priceError = (String) request.getAttribute("priceError");
+							%>
+							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= priceError %>
+							</p>
+						</div>
+
+						<div class='form-item'>
+							<p>Đơn vị</p>
+							<select name='unit'>
+						        <option <%= realEstate.getUnit().equals("VND") ? "selected" : "" %> value='VND'>VND</option>
+						        <option <%= realEstate.getUnit().equals("Giá / m²") ? "selected" : "" %> value='Giá / m²'>Giá / m²</option>
+						        <option <%= realEstate.getUnit().equals("Thỏa thuận") ? "selected" : "" %> value='Thỏa thuận'>Thỏa thuận</option>
+						    </select>
+						</div>
+					</div>
+				</div>
+				<% } %>
+	
 				<div class='input-wrapper'>
 					<h3>Hình ảnh & Video</h3>
 					<ul>
@@ -447,33 +844,6 @@
             console.error( error );
         } );
 		
-		$('#provinceId').change(function() {
-		    var provinceId = $(this).val();
-		    $.ajax({
-		        type: 'GET',
-		        url: '${pageContext.servletContext.contextPath}/sellernet/getDistrictsByProvince.html',
-		        data: { provinceId: provinceId },
-		        dataType: 'text',
-		        success: function(data) {
-		            $('#districtId').empty();
-		            $('#wardId').empty(); // Empty the wardId select element
-		            $('#wardId').append('<option value="">---Phường, xã---</option>'); // Append the default option
-		            $("#detail-address").val("");
-		            var lines = data.split('\n');
-		            $.each(lines, function(index, line) {
-		                if (index < lines.length - 1) {
-		                    var parts = line.split(':');
-		                    $('#districtId').append('<option value="' + parts[0] + '">' + parts[1] + '</option>');
-		                }
-		            });
-		        },
-		        error: function(data) {
-		            $('#districtId').empty();
-		            $('#districtId').append('<option value="">Error occurred while fetching districts</option>');
-		        }
-		    });
-		});
-		
 		$(document).ready(function() {
 			var imageString = "<c:out value='${realEstate.images}' />"
 
@@ -488,91 +858,46 @@
 			    return image.replace(/\"/g, ''); // Loại bỏ dấu ngoặc kép từ mỗi phần tử
 			});
 			
-				document.getElementById("container").innerHTML = image_show_edit();
+			document.getElementById("container").innerHTML = image_show_edit();
 			
-		    // Lấy id của tỉnh/thành phố hiện tại sau khi trang đã load xong
-		    var provinceId = $('#provinceId').val();
+			var districtId = $('#districtId').val();
+			$.ajax({
+                type: 'GET',
+                url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
+                data: { districtId: districtId },
+                dataType: 'text',
+                success: function(data) {
+                    $('#wardId').empty();
+                    $('#wardId').append('<option value="">---Phường, xã---</option>');
+                    var lines = data.split('\n');
+                    var currentWard = "<c:out value='${realEstate.ward.name}' />";
+                    $.each(lines, function(index, line) {
+                        if (index < lines.length - 1) {
+                            var parts = line.split(':');
+                            var isSelected = (currentWard === parts[1]) ? "selected" : "";
+                            $('#wardId').append('<option ' + isSelected + ' value="' + parts[0] + '">' + parts[1] + '</option>');
+                        }
+                    });
+                },
+                error: function(data) {
+                    $('#wardId').empty();
+                    $('#wardId').append('<option value="">Error occurred while fetching wards</option>');
+                }
+            });
+		});
+		
 
-		    // AJAX để lấy danh sách quận/huyện
+		$('#districtId').change(function() {
+		    var districtId = $(this).val();
 		    $.ajax({
 		        type: 'GET',
-		        url: '${pageContext.servletContext.contextPath}/sellernet/getDistrictsByProvince.html',
-		        data: { provinceId: provinceId },
+		        url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
+		        data: { districtId: districtId },
 		        dataType: 'text',
 		        success: function(data) {
-		            $('#districtId').empty(); // Empty the districtId select element
-		            $('#wardId').empty(); // Empty the wardId select element
-		            $('#wardId').append('<option value="">---Phường, xã---</option>'); // Append the default option
-		            $("#detail-address").val(""); // Clear the detail-address field
-		            var lines = data.split('\n'); // Split the data into lines
-		            var currentDistrict = "<c:out value='${realEstate.district.name}' />";
-		            $.each(lines, function(index, line) {
-		                if (index < lines.length - 1) {
-		                    var parts = line.split(':'); 
-		                    var isSelected = (currentDistrict === parts[1]) ? "selected" : "";
-		                    $('#districtId').append('<option ' + isSelected + ' value="' + parts[0] + '">' + parts[1] + '</option>'); // Append options to the districtId select element
-		                }
-		            });
-
-		            // Lấy id của quận/huyện đã chọn
-		            var districtId = $("#districtId").val();
-		            
-		            // AJAX để lấy danh sách phường/xã
-		            $.ajax({
-		                type: 'GET',
-		                url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
-		                data: { districtId: districtId },
-		                dataType: 'text',
-		                success: function(data) {
-		                    $('#wardId').empty();
-		                    var lines = data.split('\n');
-		                    var currentWard = "<c:out value='${realEstate.ward.name}' />";
-		                    $.each(lines, function(index, line) {
-		                        if (index < lines.length - 1) {
-		                            var parts = line.split(':');
-		                            var isSelected = (currentWard === parts[1]) ? "selected" : "";
-		                            $('#wardId').append('<option ' + isSelected + ' value="' + parts[0] + '">' + parts[1] + '</option>');
-		                        }
-		                    });
-		                    
-		                    var province = $("#provinceId").children("option:selected").text();
-		                    var district = $("#districtId").children("option:selected").text();
-		                    var ward = $('#wardId').children("option:selected").text();
-
-		                    if(district !== "---Quận, huyện---" && ward !== "---Phường, xã---") {
-		                    	// Construct the address
-		        	            var address = ward.trim() + ", " + district.trim() + ", " + province.trim();           
-		        	            
-		        	            // Update the detail-address element
-		        	            $("#detail-address").val($("#detail-address").val() + address);
-		                    }
-		                },
-		                error: function(data) {
-		                    $('#wardId').empty();
-		                    $('#wardId').append('<option value="">Error occurred while fetching wards</option>');
-		                }
-		            });
-		        },
-		        error: function(data) {
-		            $('#districtId').empty(); // Empty the districtId select element
-		            $('#districtId').append('<option value="">Error occurred while fetching districts</option>'); // Append an error message as an option
-		        }
-		    });
-		});
-
-
-
-
-	    
-	    $('#districtId').change(function() {
-	        var districtId = $(this).val();
-	        $.ajax({
-	            type: 'GET',
-	            url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
-	            data: { districtId: districtId },
-	            dataType: 'text',
-	            success: function(data) {
 	                $('#wardId').empty();
+	                $('#wardId').append('<option value="">---Phường, xã---</option>');
+	                $("#detail-address").val("");
 	                var lines = data.split('\n');
 	                $.each(lines, function(index, line) {
 	                    if (index < lines.length - 1) {
@@ -585,8 +910,8 @@
 	                $('#wardId').empty();
 	                $('#wardId').append('<option value="">Error occurred while fetching districts</option>');
 	            }
-	        });
-	    });
+		    });
+		});
 	    
         $('#wardId').change(function() {
         	$("#detail-address").val("");
@@ -596,7 +921,7 @@
 
             if(district !== "---Quận, huyện---" && ward !== "---Phường, xã---") {
             	// Construct the address
-	            var address = ward.trim() + ", " + district.trim() + ", " + province.trim();           
+	            var address = ward.trim() + ", " + district.trim() + ", Thành phố Hồ Chí Minh";                  
 	            
 	            // Update the detail-address element
 	            $("#detail-address").val($("#detail-address").val() + address);

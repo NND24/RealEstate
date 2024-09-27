@@ -155,8 +155,7 @@
 						<div class="separate"></div>
 						<label for="1" class="type-item">
 							<div>
-								<i class="fa-solid fa-building"></i> <span>Căn hộ chung
-									cư</span>
+								<i class="fa-solid fa-house-user"></i> <span>Nhà ở</span>
 							</div> <input type="checkbox" id="1" value="1"
 							<%if (categoryIdsList != null && categoryIdsList.contains(1)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
@@ -165,7 +164,8 @@
 
 						<label for="2" id="check-type-of-house" class="type-item">
 							<div>
-								<i class="fa-solid fa-house-user"></i> <span>Nhà ở </span>
+								<i class="fa-solid fa-building"></i> <span>Căn hộ chung
+									cư </span>
 							</div> <input type="checkbox" id="2" value="2"
 							<%if (categoryIdsList != null && categoryIdsList.contains(2)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
@@ -207,8 +207,7 @@
 						
 						<label for="3" class="type-item" id="check-type-of-land">
 							<div>
-								<i class="fa-solid fa-panorama"></i> <span>Các loại đất
-									bán</span>
+								<i class="fa-solid fa-shop"></i> <span>Văn phòng, mặt bằng kinh doanh</span>
 							</div> <input type="checkbox" id="3" value="3"
 							<%if (categoryIdsList != null && categoryIdsList.contains(3)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
@@ -218,7 +217,8 @@
 						
 						<label for="4" class="type-item" id="check-type-of-land">
 							<div>
-								<i class="fa-solid fa-shop"></i> <span>Văn phòng, mặt bằng kinh doanh</span>
+								<i class="fa-solid fa-panorama"></i> <span>Các loại đất
+									bán</span>
 							</div> <input type="checkbox" id="4" value="4"
 							<%if (categoryIdsList != null && categoryIdsList.contains(4)) {%>
 							checked <%}%> /> <span class="checkmark"></span>

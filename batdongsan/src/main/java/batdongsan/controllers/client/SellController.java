@@ -27,12 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import batdongsan.models.CategoryModel;
 import batdongsan.models.DistrictsModel;
 import batdongsan.models.HCMDistrictsModel;
+import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.HCMWardsModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.ProvincesModel;
-import batdongsan.models.RealEstateModel;
 import batdongsan.models.UsersModel;
-import batdongsan.models.WardsModel;
 
 @Controller
 public class SellController {
@@ -43,7 +42,6 @@ public class SellController {
 	public String getSellPage(HttpServletRequest request,
 	        @RequestParam(name = "searchInput", required = false) String searchInput,
 	        @RequestParam(name = "categoryIds", required = false) List<Integer> categoryIds,
-	        @RequestParam(name = "provinceId", required = false) Integer provinceId,
 	        @RequestParam(name = "districtId", required = false) Integer districtId,
 	        @RequestParam(name = "wardId", required = false) Integer wardId,
 	        @RequestParam(name = "minPrice", required = false) Float minPrice,
@@ -51,8 +49,8 @@ public class SellController {
 	        @RequestParam(name = "unit", required = false) String unit,
 	        @RequestParam(name = "minArea", required = false) Float minArea,
 	        @RequestParam(name = "maxArea", required = false) Float maxArea,
-	        @RequestParam(name = "numberOfBedrooms", required = false) List<Integer> numberOfBedrooms,
-	        @RequestParam(name = "numberOfToilets", required = false) List<Integer> numberOfToilets,
+	        @RequestParam(name = "rooms", required = false) List<Integer> rooms,
+	        @RequestParam(name = "toilets", required = false) List<Integer> toilets,
 	        @RequestParam(name = "directions", required = false) List<String> directions,
 	        @RequestParam(name = "newPost", required = false) String newPost,
 	        @RequestParam(name = "priceLowToHigh", required = false) String priceLowToHigh,
@@ -65,10 +63,10 @@ public class SellController {
 	    Transaction t = session.beginTransaction();
 	    try {
 	        // Fetch expired real estates
-	        String hqlExpired = "SELECT re FROM RealEstateModel re WHERE re.expirationDate < :today";
-	        Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
+	        String hqlExpired = "SELECT re FROM HCMRealEstateModel re WHERE re.expirationDate < :today";
+	        Query<HCMRealEstateModel> queryExpired = session.createQuery(hqlExpired, HCMRealEstateModel.class);
 	        queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
-	        List<RealEstateModel> expiredRealEstates = queryExpired.list();
+	        List<HCMRealEstateModel> expiredRealEstates = queryExpired.list();
 
 	        // Update status of all real estates to "Ẩn"
 	        expiredRealEstates.forEach(re -> {
@@ -76,7 +74,7 @@ public class SellController {
 	            session.merge(re);
 	        });
 
-	        String hql = "SELECT re FROM RealEstateModel re JOIN re.category cat JOIN re.province pro JOIN re.district dis JOIN re.ward ward WHERE re.status = :status AND cat.type LIKE :type";
+	        String hql = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.district dis JOIN re.ward ward WHERE re.status = :status AND cat.type LIKE :type";
 
 	        // Search by input
 	        if (searchInput != null && !searchInput.isEmpty()) {
@@ -97,35 +95,33 @@ public class SellController {
 	        }
 
 	        // Search by address
-	        if (provinceId != null && districtId == null && wardId == null) {
-	            hql += " AND pro.provinceId = :provinceId";
-	        } else if (provinceId != null && districtId != null && wardId == null) {
-	            hql += " AND pro.provinceId = :provinceId AND dis.districtId = :districtId";
-	        } else if (provinceId != null && districtId != null && wardId != null) {
-	            hql += " AND pro.provinceId = :provinceId AND dis.districtId = :districtId AND ward.wardId = :wardId";
+	        if (districtId != null && wardId == null) {
+	            hql += " AND dis.districtId = :districtId";
+	        } else if (districtId != null && wardId != null) {
+	            hql += "  AND dis.districtId = :districtId AND ward.wardId = :wardId";
 	        }
 
 	        // Search by number of bedrooms
-	        if (numberOfBedrooms != null && !numberOfBedrooms.isEmpty()) {
-	            if (numberOfBedrooms.size() == 1) {
-	                hql += " AND re.numberOfBedrooms = :numberOfBedrooms0";
+	        if (rooms != null && !rooms.isEmpty()) {
+	            if (rooms.size() == 1) {
+	                hql += " AND re.rooms = :rooms0";
 	            } else {
-	                hql += " AND (re.numberOfBedrooms = :numberOfBedrooms0";
-	                for (int i = 1; i < numberOfBedrooms.size(); i++) {
-	                    hql += " OR re.numberOfBedrooms = :numberOfBedrooms" + i;
+	                hql += " AND (re.rooms = :rooms0";
+	                for (int i = 1; i < rooms.size(); i++) {
+	                    hql += " OR re.rooms = :rooms" + i;
 	                }
 	                hql += ")";
 	            }
 	        }
 
 	        // Search by number of toilets
-	        if (numberOfToilets != null && !numberOfToilets.isEmpty()) {
-	            if (numberOfToilets.size() == 1) {
-	                hql += " AND re.numberOfToilets = :numberOfToilets0";
+	        if (toilets != null && !toilets.isEmpty()) {
+	            if (toilets.size() == 1) {
+	                hql += " AND re.toilets = :toilets0";
 	            } else {
-	                hql += " AND (re.numberOfToilets = :numberOfToilets0";
-	                for (int i = 1; i < numberOfToilets.size(); i++) {
-	                    hql += " OR re.numberOfToilets = :numberOfToilets" + i;
+	                hql += " AND (re.toilets = :toilets0";
+	                for (int i = 1; i < toilets.size(); i++) {
+	                    hql += " OR re.toilets = :toilets" + i;
 	                }
 	                hql += ")";
 	            }
@@ -151,7 +147,7 @@ public class SellController {
 
 	        // Search by area
 	        if (minArea != null && maxArea != null) {
-	            hql += " AND (re.area >= :minArea AND re.area <= :maxArea)";
+	            hql += " AND (re.size >= :minArea AND re.size <= :maxArea)";
 	        }
 
 	        // Search by unit
@@ -175,17 +171,17 @@ public class SellController {
 	        }
 
 	        if (areaLowToHigh != null) {
-	            orderByClause = " ORDER BY area ASC";
+	            orderByClause = " ORDER BY size ASC";
 	        }
 
 	        if (areaHighToLow != null) {
-	            orderByClause = " ORDER BY area DESC";
+	            orderByClause = " ORDER BY size DESC";
 	        }
 
 	        // Append the ORDER BY clause to the HQL query
 	        hql += orderByClause;
 
-	        Query<RealEstateModel> query = session.createQuery(hql);
+	        Query<HCMRealEstateModel> query = session.createQuery(hql);
 
 	        // Search by type
 	        query.setParameter("type", "Nhà đất bán");
@@ -211,27 +207,23 @@ public class SellController {
 	        }
 
 	        // Search by address
-	        if (provinceId != null && districtId == null && wardId == null) {
-	            query.setParameter("provinceId", provinceId);
-	        } else if (provinceId != null && districtId != null && wardId == null) {
-	            query.setParameter("provinceId", provinceId);
+	        if (districtId != null && wardId == null) {
 	            query.setParameter("districtId", districtId);
-	        } else if (provinceId != null && districtId != null && wardId != null) {
-	            query.setParameter("provinceId", provinceId);
+	        } else if (districtId != null && wardId != null) {
 	            query.setParameter("districtId", districtId);
 	            query.setParameter("wardId", wardId);
 	        }
 
 	        // Search by number of bedrooms
-	        if (numberOfBedrooms != null && !numberOfBedrooms.isEmpty()) {
-	            for (int i = 0; i < numberOfBedrooms.size(); i++) {
-	                query.setParameter("numberOfBedrooms" + i, numberOfBedrooms.get(i));
+	        if (rooms != null && !rooms.isEmpty()) {
+	            for (int i = 0; i < rooms.size(); i++) {
+	                query.setParameter("rooms" + i, rooms.get(i));
 	            }
 	        }
 
-	        if (numberOfToilets != null && !numberOfToilets.isEmpty()) {
-	            for (int i = 0; i < numberOfToilets.size(); i++) {
-	                query.setParameter("numberOfToilets" + i, numberOfToilets.get(i));
+	        if (toilets != null && !toilets.isEmpty()) {
+	            for (int i = 0; i < toilets.size(); i++) {
+	                query.setParameter("toilets" + i, toilets.get(i));
 	            }
 	        }
 
@@ -256,7 +248,7 @@ public class SellController {
 	        query.setFirstResult((page - 1) * size);
 	        query.setMaxResults(size);
 
-	        List<RealEstateModel> listRealEstate = query.list();
+	        List<HCMRealEstateModel> listRealEstate = query.list();
 
 	        request.setAttribute("realEstates", listRealEstate);
 	        request.setAttribute("page", "sell");
@@ -332,10 +324,10 @@ public class SellController {
 		Transaction t = session.beginTransaction();
 		try {
 			// Fetch expired real estates
-            String hqlExpired = "SELECT re FROM RealEstateModel re WHERE re.expirationDate < :today";
-            Query<RealEstateModel> queryExpired = session.createQuery(hqlExpired, RealEstateModel.class);
+            String hqlExpired = "SELECT re FROM HCMRealEstateModel re WHERE re.expirationDate < :today";
+            Query<HCMRealEstateModel> queryExpired = session.createQuery(hqlExpired, HCMRealEstateModel.class);
             queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
-            List<RealEstateModel> expiredRealEstates = queryExpired.list();
+            List<HCMRealEstateModel> expiredRealEstates = queryExpired.list();
 
             // Update status of all real estates to "Ẩn"
             expiredRealEstates.forEach(re -> {
@@ -452,7 +444,7 @@ public class SellController {
 			// Append the ORDER BY clause to the HQL query
 			hql += orderByClause;
 
-			Query<RealEstateModel> query = session.createQuery(hql);
+			Query<HCMRealEstateModel> query = session.createQuery(hql);
 
 			// Search by type
 			query.setParameter("type", "Nhà đất cho thuê");
@@ -523,7 +515,7 @@ public class SellController {
 	        query.setFirstResult((page - 1) * size);
 	        query.setMaxResults(size);
 
-			List<RealEstateModel> listRealEstate = query.list();
+			List<HCMRealEstateModel> listRealEstate = query.list();
 
 			request.setAttribute("realEstates", listRealEstate);
 			request.setAttribute("page", "rent");

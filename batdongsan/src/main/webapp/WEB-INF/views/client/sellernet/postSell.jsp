@@ -1378,6 +1378,8 @@
 	            dataType: 'text',
 	            success: function(data) {
 	                $('#wardId').empty();
+	                $('#wardId').append('<option value="">---Phường, xã---</option>');
+	                $("#detail-address").val("");
 	                var lines = data.split('\n');
 	                $.each(lines, function(index, line) {
 	                    if (index < lines.length - 1) {

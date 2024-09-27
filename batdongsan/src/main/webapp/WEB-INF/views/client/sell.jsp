@@ -1,6 +1,6 @@
 <%@page import="batdongsan.models.FavouriteModel"%>
 <%@page import="java.util.Collection"%>
-<%@page import="batdongsan.models.RealEstateModel"%>
+<%@page import="batdongsan.models.HCMRealEstateModel"%>
 <%@page import="java.util.List"%>
 <%@ page pageEncoding="utf-8"%>
 <%@ page import="javax.servlet.http.HttpServletRequest"%>
@@ -21,7 +21,7 @@
 <body>
 	<%
 	UsersModel currentUser = (UsersModel) request.getAttribute("user");
-	List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
+	List<HCMRealEstateModel> realEstates = (List<HCMRealEstateModel>) request.getAttribute("realEstates");
 	Integer currentPage = (Integer) request.getAttribute("currentPage");
 	Integer totalResults = (Integer) request.getAttribute("totalResults");
 	Integer totalPages = (Integer) request.getAttribute("totalPages");
@@ -60,14 +60,14 @@
 						 	result.append("Tất cả BĐS trên toàn quốc");
 						 		} else {
 						 	if (categoryIdsList1.contains(1)) {
-						 		result.append("Căn hộ chung cư, ");
+						 		result.append("Nhà ở, ");
 						 	}
 						
 						 	if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
 						 		result.append("Các loại nhà bán, ");
 						 	} else {
 						 		if (categoryIdsList1.contains(2)) {
-						 			result.append("Nhà riêng, ");
+						 			result.append("Căn hộ chung cư, ");
 						 		}
 						 		if (categoryIdsList1.contains(3)) {
 						 			result.append("Nhà biệt thự, liền kề, ");
@@ -192,7 +192,7 @@
 					<!-- CARD -->
 					<%				
 					if (realEstates != null) {
-						for (RealEstateModel r : realEstates) {
+						for (HCMRealEstateModel r : realEstates) {
 							String imageString = (String) r.getImages();
 
 							if (imageString != null && !imageString.isEmpty()) {
@@ -244,23 +244,23 @@
 										 }
 										 %>
 										</span> <span class='card-config__item card-config__dot'>·</span> <span
-											class='card-config__item card-config__area'><%=r.getArea()%>
+											class='card-config__item card-config__area'><%=r.getSize() %>
 											m²</span>
 										<%
-										if (r.getNumberOfBedrooms() > 0) {
+										if (r.getRooms()> 0) {
 										%>
 										<span class='card-config__item card-config__dot'>·</span> <span
-											class='card-config__item'> <span><%=r.getNumberOfBedrooms()%></span>
+											class='card-config__item'> <span><%=r.getRooms()%></span>
 											<i class='fa-solid fa-bed'></i>
 										</span>
 										<%
 										}
 										%>
 										<%
-										if (r.getNumberOfToilets() > 0) {
+										if (r.getToilets() > 0) {
 										%>
 										<span class='card-config__item card-config__dot'>·</span> <span
-											class='card-config__item'> <span><%=r.getNumberOfToilets()%></span>
+											class='card-config__item'> <span><%=r.getToilets()%></span>
 											<i class='fa-solid fa-bath'></i>
 										</span>
 										<%
@@ -269,7 +269,7 @@
 										<span class='card-config__item card-config__dot'>·</span>
 									</div>
 									<span class='card-location'><%=r.getWard().getName()%>,
-										<%=r.getDistrict().getName()%>, <%=r.getProvince().getName()%></span>
+										<%=r.getDistrict().getName()%>, Thành Phố Hồ Chí Minh</span>
 								</div>
 								<div class='card-description'></div>
 							</div>

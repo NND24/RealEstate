@@ -2,7 +2,7 @@
 <%@page import="batdongsan.models.FavouriteModel"%>
 <%@page import="java.util.Collection"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="batdongsan.models.RealEstateModel"%>
+<%@page import="batdongsan.models.HCMRealEstateModel"%>
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,7 @@
 		<div class='container '>
 			<%
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			RealEstateModel realEstate = (RealEstateModel) request.getAttribute("realEstate");
+			HCMRealEstateModel realEstate = (HCMRealEstateModel) request.getAttribute("realEstate");
 			if (realEstate != null) {
 				String imageString = (String) realEstate.getImages();
 				if (imageString != null && !imageString.isEmpty()) {
@@ -97,7 +97,7 @@
 								</span>
 							</div>
 							<div class='short-info__item'>
-								<span class='title'>Diện tích</span> <span class='value'><%=realEstate.getArea()%>
+								<span class='title'>Diện tích</span> <span class='value'><%=realEstate.getSize()%>
 									m²</span>
 							</div>
 						</div>
@@ -139,7 +139,7 @@
 							<div class='spec-content-item col-lg-6'>
 								<i class='fa-regular fa-square spec-content-item__icon'></i>
 								<div class='spec-content-item__title'>Diện tích</div>
-								<div class='spec-content-item__value'><%=realEstate.getArea()%> m²</div>
+								<div class='spec-content-item__value'><%=realEstate.getSize()%> m²</div>
 							</div>
 							<div class='spec-content-item col-lg-6'>
 								<i class='fa-solid fa-dong-sign spec-content-item__icon'></i>
@@ -165,21 +165,21 @@
 								</div>
 							</div>
 							<%
-							if(realEstate.getNumberOfToilets() > 0) {
+							if(realEstate.getToilets() > 0) {
 							%>
 							<div class='spec-content-item col-lg-6'>
 								<i class='fa-solid fa-bath spec-content-item__icon'></i>
 								<div class='spec-content-item__title'>Số toilet</div>
-								<div class='spec-content-item__value'><%=realEstate.getNumberOfToilets()%> phòng</div>
+								<div class='spec-content-item__value'><%=realEstate.getToilets()%> phòng</div>
 							</div>
 							<% } %>
 							<%
-							if(realEstate.getNumberOfBedrooms() > 0) {
+							if(realEstate.getRooms() > 0) {
 							%>
 							<div class='spec-content-item col-lg-6'>
 								<i class='fa-solid fa-couch spec-content-item__icon'></i>
 								<div class='spec-content-item__title'>Số phòng ngủ</div>
-								<div class='spec-content-item__value'><%=realEstate.getNumberOfBedrooms()%> phòng</div>
+								<div class='spec-content-item__value'><%=realEstate.getRooms()%> phòng</div>
 							</div>
 							<% } %>
 						</div>
@@ -218,10 +218,10 @@
 						    </div>
 						    <div class='swiper-wrapper'>
 						        <%
-						        List<RealEstateModel> realEstates = (List<RealEstateModel>) request.getAttribute("realEstates");
+						        List<HCMRealEstateModel> realEstates = (List<HCMRealEstateModel>) request.getAttribute("realEstates");
 						
 						        if (realEstates != null) {
-						            for (RealEstateModel r : realEstates) {
+						            for (HCMRealEstateModel r : realEstates) {
 						                String imageStr = (String) r.getImages();
 						
 						                if (imageStr != null && !imageStr.isEmpty()) {
@@ -261,10 +261,10 @@
 						                        %>
 						                        </span>
 						                        <span class='card-config__item card-config__dot'>·</span>
-						                        <span class='card-config__item card-config__area'><%= r.getArea()%> m²</span>
+						                        <span class='card-config__item card-config__area'><%= r.getSize()%> m²</span>
 						                    </div>
 						                    <div class='card-info__location'>
-						                        <i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>, <%=r.getProvince().getName()%></span>
+						                        <i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>, Thành phố Hồ Chí Minh</span>
 						                    </div>
 						                    <div class='card-info__contact'>
 						                        <div class='card-published-info' value="<%=r.getSubmittedDate()%>"></div>
