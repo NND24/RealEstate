@@ -2,7 +2,7 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="batdongsan.models.RealEstateModel"%>
+<%@page import="batdongsan.models.HCMRealEstateModel"%>
 <%@page import="java.util.List"%>
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				<%
-				List<RealEstateModel> allRealEstates = (List<RealEstateModel>) request.getAttribute("allRealEstates");
+				List<HCMRealEstateModel> allRealEstates = (List<HCMRealEstateModel>) request.getAttribute("allRealEstates");
 				Integer currentAllPage = (Integer) request.getAttribute("currentAllPage");
 				Integer totalAllPages = (Integer) request.getAttribute("totalAllPages");
 				Integer totalAllResults = (Integer) request.getAttribute("totalAllResults");
@@ -43,7 +43,7 @@
 					<div class='tab-content'>
 						<%
 						if (allRealEstates != null) {
-							for (RealEstateModel r : allRealEstates) {
+							for (HCMRealEstateModel r : allRealEstates) {
 								String imageString = (String) r.getImages();
 
 								if (imageString != null && !imageString.isEmpty()) {

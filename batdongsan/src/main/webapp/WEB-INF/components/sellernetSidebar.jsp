@@ -50,7 +50,7 @@
 				</div>
 				<div id='collapse1' class='panel-collapse collapse'>
 					<ul class='list-group'>
-						<a href="${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html">
+						<a href="${pageContext.servletContext.contextPath}/sellernet/dang-tin/ban.html?categoryId=1">
 							<li class='list-group-item'>Đăng mới</li>
 						</a>
 						<a href="${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html">

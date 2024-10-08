@@ -166,7 +166,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
 							<span>m²</span>
 						</div>
 						<%
@@ -182,7 +182,7 @@
 							<p>Số phòng ngủ</p>
 							<div class='input-container'>
 								<form:input path="rooms" id="rooms"
-									placeholder="Nhập số phòng, VD: 2" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -190,7 +190,7 @@
 							<p>Số phòng tắm, vệ sinh</p>
 							<div class='input-container'>
 								<form:input path="toilets" id="toilets"
-									placeholder="Nhập số phòng, VD: 2" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -201,7 +201,7 @@
 							<p>Số tầng</p>
 							<div class='input-container'>
 								<form:input path="floors" id="floors"
-									placeholder="Nhập số tầng, VD: 2" />
+									placeholder="Nhập số tầng, VD: 2" type="number" min="0" />
 								<span>tầng</span>
 							</div>
 						</div>
@@ -269,6 +269,14 @@
 						</div>
 					</div>
 					
+					<div class='form-item'>
+						<p>Cần bán gấp không?</p>
+						<select name='urgent' id="urgent">
+							<option value='no'>Không</option>
+							<option value='yes'>Có</option>
+						</select>
+					</div>
+					
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
@@ -276,7 +284,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -303,7 +311,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
 							<span>m²</span>
 						</div>
 						<%
@@ -319,7 +327,7 @@
 							<p>Số phòng ngủ</p>
 							<div class='input-container'>
 								<form:input path="rooms" id="rooms"
-									placeholder="Nhập số phòng, VD: 2" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -327,7 +335,7 @@
 							<p>Số phòng tắm, vệ sinh</p>
 							<div class='input-container'>
 								<form:input path="toilets" id="toilets"
-									placeholder="Nhập số phòng, VD: 2" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -410,6 +418,14 @@
 						</div>
 					</div>
 					
+					<div class='form-item'>
+						<p>Cần bán gấp không?</p>
+						<select name='urgent' id="urgent">
+							<option value='no'>Không</option>
+							<option value='yes'>Có</option>
+						</select>
+					</div>
+					
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
@@ -417,7 +433,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -444,7 +460,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
 							<span>m²</span>
 						</div>
 						<%
@@ -505,6 +521,14 @@
 						</div>
 					</div>
 					
+					<div class='form-item'>
+						<p>Cần bán gấp không?</p>
+						<select name='urgent' id="urgent">
+							<option value='no'>Không</option>
+							<option value='yes'>Có</option>
+						</select>
+					</div>
+					
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
@@ -512,7 +536,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -539,7 +563,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
 							<span>m²</span>
 						</div>
 						<%
@@ -606,6 +630,14 @@
 						</div>
 					</div>
 					
+					<div class='form-item'>
+						<p>Cần bán gấp không?</p>
+						<select name='urgent' id="urgent">
+							<option value='no'>Không</option>
+							<option value='yes'>Có</option>
+						</select>
+					</div>
+					
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
@@ -613,7 +645,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -704,7 +736,11 @@
 					    <%= imageError %>
 					</p>
 				</div>
-
+				
+				
+				<%
+				UsersModel user2 = (UsersModel) request.getAttribute("user");
+				%>
 				<div class='input-wrapper'>
 					<h3>Thông tin liên hệ</h3>
 					<div class='contact-wrapper'>
@@ -713,7 +749,7 @@
 								Tên liên hệ <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="contactName" placeholder="Nhập tên" />
+								<form:input path="contactName" placeholder="Nhập tên" value="<%=user2.getName()%>" />
 							</div>
 							<%
 						    String contactNameError = (String) request.getAttribute("contactNameError");
@@ -728,7 +764,7 @@
 								Số điện thoại <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="phoneNumber" placeholder="Nhập số điện thoại" />
+								<form:input path="phoneNumber" placeholder="Nhập số điện thoại" value="<%= user2.getPhonenumber() %>" />
 							</div>
 							<%
 						    String phoneNumberError = (String) request.getAttribute("phoneNumberError");
@@ -742,7 +778,7 @@
 					<div class='form-item'>
 						<p>Email</p>
 						<div class='input-container'>
-							<form:input type="email" path="email" placeholder="Nhập email" />
+							<form:input type="email" path="email" placeholder="Nhập email" value="<%= user2.getEmail() %>" />
 						</div>
 						<%
 					    	String emailError = (String) request.getAttribute("emailError");
@@ -916,109 +952,216 @@
 	</div>
 
 	<script type="text/javascript">
+	const urlParams = new URLSearchParams(window.location.search);
+	const categoryId = urlParams.get('categoryId');
 	
 	document.getElementById('price').addEventListener('input', async function() {
-	    const districtElement = document.getElementById('districtId');
-	    const wardElement = document.getElementById('wardId');
-	    const sizeElement = document.getElementById('size');
-	    const roomsElement = document.getElementById('rooms');
-	    const toiletsElement = document.getElementById('toilets');
-	    const floorsElement = document.getElementById('floors');
-	    const houseTypeElement = document.getElementById('type');
-	    const furnishingSellElement = document.getElementById('furnishing_sell');
-	    
-	    let ward = "";
-	    let district;
-	    let size = 0;
-	    let rooms = 0;
-	    let toilets = 0;
-	    let floors = 0;
-	    let house_type = "";
-	    let furnishing_sell = "";
+		const districtElement = document.getElementById('districtId');
+		const wardElement = document.getElementById('wardId');
+		const sizeElement = document.getElementById('size');
 
-	    if (wardElement && wardElement.selectedIndex !== -1) {
-	    	if(wardElement.options[wardElement.selectedIndex].textContent === "---Phường, xã---") {
-	    		ward =  "";
-	    	} else {
-		        ward = wardElement.options[wardElement.selectedIndex].textContent;
-	    	}
-	    } else {
-	    	ward =  "";
-	    }
-	    
-	    if (districtElement && districtElement.selectedIndex !== -1) {
-	        district = districtElement.options[districtElement.selectedIndex].textContent;
-	    } 
+		let rooms = 0;
+		let toilets = 0;
+		let floors = 0;
+		let furnishing_sell = "";
+		let pty_characteristics = ""; 
+		let ward = "";
+		let district;
+		let size = 0;
+		let type = "";
+		let urgent = "";
 
-	    if (sizeElement && sizeElement.value) {
-	    	size = sizeElement.value;
-	    } 
-	    
-	    if (roomsElement && roomsElement.value) {
-	        rooms = roomsElement.value;
-	    } 
-	    
-	    if (toiletsElement && toiletsElement.value) {
-	       toilets = toiletsElement.value;
-	    } 
-	    
-	    if (floorsElement && floorsElement.value) {
-	        floors = floorsElement.value;
-	    } 
-	    
-	    if (houseTypeElement && houseTypeElement.selectedIndex !== -1) {
-	    	if(houseTypeElement.options[houseTypeElement.selectedIndex].textContent === "---Loại nhà---") {
-	    		house_type =  "Nhà ngõ, hẻm";
-	    	} else {
-		        house_type = houseTypeElement.options[houseTypeElement.selectedIndex].textContent;
-	    	}
-	    } else {
-	    	house_type =  "Nhà ngõ, hẻm";
-	    }
-	    
-	    if (furnishingSellElement && furnishingSellElement.selectedIndex !== -1) {
-	    	if(furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent === "---Nội thất---") {
-	    		furnishing_sell =  "Hoàn thiện cơ bản";
-	    	} else {
-		       furnishing_sell = furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent;
-	    	}
-	    } else {
-	    	furnishing_sell =  "Hoàn thiện cơ bản";
-	    }
+		let roomsElement, toiletsElement, floorsElement, furnishingSellElement, characteristicsElement;
+
+		if (categoryId === "1" || categoryId === "2") {
+			roomsElement = document.getElementById('rooms');
+			toiletsElement = document.getElementById('toilets');
+		}
+
+		if (categoryId === "1") {
+			floorsElement = document.getElementById('floors');
+		}
+
+		const typeElement = document.getElementById('type');
+
+		if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
+			furnishingSellElement = document.getElementById('furnishing_sell');
+		}
+
+		if (categoryId === "1" || categoryId === "4") {
+			characteristicsElement = document.getElementById('characteristics');
+		}
+
+		const urgentElement = document.getElementById('urgent');
+
+		if (wardElement && wardElement.selectedIndex !== -1) {
+			ward = wardElement.options[wardElement.selectedIndex].textContent !== "---Phường, xã---" ? wardElement.options[wardElement.selectedIndex].textContent : "";
+		}
+
+		if (districtElement && districtElement.selectedIndex !== -1) {
+			district = districtElement.options[districtElement.selectedIndex].textContent;
+		}
+
+		if (sizeElement && sizeElement.value) {
+			size = sizeElement.value;
+		}
+
+		if (categoryId === "1" || categoryId === "2") {
+			if (roomsElement && roomsElement.value) {
+				rooms = roomsElement.value;
+			}
+
+			if (toiletsElement && toiletsElement.value) {
+				toilets = toiletsElement.value;
+			}
+		}
+
+		if (categoryId === "1") {
+			if (floorsElement && floorsElement.value) {
+				floors = floorsElement.value;
+			}
+		}
+
+		if (typeElement && typeElement.selectedIndex !== -1) {
+			type = typeElement.options[typeElement.selectedIndex].textContent;
+		}
+
+		if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
+			if (furnishingSellElement && furnishingSellElement.selectedIndex !== -1) {
+				furnishing_sell = furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent !== "---Nội thất---" ? furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent : "no";
+			}
+		}
+
+		if (categoryId === "1" || categoryId === "4") {
+			if (characteristicsElement && characteristicsElement.selectedIndex !== -1) {
+				pty_characteristics = characteristicsElement.options[characteristicsElement.selectedIndex].textContent !== "---Đặc điểm nhà/đất---" ? characteristicsElement.options[characteristicsElement.selectedIndex].textContent : "no";
+			}
+		}
+
+		if (urgentElement && urgentElement.value) {
+			urgent = urgentElement.value;
+		}
 	    
 	    if(ward!=="" && size!==0) {
-	    	 const data = {
+	    	if(categoryId === "1") {
+		    	 const data = {
+		          		ward: ward,
+		         		district: district,
+		         		size: parseFloat(size),
+		         		rooms: parseInt(rooms),
+		         		toilets: parseInt(toilets),
+		         		floors: parseInt(floors),
+		         		house_type: type,
+		         		furnishing_sell: furnishing_sell,
+		         		urgent: urgent,
+		         		pty_characteristics: pty_characteristics,
+		         };
+	
+		         try {
+		             const response = await fetch('http://localhost:5000/housePredict', {
+		                 method: 'POST',
+		                 headers: {
+		                     'Content-Type': 'application/json'
+		                 },
+		                 body: JSON.stringify(data)
+		             });
+	
+		             const result = await response.json();
+		             document.getElementById('result').style.display = "block";
+		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+		         } catch (error) {
+		        	 document.getElementById('result').style.display = "none";
+		             console.error('Error predicting price:', error);
+		             document.getElementById('result').innerText = 'Error predicting price.';
+		         }
+	         } else if(categoryId === "2") {
+	        	 const data = {
 	          		ward: ward,
 	         		district: district,
 	         		size: parseFloat(size),
 	         		rooms: parseInt(rooms),
 	         		toilets: parseInt(toilets),
-	         		floors: parseInt(floors),
-	         		house_type: house_type,
-	         		furnishing_sell: furnishing_sell
-	         };
-
-	         try {
-	             const response = await fetch('http://localhost:5000/housePredict', {
-	                 method: 'POST',
-	                 headers: {
-	                     'Content-Type': 'application/json'
-	                 },
-	                 body: JSON.stringify(data)
-	             });
-
-	             const result = await response.json();
-	             document.getElementById('result').style.display = "block";
-	             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
-	         } catch (error) {
-	        	 document.getElementById('result').style.display = "none";
-	             console.error('Error predicting price:', error);
-	             document.getElementById('result').innerText = 'Error predicting price.';
-	         }
+	         		apartment_type: type,
+	         		furnishing_sell: furnishing_sell,
+	         		urgent: urgent,
+		         };
+	
+		         try {
+		             const response = await fetch('http://localhost:5000/apartmentPredict', {
+		                 method: 'POST',
+		                 headers: {
+		                     'Content-Type': 'application/json'
+		                 },
+		                 body: JSON.stringify(data)
+		             });
+	
+		             const result = await response.json();
+		             document.getElementById('result').style.display = "block";
+		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+		         } catch (error) {
+		        	 document.getElementById('result').style.display = "none";
+		             console.error('Error predicting price:', error);
+		             document.getElementById('result').innerText = 'Error predicting price.';
+		         }
+             } else if(categoryId === "3") {
+            	 const data = {
+	          		ward: ward,
+	         		district: district,
+	         		size: parseFloat(size),
+	         		commercial_type: type,
+	         		furnishing_sell: furnishing_sell,
+	         		urgent: urgent,
+		         };
+	
+		         try {
+		             const response = await fetch('http://localhost:5000/commercialPredict', {
+		                 method: 'POST',
+		                 headers: {
+		                     'Content-Type': 'application/json'
+		                 },
+		                 body: JSON.stringify(data)
+		             });
+	
+		             const result = await response.json();
+		             document.getElementById('result').style.display = "block";
+		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+		         } catch (error) {
+		        	 document.getElementById('result').style.display = "none";
+		             console.error('Error predicting price:', error);
+		             document.getElementById('result').innerText = 'Error predicting price.';
+		         }
+             } else if(categoryId === "4") {
+            	 const data = {
+   	          		ward: ward,
+   	         		district: district,
+   	         		size: parseFloat(size),
+   	         		land_type: type,
+   	         		pty_characteristics: pty_characteristics,
+   	         		urgent: urgent,
+   		         };
+   	
+   		         try {
+   		             const response = await fetch('http://localhost:5000/landPredict', {
+   		                 method: 'POST',
+   		                 headers: {
+   		                     'Content-Type': 'application/json'
+   		                 },
+   		                 body: JSON.stringify(data)
+   		             });
+   	
+   		             const result = await response.json();
+   		             document.getElementById('result').style.display = "block";
+   		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+   		         } catch (error) {
+   		        	 document.getElementById('result').style.display = "none";
+   		             console.error('Error predicting price:', error);
+   		             document.getElementById('result').innerText = 'Error predicting price.';
+   		         }
+             }
+	         
 	    } else {
 	    	document.getElementById('result').style.display = "none";
 	    }
-       
 	});
 	
 	var images = [];
@@ -1047,10 +1190,25 @@
 		})
 		return image;
 	}
-	function delete_image(e) {
-		images.splice(e, 1);
-		document.getElementById("container").innerHTML = image_show();
+	
+	function delete_image(index) {
+	    images.splice(index, 1); // Xóa ảnh khỏi mảng `images[]`
+	    
+	    // Reset lại input file
+	    document.getElementById("image").value = "";
+
+	    // Tạo lại một input file mới với các ảnh còn lại
+	    let dataTransfer = new DataTransfer(); // Sử dụng DataTransfer API
+
+	    images.forEach(image => {
+	        dataTransfer.items.add(image.file); // Thêm lại ảnh còn lại
+	    });
+
+	    document.getElementById("image").files = dataTransfer.files; // Cập nhật lại input file với các ảnh còn lại
+
+	    document.getElementById("container").innerHTML = image_show(); // Cập nhật lại giao diện
 	}
+	
 	function check_duplicate(name) {
 		var image = true;
 		if(images.length > 0) {
@@ -1367,7 +1525,33 @@
 		        }
 		    });
 		});
-
+		
+		$(document).ready(function() {			
+			var districtId = $('#districtId').val();
+			$.ajax({
+                type: 'GET',
+                url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
+                data: { districtId: districtId },
+                dataType: 'text',
+                success: function(data) {
+                    $('#wardId').empty();
+                    $('#wardId').append('<option value="">---Phường, xã---</option>');
+                    var lines = data.split('\n');
+                    var currentWard = "<c:out value='${realEstate.ward.name}' />";
+                    $.each(lines, function(index, line) {
+                        if (index < lines.length - 1) {
+                            var parts = line.split(':');
+                            var isSelected = (currentWard === parts[1]) ? "selected" : "";
+                            $('#wardId').append('<option ' + isSelected + ' value="' + parts[0] + '">' + parts[1] + '</option>');
+                        }
+                    });
+                },
+                error: function(data) {
+                    $('#wardId').empty();
+                    $('#wardId').append('<option value="">Error occurred while fetching wards</option>');
+                }
+            });
+		});
 	    
 	    $('#districtId').change(function() {
 	        var districtId = $(this).val();

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import batdongsan.models.EmployeeModel;
-import batdongsan.models.RealEstateModel;
+import batdongsan.models.HCMRealEstateModel;
 
 @Controller
 @RequestMapping("/admin/")
@@ -33,11 +33,11 @@ public class RealEstateController {
 	        @RequestParam(name = "size", defaultValue = "5") int size) {
 	    Session session = factory.openSession();
 	    try {
-	        String hqlAll = "FROM RealEstateModel r";
+	        String hqlAll = "FROM HCMRealEstateModel r";
 	        if (searchInput != null && !searchInput.isEmpty()) {
 	            hqlAll += " WHERE r.address LIKE :searchInput OR r.title LIKE :searchInput OR r.description LIKE :searchInput";
 	        }
-	        Query<RealEstateModel> queryAll = session.createQuery(hqlAll, RealEstateModel.class);
+	        Query<HCMRealEstateModel> queryAll = session.createQuery(hqlAll, HCMRealEstateModel.class);
 	        if (searchInput != null && !searchInput.isEmpty()) {
 	            queryAll.setParameter("searchInput", "%" + searchInput + "%");
 	        }
@@ -46,7 +46,7 @@ public class RealEstateController {
 	        queryAll.setFirstResult((pageAll - 1) * size);
 	        queryAll.setMaxResults(size);
 
-	        List<RealEstateModel> allRealEstates = queryAll.list();
+	        List<HCMRealEstateModel> allRealEstates = queryAll.list();
 	        request.setAttribute("allRealEstates", allRealEstates);
 
 	        request.setAttribute("currentAllPage", pageAll);
@@ -74,10 +74,10 @@ public class RealEstateController {
     public String getDetailPage(HttpServletRequest request, @RequestParam("realEstateId") int realEstateId, ModelMap model) {
     	Session session = factory.openSession();
 		try {
-			String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-			Query<RealEstateModel> query = session.createQuery(hql);
+			String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+			Query<HCMRealEstateModel> query = session.createQuery(hql);
 			query.setParameter("realEstateId", realEstateId);
-			RealEstateModel realEsate = query.getSingleResult();
+			HCMRealEstateModel realEsate = query.getSingleResult();
 			
 			request.setAttribute("realEstate", realEsate);
 			
@@ -104,10 +104,10 @@ public class RealEstateController {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-			Query<RealEstateModel> query = session.createQuery(hql);
+			String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+			Query<HCMRealEstateModel> query = session.createQuery(hql);
 			query.setParameter("realEstateId", realEstateId);
-			RealEstateModel deletedRealEstate = query.uniqueResult();
+			HCMRealEstateModel deletedRealEstate = query.uniqueResult();
 			
 			session.delete(deletedRealEstate);
 			t.commit();
@@ -127,10 +127,10 @@ public class RealEstateController {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-			Query<RealEstateModel> query = session.createQuery(hql);
+			String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+			Query<HCMRealEstateModel> query = session.createQuery(hql);
 			query.setParameter("realEstateId", realEstateId);
-			RealEstateModel updatedRealEstate = query.uniqueResult();
+			HCMRealEstateModel updatedRealEstate = query.uniqueResult();
 			updatedRealEstate.setStatus("Đang hiển thị");
 			
 			session.update(updatedRealEstate);
@@ -151,10 +151,10 @@ public class RealEstateController {
 	    Session session = factory.openSession();
 	    Transaction t = session.beginTransaction();
 	    try {
-	        String hql = "FROM RealEstateModel WHERE realEstateId = :realEstateId";
-	        Query<RealEstateModel> query = session.createQuery(hql);
+	        String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+	        Query<HCMRealEstateModel> query = session.createQuery(hql);
 	        query.setParameter("realEstateId", realEstateId);
-	        RealEstateModel updatedRealEstate = query.uniqueResult();
+	        HCMRealEstateModel updatedRealEstate = query.uniqueResult();
 
 	        String status = updatedRealEstate.getStatus();
 	        if ("Đang hiển thị".equals(status)) {

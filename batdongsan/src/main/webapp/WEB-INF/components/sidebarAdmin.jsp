@@ -90,6 +90,21 @@
 				</div>
 			</div>
 		</c:if>
+		
+		<div class='panel-group'>
+			<div class='panel panel-default'>
+				<div class='panel-heading'>
+					<h4 class='panel-title'>
+						<a
+							href='${pageContext.servletContext.contextPath}/trang-chu.html'>
+							<div>
+								<i class="fa-solid fa-circle-left"></i> <span>Trở lại trang PTIT HOUSE</span>
+							</div>
+						</a>
+					</h4>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class='collapse-container collapse-container-1'>

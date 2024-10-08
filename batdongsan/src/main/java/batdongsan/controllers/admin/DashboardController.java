@@ -42,7 +42,7 @@ public class DashboardController {
 			Query<Long> queryTotalEmployees = session.createQuery(hqlTotalEmployees, Long.class);
 			Long countEmployees = queryTotalEmployees.uniqueResult();
 
-			String hqlTotalRealEstates = "SELECT COUNT(r) FROM RealEstateModel r";
+			String hqlTotalRealEstates = "SELECT COUNT(r) FROM HCMRealEstateModel r";
 			Query<Long> queryTotalRealEstates = session.createQuery(hqlTotalRealEstates, Long.class);
 			Long countRealEstates = queryTotalRealEstates.uniqueResult();
 
@@ -50,7 +50,7 @@ public class DashboardController {
 			Query<Long> queryTotalNews = session.createQuery(hqlTotalNews, Long.class);
 			Long countNews = queryTotalNews.uniqueResult();
 
-			String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM RealEstateModel re";
+			String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM HCMRealEstateModel re";
 			Query<Long> queryTotalRevenue = session.createQuery(hqlTotalRevenue, Long.class);
 			Long totalRevenue = queryTotalRevenue.uniqueResult();
 			
@@ -65,7 +65,7 @@ public class DashboardController {
 
 			// Data for charts: Total posts per month (last 6 months)
 			String hqlTotalPostsPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), COUNT(re) "
-					+ "FROM RealEstateModel re " + "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) "
+					+ "FROM HCMRealEstateModel re " + "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) "
 					+ "GROUP BY MONTH(re.submittedDate), YEAR(re.submittedDate) "
 					+ "ORDER BY YEAR(re.submittedDate), MONTH(re.submittedDate)";
 			Query<Object[]> queryTotalPostsPerMonth = session.createQuery(hqlTotalPostsPerMonth, Object[].class);
@@ -73,7 +73,7 @@ public class DashboardController {
 
 			// Data for charts: Total money per month (last 6 months)
 			String hqlTotalMoneyPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), SUM(re.totalMoney) "
-					+ "FROM RealEstateModel re " + "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) "
+					+ "FROM HCMRealEstateModel re " + "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) "
 					+ "GROUP BY MONTH(re.submittedDate), YEAR(re.submittedDate) "
 					+ "ORDER BY YEAR(re.submittedDate), MONTH(re.submittedDate)";
 			Query<Object[]> queryTotalMoneyPerMonth = session.createQuery(hqlTotalMoneyPerMonth, Object[].class);
@@ -152,7 +152,7 @@ public class DashboardController {
 			Query<Long> queryTotalEmployees = session.createQuery(hqlTotalEmployees, Long.class);
 			Long countEmployees = queryTotalEmployees.uniqueResult();
 
-			String hqlTotalRealEstates = "SELECT COUNT(r) FROM RealEstateModel r";
+			String hqlTotalRealEstates = "SELECT COUNT(r) FROM HCMRealEstateModel r";
 			Query<Long> queryTotalRealEstates = session.createQuery(hqlTotalRealEstates, Long.class);
 			Long countRealEstates = queryTotalRealEstates.uniqueResult();
 
@@ -160,8 +160,8 @@ public class DashboardController {
 			Query<Long> queryTotalNews = session.createQuery(hqlTotalNews, Long.class);
 			Long countNews = queryTotalNews.uniqueResult();
 
-//            String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM RealEstateModel re WHERE MONTH(re.submittedDate) = MONTH(GETDATE()) AND YEAR(re.submittedDate) = YEAR(GETDATE())";
-			String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM RealEstateModel re";
+//            String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM HCMRealEstateModel re WHERE MONTH(re.submittedDate) = MONTH(GETDATE()) AND YEAR(re.submittedDate) = YEAR(GETDATE())";
+			String hqlTotalRevenue = "SELECT SUM(re.totalMoney) FROM HCMRealEstateModel re";
 			Query<Long> queryTotalRevenue = session.createQuery(hqlTotalRevenue, Long.class);
 			Long totalRevenue = queryTotalRevenue.uniqueResult();
 
@@ -172,7 +172,7 @@ public class DashboardController {
 
 			// Dữ liệu biểu đồ cho tổng số tiền theo từng tháng 
             String hqlTotalMoneyPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), SUM(re.totalMoney) " +
-                                           "FROM RealEstateModel re " +
+                                           "FROM HCMRealEstateModel re " +
                                            "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) " +
                                            "GROUP BY MONTH(re.submittedDate), YEAR(re.submittedDate) " +
                                            "ORDER BY YEAR(re.submittedDate), MONTH(re.submittedDate)";
@@ -181,7 +181,7 @@ public class DashboardController {
             
             // Dữ liệu biểu đồ cho số bài đăng theo từng tháng 
             String hqlTotalPostsPerMonth = "SELECT MONTH(re.submittedDate), YEAR(re.submittedDate), COUNT(re) " +
-                                           "FROM RealEstateModel re " +
+                                           "FROM HCMRealEstateModel re " +
                                            "WHERE re.submittedDate >= DATEADD(MONTH, -5, GETDATE()) " +
                                            "GROUP BY MONTH(re.submittedDate), YEAR(re.submittedDate) " +
                                            "ORDER BY YEAR(re.submittedDate), MONTH(re.submittedDate)";

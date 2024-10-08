@@ -1,6 +1,6 @@
 <%@page import="batdongsan.models.NewsModel"%>
 <%@page import="batdongsan.models.FavouriteModel"%>
-<%@page import="batdongsan.models.RealEstateModel"%>
+<%@page import="batdongsan.models.HCMRealEstateModel"%>
 <%@page import="java.util.List"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ page pageEncoding="utf-8"%>
@@ -251,11 +251,11 @@
 				<div class='product-container '>
 					<div class='row'>
 						<%
-						List<RealEstateModel> listREForYou = (List<RealEstateModel>) request.getAttribute("listREForYou");
+						List<HCMRealEstateModel> listREForYou = (List<HCMRealEstateModel>) request.getAttribute("listREForYou");
 
 						if (listREForYou != null) {
 							int i = 0;
-							for (RealEstateModel r : listREForYou) {
+							for (HCMRealEstateModel r : listREForYou) {
 								i++;
 								if (i == 9) {
 							break;
@@ -297,11 +297,11 @@
  }
  %>
 										</span> <i class='fa-solid fa-circle'></i> <span
-											class='card-config-area'><%=r.getArea()%> m²</span>
+											class='card-config-area'><%=r.getSize()%> m²</span>
 									</div>
 									<div class='card-location'>
 										<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>,
-											<%=r.getProvince().getName()%></span>
+											Thành Phố Hồ Chí Minh</span>
 									</div>
 									<div class='card-contact'>
 										<span class='card-published-info' data-toggle='tooltip2'

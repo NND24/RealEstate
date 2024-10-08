@@ -170,7 +170,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
 							<span>m²</span>
 						</div>
 						<%
@@ -186,7 +186,7 @@
 							<p>Số phòng ngủ</p>
 							<div class='input-container'>
 								<form:input path="rooms" id="rooms"
-									placeholder="Nhập số phòng, VD: 2" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -194,7 +194,7 @@
 							<p>Số phòng tắm, vệ sinh</p>
 							<div class='input-container'>
 								<form:input path="toilets" id="toilets"
-									placeholder="Nhập số phòng, VD: 2" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -205,7 +205,7 @@
 							<p>Số tầng</p>
 							<div class='input-container'>
 								<form:input path="floors" id="floors"
-									placeholder="Nhập số tầng, VD: 2" />
+									placeholder="Nhập số tầng, VD: 2" type="number" min="0" />
 								<span>tầng</span>
 							</div>
 						</div>
@@ -280,7 +280,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -309,7 +309,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
 							<span>m²</span>
 						</div>
 						<%
@@ -325,7 +325,7 @@
 							<p>Số phòng ngủ</p>
 							<div class='input-container'>
 								<form:input path="rooms" id="rooms"
-									placeholder="Nhập số phòng, VD: 2" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -333,7 +333,7 @@
 							<p>Số phòng tắm, vệ sinh</p>
 							<div class='input-container'>
 								<form:input path="toilets" id="toilets"
-									placeholder="Nhập số phòng, VD: 2" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -423,7 +423,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -452,7 +452,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
 							<span>m²</span>
 						</div>
 						<%
@@ -520,7 +520,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -549,7 +549,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
 							<span>m²</span>
 						</div>
 						<%
@@ -628,7 +628,7 @@
 							    String formattedPrice = df.format(price);
 							%>
 							<div class='input-container'>
-								<form:input path="price" value="<%= formattedPrice %>" placeholder="Nhập giá, VD 12000000" />
+								<form:input path="price" value="<%= formattedPrice %>" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -783,60 +783,66 @@
 	<script type="text/javascript">
 	var images = [];
 	var edit_images = [];
+
 	function image_select() {
-		var image = document.getElementById("image").files;
-		 for (var i = 0; i < image.length; i++) {
-			 if(check_duplicate(image[i].name)) {
-				images.push({
-					"name": image[i].name,
-					"url": URL.createObjectURL(image[i]),
-					"file": image[i],
-				})
-		 	}
-		}
-		document.getElementById("container").innerHTML = image_show();
+	    var image = document.getElementById("image").files;
+	    for (var i = 0; i < image.length; i++) {
+	        if (check_duplicate(image[i].name)) {
+	            images.push({
+	                "name": image[i].name,
+	                "url": URL.createObjectURL(image[i]), // Tạo URL tạm thời từ tệp
+	                "file": image[i], // Lưu trữ tệp để sử dụng sau
+	            });
+	        }
+	    }
+	    document.getElementById("container").innerHTML = image_show(); // Cập nhật giao diện
 	}
+
 	function image_show() {
-		var image = "";
-		images.forEach((i) => {
-			image += `
-				<div class='img-wrapper'>
-					<img src="`+i.url+`" alt='' /> 
-					<i class='fa-solid fa-xmark' onclick="delete_image(`+images.indexOf(i)+`)"></i>
-				</div>
-			`
-		})
-		return image;
+	    var image = "";
+	    images.forEach((i) => {
+	        image += `
+	            <div class='img-wrapper'>
+	                <img src="` + i.url + `" alt='Image Preview' />
+	                <i class='fa-solid fa-xmark' onclick="delete_image(` + images.indexOf(i) + `)"></i>
+	            </div>
+	        `;
+	    });
+	    return image; // Trả về chuỗi HTML để hiển thị
 	}
-	function image_show_edit() {
-		var image = "";
-		edit_images.forEach((i) => {
-			image += `
-				<div class='img-wrapper'>
-					<img src="images/`+i+`" alt='' /> 
-					<i class='fa-solid fa-xmark' onclick=""></i>
-				</div>
-			`
-		})
-		return image;
+
+	function delete_image(index) {
+	    images.splice(index, 1); // Xóa ảnh khỏi mảng `images[]`
+	    
+	    // Reset lại input file
+	    document.getElementById("image").value = "";
+
+	    // Tạo lại một input file mới với các ảnh còn lại
+	    let dataTransfer = new DataTransfer(); // Sử dụng DataTransfer API
+
+	    images.forEach(image => {
+	        dataTransfer.items.add(image.file); // Thêm lại ảnh còn lại
+	    });
+
+	    document.getElementById("image").files = dataTransfer.files; // Cập nhật lại input file với các ảnh còn lại
+
+	    document.getElementById("container").innerHTML = image_show(); // Cập nhật lại giao diện
 	}
-	function delete_image(e) {
-		images.splice(e, 1);
-		document.getElementById("container").innerHTML = image_show();
-	}
+
+
 	function check_duplicate(name) {
-		var image = true;
-		if(images.length > 0) {
-			for(e = 0; e < images.length; e++) {
-				if(images[e].name == name) {
-					image = false;
-					break;
-				}
-			}
-		}
-		return image
+	    var isDuplicate = true;
+	    if (images.length > 0) {
+	        for (var i = 0; i < images.length; i++) {
+	            if (images[i].name == name) {
+	                isDuplicate = false;
+	                break;
+	            }
+	        }
+	    }
+	    return isDuplicate; // Trả về giá trị true nếu không trùng lặp
 	}
-	//
+
 	$(document).ready(function() {
 		ClassicEditor
         .create( document.querySelector( '#editor' ) )
@@ -855,10 +861,68 @@
 
 			// Nếu bạn muốn loại bỏ dấu ngoặc kép từ mỗi phần tử, bạn có thể sử dụng map()
 			edit_images = imageArray.map(function(image) {
-			    return image.replace(/\"/g, ''); // Loại bỏ dấu ngoặc kép từ mỗi phần tử
+			    return "images/" + image.replace(/\"/g, ''); // Loại bỏ dấu ngoặc kép từ mỗi phần tử
 			});
 			
-			document.getElementById("container").innerHTML = image_show_edit();
+			// Hàm để chuyển đổi URL thành đối tượng File
+			async function fetchImageAsFile(url, name) {
+			    const response = await fetch(url);
+			    const blob = await response.blob();
+			    return new File([blob], name, { type: blob.type });
+			}
+
+			// Hàm để thêm ảnh vào input file
+			async function addImagesToInputFile() {
+			    const inputFile = document.getElementById('image'); // Giả sử bạn có một input file với id là "image"
+			    const files = [];
+			
+			    // Lặp qua mảng `edit_images` và tải từng file
+			    for (let i = 0; i < edit_images.length; i++) {
+			        const file = await fetchImageAsFile(edit_images[i], `image${i + 1}.jpg`); // Đặt tên cho file
+			        files.push(file);
+			
+			        // Cập nhật mảng `images[]` với các thông tin cần thiết
+			        images.push({
+			            "name": `image${i + 1}.jpg`,
+			            "url": URL.createObjectURL(file),
+			            "file": file,
+			        });
+			    }
+			
+			    // Tạo một DataTransfer để thêm file vào input
+			    const dataTransfer = new DataTransfer();
+			
+			    // Thêm các file vào DataTransfer
+			    files.forEach(file => {
+			        dataTransfer.items.add(file);
+			    });
+			
+			    // Gán các file vào input
+			    inputFile.files = dataTransfer.files;
+			
+			    // Gọi hàm để hiển thị ảnh
+			    document.getElementById("container").innerHTML = image_show();
+			}
+			
+			// Gọi hàm để thêm ảnh vào input
+			addImagesToInputFile();
+
+			 
+			
+			// document.getElementById("container").innerHTML = image_show_edit();
+			
+			function image_show_edit() {
+				var image = "";
+				edit_images.forEach((i) => {
+					image += `
+						<div class='img-wrapper'>
+							<img src="images/`+i+`" alt='' /> 
+							<i class='fa-solid fa-xmark' onclick=""></i>
+						</div>
+					`
+				})
+				return image;
+			}
 			
 			var districtId = $('#districtId').val();
 			$.ajax({
