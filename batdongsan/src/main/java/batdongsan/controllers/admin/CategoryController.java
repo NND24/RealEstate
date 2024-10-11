@@ -1,7 +1,5 @@
 package batdongsan.controllers.admin;
 
-import java.sql.Date;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,14 +20,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.EmployeeModel;
-import batdongsan.models.NewsModel;
-import batdongsan.models.PermissionModel;
-import batdongsan.models.RoleModel;
-import batdongsan.utils.Vadilator;
 
 @Controller
 @RequestMapping("/admin/")

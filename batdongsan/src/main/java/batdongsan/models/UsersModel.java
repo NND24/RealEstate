@@ -28,7 +28,7 @@ public class UsersModel {
 	private Collection<FavouriteModel> favourite;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-	private Collection<RealEstateModel> realEstate;
+	private Collection<HCMRealEstateModel> realEstate;
 
 	public UsersModel() {
 		super();

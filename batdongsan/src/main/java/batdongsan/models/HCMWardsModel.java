@@ -20,7 +20,7 @@ public class HCMWardsModel {
 	private String name;
 
 	@OneToMany(mappedBy = "ward", fetch = FetchType.EAGER)
-	private Collection<RealEstateModel> realEstates;
+	private Collection<HCMRealEstateModel> realEstates;
 
 	public int getWardId() {
 		return wardId;
@@ -46,11 +46,11 @@ public class HCMWardsModel {
 		this.name = name;
 	}
 
-	public Collection<RealEstateModel> getRealEstates() {
+	public Collection<HCMRealEstateModel> getRealEstates() {
 		return realEstates;
 	}
 
-	public void setRealEstates(Collection<RealEstateModel> realEstates) {
+	public void setRealEstates(Collection<HCMRealEstateModel> realEstates) {
 		this.realEstates = realEstates;
 	}
 

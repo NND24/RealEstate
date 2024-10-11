@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import batdongsan.models.CategoryModel;
-import batdongsan.models.DistrictsModel;
 import batdongsan.models.HCMDistrictsModel;
 import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.HCMWardsModel;
-import batdongsan.models.NewsModel;
-import batdongsan.models.ProvincesModel;
 import batdongsan.models.UsersModel;
 
 @Controller
@@ -608,34 +604,6 @@ public class SellController {
 		return list;
 	}
 
-	@ResponseBody
-	@GetMapping("/getDistrictsByProvince")
-	public ResponseEntity<byte[]> getDistrictsByProvince(@RequestParam("provinceId") int provinceId) {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM DistrictsModel WHERE provinceId = :provinceId";
-			Query<DistrictsModel> query = session.createQuery(hql);
-			query.setParameter("provinceId", provinceId);
-			List<DistrictsModel> list = query.list();
-
-			// Tạo một chuỗi text từ danh sách district
-			StringBuilder result = new StringBuilder();
-			for (DistrictsModel district : list) {
-				result.append(district.getDistrictId()).append(":").append(district.getName()).append("\n");
-			}
-
-			// Chuyển đổi chuỗi thành mảng byte sử dụng encoding UTF-8
-			byte[] data = result.toString().getBytes(StandardCharsets.UTF_8);
-
-			return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(data);
-		} catch (Exception e) {
-			System.out.println(e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Error occurred while fetching districts".getBytes(StandardCharsets.UTF_8));
-		} finally {
-			session.close();
-		}
-	}
 
 	@ResponseBody
 	@GetMapping("/getWardsByDistrict")
@@ -661,24 +629,6 @@ public class SellController {
 			System.out.println(e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("Error occurred while fetching districts".getBytes(StandardCharsets.UTF_8));
-		} finally {
-			session.close();
-		}
-	}
-
-	@ResponseBody
-	@GetMapping("/getProvinceById")
-	public String getProvinceById(@RequestParam("provinceId") int provinceId) {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM ProvincesModel WHERE provinceId = :provinceId";
-			Query<ProvincesModel> query = session.createQuery(hql);
-			query.setParameter("provinceId", provinceId);
-			ProvincesModel province = query.uniqueResult();
-
-			return province.getName();
-		} catch (Exception e) {
-			return "Lỗi";
 		} finally {
 			session.close();
 		}

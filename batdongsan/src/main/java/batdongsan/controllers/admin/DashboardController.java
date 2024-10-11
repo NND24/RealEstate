@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import batdongsan.models.CategoryModel;
 import batdongsan.models.EmployeeModel;
-import batdongsan.models.PermissionModel;
 
 @Controller
 @RequestMapping("/admin/")

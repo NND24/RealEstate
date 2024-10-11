@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.PermissionModel;
-import batdongsan.models.RealEstateModel;
 import batdongsan.models.RoleModel;
 import batdongsan.utils.PasswordHashing;
 import batdongsan.utils.Vadilator;

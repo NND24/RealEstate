@@ -38,6 +38,6 @@
   </filter-mapping>
 
   <welcome-file-list>
-    <welcome-file>/WEB-INF/views/client/home.jsp</welcome-file>
+    <welcome-file>trang-chu.html</welcome-file>
   </welcome-file-list>
 </web-app>

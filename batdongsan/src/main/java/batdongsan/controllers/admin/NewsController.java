@@ -31,7 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
-import batdongsan.models.RealEstateModel;
 
 @Controller
 @RequestMapping("/admin/")

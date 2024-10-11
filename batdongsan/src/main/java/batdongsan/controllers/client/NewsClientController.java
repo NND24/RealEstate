@@ -1,6 +1,5 @@
 package batdongsan.controllers.client;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -10,17 +9,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.UsersModel;
 

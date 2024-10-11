@@ -1,6 +1,6 @@
 <%@page import="batdongsan.models.FavouriteModel"%>
 <%@page import="java.util.Collection"%>
-<%@page import="batdongsan.models.RealEstateModel"%>
+<%@page import="batdongsan.models.HCMRealEstateModel"%>
 <%@page import="java.util.List"%>
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -10,7 +10,7 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css?version=53"" type="text/css">
-<link rel="stylesheet" href="css/client/profile.css?version=51" type="text/css">
+<link rel="stylesheet" href="css/client/profile.css?version=53" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 <base href="${pageContext.servletContext.contextPath}/">
@@ -41,13 +41,13 @@
 				</div>
 				<div class='product-container'>
 					<%
-					List<RealEstateModel> sellRealEstates = (List<RealEstateModel>) request.getAttribute("sellRealEstates");
+					List<HCMRealEstateModel> sellRealEstates = (List<HCMRealEstateModel>) request.getAttribute("sellRealEstates");
 					%>
 					<h3 class='heading'>Danh sách tin đăng bán (<%= sellRealEstates.size() %>)</h3>
 					<div class='row gx-5 gy-5'>
 						<%
 						if (sellRealEstates != null) {
-							for (RealEstateModel r : sellRealEstates) {
+							for (HCMRealEstateModel r : sellRealEstates) {
 								String imageStr = (String) r.getImages();
 
 								if (imageStr != null && !imageStr.isEmpty()) {
@@ -80,13 +80,15 @@
 									}
 									%>
 									</span> <span class='card-config__item card-config__dot'>·</span>
-									<span class='card-config__item card-config__area'><%= r.getArea()%> m²</span>
+									<span class='card-config__item card-config__area'><%= r.getSize() %> m²</span>
 								</div>
 								<div class='card-info__location'>
-									<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>, <%=r.getProvince().getName()%></span>
+									<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>, Thành Phố Hồ Chí Minh</span>
 								</div>
 								<div class='card-info__contact'>
-									<div class='card-published-info'>Đăng 5 ngày trước</div>
+									<span class='card-published-info' data-toggle='tooltip2'
+											data-placement='right' title='<%=r.getSubmittedDate()%>'
+											value='<%=r.getSubmittedDate()%>'></span>
 									<div class='card-contact-button__favorite'
 										value="<%=r.getRealEstateId()%>">
 										<%
@@ -118,13 +120,13 @@
 				</div>
 				<div class='product-container'>
 					<%
-						List<RealEstateModel> rentRealEstates = (List<RealEstateModel>) request.getAttribute("rentRealEstates");
+						List<HCMRealEstateModel> rentRealEstates = (List<HCMRealEstateModel>) request.getAttribute("rentRealEstates");
 					%>
 					<h3 class='heading'>Danh sách tin đăng cho thuê (<%= rentRealEstates.size() %>)</h3>
 					<div class='row gx-5 gy-5'>
 					<%
 						if (rentRealEstates != null) {
-							for (RealEstateModel r : rentRealEstates) {
+							for (HCMRealEstateModel r : rentRealEstates) {
 								String imageStr = (String) r.getImages();
 
 								if (imageStr != null && !imageStr.isEmpty()) {
@@ -157,13 +159,15 @@
 									}
 									%>
 									</span> <span class='card-config__item card-config__dot'>·</span>
-									<span class='card-config__item card-config__area'><%= r.getArea()%> m²</span>
+									<span class='card-config__item card-config__area'><%= r.getSize()%> m²</span>
 								</div>
 								<div class='card-info__location'>
-									<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>, <%=r.getProvince().getName()%></span>
+									<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>, Thành Phố Hồ Chí Minh</span>
 								</div>
 								<div class='card-info__contact'>
-									<div class='card-published-info'>Đăng 5 ngày trước</div>
+									<span class='card-published-info' data-toggle='tooltip2'
+											data-placement='right' title='<%=r.getSubmittedDate()%>'
+											value='<%=r.getSubmittedDate()%>'></span>
 									<div class='card-contact-button__favorite'
 										value="<%=r.getRealEstateId()%>">
 										<%
@@ -200,6 +204,15 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function() {
+		$(".card-published-info").each(
+				function() {
+					var submittedTime = $(this).attr(
+							"value").trim();
+					var timeAgo = moment(submittedTime)
+							.locale('vi').fromNow();
+					$(this).text(timeAgo);
+				});
+		
 		// HANDLE ADD TO FAVOURITE
 	    $(".card-contact-button__favorite").on("click", function(e) {
 	    	e.preventDefault();

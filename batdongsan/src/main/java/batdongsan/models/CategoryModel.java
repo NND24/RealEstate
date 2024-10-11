@@ -21,7 +21,7 @@ public class CategoryModel {
 	private boolean status;
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-	private Collection<RealEstateModel> realEstates;
+	private Collection<HCMRealEstateModel> realEstates;
 
 	public int getCategoryId() {
 		return categoryId;
@@ -55,11 +55,11 @@ public class CategoryModel {
 		this.status = status;
 	}
 
-	public Collection<RealEstateModel> getRealEstates() {
+	public Collection<HCMRealEstateModel> getRealEstates() {
 		return realEstates;
 	}
 
-	public void setRealEstates(Collection<RealEstateModel> realEstates) {
+	public void setRealEstates(Collection<HCMRealEstateModel> realEstates) {
 		this.realEstates = realEstates;
 	}
 

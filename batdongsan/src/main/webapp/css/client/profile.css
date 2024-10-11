@@ -124,6 +124,7 @@
   -webkit-box-orient: vertical;
   display: -webkit-box;
   overflow: hidden;
+  height: 40px;
 }
 
 .sale-card .card-info-container .card-config__price,
@@ -147,6 +148,7 @@
   font-size: 14px;
   line-height: 20px;
   color: #505050;
+  height: 40px;
 }
 
 .sale-card .card-info-container .card-info__location i {
@@ -157,13 +159,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
+  margin-top: -2px;
 }
 
 .sale-card .card-info-container .card-published-info {
   font-size: 12px;
   line-height: 16px;
   color: #999;
+	cursor: pointer;
 }
 
 .sale-card .card-info-container .card-contact-button__favorite {

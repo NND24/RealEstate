@@ -27,7 +27,7 @@ public class FavouriteModel {
 
 	@ManyToOne
 	@JoinColumn(name = "realEstateId")
-	private RealEstateModel realEstate;
+	private HCMRealEstateModel realEstate;
 	
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
@@ -37,7 +37,7 @@ public class FavouriteModel {
 		super();
 	}
 
-	public FavouriteModel(UsersModel user, RealEstateModel realEstate, Date addedDate) {
+	public FavouriteModel(UsersModel user, HCMRealEstateModel realEstate, Date addedDate) {
 		super();
 		this.user = user;
 		this.realEstate = realEstate;
@@ -60,11 +60,11 @@ public class FavouriteModel {
 		this.user = user;
 	}
 
-	public RealEstateModel getRealEstate() {
+	public HCMRealEstateModel getRealEstate() {
 		return realEstate;
 	}
 
-	public void setRealEstate(RealEstateModel realEstate) {
+	public void setRealEstate(HCMRealEstateModel realEstate) {
 		this.realEstate = realEstate;
 	}
 

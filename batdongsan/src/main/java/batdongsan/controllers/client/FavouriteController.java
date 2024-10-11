@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.FavouriteModel;
-import batdongsan.models.RealEstateModel;
+import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.UsersModel;
 
 @Controller
@@ -42,7 +42,7 @@ public class FavouriteController {
 	        @RequestParam(name = "size", defaultValue = "10") int size) {
 		Session session = factory.openSession();
 		try {
-			String hql = "SELECT re FROM RealEstateModel re JOIN re.favourite fa WHERE re.status = :status AND fa.user.userId = :userId";
+			String hql = "SELECT re FROM HCMRealEstateModel re JOIN re.favourite fa WHERE re.status = :status AND fa.user.userId = :userId";
 
 
 			// ORDER BY
@@ -74,7 +74,7 @@ public class FavouriteController {
 			// Append the ORDER BY clause to the HQL query
 			hql += orderByClause;
 
-			Query<RealEstateModel> query = session.createQuery(hql);
+			Query<HCMRealEstateModel> query = session.createQuery(hql);
 			query.setParameter("status", "Đang hiển thị");
 			
 			Cookie[] cookies = request.getCookies();
@@ -94,7 +94,7 @@ public class FavouriteController {
 	        query.setFirstResult((page - 1) * size);
 	        query.setMaxResults(size);
 
-			List<RealEstateModel> listRealEstate = query.list();
+			List<HCMRealEstateModel> listRealEstate = query.list();
 			
 			// Pagination attributes
 	        request.setAttribute("currentPage", page);
@@ -148,7 +148,7 @@ public class FavouriteController {
 					FavouriteModel fa = query.uniqueResult();
 
 					UsersModel user = session.get(UsersModel.class, Integer.parseInt(userId));
-					RealEstateModel realEstate = session.get(RealEstateModel.class, Integer.parseInt(realEstateId));
+					HCMRealEstateModel realEstate = session.get(HCMRealEstateModel.class, Integer.parseInt(realEstateId));
 					Date currentTime = new Date();
 					FavouriteModel favourite = new FavouriteModel(user, realEstate, currentTime);
 
@@ -186,7 +186,7 @@ public class FavouriteController {
 	public List<CategoryModel> getTypesSell() {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
+			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
 			Query<CategoryModel> query = session.createQuery(hql);
 			query.setParameter("type", "Nhà đất bán");
 			List<CategoryModel> categories = query.list();

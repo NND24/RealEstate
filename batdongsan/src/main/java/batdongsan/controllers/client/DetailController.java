@@ -82,7 +82,7 @@ public class DetailController {
 	public List<CategoryModel> getTypesSell() {
 		Session session = factory.openSession();
 		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
+			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
 			Query<CategoryModel> query = session.createQuery(hql);
 			query.setParameter("type", "Nhà đất bán");
 			List<CategoryModel> categories = query.list();
