@@ -218,22 +218,4 @@ public class ListPostController {
 			session.close();
 		}
 	}
-
-	@ModelAttribute("categoriesRent")
-	public List<CategoryModel> getTypesRent() {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
-			Query<CategoryModel> query = session.createQuery(hql);
-			query.setParameter("type", "Nhà đất cho thuê");
-			List<CategoryModel> categories = query.list();
-
-			return categories;
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		} finally {
-			session.close();
-		}
-	}
 }

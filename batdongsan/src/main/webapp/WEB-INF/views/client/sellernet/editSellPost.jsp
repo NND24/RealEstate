@@ -1,6 +1,6 @@
 <%@page import="batdongsan.models.HCMDistrictsModel"%>
 <%@page import="batdongsan.models.HCMRealEstateModel"%>
-<%@page import="batdongsan.models.ProvincesModel"%>
+<%@ page import="java.text.DecimalFormat" %>
 <%@page import="java.util.List"%>
 <%@page import="batdongsan.models.CategoryModel"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
@@ -276,19 +276,27 @@
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
-							<p>
-								Mức giá <span>*</span>
-							</p>
-							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
-							</div>
-							<%
+						    <p>Mức giá <span>*</span></p>
+						    <div class='input-container'>
+						        <%
+						        Object priceValue = request.getAttribute("price");
+						
+						        // Ensure priceValue is converted to a number before formatting
+						        DecimalFormat df = new DecimalFormat("#");
+						        df.setMaximumFractionDigits(0);  // No decimal places
+						        df.setGroupingUsed(false);  // Disable comma separators
+						        String formattedPrice = priceValue != null ? df.format(priceValue) : "";
+						        %>
+						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" />
+						    </div>
+						    <%
 						    String priceError = (String) request.getAttribute("priceError");
-							%>
-							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
-							    <%= priceError %>
-							</p>
+						    %>
+						    <p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						        <%= priceError %>
+						    </p>
 						</div>
+
 
 						<div class='form-item'>
 							<p>Đơn vị</p>
@@ -419,18 +427,25 @@
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
-							<p>
-								Mức giá <span>*</span>
-							</p>
-							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
-							</div>
-							<%
+						    <p>Mức giá <span>*</span></p>
+						    <div class='input-container'>
+						        <%
+						        Object priceValue = request.getAttribute("price");
+						
+						        // Ensure priceValue is converted to a number before formatting
+						        DecimalFormat df = new DecimalFormat("#");
+						        df.setMaximumFractionDigits(0);  // No decimal places
+						        df.setGroupingUsed(false);  // Disable comma separators
+						        String formattedPrice = priceValue != null ? df.format(priceValue) : "";
+						        %>
+						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" />
+						    </div>
+						    <%
 						    String priceError = (String) request.getAttribute("priceError");
-							%>
-							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
-							    <%= priceError %>
-							</p>
+						    %>
+						    <p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						        <%= priceError %>
+						    </p>
 						</div>
 
 						<div class='form-item'>
@@ -516,18 +531,25 @@
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
-							<p>
-								Mức giá <span>*</span>
-							</p>
-							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
-							</div>
-							<%
+						    <p>Mức giá <span>*</span></p>
+						    <div class='input-container'>
+						        <%
+						        Object priceValue = request.getAttribute("price");
+						
+						        // Ensure priceValue is converted to a number before formatting
+						        DecimalFormat df = new DecimalFormat("#");
+						        df.setMaximumFractionDigits(0);  // No decimal places
+						        df.setGroupingUsed(false);  // Disable comma separators
+						        String formattedPrice = priceValue != null ? df.format(priceValue) : "";
+						        %>
+						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" />
+						    </div>
+						    <%
 						    String priceError = (String) request.getAttribute("priceError");
-							%>
-							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
-							    <%= priceError %>
-							</p>
+						    %>
+						    <p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						        <%= priceError %>
+						    </p>
 						</div>
 
 						<div class='form-item'>
@@ -619,23 +641,25 @@
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
-							<p>
-								Mức giá <span>*</span>
-							</p>
-							<%
-								float price = realEstate.getPrice(); 
-								java.text.DecimalFormat df = new java.text.DecimalFormat("#"); 
-							    String formattedPrice = df.format(price);
-							%>
-							<div class='input-container'>
-								<form:input path="price" value="<%= formattedPrice %>" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
-							</div>
-							<%
+						    <p>Mức giá <span>*</span></p>
+						    <div class='input-container'>
+						        <%
+						        Object priceValue = request.getAttribute("price");
+						
+						        // Ensure priceValue is converted to a number before formatting
+						        DecimalFormat df = new DecimalFormat("#");
+						        df.setMaximumFractionDigits(0);  // No decimal places
+						        df.setGroupingUsed(false);  // Disable comma separators
+						        String formattedPrice = priceValue != null ? df.format(priceValue) : "";
+						        %>
+						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" />
+						    </div>
+						    <%
 						    String priceError = (String) request.getAttribute("priceError");
-							%>
-							<p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
-							    <%= priceError %>
-							</p>
+						    %>
+						    <p class="error" style="<%= (priceError != null && !priceError.isEmpty()) ? "display: block;" : "display: none;" %>">
+						        <%= priceError %>
+						    </p>
 						</div>
 
 						<div class='form-item'>

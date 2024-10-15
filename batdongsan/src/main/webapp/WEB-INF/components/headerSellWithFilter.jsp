@@ -29,17 +29,6 @@
 										${c.name}</li> </a>
 							</c:forEach> 
 						</ul></li>  
-					<!--	<li class="menu__item"><a
-						href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html">Nhà
-							đất cho thuê</a>
-						<ul class="list-container">
-							<c:forEach var="c" items="${categoriesRent}">
-								<a
-									href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html?categoryIds=${c.categoryId}">
-									<li data-category-id="${c.categoryId}"">${c.name}</li>
-								</a>
-							</c:forEach>
-						</ul></li> -->
 					<li class="menu__item"><a
 						href="${pageContext.servletContext.contextPath}/tin-tuc.html">Tin
 							tức</a></li>
@@ -121,12 +110,7 @@
 		<div class="search-bar">
 			<div class="search-bar__tab">
 				<a href="${pageContext.servletContext.contextPath}/nha-dat-ban.html"
-					class="tab-box <%if ("sell".equals(request.getAttribute("page"))) {%> tab-box--actived<%}%>">Bán</a>
-				<!--  	<a
-					href="${pageContext.servletContext.contextPath}/nha-dat-cho-thue.html"
-					class="tab-box <%if ("rent".equals(request.getAttribute("page"))) {%> tab-box--actived<%}%>">Cho
-					thuê</a> -->
-
+					class="tab-box tab-box--actived">Bán</a>
 			</div>
 			<div class="search-bar__input">
 				<i
@@ -416,71 +400,55 @@
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 0 && maxPrice.intValue() == 500)
 		? "active"
-		: ""%>">Dưới
-								500 triệu</span>
+		: ""%>">Dưới 500 triệu</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 500 && maxPrice.intValue() == 800)
 		? "active"
-		: ""%>">500
-								- 800 triệu</span>
+		: ""%>">500 - 800 triệu</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 800 && maxPrice.intValue() == 1000)
 		? "active"
-		: ""%>">800
-								triệu - 1 tỷ</span>
+		: ""%>">800	triệu - 1 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 1000 && maxPrice.intValue() == 2000)
 		? "active"
-		: ""%>">1
-								- 2 tỷ</span>
+		: ""%>">1 - 2 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 2000 && maxPrice.intValue() == 3000)
 		? "active"
-		: ""%>">2
-								- 3 tỷ</span>
+		: ""%>">2 - 3 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 3000 && maxPrice.intValue() == 5000)
 		? "active"
-		: ""%>">3
-								- 5 tỷ</span>
+		: ""%>">3 - 5 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 5000 && maxPrice.intValue() == 7000)
 		? "active"
-		: ""%>">5
-								- 7 tỷ</span>
+		: ""%>">5 - 7 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 7000 && maxPrice.intValue() == 10000)
 				? "active"
-				: ""%>">7
-								- 10 tỷ</span>
+				: ""%>">7 - 10 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 10000 && maxPrice.intValue() == 20000)
 				? "active"
-				: ""%>">10
-								- 20 tỷ</span>
+				: ""%>">10 - 20 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 20000 && maxPrice.intValue() == 30000)
 				? "active"
-				: ""%>">20
-								- 30 tỷ</span>
+				: ""%>">20 - 30 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 30000 && maxPrice.intValue() == 40000)
 				? "active"
-				: ""%>">30
-								- 40 tỷ</span>
+				: ""%>">30 - 40 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 40000 && maxPrice.intValue() == 60000)
 				? "active"
-				: ""%>">40
-								- 60 tỷ</span>
+				: ""%>">40 - 60 tỷ</span>
 						</label> <label> <span
 							class="<%=(minPriceFloat != null && maxPriceFloat != null && minPrice.intValue() == 60000
-		&& maxPrice.intValue() == 600000) ? "active" : ""%>">Trên
-								60 tỷ</span>
-						</label> <label> <span
-							class="<%=(unit != null && unit.equals("thoa-thuan")) ? "active" : ""%>">Thỏa
-								thuận</span>
-						</label>
+		&& maxPrice.intValue() == 600000) ? "active" : ""%>">Trên 60 tỷ</span>
+						</label> 
 					</div>
 					<div class="list-search-select-footer">
 						<div class="list-search-select__reset-button"
@@ -1208,7 +1176,7 @@ $(document).ready(function() {
 	
 	    let searchInputVal = searchInput.val();
 	
-	    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+	    let url = "${pageContext.servletContext.contextPath}/nha-dat-ban.html";
 	
 	    let hasParameters = false;
 	
@@ -1277,7 +1245,7 @@ $(document).ready(function() {
 
 	$("#reset-all-button").click(() => {
 		let url;
-		url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+		url = "${pageContext.servletContext.contextPath}/nha-dat-ban.html";
 		window.location.href = url;
 	})
 
@@ -1289,11 +1257,14 @@ $(document).ready(function() {
 			if (type1.checked) {
 				listCategoryId.push(1);
 			}
-			if (type3.checked) {
+			if (type2.checked) {
 				listCategoryId.push(2);
 			}
-			if (type4.checked) {
+			if (type3.checked) {
 				listCategoryId.push(3);
+			}
+			if (type4.checked) {
+				listCategoryId.push(4);
 			}
 		}
 
@@ -1376,7 +1347,7 @@ $(document).ready(function() {
 
 	    let searchInput = $(".search-bar__input input").val();
 
-	    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+	    let url = "${pageContext.servletContext.contextPath}/nha-dat-ban.html";
 		
 	    let hasParameters = false;
 	
@@ -1445,7 +1416,7 @@ $(document).ready(function() {
 	        url += "searchInput=" + searchInput;
 	    }
 	
-	    window.location.href = url;
+	   window.location.href = url;
 		
 	});
 
@@ -1532,7 +1503,7 @@ $(document).ready(function() {
 
 	    let searchInput = $(".search-bar__input input").val();
 
-	    let url = "${pageContext.servletContext.contextPath}/<%if ("sell".equals(request.getAttribute("page"))) {%>nha-dat-ban<%} else {%>nha-dat-cho-thue<%}%>.html";
+	    let url = "${pageContext.servletContext.contextPath}/nha-dat-ban.html";
 		
 	    let hasParameters = false;
 	

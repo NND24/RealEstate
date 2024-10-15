@@ -1,5 +1,4 @@
 <%@page import="batdongsan.models.HCMDistrictsModel"%>
-<%@page import="batdongsan.models.ProvincesModel"%>
 <%@page import="java.util.List"%>
 <%@page import="batdongsan.models.CategoryModel"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>

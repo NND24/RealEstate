@@ -85,41 +85,6 @@ public class PostController {
 		return "client/sellernet/postSell";
 	}
 
-	@RequestMapping(value = "dang-tin/cho-thue", method = RequestMethod.GET)
-	public String getRentPage(ModelMap model, HttpServletRequest request) {
-		Session session = factory.openSession();
-		Cookie[] cookies = request.getCookies();
-		UsersModel user = null;
-
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("userId")) {
-					String userId = cookie.getValue();
-					String hqlUser = "FROM UsersModel WHERE userId = :userId";
-					Query<UsersModel> queryUser = session.createQuery(hqlUser);
-					queryUser.setParameter("userId", Integer.parseInt(userId));
-					user = queryUser.uniqueResult();
-					break;
-				}
-			}
-		}
-
-		String hqlCat = "FROM CategoryModel WHERE type = :type";
-		Query<CategoryModel> queryCat = session.createQuery(hqlCat);
-		queryCat.setParameter("type", "Nhà đất cho thuê");
-		List<CategoryModel> categories = queryCat.list();
-
-		String hqlDistrict = "FROM HCMDistrictsModel";
-		Query<HCMDistrictsModel> queryDis = session.createQuery(hqlDistrict);
-		List<HCMDistrictsModel> districts = queryDis.list();
-
-		request.setAttribute("categories", categories);
-		request.setAttribute("districts", districts);
-		request.setAttribute("user", user);
-		model.addAttribute("realEstate", new HCMRealEstateModel());
-		return "client/sellernet/postRent";
-	}
-
 	@RequestMapping(value = "addNewRealEstate", method = RequestMethod.POST)
 	public String addNewRealEstate(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "image") MultipartFile[] files, @RequestParam(name = "categoryId") Integer categoryId,
@@ -458,52 +423,9 @@ public class PostController {
 		HCMRealEstateModel RealEstate = query.uniqueResult();
 		model.addAttribute("realEstate", RealEstate);
 		request.setAttribute("realEstate", RealEstate);
+		request.setAttribute("price", RealEstate.getPrice());
 		request.setAttribute("category", RealEstate.getCategory().getCategoryId());
 		return "client/sellernet/editSellPost";
-	}
-
-	@RequestMapping(value = "chinh-sua/cho-thue", method = RequestMethod.GET)
-	public String getEditRentREPage(ModelMap model, HttpServletRequest request,
-			@RequestParam(name = "realEstateId") Integer realEstateId) {
-		Session session = factory.openSession();
-		Cookie[] cookies = request.getCookies();
-		UsersModel user = null;
-
-		editedRealEstateId = realEstateId;
-
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("userId")) {
-					String userId = cookie.getValue();
-					String hqlUser = "FROM UsersModel WHERE userId = :userId";
-					Query<UsersModel> queryUser = session.createQuery(hqlUser);
-					queryUser.setParameter("userId", Integer.parseInt(userId));
-					user = queryUser.uniqueResult();
-					break;
-				}
-			}
-		}
-
-		String hqlCat = "FROM CategoryModel WHERE type = :type";
-		Query<CategoryModel> queryCat = session.createQuery(hqlCat);
-		queryCat.setParameter("type", "Nhà đất cho thuê");
-		List<CategoryModel> categories = queryCat.list();
-
-		String hqlDistrict = "FROM HCMDistrictsModel";
-		Query<HCMDistrictsModel> queryDis = session.createQuery(hqlDistrict);
-		List<HCMDistrictsModel> districts = queryDis.list();
-
-		request.setAttribute("categories", categories);
-		request.setAttribute("districts", districts);
-		request.setAttribute("user", user);
-
-		String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
-		Query<HCMRealEstateModel> query = session.createQuery(hql);
-		query.setParameter("realEstateId", realEstateId);
-		HCMRealEstateModel RealEstate = query.uniqueResult();
-		model.addAttribute("realEstate", RealEstate);
-		request.setAttribute("realEstate", RealEstate);
-		return "client/sellernet/editRentPost";
 	}
 
 	@RequestMapping(value = "editRealEstate", method = RequestMethod.POST)
@@ -699,8 +621,8 @@ public class PostController {
 				queryCat.setParameter("type", "Nhà đất bán");
 				List<CategoryModel> categories = queryCat.list();
 
-				String hqlPro = "FROM ProvincesModel";
-				Query<HCMDistrictsModel> queryDis = session.createQuery(hqlPro);
+				String hqlDis = "FROM HCMDistrictsModel";
+				Query<HCMDistrictsModel> queryDis = session.createQuery(hqlDis);
 				List<HCMDistrictsModel> districts = queryDis.list();
 
 				request.setAttribute("categories", categories);
@@ -804,35 +726,6 @@ public class PostController {
 	}
 
 	@ResponseBody
-	@GetMapping("/getDistrictsByProvince")
-	public ResponseEntity<byte[]> getDistrictsByProvince(@RequestParam("provinceId") int provinceId) {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM DistrictsModel WHERE provinceId = :provinceId";
-			Query<HCMDistrictsModel> query = session.createQuery(hql);
-			query.setParameter("provinceId", provinceId);
-			List<HCMDistrictsModel> list = query.list();
-
-			// Tạo một chuỗi text từ danh sách district
-			StringBuilder result = new StringBuilder();
-			for (HCMDistrictsModel district : list) {
-				result.append(district.getDistrictId()).append(":").append(district.getName()).append("\n");
-			}
-
-			// Chuyển đổi chuỗi thành mảng byte sử dụng encoding UTF-8
-			byte[] data = result.toString().getBytes(StandardCharsets.UTF_8);
-
-			return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(data);
-		} catch (Exception e) {
-			System.out.println(e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Error occurred while fetching districts".getBytes(StandardCharsets.UTF_8));
-		} finally {
-			session.close();
-		}
-	}
-
-	@ResponseBody
 	@GetMapping("/getWardsByDistrict")
 	public ResponseEntity<byte[]> getWardsByDistrict(@RequestParam("districtId") int districtId) {
 		Session session = factory.openSession();
@@ -868,24 +761,6 @@ public class PostController {
 			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
 			Query<CategoryModel> query = session.createQuery(hql);
 			query.setParameter("type", "Nhà đất bán");
-			List<CategoryModel> categories = query.list();
-
-			return categories;
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		} finally {
-			session.close();
-		}
-	}
-
-	@ModelAttribute("categoriesRent")
-	public List<CategoryModel> getTypesRent() {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM CategoryModel WHERE type = :type";
-			Query<CategoryModel> query = session.createQuery(hql);
-			query.setParameter("type", "Nhà đất cho thuê");
 			List<CategoryModel> categories = query.list();
 
 			return categories;

@@ -30,10 +30,6 @@
 	%>
 	<%@ include file="../../components/headerSellWithFilter.jsp"%>
 	<%
-	} else {
-	%>
-	<%@ include file="../../components/headerRentWithFilter.jsp"%>
-	<%
 	}
 	%>
 	<div class="sell">
