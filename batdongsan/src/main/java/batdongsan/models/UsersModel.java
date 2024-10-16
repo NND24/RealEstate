@@ -23,6 +23,8 @@ public class UsersModel {
 	private String taxCode;
 	private String phonenumber;
 	private int accountBalance;
+	private boolean status;
+	
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private Collection<FavouriteModel> favourite;
@@ -124,5 +126,15 @@ public class UsersModel {
 	public void setAccountBalance(int accountBalance) {
 		this.accountBalance = accountBalance;
 	}
+
+	public boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	
+	
 
 }
