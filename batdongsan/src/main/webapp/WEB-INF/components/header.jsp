@@ -38,6 +38,8 @@
 					<li class='menu__item'><a
 						href="${pageContext.servletContext.contextPath}/tin-tuc.html">Tin
 							tức</a></li>
+				<!--	<li class='menu__item'><a
+						href="${pageContext.servletContext.contextPath}/du-doan-gia-nha.html?categoryId=1">Dự đoán giá nhà</a></li> -->
 				</ul>
 			</div>
 		</div>

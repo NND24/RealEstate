@@ -67,7 +67,7 @@ public class PostController {
 			}
 		}
 
-		String hqlCat = "FROM CategoryModel WHERE type = :type AND status=0";
+		String hqlCat = "FROM CategoryModel WHERE type = :type AND status=1";
 		Query<CategoryModel> queryCat = session.createQuery(hqlCat);
 		queryCat.setParameter("type", "Nhà đất bán");
 		List<CategoryModel> categories = queryCat.list();
@@ -605,7 +605,7 @@ public class PostController {
 			} else {
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
 
-				String hqlCat = "FROM CategoryModel WHERE type = :type AND status=0";
+				String hqlCat = "FROM CategoryModel WHERE type = :type AND status=1";
 				Query<CategoryModel> queryCat = session.createQuery(hqlCat);
 				queryCat.setParameter("type", "Nhà đất bán");
 				List<CategoryModel> categories = queryCat.list();
@@ -667,7 +667,7 @@ public class PostController {
 
 				model.addAttribute("realEstate", newRealEstate);
 				if (category.getType().equals("Nhà đất bán")) {
-					String hqlCat1 = "FROM CategoryModel WHERE type = :type AND status=0";
+					String hqlCat1 = "FROM CategoryModel WHERE type = :type AND status=1";
 					Query<CategoryModel> queryCat1 = session.createQuery(hqlCat1);
 					queryCat1.setParameter("type", "Nhà đất bán");
 					List<CategoryModel> categories1 = queryCat1.list();
@@ -685,7 +685,7 @@ public class PostController {
 					request.setAttribute("realEstate", editedRealEstate);
 					return "client/sellernet/editSellPost";
 				} else {
-					String hqlCat2 = "FROM CategoryModel WHERE type = :type AND status=0";
+					String hqlCat2 = "FROM CategoryModel WHERE type = :type AND status=1";
 					Query<CategoryModel> queryCat2 = session.createQuery(hqlCat2);
 					queryCat2.setParameter("type", "Nhà đất cho thuê");
 					List<CategoryModel> categories2 = queryCat.list();

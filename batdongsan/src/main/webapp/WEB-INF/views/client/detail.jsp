@@ -275,7 +275,7 @@
 																			if(user != null) {
 																			    for (FavouriteModel favourite : favourites2) {
 																			    	if(user.getUserId() == favourite.getUser().getUserId()) {
-																			    		isLogined = true;
+																			    		isLogined2 = true;
 																			    		break;
 																			    	}    
 																			    }
