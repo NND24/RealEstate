@@ -62,8 +62,27 @@
 							<a
 								href='${pageContext.servletContext.contextPath}/admin/listEmployee.html'>
 								<div>
-									<i class="fa-solid fa-users"></i> <span>Quản lý nhân
+									<i class="fa-solid fa-user-tie"></i> <span>Quản lý nhân
 										viên</span>
+								</div>
+							</a>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</c:if>
+		
+		<!-- Quản lý người bán -->
+		<c:if test="${fn:contains(permissions, 1) || fn:contains(permissions, 5)}">
+			<div class='panel-group'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<h4 class='panel-title'>
+							<a
+								href='${pageContext.servletContext.contextPath}/admin/listUser.html'>
+								<div>
+									<i class="fa-solid fa-users"></i> <span>Quản lý người bán
+										</span>
 								</div>
 							</a>
 						</h4>

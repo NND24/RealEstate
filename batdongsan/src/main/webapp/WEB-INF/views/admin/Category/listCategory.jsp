@@ -60,7 +60,8 @@
 								<td><p>${c.status ? 'Hiển thị' : 'Ẩn'}</p></td>
 								<td><a href='listCategory/update/${c.categoryId}.html'
 									class="updateModelButton"> <i class='fa-solid fa-pencil'></i>
-								</a> <a href='listCategory/delete/${c.categoryId}.html'> <i
+								</a> <a href='listCategory/delete/${c.categoryId}.html'
+									onclick="return confirmDelete();"> <i
 										class='fa-solid fa-trash'></i>
 								</a></td>
 							</tr>
@@ -105,24 +106,30 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-	$(document).ready(function() {
-		let searchInput = $(".search-input input");
-		let searchInputButton = $(".search-input .fa-magnifying-glass");
-		
-		$(searchInputButton).on("click", handleSearch);
-		$(searchInput).on("keyup", function(event) {
-		    if (event.which === 13) { // Enter key code
-		        event.preventDefault(); // Prevent default form submission if necessary
-		        handleSearch();
-		    }
-		});
-		
-		function handleSearch() {
-			let url = "${pageContext.servletContext.contextPath}/admin/listCategory.html";
-			url += "?searchInput=" + searchInput.val();
-			window.location.href = url;
+		$(document)
+				.ready(
+						function() {
+							let searchInput = $(".search-input input");
+							let searchInputButton = $(".search-input .fa-magnifying-glass");
+
+							$(searchInputButton).on("click", handleSearch);
+							$(searchInput).on("keyup", function(event) {
+								if (event.which === 13) { // Enter key code
+									event.preventDefault(); // Prevent default form submission if necessary
+									handleSearch();
+								}
+							});
+
+							function handleSearch() {
+								let url = "${pageContext.servletContext.contextPath}/admin/listCategory.html";
+								url += "?searchInput=" + searchInput.val();
+								window.location.href = url;
+							}
+						})
+
+		function confirmDelete() {
+			return confirm("Bạn có chắc chắn muốn xóa danh mục này không?");
 		}
-	})
 	</script>
 
 

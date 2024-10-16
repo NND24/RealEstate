@@ -1,0 +1,119 @@
+.container-user{
+    padding: 10px;
+    margin-left: 280px;
+    margin-top: 100px;
+    overflow: scroll;
+    width: 100%;
+}
+
+.title{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.user-info{
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 80px;
+}
+
+.user-avatar img{
+    height: 150px;
+    border-radius: 50%;
+    border: 1px solid;
+}
+
+.user-detail-info{
+    display: flex;
+    margin-left: 30px;
+}
+
+.user-detail-info-left{
+    margin-right: 30px;
+}
+
+.user-detail-info-right{
+    margin-left: 30px;
+}
+
+.user-detail-info-item{
+    display: flex;
+}
+
+.item{
+    display: flex;
+    flex-direction: column;
+}
+
+.user-detail-info-item{
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-detail-info-item-label{
+    font-weight: bold;
+    width: 120px;
+}
+
+.user-detail-info-item-show{
+	width: 200px;
+}
+
+.user-real-estate-new{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 40px;
+    margin-top: 50px;
+}
+
+.card-real-estate{
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 6px 5px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 2px 6px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 6px 5px 0px rgba(0,0,0,0.75);
+}
+
+.card-thumbnail{
+    margin-bottom: 10px;
+    height: 220px;
+}
+
+.card-thumbnail img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-name{
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 20px;
+    margin-bottom: 10px; 
+}
+
+.card-info-upper, .card-info-lower{
+    font-size: 20px;
+    color: rgb(96, 96, 96);
+}
+
+.card-info-upper{
+    display: flex;
+}
+
+.real-estate-price{
+    margin-right: 20px;
+}
+
+.real-estate-price, .real-estate-size{
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.card-info-lower{
+    display: flex;
+    flex-direction: column;
+}

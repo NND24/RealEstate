@@ -5,7 +5,7 @@
 	<div class='header-container'>
 		<div class='header-menu'>
 			<div class='left-menu'>
-				<a href='#'> <img
+				<a href="${pageContext.servletContext.contextPath}/admin/dashboard.html"> <img
 					src='${pageContext.servletContext.contextPath}/images/logo1.jpg'
 					alt='' />
 				</a>
