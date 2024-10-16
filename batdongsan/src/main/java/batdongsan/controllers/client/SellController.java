@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import batdongsan.models.CategoryModel;
 import batdongsan.models.HCMDistrictsModel;
 import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.HCMWardsModel;
@@ -291,24 +290,6 @@ public class SellController {
 	    } finally {
 	        session.close();
 	    }
-	}
-
-	@ModelAttribute("categoriesSell")
-	public List<CategoryModel> getTypesSell() {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
-			Query<CategoryModel> query = session.createQuery(hql);
-			query.setParameter("type", "Nhà đất bán");
-			List<CategoryModel> categories = query.list();
-
-			return categories;
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		} finally {
-			session.close();
-		}
 	}
 
 	@ModelAttribute("districts")

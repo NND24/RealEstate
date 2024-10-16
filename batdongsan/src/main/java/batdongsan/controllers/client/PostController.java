@@ -26,7 +26,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -294,11 +293,6 @@ public class PostController {
 				t.commit();
 				
 				return "redirect:/sellernet/dang-tin/ban.html?categoryId="+categoryId;
-//				if (category.getType().equals("Nhà đất bán")) {
-//					return "redirect:/sellernet/dang-tin/ban.html";
-//				} else {
-//					return "redirect:/sellernet/dang-tin/cho-thue.html";
-//				}
 			} else {
 				Session currentSession = factory.getCurrentSession();
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
@@ -365,11 +359,6 @@ public class PostController {
 
 				model.addAttribute("realEstate", newRealEstate);
 				return "client/sellernet/postSell";
-//				if (category.getType().equals("Nhà đất bán")) {
-//					return "client/sellernet/postSell";
-//				} else {
-//					return "client/sellernet/postRent";
-//				}
 			}
 		} catch (Exception e) {
 			t.rollback();
@@ -749,24 +738,6 @@ public class PostController {
 			System.out.println(e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("Error occurred while fetching districts".getBytes(StandardCharsets.UTF_8));
-		} finally {
-			session.close();
-		}
-	}
-
-	@ModelAttribute("categoriesSell")
-	public List<CategoryModel> getTypesSell() {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
-			Query<CategoryModel> query = session.createQuery(hql);
-			query.setParameter("type", "Nhà đất bán");
-			List<CategoryModel> categories = query.list();
-
-			return categories;
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
 		} finally {
 			session.close();
 		}

@@ -12,11 +12,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import batdongsan.models.CategoryModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.UsersModel;
@@ -128,24 +126,6 @@ public class HomeController {
             t.rollback();
             throw e;
         } finally {
-			session.close();
-		}
-	}
-
-	@ModelAttribute("categoriesSell")
-	public List<CategoryModel> getTypesSell() {
-		Session session = factory.openSession();
-		try {
-			String hql = "FROM CategoryModel WHERE type = :type AND status=0";
-			Query<CategoryModel> query = session.createQuery(hql);
-			query.setParameter("type", "Nhà đất bán");
-			List<CategoryModel> categories = query.list();
-
-			return categories;
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		} finally {
 			session.close();
 		}
 	}

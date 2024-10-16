@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/house")
-public class HousePriceController {
+public class PricePredictController {
     @GetMapping
     public String getHomePage(HttpServletRequest request) {
         return "client/predict";
