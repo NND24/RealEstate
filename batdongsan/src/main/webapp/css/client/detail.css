@@ -252,22 +252,22 @@
 }
 
 .detail-content .spec-container .spec-content-item .spec-content-item__icon {
-	font-size: 22px;
+	font-size: 18px;
 	margin-right: 16px;
 	width: 24px;
 }
 
 .detail-content .spec-container .spec-content-item .spec-content-item__title {
-	width: 128px;
-	font-size: 16px;
+	width: 171px;
+	font-size: 15px;
 	line-height: 24px;
 	font-weight: 600;
 	color: #2c2c2c;
-	margin-right: 80px;
+	margin-right: 70px;
 }
 
 .detail-content .spec-container .spec-content-item .spec-content-item__value {
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 24px;
 	color: #2c2c2c;
 }

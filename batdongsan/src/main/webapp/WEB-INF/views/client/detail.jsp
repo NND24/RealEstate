@@ -11,7 +11,7 @@
 <title>Website số 1 về bất động sản</title>
 <link rel="stylesheet" href="css/client/index.css" type="text/css">
 <link rel="stylesheet" href="css/client/header.css?version=53"" type="text/css">
-<link rel="stylesheet" href="css/client/detail.css?version=52" type="text/css">
+<link rel="stylesheet" href="css/client/detail.css?version=54" type="text/css">
 <link rel="stylesheet" href="css/client/footer.css?version=51" type="text/css">
 <%@ include file="../../../links/links.jsp"%>
 </head>
@@ -177,11 +177,71 @@
 							if(realEstate.getRooms() > 0) {
 							%>
 							<div class='spec-content-item col-lg-6'>
-								<i class='fa-solid fa-couch spec-content-item__icon'></i>
+								<i class='fa-solid fa-bed spec-content-item__icon'></i>
 								<div class='spec-content-item__title'>Số phòng ngủ</div>
 								<div class='spec-content-item__value'><%=realEstate.getRooms()%> phòng</div>
 							</div>
 							<% } %>
+							<%
+							if(realEstate.getFloors() > 0) {
+							%>
+							<div class='spec-content-item col-lg-6'>
+								<i class='fa-solid fa-building spec-content-item__icon'></i>
+								<div class='spec-content-item__title'>Số tầng</div>
+								<div class='spec-content-item__value'><%=realEstate.getFloors()%> tầng</div>
+							</div>
+							<% } %>
+							<div class='spec-content-item col-lg-6'>
+								<i class='fa-solid fa-house-medical-flag spec-content-item__icon'></i>
+								<div class='spec-content-item__title'>Loại hình</div>
+								<div class='spec-content-item__value'><%=realEstate.getType()%></div>
+							</div>
+							<%
+							if(!realEstate.getDirection().isEmpty()) {
+							%>
+							<div class='spec-content-item col-lg-6'>
+								<i class='fa-solid fa-compass spec-content-item__icon'></i>
+								<div class='spec-content-item__title'>Hướng nhà</div>
+								<div class='spec-content-item__value'><%=realEstate.getDirection()%></div>
+							</div>
+							<% } %>
+							<%
+							if(!realEstate.getBalconyDirection().isEmpty()) {
+							%>
+							<div class='spec-content-item col-lg-6'>
+								<i class='fa-solid fa-location-arrow spec-content-item__icon'></i>
+								<div class='spec-content-item__title'>Hướng ban công nhà</div>
+								<div class='spec-content-item__value'><%=realEstate.getBalconyDirection()%></div>
+							</div>
+							<% } %>
+							<%
+							if(!realEstate.getPropertyLegalDocument().isEmpty()) {
+							%>
+							<div class='spec-content-item col-lg-6'>
+								<i class='fa-solid fa-file-invoice spec-content-item__icon'></i>
+								<div class='spec-content-item__title'>Giấy tờ pháp lý</div>
+								<div class='spec-content-item__value'><%=realEstate.getPropertyLegalDocument()%></div>
+							</div>
+							<% } %>
+							<%
+							if(!realEstate.getPropertyStatus().isEmpty()) {
+							%>
+							<div class='spec-content-item col-lg-6'>
+								<i class='fa-solid fa-couch spec-content-item__icon'></i>
+								<div class='spec-content-item__title'>Tình trạng bất động sản</div>
+								<div class='spec-content-item__value'><%=realEstate.getPropertyStatus()%></div>
+							</div>
+							<% } %>
+							<%
+							if(!realEstate.getCharacteristics().isEmpty()) {
+							%>
+							<div class='spec-content-item col-lg-6'>
+								<i class='fa-solid fa-couch spec-content-item__icon'></i>
+								<div class='spec-content-item__title'>Đặc điểm nhà/đất</div>
+								<div class='spec-content-item__value'><%=realEstate.getCharacteristics()%></div>
+							</div>
+							<% } %>
+							
 						</div>
 					</div>
 			<!-- 	<div class='search-tag-container'>
