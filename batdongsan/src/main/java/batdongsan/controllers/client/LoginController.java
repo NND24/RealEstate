@@ -341,6 +341,9 @@ public class LoginController {
 				if (!PasswordHashing.checkPassword(password, user.getPassword())) {
 					request.setAttribute("error", "Mật khẩu hoặc email không chính xác!");
 					return "client/login/login";
+				} else if (user.getStatus() == false) {
+					request.setAttribute("error", "Tài khoản bạn đã bị khóa!");
+					return "client/login/login";
 				}
 				Cookie userCookie = new Cookie("userId", String.valueOf(user.getUserId()));
 				userCookie.setMaxAge(30 * 24 * 60 * 60);

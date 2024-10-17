@@ -32,6 +32,7 @@ import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
 import batdongsan.models.PermissionModel;
 import batdongsan.models.RoleModel;
+import batdongsan.utils.LoadAdminComponents;
 import batdongsan.utils.PasswordHashing;
 import batdongsan.utils.Vadilator;
 
@@ -48,7 +49,7 @@ public class EmployeeController {
 	        @RequestParam(name = "size", defaultValue = "5") int size) {
 		Session session = factory.openSession();
 		try {
-			EmployeeModel empCurrent = getEmployeeFromCookies(request);
+			EmployeeModel empCurrent = LoadAdminComponents.getEmployeeFromCookies(request, factory);
 			String hql = "FROM EmployeeModel e WHERE e.id != :id ";
 	        if (searchInput != null && !searchInput.isEmpty()) {
 	        	hql += " AND e.id LIKE :searchInput OR e.fullname LIKE :searchInput OR e.email LIKE :searchInput";
@@ -70,7 +71,7 @@ public class EmployeeController {
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 	        
-	        showOnSidebarAndHeader(model, request, session);
+	        LoadAdminComponents.showOnSidebarAndHeader(model, request, session, factory);
 
 	        return "admin/Employee/listEmployee";
 	    } finally {
@@ -87,10 +88,10 @@ public class EmployeeController {
 		List<EmployeeModel> list = query.list();
 		model.addAttribute("employees", list);
 		model.addAttribute("employee", new EmployeeModel());
-		EmployeeModel emp = getEmployeeFromCookies(request);         
+		EmployeeModel emp = LoadAdminComponents.getEmployeeFromCookies(request, factory);         
         if (emp != null) {
         	model.addAttribute("loginEmp", emp);
-        	List<Integer> permissions = getPermissions(emp.getId(), session);
+        	List<Integer> permissions = LoadAdminComponents.getPermissions(emp.getId(), session);
             model.addAttribute("permissions", permissions);
         } else {
             model.addAttribute("employee", null);
@@ -135,7 +136,7 @@ public class EmployeeController {
 				Query query = session.createQuery(hql);
 				List<EmployeeModel> list = query.list();
 				model.addAttribute("employees", list);
-				showOnSidebarAndHeader(model, request, session);
+				LoadAdminComponents.showOnSidebarAndHeader(model, request, session, factory);
 				session.close();
 				return "admin/Employee/listEmployeeAdd";
 			} else {
@@ -216,10 +217,10 @@ public class EmployeeController {
 		model.addAttribute("employee", new EmployeeModel());
 		EmployeeModel emp = (EmployeeModel) session.get(EmployeeModel.class, id);
 		model.addAttribute("employee", emp);
-		EmployeeModel empLog = getEmployeeFromCookies(request);         
+		EmployeeModel empLog = LoadAdminComponents.getEmployeeFromCookies(request, factory);         
         if (empLog != null) {
         	model.addAttribute("loginEmp", empLog);
-        	List<Integer> permissions = getPermissions(empLog.getId(), session);
+        	List<Integer> permissions = LoadAdminComponents.getPermissions(empLog.getId(), session);
             model.addAttribute("permissions", permissions);
         } else {
             model.addAttribute("loginEmp", null);
@@ -264,7 +265,7 @@ public class EmployeeController {
 			Query query = session.createQuery(hql);
 			List<EmployeeModel> list = query.list();
 			model.addAttribute("employees", list);
-			showOnSidebarAndHeader(model, request, session);
+			LoadAdminComponents.showOnSidebarAndHeader(model, request, session, factory);
 			return "admin/Employee/listEmployeeUpdate";
 		}
 		try {
@@ -308,11 +309,11 @@ public class EmployeeController {
 		String roleName = getEmployeeRole(session, id);
 		model.addAttribute("roleName", roleName);
 		EmployeeModel emp = (EmployeeModel) session.get(EmployeeModel.class, id);
-		EmployeeModel empLogin = getEmployeeFromCookies(request);
+		EmployeeModel empLogin = LoadAdminComponents.getEmployeeFromCookies(request, factory);
         model.addAttribute("loginEmp", empLogin);
 		model.addAttribute("status", emp.isStatus());
 		model.addAttribute("employee", emp);      
-		showOnSidebarAndHeader(model, request, session);
+		LoadAdminComponents.showOnSidebarAndHeader(model, request, session, factory);
 		
 		return "admin/Employee/listEmployeeDetail";
 	}
@@ -437,53 +438,5 @@ public class EmployeeController {
 		String roles = String.join(", ", roleNames);
 		return roles;
 	}
-
-	// lấy id Nhân viên từ khi đăng nhập
-	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
-		Session session = factory.openSession();
-		Cookie[] cookies = request.getCookies();
-		String empId = null;
-
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("id")) {
-					empId = cookie.getValue();
-					System.out.println(empId);
-					break;
-				}
-			}
-		}
-
-		if (empId != null) {
-			String hqlEmp = "FROM EmployeeModel WHERE id = :id";
-			Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
-			queryEmp.setParameter("id", empId);
-			EmployeeModel emp = queryEmp.uniqueResult();
-			return emp;
-		} else {
-			System.out.println("Không tìm thấy");
-			return null;
-		}
-	}
-	
-	private List<Integer> getPermissions(String empId, Session session) {
-	    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
-	    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
-	    queryPermissions.setParameter("idEmp", empId);
-	    return queryPermissions.getResultList();
-	}
-	
-	private void showOnSidebarAndHeader(ModelMap model, HttpServletRequest request, Session session) {
-		EmployeeModel emp = getEmployeeFromCookies(request);
-        if (emp != null) {
-            model.addAttribute("loginEmp", emp);
-            List<Integer> permissions = getPermissions(emp.getId(), session);
-            model.addAttribute("permissions", permissions);
-        } else {
-            model.addAttribute("employee", null);
-            model.addAttribute("permissions", Collections.emptyList());
-        }
-	}
-	
 
 }

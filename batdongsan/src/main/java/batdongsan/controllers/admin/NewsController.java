@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.NewsModel;
+import batdongsan.utils.LoadAdminComponents;
 
 @Controller
 @RequestMapping("/admin/")
@@ -73,7 +74,7 @@ public class NewsController {
 	        request.setAttribute("currentAllPage", pageAll);
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
-	        showOnSidebarAndHeader(model,request,session);
+	        LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 	        
 	        return "admin/News/listNews";
 	    } finally {
@@ -91,7 +92,7 @@ public class NewsController {
 		model.addAttribute("listOfNews", list);
 		model.addAttribute("news", new NewsModel());
 
-		showOnSidebarAndHeader(model,request,session);
+		LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 		session.close();
 		return "admin/News/listNewsAdd";
 	}
@@ -111,7 +112,7 @@ public class NewsController {
 		news.setShortDescription(shortDescription);
 		news.setDescription(description);
 		news.setStatus(status);
-		EmployeeModel emp = getEmployeeFromCookies(request);
+		EmployeeModel emp = LoadAdminComponents.getEmployeeFromCookies(request, factory);
 		news.setEmployee(emp);
 
 		// Kiểm tra tiêu đề
@@ -135,7 +136,7 @@ public class NewsController {
 			Query query = session.createQuery(hql);
 			List<NewsModel> list = query.list();
 			model.addAttribute("listOfNews", list);
-			showOnSidebarAndHeader(model,request,session);
+			LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 			session.close();
 
 			return "admin/News/listNewsAdd";
@@ -289,7 +290,7 @@ public class NewsController {
 		model.addAttribute("news", news);
 		String description = news.getDescription();
 		model.addAttribute("description", description);
-		showOnSidebarAndHeader(model,request,session);
+		LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 		return "admin/News/listNewsUpdate";
 	}
 
@@ -335,7 +336,7 @@ public class NewsController {
 			Query query1 = session.createQuery(hql1);
 			List<NewsModel> list = query1.list();
 			model.addAttribute("listOfNews", list);
-			showOnSidebarAndHeader(model,request,session);
+			LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 			return "admin/News/listNewsUpdate";
 		} else {
 			Transaction t = session.beginTransaction();
@@ -394,7 +395,7 @@ public class NewsController {
 				return "redirect:/admin/listNews.html";
 			}
 			model.addAttribute("news", news);
-			showOnSidebarAndHeader(model,request,session);
+			LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 			return "admin/News/detailNews";
 		} catch (Exception e) {
 			return "redirect:/admin/listNews.html";
@@ -419,50 +420,6 @@ public class NewsController {
 		List<NewsModel> list = query.list();
 		model.addAttribute("listOfNews", list);
 		session.close();
-	}
-
-	// lấy id Nhân viên từ khi đăng nhập
-	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
-		Session session = factory.openSession();
-		Cookie[] cookies = request.getCookies();
-		String empId = null;
-
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("id")) {
-					empId = cookie.getValue();
-					break;
-				}
-			}
-		}
-		if (empId != null) {
-			String hqlEmp = "FROM EmployeeModel WHERE id = :id";
-			Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
-			queryEmp.setParameter("id", empId);
-			EmployeeModel emp = queryEmp.uniqueResult();
-			return emp;
-		} else {
-			return null;
-		}
-	}
-
-	private List<Integer> getPermissions(String empId, Session session) {
-		String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
-		Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
-		queryPermissions.setParameter("idEmp", empId);
-		return queryPermissions.getResultList();
-	}
-	
-	private void showOnSidebarAndHeader(ModelMap model, HttpServletRequest request, Session session) {
-		EmployeeModel emp = getEmployeeFromCookies(request);
-        if (emp != null) {
-            model.addAttribute("loginEmp", emp);
-            List<Integer> permissions = getPermissions(emp.getId(), session);
-            model.addAttribute("permissions", permissions);
-        } else {
-            model.addAttribute("employee", null);
-            model.addAttribute("permissions", Collections.emptyList());
-        }
 	}
 
 }
