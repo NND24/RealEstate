@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.HCMRealEstateModel;
+import batdongsan.utils.LoadAdminComponents;
 
 @Controller
 @RequestMapping("/admin/")
@@ -53,10 +54,10 @@ public class RealEstateController {
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 	        
-	        EmployeeModel emp = getEmployeeFromCookies(request);
+	        EmployeeModel emp = LoadAdminComponents.getEmployeeFromCookies(request, factory);
 	        if (emp != null) {
 	            model.addAttribute("loginEmp", emp);
-	            List<Integer> permissions = getPermissions(emp.getId(), session);
+	            List<Integer> permissions = LoadAdminComponents.getPermissions(emp.getId(), session);
 	            model.addAttribute("permissions", permissions);
 	        } else {
 	            model.addAttribute("employee", null);
@@ -81,10 +82,10 @@ public class RealEstateController {
 			
 			request.setAttribute("realEstate", realEsate);
 			
-			EmployeeModel emp = getEmployeeFromCookies(request);
+			EmployeeModel emp = LoadAdminComponents.getEmployeeFromCookies(request, factory);
 	        if (emp != null) {
 	            model.addAttribute("loginEmp", emp);
-	            List<Integer> permissions = getPermissions(emp.getId(), session);
+	            List<Integer> permissions = LoadAdminComponents.getPermissions(emp.getId(), session);
 	            model.addAttribute("permissions", permissions);
 	        } else {
 	            model.addAttribute("employee", null);
@@ -175,40 +176,6 @@ public class RealEstateController {
 	    } finally {
 	        session.close();
 	    }
-	}
-	
-	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
-		Session session = factory.openSession();
-		Cookie[] cookies = request.getCookies();
-		String empId = null;
-
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("id")) {
-					empId = cookie.getValue();
-					System.out.println(empId);
-					break;
-				}
-			}
-		}
-
-		if (empId != null) {
-			String hqlEmp = "FROM EmployeeModel WHERE id = :id";
-			Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
-			queryEmp.setParameter("id", empId);
-			EmployeeModel emp = queryEmp.uniqueResult();
-			return emp;
-		} else {
-			System.out.println("Không tìm thấy");
-			return null;
-		}
-	}
-	
-	private List<Integer> getPermissions(String empId, Session session) {
-	    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
-	    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
-	    queryPermissions.setParameter("idEmp", empId);
-	    return queryPermissions.getResultList();
 	}
 
 }

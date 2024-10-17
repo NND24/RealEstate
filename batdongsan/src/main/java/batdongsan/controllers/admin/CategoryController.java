@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import batdongsan.models.CategoryModel;
 import batdongsan.models.EmployeeModel;
+import batdongsan.utils.LoadAdminComponents;
 
 @Controller
 @RequestMapping("/admin/")
@@ -57,7 +58,7 @@ public class CategoryController {
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 
-	        showOnSidebarAndHeader(model,request,session);
+	        LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 	        return "admin/Category/listCategory";
 	    } finally {
 	    	session.close();
@@ -69,16 +70,16 @@ public class CategoryController {
 	public String add(ModelMap model, HttpServletRequest request) {
 		Session session = factory.openSession();
 		loadListOfCategory(model);
-		EmployeeModel emp = getEmployeeFromCookies(request);
+		EmployeeModel emp = LoadAdminComponents.getEmployeeFromCookies(request, factory);
         if (emp != null) {
         	model.addAttribute("loginEmp", emp);
-        	List<Integer> permissions = getPermissions(emp.getId(), session);
+        	List<Integer> permissions = LoadAdminComponents.getPermissions(emp.getId(), session);
             model.addAttribute("permissions", permissions);
         } else {
             model.addAttribute("employee", null);
             model.addAttribute("permissions", Collections.emptyList());
         }
-        showOnSidebarAndHeader(model,request,session);
+        LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 		return "admin/Category/listCategoryAdd";
 	}
 
@@ -96,7 +97,7 @@ public class CategoryController {
 			Query query = session.createQuery(hql);
 			List<CategoryModel> list = query.list();
 			model.addAttribute("categories", list);
-			showOnSidebarAndHeader(model, request, session);
+			LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 			return "admin/Category/listCategoryAdd";
 		} else {
 			try {
@@ -126,7 +127,7 @@ public class CategoryController {
 		model.addAttribute("category", new CategoryModel());
 		CategoryModel category = (CategoryModel) session.get(CategoryModel.class, categoryId);
 		model.addAttribute("category", category);
-		showOnSidebarAndHeader(model,request,session);
+		LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 		return "admin/Category/listCategoryUpdate";
 	}
 
@@ -143,7 +144,7 @@ public class CategoryController {
 			Query query = session.createQuery(hql);
 			List<CategoryModel> list = query.list();
 			model.addAttribute("categories", list);
-			showOnSidebarAndHeader(model, request, session);
+			LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 			return "admin/Category/listCategoryUpdate";
 		}
 		try {
@@ -206,50 +207,5 @@ public class CategoryController {
 		session.close();
 	}
 	
-	// lấy id Nhân viên từ khi đăng nhập
-		private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
-			Session session = factory.openSession();
-			Cookie[] cookies = request.getCookies();
-		    String empId = null;
-
-		    if (cookies != null) {
-		        for (Cookie cookie : cookies) {
-		            if (cookie.getName().equals("id")) {
-		                empId = cookie.getValue();
-		                System.out.println(empId);
-		                break;
-		            }
-		        }
-		    }
-
-		    if (empId != null) {
-		        String hqlEmp = "FROM EmployeeModel WHERE id = :id";
-		        Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
-		        queryEmp.setParameter("id", empId);
-		        EmployeeModel emp = queryEmp.uniqueResult();
-		        return emp;
-		    } else {
-		        System.out.println("Không tìm thấy");
-		        return null;
-		    }
-		}
-		
-		private List<Integer> getPermissions(String empId, Session session) {
-		    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
-		    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
-		    queryPermissions.setParameter("idEmp", empId);
-		    return queryPermissions.getResultList();
-		}
-		
-		private void showOnSidebarAndHeader(ModelMap model, HttpServletRequest request, Session session) {
-			EmployeeModel emp = getEmployeeFromCookies(request);
-	        if (emp != null) {
-	            model.addAttribute("loginEmp", emp);
-	            List<Integer> permissions = getPermissions(emp.getId(), session);
-	            model.addAttribute("permissions", permissions);
-	        } else {
-	            model.addAttribute("employee", null);
-	            model.addAttribute("permissions", Collections.emptyList());
-	        }
-		}
+	
 }

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import batdongsan.models.EmployeeModel;
+import batdongsan.utils.LoadAdminComponents;
 
 @Controller
 @RequestMapping("/admin/")
@@ -105,7 +106,7 @@ public class DashboardController {
 			model.addAttribute("postsChartData", jsonPostsChartData);
 			model.addAttribute("moneyChartData", jsonMoneyChartData);
 
-			showOnSidebarAndHeader(model,request,session);
+			LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -115,32 +116,6 @@ public class DashboardController {
 		return "admin/dashboard";
 	}
 	//=================================================
-	// lấy id Nhân viên từ khi đăng nhập
-	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request, Session session) {
-	    Cookie[] cookies = request.getCookies();
-	    String empId = null;
-
-	    if (cookies != null) {
-	        for (Cookie cookie : cookies) {
-	            if (cookie.getName().equals("id")) {
-	                empId = cookie.getValue();
-	                System.out.println(empId);
-	                break;
-	            }
-	        }
-	    }
-
-	    if (empId != null) {
-	        String hqlEmp = "FROM EmployeeModel WHERE id = :id";
-	        Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
-	        queryEmp.setParameter("id", empId);
-	        EmployeeModel emp = queryEmp.uniqueResult();
-	        return emp;
-	    } else {
-	        System.out.println("Không tìm thấy");
-	        return null;
-	    }
-	}
 	
 	@RequestMapping(value = "changePassword/{id}", method = RequestMethod.GET)
 	public String changePasswrod(ModelMap model, @PathVariable("id") String id ,  HttpServletRequest request) {
@@ -190,7 +165,7 @@ public class DashboardController {
             model.addAttribute("totalMoneyPerMonth", totalMoneyPerMonth);
             model.addAttribute("totalPostsPerMonth", totalPostsPerMonth);
             
-            showOnSidebarAndHeader(model,request,session);
+            LoadAdminComponents.showOnSidebarAndHeader(model,request,session, factory);
 
 		} finally {
 			session.close();
@@ -198,47 +173,4 @@ public class DashboardController {
 		return "admin/changePassword";
 	}
 	
-	private List<Integer> getPermissions(String empId, Session session) {
-	    String hqlPermissions = "SELECT role.roleId FROM PermissionModel WHERE employee.id = :idEmp AND status = true";
-	    Query<Integer> queryPermissions = session.createQuery(hqlPermissions, Integer.class);
-	    queryPermissions.setParameter("idEmp", empId);
-	    return queryPermissions.getResultList();
-	}
-	
-	private EmployeeModel getEmployeeFromCookies(HttpServletRequest request) {
-		Session session = factory.openSession();
-		Cookie[] cookies = request.getCookies();
-		String empId = null;
-
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("id")) {
-					empId = cookie.getValue();
-					break;
-				}
-			}
-		}
-		if (empId != null) {
-			String hqlEmp = "FROM EmployeeModel WHERE id = :id";
-			Query<EmployeeModel> queryEmp = session.createQuery(hqlEmp, EmployeeModel.class);
-			queryEmp.setParameter("id", empId);
-			EmployeeModel emp = queryEmp.uniqueResult();
-			return emp;
-		} else {
-			return null;
-		}
-	}
-	
-	private void showOnSidebarAndHeader(ModelMap model, HttpServletRequest request, Session session) {
-		EmployeeModel emp = getEmployeeFromCookies(request);
-        if (emp != null) {
-            model.addAttribute("loginEmp", emp);
-            List<Integer> permissions = getPermissions(emp.getId(), session);
-            model.addAttribute("permissions", permissions);
-        } else {
-            model.addAttribute("employee", null);
-            model.addAttribute("permissions", Collections.emptyList());
-        }
-	}
-
 }
