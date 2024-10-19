@@ -261,7 +261,8 @@ public class PostController {
 				newRealEstate.setDescription(description);
 				newRealEstate.setTypePost(typePost);
 				newRealEstate.setSize(Float.parseFloat(size));
-				newRealEstate.setPrice(Float.parseFloat(price));
+				float roundedPrice = (float) (Math.round(Float.parseFloat(price) / 1_000_000) * 1_000_000);
+				newRealEstate.setPrice(roundedPrice);
 				newRealEstate.setUnit(unit);
 				newRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
 				newRealEstate.setDirection(direction != null ? direction : "");
@@ -579,7 +580,8 @@ public class PostController {
 				editedRealEstate.setTitle(title);
 				editedRealEstate.setDescription(description);
 				editedRealEstate.setSize(Float.parseFloat(size));
-				editedRealEstate.setPrice(Float.parseFloat(price));
+				float roundedPrice = (float) (Math.round(Float.parseFloat(price) / 1_000_000) * 1_000_000);
+				editedRealEstate.setPrice(roundedPrice);
 				editedRealEstate.setUnit(unit);				
 				editedRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
 				editedRealEstate.setDirection(direction != null ? direction : "");

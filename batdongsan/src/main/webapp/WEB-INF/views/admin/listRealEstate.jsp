@@ -120,10 +120,11 @@
 										"" <%} else {%> "${pageContext.servletContext.contextPath}/admin/hideDisplayRealEstate.html?realEstateId=<%=r.getRealEstateId()%>
 										" <%}%> class='button-item'> <i class="fa-regular fa-eye-slash"></i> <span><%=r.getStatus().equals("Ẩn") ? "Hiển thị" : "Ẩn"%>
 											tin</span>
-									</a> <a
-										href="${pageContext.servletContext.contextPath}/admin/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>"
+									</a> 
+									<a
+										onclick="confirmDelete('<%= r.getRealEstateId() %>')"
 										class='button-item'> <i
-										class='fa-regular fa-share-from-square'></i> <span>Xóa
+										class='fa-regular fa-trash-can'></i> <span>Xóa
 											tin</span>
 									</a>
 									<div class='dropdown'>
@@ -189,6 +190,21 @@
 	</div>
 	
 	<script type="text/javascript">
+	 function confirmDelete(realEstateId) {
+	        Swal.fire({
+	            title: 'Xác nhận',
+	            text: "Bạn có chắc chắn muốn xóa bài đăng này không?",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonText: 'Có, xóa!',
+	            cancelButtonText: 'Không, hủy!'
+	        }).then((result) => {
+	            if (result.isConfirmed) {
+	              window.location.href = `${pageContext.servletContext.contextPath}/admin/deleteRealEstate.html?realEstateId=` + realEstateId;
+	            }
+	        });
+	    }
+	 
 	$(document).ready(function() {
 		let searchInput = $(".search-input input");
 		let searchInputButton = $(".search-input .fa-magnifying-glass");

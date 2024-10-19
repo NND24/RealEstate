@@ -142,9 +142,10 @@
 										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 										</a>
-										<a href="${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
-											<i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
-										</a>
+										<div class='button-item' onclick="confirmDelete('<%= r.getRealEstateId() %>')">
+										    <i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
+										</div>
+
 										<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-regular fa-share-from-square'></i> <span>Chia
 												sẻ</span>
@@ -162,9 +163,9 @@
 														<span>Sửa tin</span>
 												</a>
 												</li>
-												<li><a href='${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>'> <i class='fa-solid fa-trash-can'></i>
-														<span>Xóa tin</span>
-												</a>
+												<li><a onclick="confirmDelete('<%= r.getRealEstateId() %>')">
+										    <i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
+										</a>
 												</li>
 											</ul>
 										</div>
@@ -283,9 +284,9 @@
 										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 										</a>
-										<a href="${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
-											<i class='fa-solid fa-trash-can'></i> <span>Xóa tin</span>
-										</a>
+										<div class='button-item' onclick="confirmDelete('<%= r.getRealEstateId() %>')">
+										    <i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
+										</div>
 										<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-regular fa-share-from-square'></i> <span>Chia
 												sẻ</span>
@@ -303,9 +304,9 @@
 														<span>Sửa tin</span>
 												</a>
 												</li>
-												<li><a href='${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>'> <i class='fa-solid fa-trash-can'></i>
-														<span>Xóa tin</span>
-												</a>
+												<li><a onclick="confirmDelete('<%= r.getRealEstateId() %>')">
+										    <i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
+										</a>
 												</li>
 											</ul>
 										</div>
@@ -425,9 +426,9 @@
 										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 										</a>
-										<a href="${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
-											<i class='fa-solid fa-trash-can'></i> <span>Xóa tin</span>
-										</a>
+										<div class='button-item' onclick="confirmDelete('<%= r.getRealEstateId() %>')">
+										    <i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
+										</div>
 										<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-regular fa-share-from-square'></i> <span>Chia
 												sẻ</span>
@@ -445,9 +446,9 @@
 														<span>Sửa tin</span>
 												</a>
 												</li>
-												<li><a href='${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>'> <i class='fa-solid fa-trash-can'></i>
-														<span>Xóa tin</span>
-												</a>
+												<li><a onclick="confirmDelete('<%= r.getRealEstateId() %>')">
+										    <i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
+										</a>
 												</li>
 											</ul>
 										</div>
@@ -567,9 +568,9 @@
 										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 										</a>
-										<a href="${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
-											<i class='fa-solid fa-trash-can'></i> <span>Xóa tin</span>
-										</a>
+										<div class='button-item' onclick="confirmDelete('<%= r.getRealEstateId() %>')">
+										    <i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
+										</div>
 										<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-regular fa-share-from-square'></i> <span>Chia
 												sẻ</span>
@@ -587,9 +588,9 @@
 														<span>Sửa tin</span>
 												</a>
 												</li>
-												<li><a href='${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=<%= r.getRealEstateId() %>'> <i class='fa-solid fa-trash-can'></i>
-														<span>Xóa tin</span>
-												</a>
+												<li><a onclick="confirmDelete('<%= r.getRealEstateId() %>')">
+										    <i class="fa-solid fa-trash-can"></i> <span>Xóa tin</span>
+										</a>
 												</li>
 											</ul>
 										</div>
@@ -644,24 +645,41 @@
 	</div>
 
 	<script type="text/javascript">
-	$(document).ready(function() {
-		let searchInput = $(".search-input input");
-		let searchInputButton = $(".search-input .fa-magnifying-glass");
-		
-		$(searchInputButton).on("click", handleSearch);
-		$(searchInput).on("keyup", function(event) {
-		    if (event.which === 13) { // Enter key code
-		        event.preventDefault(); // Prevent default form submission if necessary
-		        handleSearch();
-		    }
-		});
-		
-		function handleSearch() {
-			let url = "${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
-			url += "?searchInput=" + searchInput.val();
-			window.location.href = url;
-		}
-	})
-	</script>
+    // Define confirmDelete in the global scope
+    function confirmDelete(realEstateId) {
+        Swal.fire({
+            title: 'Xác nhận',
+            text: "Bạn có chắc chắn muốn xóa tin này không?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Có, xóa!',
+            cancelButtonText: 'Không, hủy!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = `${pageContext.servletContext.contextPath}/sellernet/deleteRealEstate.html?realEstateId=` + realEstateId;
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        let searchInput = $(".search-input input");
+        let searchInputButton = $(".search-input .fa-magnifying-glass");
+        
+        $(searchInputButton).on("click", handleSearch);
+        $(searchInput).on("keyup", function(event) {
+            if (event.which === 13) { // Enter key code
+                event.preventDefault(); // Prevent default form submission if necessary
+                handleSearch();
+            }
+        });
+        
+        function handleSearch() {
+            let url = "${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
+            url += "?searchInput=" + searchInput.val();
+            window.location.href = url;
+        }
+    });
+</script>
+
 </body>
 </html>
