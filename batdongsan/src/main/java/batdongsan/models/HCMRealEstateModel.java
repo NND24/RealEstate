@@ -45,7 +45,7 @@ public class HCMRealEstateModel {
 	private String description;
 	private String typePost;
 	private float size;
-	private float price;
+	private Long price;
 	private String unit;
 	private String furnishingSell;
 	private String direction;
@@ -62,6 +62,10 @@ public class HCMRealEstateModel {
 	private String contactName;
 	private String phoneNumber;
 	private String email;
+
+	private int interestedClick;
+
+	private boolean deleteStatus;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
@@ -177,11 +181,11 @@ public class HCMRealEstateModel {
 		this.size = size;
 	}
 
-	public float getPrice() {
+	public Long getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(Long price) {
 		this.price = price;
 	}
 
@@ -192,8 +196,6 @@ public class HCMRealEstateModel {
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-
-	
 
 	public String getFurnishingSell() {
 		return furnishingSell;
@@ -339,7 +341,19 @@ public class HCMRealEstateModel {
 		this.urgent = urgent;
 	}
 
-	
+	public int getInterestedClick() {
+		return interestedClick;
+	}
 
-	
+	public void setInterestedClick(int interestedClick) {
+		this.interestedClick = interestedClick;
+	}
+
+	public boolean isDeleteStatus() {
+		return deleteStatus;
+	}
+
+	public void setDeleteStatus(boolean deleteStatus) {
+		this.deleteStatus = deleteStatus;
+	}
 }

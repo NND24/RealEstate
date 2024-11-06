@@ -279,23 +279,24 @@
 										<h3 class='card-title'><%=r.getTitle()%></h3>
 									</a>
 									<div class='card-config'>
-										<span class='card-config-price'> <%
- if (!r.getUnit().equals("Thỏa thuận")) {
- 	if (r.getPrice() < 1000000000) {
- 		out.print((int) (r.getPrice() / 1000000) + " triệu");
- 	} else {
- 		out.print(r.getPrice() / 1000000000 + " tỷ");
- 	}
-
- 	if (r.getUnit().equals("triệu")) {
- 		out.print("");
- 	} else {
- 		out.print(" " + r.getUnit());
- 	}
- } else {
- 	out.print(r.getUnit());
- }
- %>
+										<span class='card-config__item card-config__price'> 
+										<%
+										 if (!r.getUnit().equals("Thỏa thuận")) {
+										 	if (r.getPrice() < 1000000000) {
+										 		out.print((int) (r.getPrice() / 1000000) + " triệu");
+										 	} else {
+										 		out.print(r.getPrice() / 1000000000 + " tỷ");
+										 	}
+										
+										 	if (r.getUnit().equals("triệu")) {
+										 		out.print("");
+										 	} else {
+										 		out.print(" "+r.getUnit());
+										 	}
+										 } else {
+										 	out.print(r.getUnit());
+										 }
+										 %>
 										</span> <i class='fa-solid fa-circle'></i> <span
 											class='card-config-area'><%=r.getSize()%> m²</span>
 									</div>

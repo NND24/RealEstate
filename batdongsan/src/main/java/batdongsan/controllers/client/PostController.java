@@ -171,7 +171,7 @@ public class PostController {
 			} else if (!price.matches("\\d+(\\.\\d+)?")) {
 				request.setAttribute("priceError", "Mức giá phải là số!");
 				isError = true;
-			} else if (Float.parseFloat(price) <= 0) {
+			} else if (Long.parseLong(price) <= 0) {
 				request.setAttribute("priceError", "Mức giá phải lớn hơn 0!");
 				isError = true;
 			}
@@ -262,7 +262,7 @@ public class PostController {
 				newRealEstate.setDescription(description);
 				newRealEstate.setTypePost(typePost);
 				newRealEstate.setSize(Float.parseFloat(size));
-				newRealEstate.setPrice(Float.parseFloat(price));
+				newRealEstate.setPrice(Long.parseLong(price));
 				newRealEstate.setUnit(unit);
 				newRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
 				newRealEstate.setDirection(direction != null ? direction : "");
@@ -335,8 +335,8 @@ public class PostController {
 					newRealEstate.setSize(Float.parseFloat(size));
 				}
 
-				if (!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Float.parseFloat(price) > 0) {
-					newRealEstate.setSize(Float.parseFloat(size));
+				if (!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Long.parseLong(price) > 0) {
+					newRealEstate.setPrice(Long.parseLong(price));
 				}
 
 				newRealEstate.setUnit(unit);
@@ -399,7 +399,7 @@ public class PostController {
 			}
 		}
 
-		String hqlCat = "FROM CategoryModel WHERE type = :type";
+		String hqlCat = "FROM CategoryModel WHERE type = :type AND status=1";
 		Query<CategoryModel> queryCat = session.createQuery(hqlCat);
 		queryCat.setParameter("type", "Nhà đất bán");
 		List<CategoryModel> categories = queryCat.list();
@@ -510,7 +510,7 @@ public class PostController {
 			} else if (!price.matches("\\d+(\\.\\d+)?")) {
 				request.setAttribute("priceError", "Mức giá phải là số!");
 				isError = true;
-			} else if (Float.parseFloat(price) <= 0) {
+			} else if (Long.parseLong(price) <= 0) {
 				request.setAttribute("priceError", "Mức giá phải lớn hơn 0!");
 				isError = true;
 			}
@@ -586,7 +586,7 @@ public class PostController {
 				editedRealEstate.setTitle(title);
 				editedRealEstate.setDescription(description);
 				editedRealEstate.setSize(Float.parseFloat(size));
-				editedRealEstate.setPrice(Float.parseFloat(price));
+				editedRealEstate.setPrice(Long.parseLong(price));
 				editedRealEstate.setUnit(unit);				
 				editedRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
 				editedRealEstate.setDirection(direction != null ? direction : "");
@@ -648,8 +648,8 @@ public class PostController {
 					newRealEstate.setSize(Float.parseFloat(size));
 				}
 
-				if (!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Float.parseFloat(price) > 0) {
-					newRealEstate.setSize(Float.parseFloat(size));
+				if (!price.isEmpty() && price.matches("\\d+(\\.\\d+)?") && Long.parseLong(price) > 0) {
+					newRealEstate.setPrice(Long.parseLong(price));
 				}
 
 				newRealEstate.setUnit(unit);
