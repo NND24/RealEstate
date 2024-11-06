@@ -28,7 +28,7 @@
 						<i class="fa-regular fa-id-card"></i> <span>Thông tin cá
 							nhân</span>
 					</div>
-					<a href="logout.html">
+					<a href="${pageContext.servletContext.contextPath}/admin/logout.html">
 						<div class='model-item'>
 							<i class="fa-solid fa-right-from-bracket" style="color: #ff0000;"></i>
 							<span style="color: red;">Đăng xuất</span>

@@ -25,7 +25,7 @@
 					<input name="password" id="password" type="password" />
 				</div>
 				<div class="form-group">
-					<label for="password">Mật khẩu mới:</label>
+					<label for="password">Nhập lại mật khẩu mới:</label>
 					<input name="retypePassword" id="retypePassword" type="password" />
 				</div>
 				
