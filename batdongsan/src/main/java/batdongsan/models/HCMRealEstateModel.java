@@ -57,6 +57,7 @@ public class HCMRealEstateModel {
 	private String propertyStatus;
 	private String propertyLegalDocument;
 	private String characteristics;
+	private boolean urgent;
 	private String images;
 	private String contactName;
 	private String phoneNumber;
@@ -330,4 +331,15 @@ public class HCMRealEstateModel {
 		this.user = user;
 	}
 
+	public boolean isUrgent() {
+		return urgent;
+	}
+
+	public void setUrgent(boolean urgent) {
+		this.urgent = urgent;
+	}
+
+	
+
+	
 }

@@ -102,6 +102,7 @@ public class PostController {
 			@RequestParam(name = "propertyStatus", required = false) String propertyStatus,
 			@RequestParam(name = "propertyLegalDocument", required = false) String propertyLegalDocument, 
 			@RequestParam(name = "characteristics", required = false) String characteristics,
+			@RequestParam(name = "urgent", required = false) String urgent,
 			@RequestParam(name = "contactName") String contactName,
 			@RequestParam(name = "phoneNumber") String phoneNumber, @RequestParam(name = "email") String email,
 			@RequestParam(name = "submittedDate") String submittedDateString,
@@ -261,8 +262,7 @@ public class PostController {
 				newRealEstate.setDescription(description);
 				newRealEstate.setTypePost(typePost);
 				newRealEstate.setSize(Float.parseFloat(size));
-				float roundedPrice = (float) (Math.round(Float.parseFloat(price) / 1_000_000) * 1_000_000);
-				newRealEstate.setPrice(roundedPrice);
+				newRealEstate.setPrice(Float.parseFloat(price));
 				newRealEstate.setUnit(unit);
 				newRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
 				newRealEstate.setDirection(direction != null ? direction : "");
@@ -274,6 +274,11 @@ public class PostController {
 				newRealEstate.setPropertyStatus(propertyStatus != null ? propertyStatus : "");
 				newRealEstate.setPropertyLegalDocument(propertyLegalDocument != null ? propertyLegalDocument : "");
 				newRealEstate.setCharacteristics(characteristics != null ? characteristics : "");
+				if(urgent.equals("1")) {					
+					newRealEstate.setUrgent(true);
+				} else {
+					newRealEstate.setUrgent(false);
+				}
 				newRealEstate.setImages(images);
 				newRealEstate.setContactName(contactName);
 				newRealEstate.setPhoneNumber(phoneNumber);
@@ -436,6 +441,7 @@ public class PostController {
 			@RequestParam(name = "propertyStatus", required = false) String propertyStatus,
 			@RequestParam(name = "propertyLegalDocument", required = false) String propertyLegalDocument, 
 			@RequestParam(name = "characteristics", required = false) String characteristics,
+			@RequestParam(name = "urgent", required = false) String urgent,
 			@RequestParam(name = "contactName") String contactName,
 			@RequestParam(name = "phoneNumber") String phoneNumber, @RequestParam(name = "email") String email) {
 		Session session = factory.openSession();
@@ -580,8 +586,7 @@ public class PostController {
 				editedRealEstate.setTitle(title);
 				editedRealEstate.setDescription(description);
 				editedRealEstate.setSize(Float.parseFloat(size));
-				float roundedPrice = (float) (Math.round(Float.parseFloat(price) / 1_000_000) * 1_000_000);
-				editedRealEstate.setPrice(roundedPrice);
+				editedRealEstate.setPrice(Float.parseFloat(price));
 				editedRealEstate.setUnit(unit);				
 				editedRealEstate.setFurnishingSell(furnishingSell != null ? furnishingSell : "");
 				editedRealEstate.setDirection(direction != null ? direction : "");
@@ -593,7 +598,11 @@ public class PostController {
 				editedRealEstate.setPropertyStatus(propertyStatus != null ? propertyStatus : "");
 				editedRealEstate.setPropertyLegalDocument(propertyLegalDocument != null ? propertyLegalDocument : "");
 				editedRealEstate.setCharacteristics(characteristics != null ? characteristics : "");
-
+				if(urgent.equals("1")) {					
+					editedRealEstate.setUrgent(true);
+				} else {
+					editedRealEstate.setUrgent(false);
+				}
 				if (files != null && files.length > 0 && !images.isEmpty() && !images.equals("[]")) {
 					editedRealEstate.setImages(images);
 				}
