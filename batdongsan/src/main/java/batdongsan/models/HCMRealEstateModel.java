@@ -64,7 +64,7 @@ public class HCMRealEstateModel {
 	private String email;
 
 	private int interestedClick;
-
+	
 	private boolean deleteStatus;
 
 	@Temporal(TemporalType.DATE)
@@ -356,4 +356,5 @@ public class HCMRealEstateModel {
 	public void setDeleteStatus(boolean deleteStatus) {
 		this.deleteStatus = deleteStatus;
 	}
+
 }

@@ -40,7 +40,7 @@ public class FavouriteController {
 	        @RequestParam(name = "size", defaultValue = "10") int size) {
 		Session session = factory.openSession();
 		try {
-			String hql = "SELECT re FROM HCMRealEstateModel re JOIN re.favourite fa WHERE re.status = :status AND fa.user.userId = :userId";
+			String hql = "SELECT re FROM HCMRealEstateModel re JOIN re.favourite fa WHERE re.status = :status AND fa.user.userId = :userId AND re.deleteStatus = False";
 
 
 			// ORDER BY
