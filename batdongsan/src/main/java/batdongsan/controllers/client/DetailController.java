@@ -5,17 +5,23 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.antlr.v4.parse.ANTLRParser.labeledAlt_return;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.UsersModel;
+import net.bytebuddy.asm.Advice.Return;
 
 @Controller
 public class DetailController {
@@ -75,4 +81,39 @@ public class DetailController {
 			session.close();
 		}
     }
+    
+    @RequestMapping(value = "/cap-nhat-click", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> updateMLData(HttpServletRequest request, @RequestParam("realEstateId") int realEstateId, @RequestParam("clickUser") int userId) {
+        Session session = factory.openSession();
+        Transaction transaction = session.beginTransaction(); 
+        try {
+            String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+            Query<HCMRealEstateModel> query = session.createQuery(hql);
+            query.setParameter("realEstateId", realEstateId);
+            HCMRealEstateModel realEstate = query.getSingleResult();
+
+            // Check if the user has permissions to increment clicks
+            if (realEstate.getUser().getUserId() == userId || realEstate.getUser().getUserId() == 0) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating click count");
+            }
+
+            // Increment the interestedClick count
+            realEstate.setInterestedClick(realEstate.getInterestedClick() + 1);
+            System.out.println(realEstate.getInterestedClick());
+
+            session.update(realEstate);
+            transaction.commit(); // Commit transaction to save changes
+
+            return ResponseEntity.ok("Good");
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback(); // Rollback on error
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating click count");
+        } finally {
+            session.close();
+        }
+    }
+
+
 }

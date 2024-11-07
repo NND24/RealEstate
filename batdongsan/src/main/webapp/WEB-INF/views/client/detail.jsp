@@ -462,6 +462,7 @@
 		});
 		
 		$(document).ready(function() {
+			let isAjaxCalled = false;
 			// HANDLE ADD TO FAVOURITE
 		    $(".card-contact-button__favorite").on("click", function(e) {
 		    	e.preventDefault();
@@ -508,8 +509,11 @@
                     icon: "error",
                     button: "OK"
                 });
-                <% } else { %>
+                <% } else 
+                { %>
 			    var phonenumber = $(this).find(".phonenumber").attr("value").trim();
+			    var realEstateId = <%= realEstate.getRealEstateId() %>;
+	            var userId = <%= user.getUserId() %>;
 			
 			    var textarea = $("<textarea>")
 			        .val(phonenumber)
@@ -524,7 +528,35 @@
 			
 			    $(this).find(".phonenumber").text(phonenumber);
 			    $(this).find(".show-phonenumber").text("Sao chép");
-			    <% } %>
+			    if (!isAjaxCalled) {
+			    	isAjaxCalled = true
+		            $.ajax({
+		                url: "${pageContext.request.contextPath}/cap-nhat-click.html",
+		                type: "GET",
+		                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		                dataType: "text", // expecting a text response
+		                data: {
+		                    realEstateId: realEstateId,
+		                    clickUser: userId
+		                },
+		                success: function(response) {
+		                    if (response === "Good") {
+		                        console.log("Click count updated successfully.");
+		                    } else {
+		                        console.log("Failed to update click count.");
+		                    }
+		                },
+		                error: function(xhr, status, error) {
+		                    console.error("Error updating click count:", xhr.status, error); // Log error details
+		                },
+		                complete: function() {
+
+		                }
+		            });
+		        }
+			    
+			    <% } 
+			    %>
 			});
 
 

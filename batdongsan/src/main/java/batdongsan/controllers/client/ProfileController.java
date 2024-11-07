@@ -33,7 +33,7 @@ public class ProfileController {
 	        UsersModel userInfo = currentSession.find(UsersModel.class, userId);
 	        request.setAttribute("userInfo", userInfo);
 
-	        String hqlSell = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
+	        String hqlSell = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type AND deleteStatus = False";
 	        Query<HCMRealEstateModel> querySell = session.createQuery(hqlSell);
 	        querySell.setParameter("userId", userId);
 	        querySell.setParameter("type", "Nhà đất bán");
@@ -41,7 +41,7 @@ public class ProfileController {
 	        List<HCMRealEstateModel> sellRealEstates = querySell.list();
 	        request.setAttribute("sellRealEstates", sellRealEstates);
 
-	        String hqlRent = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type";
+	        String hqlRent = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND cat.type LIKE :type AND deleteStatus = False";
 	        Query<HCMRealEstateModel> queryRent = session.createQuery(hqlRent);
 	        queryRent.setParameter("userId", userId);
 	        queryRent.setParameter("type", "Nhà đất cho thuê");

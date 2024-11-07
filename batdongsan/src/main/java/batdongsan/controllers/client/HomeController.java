@@ -47,7 +47,7 @@ public class HomeController {
 			}
 			
 			// Fetch expired real estates
-            String hqlExpired = "SELECT re FROM HCMRealEstateModel re WHERE re.expirationDate < :today";
+            String hqlExpired = "SELECT re FROM HCMRealEstateModel re WHERE re.expirationDate < :today AND re.deleteStatus = False";
             Query<HCMRealEstateModel> queryExpired = session.createQuery(hqlExpired, HCMRealEstateModel.class);
             queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
             List<HCMRealEstateModel> expiredRealEstates = queryExpired.list();
@@ -58,7 +58,7 @@ public class HomeController {
                 session.merge(re);
             });
 
-			String hqlREForYou = "FROM HCMRealEstateModel re WHERE re.status = :status ";
+			String hqlREForYou = "FROM HCMRealEstateModel re WHERE re.status = :status AND re.deleteStatus = False";
 			if (user != null) {
 				hqlREForYou += " AND NOT EXISTS (SELECT 1 FROM FavouriteModel fa WHERE fa.realEstate = id AND fa.user = :user)";
 			}
