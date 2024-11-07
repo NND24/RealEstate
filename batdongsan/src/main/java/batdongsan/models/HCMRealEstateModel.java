@@ -45,7 +45,7 @@ public class HCMRealEstateModel {
 	private String description;
 	private String typePost;
 	private float size;
-	private float price;
+	private Long price;
 	private String unit;
 	private String furnishingSell;
 	private String direction;
@@ -57,11 +57,11 @@ public class HCMRealEstateModel {
 	private String propertyStatus;
 	private String propertyLegalDocument;
 	private String characteristics;
+	private boolean urgent;
 	private String images;
 	private String contactName;
 	private String phoneNumber;
 	private String email;
-
 
 	private int interestedClick;
 	
@@ -181,11 +181,11 @@ public class HCMRealEstateModel {
 		this.size = size;
 	}
 
-	public float getPrice() {
+	public Long getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(Long price) {
 		this.price = price;
 	}
 
@@ -196,8 +196,6 @@ public class HCMRealEstateModel {
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-
-	
 
 	public String getFurnishingSell() {
 		return furnishingSell;
@@ -335,6 +333,14 @@ public class HCMRealEstateModel {
 		this.user = user;
 	}
 
+	public boolean isUrgent() {
+		return urgent;
+	}
+
+	public void setUrgent(boolean urgent) {
+		this.urgent = urgent;
+	}
+
 	public int getInterestedClick() {
 		return interestedClick;
 	}
@@ -350,8 +356,5 @@ public class HCMRealEstateModel {
 	public void setDeleteStatus(boolean deleteStatus) {
 		this.deleteStatus = deleteStatus;
 	}
-	
-	
-	
 
 }

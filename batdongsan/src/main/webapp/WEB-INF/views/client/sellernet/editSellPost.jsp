@@ -170,7 +170,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 							<span>m²</span>
 						</div>
 						<%
@@ -186,7 +186,7 @@
 							<p>Số phòng ngủ</p>
 							<div class='input-container'>
 								<form:input path="rooms" id="rooms"
-									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -194,7 +194,7 @@
 							<p>Số phòng tắm, vệ sinh</p>
 							<div class='input-container'>
 								<form:input path="toilets" id="toilets"
-									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -205,7 +205,7 @@
 							<p>Số tầng</p>
 							<div class='input-container'>
 								<form:input path="floors" id="floors"
-									placeholder="Nhập số tầng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số tầng, VD: 2" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 								<span>tầng</span>
 							</div>
 						</div>
@@ -273,6 +273,14 @@
 						</div>
 					</div>
 					
+					<div class='form-item'>
+						<p>Cần bán gấp không?</p>
+						<select name='urgent' id="urgent">
+							<option <%= realEstate.isUrgent() == false ? "selected" : "" %> value='0'>Không</option>
+							<option <%= realEstate.isUrgent() == true ? "selected" : "" %> value='1'>Có</option>
+						</select>
+					</div>
+					
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
@@ -287,7 +295,7 @@
 						        df.setGroupingUsed(false);  // Disable comma separators
 						        String formattedPrice = priceValue != null ? df.format(priceValue) : "";
 						        %>
-						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" />
+						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>"  oninput="this.value = Math.abs(this.value)"/>
 						    </div>
 						    <%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -317,7 +325,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 							<span>m²</span>
 						</div>
 						<%
@@ -333,7 +341,7 @@
 							<p>Số phòng ngủ</p>
 							<div class='input-container'>
 								<form:input path="rooms" id="rooms"
-									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -341,7 +349,7 @@
 							<p>Số phòng tắm, vệ sinh</p>
 							<div class='input-container'>
 								<form:input path="toilets" id="toilets"
-									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -424,6 +432,14 @@
 						</div>
 					</div>
 					
+					<div class='form-item'>
+						<p>Cần bán gấp không?</p>
+						<select name='urgent' id="urgent">
+							<option <%= realEstate.isUrgent() == false ? "selected" : "" %> value='0'>Không</option>
+							<option <%= realEstate.isUrgent() == true ? "selected" : "" %> value='1'>Có</option>
+						</select>
+					</div>
+					
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
@@ -438,7 +454,7 @@
 						        df.setGroupingUsed(false);  // Disable comma separators
 						        String formattedPrice = priceValue != null ? df.format(priceValue) : "";
 						        %>
-						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" />
+						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" oninput="this.value = Math.abs(this.value)" />
 						    </div>
 						    <%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -467,7 +483,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 							<span>m²</span>
 						</div>
 						<%
@@ -528,6 +544,14 @@
 						</div>
 					</div>
 					
+					<div class='form-item'>
+						<p>Cần bán gấp không?</p>
+						<select name='urgent' id="urgent">
+							<option <%= realEstate.isUrgent() == false ? "selected" : "" %> value='0'>Không</option>
+							<option <%= realEstate.isUrgent() == true ? "selected" : "" %> value='1'>Có</option>
+						</select>
+					</div>
+					
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
@@ -542,7 +566,7 @@
 						        df.setGroupingUsed(false);  // Disable comma separators
 						        String formattedPrice = priceValue != null ? df.format(priceValue) : "";
 						        %>
-						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" />
+						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" oninput="this.value = Math.abs(this.value)" />
 						    </div>
 						    <%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -571,7 +595,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 							<span>m²</span>
 						</div>
 						<%
@@ -638,6 +662,8 @@
 						</div>
 					</div>
 					
+					
+					
 					<p id="result"  class="error"></p>
 					<div class='money-wrapper'>
 						<div class='form-item'>
@@ -652,7 +678,7 @@
 						        df.setGroupingUsed(false);  // Disable comma separators
 						        String formattedPrice = priceValue != null ? df.format(priceValue) : "";
 						        %>
-						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" />
+						        <form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" value="<%= formattedPrice %>" oninput="this.value = Math.abs(this.value)" />
 						    </div>
 						    <%
 						    String priceError = (String) request.getAttribute("priceError");

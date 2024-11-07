@@ -165,7 +165,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" oninput="this.value = Math.abs(this.value)" />
 							<span>m²</span>
 						</div>
 						<%
@@ -181,7 +181,7 @@
 							<p>Số phòng ngủ</p>
 							<div class='input-container'>
 								<form:input path="rooms" id="rooms"
-									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" step="1" oninput="this.value = Math.abs(this.value)" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -189,7 +189,7 @@
 							<p>Số phòng tắm, vệ sinh</p>
 							<div class='input-container'>
 								<form:input path="toilets" id="toilets"
-									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" step="1" oninput="this.value = Math.abs(this.value)" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -200,7 +200,7 @@
 							<p>Số tầng</p>
 							<div class='input-container'>
 								<form:input path="floors" id="floors"
-									placeholder="Nhập số tầng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số tầng, VD: 2" type="number" min="0" step="1" oninput="this.value = Math.abs(this.value)" />
 								<span>tầng</span>
 							</div>
 						</div>
@@ -271,8 +271,8 @@
 					<div class='form-item'>
 						<p>Cần bán gấp không?</p>
 						<select name='urgent' id="urgent">
-							<option value='no'>Không</option>
-							<option value='yes'>Có</option>
+							<option value='0'>Không</option>
+							<option value='1'>Có</option>
 						</select>
 					</div>
 					
@@ -310,7 +310,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" oninput="this.value = Math.abs(this.value)" />
 							<span>m²</span>
 						</div>
 						<%
@@ -326,7 +326,7 @@
 							<p>Số phòng ngủ</p>
 							<div class='input-container'>
 								<form:input path="rooms" id="rooms"
-									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -334,7 +334,7 @@
 							<p>Số phòng tắm, vệ sinh</p>
 							<div class='input-container'>
 								<form:input path="toilets" id="toilets"
-									placeholder="Nhập số phòng, VD: 2" type="number" min="0" />
+									placeholder="Nhập số phòng, VD: 2" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 								<span>phòng</span>
 							</div>
 						</div>
@@ -420,8 +420,8 @@
 					<div class='form-item'>
 						<p>Cần bán gấp không?</p>
 						<select name='urgent' id="urgent">
-							<option value='no'>Không</option>
-							<option value='yes'>Có</option>
+							<option value='0'>Không</option>
+							<option value='1'>Có</option>
 						</select>
 					</div>
 					
@@ -432,7 +432,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -459,7 +459,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" oninput="this.value = Math.abs(this.value)" />
 							<span>m²</span>
 						</div>
 						<%
@@ -523,8 +523,8 @@
 					<div class='form-item'>
 						<p>Cần bán gấp không?</p>
 						<select name='urgent' id="urgent">
-							<option value='no'>Không</option>
-							<option value='yes'>Có</option>
+							<option value='0'>Không</option>
+							<option value='1'>Có</option>
 						</select>
 					</div>
 					
@@ -535,7 +535,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -562,7 +562,7 @@
 							Diện tích <span>*</span>
 						</p>
 						<div class='input-container'>
-							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" />
+							<form:input path="size" id="size" placeholder="Nhập diện tích, VD: 80" type="number" min="0" step="0.01" oninput="this.value = Math.abs(this.value)" />
 							<span>m²</span>
 						</div>
 						<%
@@ -632,8 +632,8 @@
 					<div class='form-item'>
 						<p>Cần bán gấp không?</p>
 						<select name='urgent' id="urgent">
-							<option value='no'>Không</option>
-							<option value='yes'>Có</option>
+							<option value='0'>Không</option>
+							<option value='1'>Có</option>
 						</select>
 					</div>
 					
@@ -644,7 +644,7 @@
 								Mức giá <span>*</span>
 							</p>
 							<div class='input-container'>
-								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" />
+								<form:input path="price" placeholder="Nhập giá, VD 12000000" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
 							</div>
 							<%
 						    String priceError = (String) request.getAttribute("priceError");
@@ -954,7 +954,7 @@
 	const urlParams = new URLSearchParams(window.location.search);
 	const categoryId = urlParams.get('categoryId');
 	
-	document.getElementById('price').addEventListener('input', async function() {
+	$('#price', ".money-wrapper").on('input change hover', async function() {
 		const districtElement = document.getElementById('districtId');
 		const wardElement = document.getElementById('wardId');
 		const sizeElement = document.getElementById('size');
@@ -962,10 +962,10 @@
 		let rooms = 0;
 		let toilets = 0;
 		let floors = 0;
-		let furnishing_sell = "";
-		let pty_characteristics = ""; 
-		let ward = "";
-		let district;
+		let furnishingSell = "";
+		let characteristics = ""; 
+		let wardId = "";
+		let districtId;
 		let size = 0;
 		let type = "";
 		let urgent = "";
@@ -984,7 +984,7 @@
 		const typeElement = document.getElementById('type');
 
 		if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
-			furnishingSellElement = document.getElementById('furnishing_sell');
+			furnishingSellElement = document.getElementById('furnishingSell');
 		}
 
 		if (categoryId === "1" || categoryId === "4") {
@@ -994,11 +994,11 @@
 		const urgentElement = document.getElementById('urgent');
 
 		if (wardElement && wardElement.selectedIndex !== -1) {
-			ward = wardElement.options[wardElement.selectedIndex].textContent !== "---Phường, xã---" ? wardElement.options[wardElement.selectedIndex].textContent : "";
+			wardId = wardElement.options[wardElement.selectedIndex].textContent !== "---Phường, xã---" ? wardElement.options[wardElement.selectedIndex].value : "";
 		}
 
 		if (districtElement && districtElement.selectedIndex !== -1) {
-			district = districtElement.options[districtElement.selectedIndex].textContent;
+			districtId = districtElement.options[districtElement.selectedIndex].value;
 		}
 
 		if (sizeElement && sizeElement.value) {
@@ -1027,13 +1027,13 @@
 
 		if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
 			if (furnishingSellElement && furnishingSellElement.selectedIndex !== -1) {
-				furnishing_sell = furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent !== "---Nội thất---" ? furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent : "no";
+				furnishingSell = furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent !== "---Nội thất---" ? furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent : "";
 			}
 		}
 
 		if (categoryId === "1" || categoryId === "4") {
 			if (characteristicsElement && characteristicsElement.selectedIndex !== -1) {
-				pty_characteristics = characteristicsElement.options[characteristicsElement.selectedIndex].textContent !== "---Đặc điểm nhà/đất---" ? characteristicsElement.options[characteristicsElement.selectedIndex].textContent : "no";
+				characteristics = characteristicsElement.options[characteristicsElement.selectedIndex].textContent !== "---Đặc điểm nhà/đất---" ? characteristicsElement.options[characteristicsElement.selectedIndex].textContent : "";
 			}
 		}
 
@@ -1041,19 +1041,19 @@
 			urgent = urgentElement.value;
 		}
 	    
-	    if(ward!=="" && size!==0) {
+	    if(wardId!=="" && size!==0) {
 	    	if(categoryId === "1") {
 		    	 const data = {
-		          		ward: ward,
-		         		district: district,
-		         		size: parseFloat(size),
-		         		rooms: parseInt(rooms),
-		         		toilets: parseInt(toilets),
-		         		floors: parseInt(floors),
-		         		house_type: type,
-		         		furnishing_sell: furnishing_sell,
-		         		urgent: urgent,
-		         		pty_characteristics: pty_characteristics,
+	    			 wardId: wardId,
+	    			 districtId: districtId,
+	    			 size: parseFloat(size),
+	    			 rooms: parseInt(rooms),
+	    			 toilets: parseInt(toilets),
+	    			 floors: parseInt(floors),
+	    			 type: type,
+	    			 furnishingSell: furnishingSell,
+	    			 urgent: urgent,
+	    			 characteristics: characteristics,
 		         };
 	
 		         try {
@@ -1075,13 +1075,13 @@
 		         }
 	         } else if(categoryId === "2") {
 	        	 const data = {
-	          		ward: ward,
-	         		district: district,
+	      			wardId: wardId,
+	      			districtId: districtId,
 	         		size: parseFloat(size),
 	         		rooms: parseInt(rooms),
 	         		toilets: parseInt(toilets),
-	         		apartment_type: type,
-	         		furnishing_sell: furnishing_sell,
+	         		type: type,
+	         		furnishingSell: furnishingSell,
 	         		urgent: urgent,
 		         };
 	
@@ -1104,11 +1104,11 @@
 		         }
              } else if(categoryId === "3") {
             	 const data = {
-	          		ward: ward,
-	         		district: district,
+          			wardId: wardId,
+          			districtId: districtId,
 	         		size: parseFloat(size),
-	         		commercial_type: type,
-	         		furnishing_sell: furnishing_sell,
+	         		type: type,
+	         		furnishingSell: furnishingSell,
 	         		urgent: urgent,
 		         };
 	
@@ -1131,11 +1131,11 @@
 		         }
              } else if(categoryId === "4") {
             	 const data = {
-   	          		ward: ward,
-   	         		district: district,
+           			wardId: wardId,
+           			districtId: districtId,
    	         		size: parseFloat(size),
-   	         		land_type: type,
-   	         		pty_characteristics: pty_characteristics,
+   	         		type: type,
+   	         		characteristics: characteristics,
    	         		urgent: urgent,
    		         };
    	
