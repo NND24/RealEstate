@@ -60,15 +60,6 @@ public class PricePredictController {
 		request.setAttribute("districts", districts);
 		request.setAttribute("user", user);
 		model.addAttribute("realEstate", new HCMRealEstateModel());
-		
-		String hql1 = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat WHERE re.status = :status";
-        
-		Query<HCMRealEstateModel> query1 = session.createQuery(hql1);
-		
-		query1.setParameter("status", "Đang hiển thị");
-		
-        List<HCMRealEstateModel> realEstates = query1.list();
-        request.setAttribute("realEstates", realEstates);
         
         return "client/predict";
     }

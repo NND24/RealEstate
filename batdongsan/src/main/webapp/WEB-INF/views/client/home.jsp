@@ -269,13 +269,13 @@
 						<div class='col-lg-3'>
 							<div class='card'>
 								<a
-									href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
+									href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
 									<img class='card-img-top' src="images/<%=imagePaths[0]%>"
 									alt='' />
 								</a>
 								<div class='card-info-container'>
 									<a
-										href="http://localhost:8080/batdongsan/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
+										href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%=r.getRealEstateId()%>">
 										<h3 class='card-title'><%=r.getTitle()%></h3>
 									</a>
 									<div class='card-config'>
@@ -321,10 +321,8 @@
 													}
 												}
 											%>
-											<i class='fa-regular fa-heart'
-												style="display: <%=showHeart ? "none" : "block"%>;"></i> <i
-												class="fa-solid fa-heart"
-												style="color: #e03c31;display: <%=showHeart ? "block" : "none"%>;"></i>
+											<i class='fa-regular fa-heart' style="display: <%=showHeart ? "none" : "block"%>;"></i> 
+											<i class="fa-solid fa-heart" style="color: #e03c31;display: <%=showHeart ? "block" : "none"%>;"></i>
 											<%
 											} else {
 											%>
@@ -482,18 +480,16 @@
 
 							// HANDLE ADD TO FAVOURITE
 							$(".card-contact-button")
-									.on(
-											"click",
-											function(e) {
-												e.preventDefault();
-	<%if (user == null) {%>
-		swal({
+									.on("click",function(e) {
+											e.preventDefault();
+											<%if (user == null) {%>
+													swal({
 													title : "Vui lòng đăng nhập để tiếp tục!",
 													icon : "error",
 													button : "OK"
 												});
-	<%} else {%>
-		var regularHeartIcon = $(this)
+											<%} else {%>
+												var regularHeartIcon = $(this)
 														.find(
 																".fa-regular.fa-heart");
 												var solidHeartIcon = $(this)
@@ -535,8 +531,8 @@
 																		.log("Thêm thất bại")
 															}
 														});
-	<%}%>
-		});
+											<%}%>
+												});
 
 						});
 	</script>

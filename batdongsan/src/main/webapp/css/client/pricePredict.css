@@ -563,7 +563,7 @@
 	font-size: 14px;
 	line-height: 20px;
 	color: #999;
-	margin: 0 -2px;
+	margin: 0 2px;
 	line-height: 26px;
 }
 
@@ -585,7 +585,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 15px;
+	margin-top: 0px;
 }
 
 .recommend-card .card-info-container .card-published-info {

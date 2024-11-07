@@ -954,7 +954,15 @@
 	const urlParams = new URLSearchParams(window.location.search);
 	const categoryId = urlParams.get('categoryId');
 	
-	$('#price', ".money-wrapper").on('input change hover', async function() {
+	function debounce(func, delay) {
+	    let debounceTimer;
+	    return function(...args) {
+	        clearTimeout(debounceTimer);
+	        debounceTimer = setTimeout(() => func.apply(this, args), delay);
+	    };
+	}
+	
+	$('.input-wrapper').on('mouseover', debounce(async function() {
 		const districtElement = document.getElementById('districtId');
 		const wardElement = document.getElementById('wardId');
 		const sizeElement = document.getElementById('size');
@@ -1041,7 +1049,7 @@
 			urgent = urgentElement.value;
 		}
 	    
-	    if(wardId!=="" && size!==0) {
+		if(wardId!=="" && size!=="0.0") {
 	    	if(categoryId === "1") {
 		    	 const data = {
 	    			 wardId: wardId,
@@ -1067,7 +1075,7 @@
 	
 		             const result = await response.json();
 		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
 		         } catch (error) {
 		        	 document.getElementById('result').style.display = "none";
 		             console.error('Error predicting price:', error);
@@ -1096,7 +1104,7 @@
 	
 		             const result = await response.json();
 		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
 		         } catch (error) {
 		        	 document.getElementById('result').style.display = "none";
 		             console.error('Error predicting price:', error);
@@ -1123,7 +1131,7 @@
 	
 		             const result = await response.json();
 		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
 		         } catch (error) {
 		        	 document.getElementById('result').style.display = "none";
 		             console.error('Error predicting price:', error);
@@ -1150,7 +1158,7 @@
    	
    		             const result = await response.json();
    		             document.getElementById('result').style.display = "block";
-   		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price;
+   		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
    		         } catch (error) {
    		        	 document.getElementById('result').style.display = "none";
    		             console.error('Error predicting price:', error);
@@ -1161,7 +1169,7 @@
 	    } else {
 	    	document.getElementById('result').style.display = "none";
 	    }
-	});
+	}, 1000));
 	
 	var images = [];
 	function image_select() {
