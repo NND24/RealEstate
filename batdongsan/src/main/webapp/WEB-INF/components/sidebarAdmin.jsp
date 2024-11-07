@@ -110,6 +110,24 @@
 			</div>
 		</c:if>
 		
+		<!-- Quản lý mô hình dự đoán bất động sản (chỉ admin) -->
+		<c:if test="${fn:contains(permissions, 1)}">
+			<div class='panel-group'>
+				<div class='panel panel-default'>
+					<div class='panel-heading'>
+						<h4 class='panel-title'>
+							<a
+								href='${pageContext.servletContext.contextPath}/admin/AImodel.html'>
+								<div>
+									<i class="fa-solid fa-robot"></i></i> <span>Huấn luyện mô hình</span>
+								</div>
+							</a>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</c:if>
+		
 		<div class='panel-group'>
 			<div class='panel panel-default'>
 				<div class='panel-heading'>
