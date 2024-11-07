@@ -46,7 +46,7 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		p:url="jdbc:sqlserver://localhost:1433;DatabaseName=BatDongSan;encrypt=true;trustServerCertificate=true"
-    p:username="sa" p:password="123456789" />
+    p:username="sa" p:password="123" />
 
 	
 	<!-- Transaction Manager -->

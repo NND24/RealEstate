@@ -60,7 +60,7 @@ public class ListPostController {
 	                request.setAttribute("user", user);
 
 	                // Fetch all real estates
-	                String hqlAll = "SELECT re FROM HCMRealEstateModel re JOIN re.user AS user WHERE user.userId = :userId";
+	                String hqlAll = "SELECT re FROM HCMRealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.deleteStatus = false";
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlAll += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
@@ -82,7 +82,7 @@ public class ListPostController {
 	                request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 
 	                // Fetch expired real estates
-	                String hqlExpired = "SELECT re FROM HCMRealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate < :today";
+	                String hqlExpired = "SELECT re FROM HCMRealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate < :today AND re.deleteStatus = false";
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlExpired += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
@@ -115,7 +115,7 @@ public class ListPostController {
 	                request.setAttribute("totalExpiredPages", (int) Math.ceil((double) totalExpiredResults / size));
 
 	                // Fetch near-expired real estates
-	                String hqlNearExpired = "SELECT re FROM HCMRealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate >= :startDate AND re.expirationDate <= :endDate";
+	                String hqlNearExpired = "SELECT re FROM HCMRealEstateModel re JOIN re.user AS user WHERE user.userId = :userId AND re.expirationDate >= :startDate AND re.expirationDate <= :endDate AND re.deleteStatus = false";
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlNearExpired += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
@@ -139,7 +139,7 @@ public class ListPostController {
 	                request.setAttribute("totalNearExpiredPages", (int) Math.ceil((double) totalNearExpiredResults / size));
 
 	                // Fetch real estates that are currently displayed
-	                String hqlDisplay = "SELECT re FROM HCMRealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId";
+	                String hqlDisplay = "SELECT re FROM HCMRealEstateModel re JOIN re.user AS user WHERE re.status = :status AND user.userId = :userId AND re.deleteStatus = false";
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlDisplay += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
@@ -186,8 +186,13 @@ public class ListPostController {
 			Query<HCMRealEstateModel> query = session.createQuery(hql);
 			query.setParameter("realEstateId", realEstateId);
 			HCMRealEstateModel deletedRealEstate = query.uniqueResult();
-
-			session.delete(deletedRealEstate);
+			if  ( deletedRealEstate.getInterestedClick() <= 0 ) {
+				session.delete(deletedRealEstate);
+			}
+			else {
+				deletedRealEstate.setDeleteStatus(true);
+				session.update(deletedRealEstate);
+			}
 			t.commit();
 			return "redirect:/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
 		} catch (Exception e) {

@@ -62,6 +62,11 @@ public class HCMRealEstateModel {
 	private String phoneNumber;
 	private String email;
 
+
+	private int interestedClick;
+	
+	private boolean deleteStatus;
+
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date submittedDate;
@@ -329,5 +334,24 @@ public class HCMRealEstateModel {
 	public void setUser(UsersModel user) {
 		this.user = user;
 	}
+
+	public int getInterestedClick() {
+		return interestedClick;
+	}
+
+	public void setInterestedClick(int interestedClick) {
+		this.interestedClick = interestedClick;
+	}
+
+	public boolean isDeleteStatus() {
+		return deleteStatus;
+	}
+
+	public void setDeleteStatus(boolean deleteStatus) {
+		this.deleteStatus = deleteStatus;
+	}
+	
+	
+	
 
 }

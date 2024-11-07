@@ -279,6 +279,7 @@ public class PostController {
 				newRealEstate.setPhoneNumber(phoneNumber);
 				newRealEstate.setEmail(email);
 
+
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				Date submittedDate = dateFormat.parse(submittedDateString);
 				Date expirationDate = dateFormat.parse(expirationDateString);
@@ -286,6 +287,8 @@ public class PostController {
 				newRealEstate.setExpirationDate(expirationDate);
 				newRealEstate.setStatus("Chưa được duyệt");
 				newRealEstate.setTotalMoney(totalMoney);
+				newRealEstate.setDeleteStatus(false);
+				newRealEstate.setInterestedClick(0);
 				
 				user.setAccountBalance(user.getAccountBalance() - totalMoney);
 				session.update(user);
@@ -407,7 +410,7 @@ public class PostController {
 		request.setAttribute("districts", districts);
 		request.setAttribute("user", user);
 
-		String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId";
+		String hql = "FROM HCMRealEstateModel WHERE realEstateId = :realEstateId AND deleteStatus = False";
 		Query<HCMRealEstateModel> query = session.createQuery(hql);
 		query.setParameter("realEstateId", realEstateId);
 		HCMRealEstateModel RealEstate = query.uniqueResult();

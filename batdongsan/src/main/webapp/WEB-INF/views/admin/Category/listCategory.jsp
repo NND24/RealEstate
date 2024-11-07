@@ -111,7 +111,7 @@
 						function() {
 							let searchInput = $(".search-input input");
 							let searchInputButton = $(".search-input .fa-magnifying-glass");
-
+							let categoryDropdown = $("#categoryDropdown");
 							$(searchInputButton).on("click", handleSearch);
 							$(searchInput).on("keyup", function(event) {
 								if (event.which === 13) { // Enter key code
@@ -119,7 +119,6 @@
 									handleSearch();
 								}
 							});
-
 							function handleSearch() {
 								let url = "${pageContext.servletContext.contextPath}/admin/listCategory.html";
 								url += "?searchInput=" + searchInput.val();
