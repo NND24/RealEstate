@@ -219,8 +219,8 @@
 					<div class='form-item'>
 						<p>Bất động sản bán gấp</p>
 						<select name='urgent' id="urgent">
-							<option value='no'>Không</option>
-							<option value='yes'>Có</option>
+							<option value='0'>Không</option>
+							<option value='1'>Có</option>
 						</select>
 					</div>
 
@@ -362,8 +362,8 @@
 					<div class='form-item'>
 						<p>Bất động sản bán gấp</p>
 						<select name='urgent' id="urgent">
-							<option value='no'>Không</option>
-							<option value='yes'>Có</option>
+							<option value='0'>Không</option>
+							<option value='1'>Có</option>
 						</select>
 					</div>
 
@@ -458,8 +458,8 @@
 					<div class='form-item'>
 						<p>Bất động sản bán gấp</p>
 						<select name='urgent' id="urgent">
-							<option value='no'>Không</option>
-							<option value='yes'>Có</option>
+							<option value='0'>Không</option>
+							<option value='1'>Có</option>
 						</select>
 					</div>
 
@@ -561,8 +561,8 @@
 					<div class='form-item'>
 						<p>Bất động sản bán gấp</p>
 						<select name='urgent' id="urgent">
-							<option value='no'>Không</option>
-							<option value='yes'>Có</option>
+							<option value='0'>Không</option>
+							<option value='1'>Có</option>
 						</select>
 					</div>
 

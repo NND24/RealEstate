@@ -190,7 +190,7 @@
 							}
 						})
 		function confirmDelete() {
-			return confirm("Bạn có chắc chắn muốn xóa danh mục này không?");
+			return confirm("Bạn có chắc chắn muốn xóa tin tức này không?");
 		}
 	</script>
 </body>
