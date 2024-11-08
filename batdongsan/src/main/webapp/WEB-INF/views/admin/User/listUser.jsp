@@ -69,7 +69,7 @@
 								</a></td>
 								<td><a href='listUser/change-status/${u.userId}.html' onclick="return confirmDelete();">
 										<i
-										class='${u.status ? "fa-solid fa-lock" : "fa-solid fa-lock-open"}'></i>
+										class='${u.status ? "fa-solid fa-lock-open" : "fa-solid fa-lock"}'></i>
 								</a></td>
 
 							</tr>
