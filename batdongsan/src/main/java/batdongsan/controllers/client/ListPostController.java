@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import batdongsan.models.CategoryModel;
 import batdongsan.models.HCMRealEstateModel;
 import batdongsan.models.UsersModel;
 
@@ -29,6 +30,7 @@ public class ListPostController {
 	@RequestMapping(value = { "quan-ly-tin-rao-ban-cho-thue" }, method = RequestMethod.GET)
 	public String getListPostPage(HttpServletRequest request,
 	        @RequestParam(name = "searchInput", required = false) String searchInput,
+	        @RequestParam(name = "categoryId", defaultValue = "0", required = false) int categoryId,
 	        @RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
 	        @RequestParam(name = "pageExpired", defaultValue = "1") int pageExpired,
 	        @RequestParam(name = "pageNearExpired", defaultValue = "1") int pageNearExpired,
@@ -50,6 +52,15 @@ public class ListPostController {
 	            }
 
 	            if (userId != null) {
+	            	// Load Category
+	    	    	String hql = "FROM CategoryModel c WHERE 1=1 AND c.status = 1";
+	    	        hql += " ORDER BY categoryId ASC";
+	    	        Query<CategoryModel> queryAllCate = session.createQuery(hql, CategoryModel.class);
+	    	        if (searchInput != null && !searchInput.isEmpty()) {
+	    	        	queryAllCate.setParameter("searchInput", "%" + searchInput + "%");
+	    	        }
+	    	        List<CategoryModel> allCategories = queryAllCate.list();
+	    	        
 	                int parsedUserId = Integer.parseInt(userId);
 
 	                // Fetch user details
@@ -64,11 +75,17 @@ public class ListPostController {
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlAll += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
+	                if (categoryId > 0) {
+	    	    		hqlAll += " AND re.category.categoryId = :categoryId";
+	    	    	}
 	                Query<HCMRealEstateModel> queryAll = session.createQuery(hqlAll, HCMRealEstateModel.class);
 	                queryAll.setParameter("userId", parsedUserId);
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    queryAll.setParameter("searchInput", "%" + searchInput + "%");
 	                }
+	                if (categoryId > 0) {
+	    	    		queryAll.setParameter("categoryId", categoryId);
+	    	    	}
 
 	                int totalAllResults = queryAll.list().size();
 	                queryAll.setFirstResult((pageAll - 1) * size);
@@ -86,12 +103,18 @@ public class ListPostController {
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlExpired += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
+	                if (categoryId > 0) {
+	                	hqlExpired += " AND re.category.categoryId = :categoryId";
+	    	    	}
 	                Query<HCMRealEstateModel> queryExpired = session.createQuery(hqlExpired, HCMRealEstateModel.class);
 	                queryExpired.setParameter("userId", parsedUserId);
 	                queryExpired.setParameter("today", java.sql.Date.valueOf(LocalDate.now()));
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    queryExpired.setParameter("searchInput", "%" + searchInput + "%");
 	                }
+	                if (categoryId > 0) {
+	                	queryExpired.setParameter("categoryId", categoryId);
+	    	    	}
 
 	                int totalExpiredResults = queryExpired.list().size();
 	                queryExpired.setFirstResult((pageExpired - 1) * size);
@@ -119,6 +142,9 @@ public class ListPostController {
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlNearExpired += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
+	                if (categoryId > 0) {
+	                	hqlNearExpired += " AND re.category.categoryId = :categoryId";
+	    	    	}
 	                Query<HCMRealEstateModel> queryNearExpired = session.createQuery(hqlNearExpired, HCMRealEstateModel.class);
 	                queryNearExpired.setParameter("userId", parsedUserId);
 	                queryNearExpired.setParameter("startDate", java.sql.Date.valueOf(startDate));
@@ -126,6 +152,9 @@ public class ListPostController {
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    queryNearExpired.setParameter("searchInput", "%" + searchInput + "%");
 	                }
+	                if (categoryId > 0) {
+	                	queryNearExpired.setParameter("categoryId", categoryId);
+	    	    	}
 
 	                int totalNearExpiredResults = queryNearExpired.list().size();
 	                queryNearExpired.setFirstResult((pageNearExpired - 1) * size);
@@ -143,12 +172,18 @@ public class ListPostController {
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    hqlDisplay += " AND (address LIKE :searchInput OR title LIKE :searchInput OR description LIKE :searchInput)";
 	                }
+	                if (categoryId > 0) {
+	                	hqlDisplay += " AND re.category.categoryId = :categoryId";
+	    	    	}
 	                Query<HCMRealEstateModel> queryDisplay = session.createQuery(hqlDisplay, HCMRealEstateModel.class);
 	                queryDisplay.setParameter("userId", parsedUserId);
 	                queryDisplay.setParameter("status", "Đang hiển thị");
 	                if (searchInput != null && !searchInput.isEmpty()) {
 	                    queryDisplay.setParameter("searchInput", "%" + searchInput + "%");
 	                }
+	                if (categoryId > 0) {
+	                	queryDisplay.setParameter("categoryId", categoryId);
+	    	    	}
 
 	                int totalDisplayResults = queryDisplay.list().size();
 	                queryDisplay.setFirstResult((pageDisplay - 1) * size);
@@ -160,6 +195,11 @@ public class ListPostController {
 	                request.setAttribute("currentDisplayPage", pageDisplay);
 	                request.setAttribute("totalDisplayResults", totalDisplayResults);
 	                request.setAttribute("totalDisplayPages", (int) Math.ceil((double) totalDisplayResults / size));
+	                
+	    	        request.setAttribute("categories", allCategories);
+	    	        if(categoryId  > 0) {	        	
+	    	        	request.setAttribute("categoryId", categoryId);
+	    	        }
 
 	                t.commit();
 	            } else {

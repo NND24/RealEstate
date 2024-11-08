@@ -29,7 +29,7 @@
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
 <body>
-	<%@ include file="../../components/header.jsp"%>
+	<%@ include file="../../components/headerPredict.jsp"%>
 	<div class='sellernet'>
 		<!-- Post -->
 		<div class='post'>

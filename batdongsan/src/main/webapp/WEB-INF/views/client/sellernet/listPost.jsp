@@ -34,6 +34,18 @@
 						<input type='text' placeholder='Tìm theo tiêu đề, nội dung' /> <i
 							class='fa-solid fa-magnifying-glass'></i>
 					</div>
+					<% 
+					Integer categoryId = (Integer) request.getAttribute("categoryId");
+					%>
+					<div class="dropdown-wrapper" style="display: flex; align-items: center;">
+					    <select id="categoryDropdown" name="categoryId" class="form-control"
+					            style="padding: 8px 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; width: 220px;">
+					            <option value="">Chọn một danh mục</option>
+					        <c:forEach var="c" items="${categories}">
+							    <option value="${c.categoryId}" ${c.categoryId == categoryId ? 'selected' : ''}>${c.name}</option>
+							</c:forEach>
+					    </select>
+					</div>
 				</div>
 
 				<div class='post-container'>
@@ -664,7 +676,11 @@
     $(document).ready(function() {
         let searchInput = $(".search-input input");
         let searchInputButton = $(".search-input .fa-magnifying-glass");
+		let categoryDropdown = $("#categoryDropdown");
         
+		$(document).on("change", "#categoryDropdown", function() {
+	        handleSearch();
+	    });
         $(searchInputButton).on("click", handleSearch);
         $(searchInput).on("keyup", function(event) {
             if (event.which === 13) { // Enter key code
@@ -676,6 +692,9 @@
         function handleSearch() {
             let url = "${pageContext.servletContext.contextPath}/sellernet/quan-ly-tin-rao-ban-cho-thue.html";
             url += "?searchInput=" + searchInput.val();
+            if (categoryDropdown.val()) {
+                url += "&categoryId=" + encodeURIComponent(categoryDropdown.val());
+            }
             window.location.href = url;
         }
     });

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import batdongsan.models.CategoryModel;
 import batdongsan.models.EmployeeModel;
 import batdongsan.models.HCMRealEstateModel;
 import batdongsan.utils.LoadAdminComponents;
@@ -30,19 +31,36 @@ public class RealEstateController {
 	@RequestMapping(value = { "quan-ly-bat-dong-san" }, method = RequestMethod.GET)
 	public String getListPostPage(HttpServletRequest request, ModelMap model,
 	        @RequestParam(name = "searchInput", required = false) String searchInput,
+	        @RequestParam(name = "categoryId", defaultValue = "0", required = false) int categoryId,
 	        @RequestParam(name = "pageAll", defaultValue = "1") int pageAll,
 	        @RequestParam(name = "size", defaultValue = "5") int size) {
 	    Session session = factory.openSession();
 	    try {
-	        String hqlAll = "FROM HCMRealEstateModel r";
+	    	// Load Category
+	    	String hql = "FROM CategoryModel c WHERE 1=1 AND c.status = 1";
+	        hql += " ORDER BY categoryId ASC";
+	        Query<CategoryModel> queryAllCate = session.createQuery(hql, CategoryModel.class);
 	        if (searchInput != null && !searchInput.isEmpty()) {
-	            hqlAll += " WHERE r.address LIKE :searchInput OR r.title LIKE :searchInput OR r.description LIKE :searchInput";
+	        	queryAllCate.setParameter("searchInput", "%" + searchInput + "%");
 	        }
-	        Query<HCMRealEstateModel> queryAll = session.createQuery(hqlAll, HCMRealEstateModel.class);
-	        if (searchInput != null && !searchInput.isEmpty()) {
-	            queryAll.setParameter("searchInput", "%" + searchInput + "%");
-	        }
+	        List<CategoryModel> allCategories = queryAllCate.list();
+	    	 	
+	    	// Load Realestate
+	    	String hqlAll = "FROM HCMRealEstateModel r WHERE 1=1";
+	    	if (searchInput != null && !searchInput.trim().isEmpty()) {
+	    	    hqlAll += " AND (r.address LIKE :searchInput OR r.title LIKE :searchInput OR r.description LIKE :searchInput)";
+	    	}
+	    	if (categoryId > 0) {
+	    		hqlAll += " AND r.category.categoryId = :categoryId";
+	    	}
 
+	    	Query<HCMRealEstateModel> queryAll = session.createQuery(hqlAll, HCMRealEstateModel.class);
+	    	if (searchInput != null && !searchInput.trim().isEmpty()) {
+	    	    queryAll.setParameter("searchInput", "%" + searchInput.trim() + "%");
+	    	}
+	    	if (categoryId > 0) {
+	    		queryAll.setParameter("categoryId", categoryId);
+	    	}
 	        int totalAllResults = queryAll.list().size();
 	        queryAll.setFirstResult((pageAll - 1) * size);
 	        queryAll.setMaxResults(size);
@@ -53,6 +71,10 @@ public class RealEstateController {
 	        request.setAttribute("currentAllPage", pageAll);
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
+	        request.setAttribute("categories", allCategories);
+	        if(categoryId  > 0) {	        	
+	        	request.setAttribute("categoryId", categoryId);
+	        }
 	        
 	        EmployeeModel emp = LoadAdminComponents.getEmployeeFromCookies(request, factory);
 	        if (emp != null) {
