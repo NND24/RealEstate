@@ -38,13 +38,16 @@
 					     <i
 							class='fa-solid fa-magnifying-glass'></i>
 					</div>
+					<% 
+					Integer categoryId = (Integer) request.getAttribute("categoryId");
+					%>
 					<div class="dropdown-wrapper" style="display: flex; align-items: center;">
 					    <select id="categoryDropdown" name="categoryId" class="form-control"
 					            style="padding: 8px 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; width: 220px;">
-					            <option value="" disabled selected>Chọn một danh mục</option>
+					            <option value="">Chọn một danh mục</option>
 					        <c:forEach var="c" items="${categories}">
-					            <option value="${c.categoryId}">${c.name}</option>
-					        </c:forEach>
+							    <option value="${c.categoryId}" ${c.categoryId == categoryId ? 'selected' : ''}>${c.name}</option>
+							</c:forEach>
 					    </select>
 					</div>
 					<div style="margin-left: auto; width: fit-content;">
@@ -230,7 +233,18 @@
 		            // Create a temporary anchor element
 		            let a = document.createElement("a");
 		            a.href = downloadUrl;
-		            a.download = "realestate_data.csv"; // Set the file name
+		            if (categoryIdParam == 1) {
+		            		a.download = "home_data.csv";
+		            } else if(categoryIdParam == 2) {
+		            		a.download = "apartment_data.csv";
+	            	} else if(categoryIdParam == 3) {
+		            		a.download = "commercial_data.csv";
+	            	} else if(categoryIdParam == 4) {
+		            		a.download = "land_data.csv";
+		        	} else {
+		            		a.download = "realestate_data.csv";
+		    		}
+		            
 		            document.body.appendChild(a);
 		            a.click(); // Trigger the download
 		            document.body.removeChild(a); // Remove anchor after download

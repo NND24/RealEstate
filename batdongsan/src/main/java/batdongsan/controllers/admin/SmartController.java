@@ -48,11 +48,7 @@ public class SmartController {
 	        	queryAllCate.setParameter("searchInput", "%" + searchInput + "%");
 	        }
 	        List<CategoryModel> allCategories = queryAllCate.list();
-	    	
-	    	
-	    	
-	    	
-	    	
+	    	 	
 	    	// Load Realestate
 	    	String hqlAll = "FROM HCMRealEstateModel r WHERE 1=1";
 	    	if (interest > 0) {
@@ -86,6 +82,9 @@ public class SmartController {
 	        request.setAttribute("totalAllResults", totalAllResults);
 	        request.setAttribute("totalAllPages", (int) Math.ceil((double) totalAllResults / size));
 	        request.setAttribute("categories", allCategories);
+	        if(categoryId  > 0) {	        	
+	        	request.setAttribute("categoryId", categoryId);
+	        }
 	        
 	        EmployeeModel emp = LoadAdminComponents.getEmployeeFromCookies(request, factory);
 	        if (emp != null) {
@@ -109,32 +108,52 @@ public class SmartController {
 	                                  @RequestParam(name = "interest", defaultValue = "0") int interest,
 	                                  @RequestParam(name = "categoryId", defaultValue = "0", required = false) int categoryId) {
 
+	    // Determine the filename based on categoryId
+	    String filename;
+	    switch (categoryId) {
+	        case 1:
+	            filename = "home_data.csv";
+	            break;
+	        case 2:
+	            filename = "apartment_data.csv";
+	            break;
+	        case 3:
+	            filename = "commercial_data.csv";
+	            break;
+	        case 4:
+	            filename = "land_data.csv";
+	            break;
+	        default:
+	            filename = "realestate_data.csv";
+	            break;
+	    }
+
 	    response.setContentType("text/csv");
-	    response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=realestate_data.csv");
+	    response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + filename);
 
 	    List<HCMRealEstateModel> realEstateList;
 	    try (Session session = factory.openSession()) {
-	    	String hqlAll = "FROM HCMRealEstateModel r WHERE 1=1";
-	    	if (interest > 0) {
-	    	    hqlAll += " AND r.interestedClick >= :interest";
-	    	}
-	    	if (searchInput != null && !searchInput.trim().isEmpty()) {
-	    	    hqlAll += " AND (r.address LIKE :searchInput OR r.title LIKE :searchInput OR r.description LIKE :searchInput)";
-	    	}
-	    	if (categoryId > 0) {
-	    		hqlAll += " AND r.category.categoryId = :categoryId";
-	    	}
+	        String hqlAll = "FROM HCMRealEstateModel r WHERE 1=1";
+	        if (interest > 0) {
+	            hqlAll += " AND r.interestedClick >= :interest";
+	        }
+	        if (searchInput != null && !searchInput.trim().isEmpty()) {
+	            hqlAll += " AND (r.address LIKE :searchInput OR r.title LIKE :searchInput OR r.description LIKE :searchInput)";
+	        }
+	        if (categoryId > 0) {
+	            hqlAll += " AND r.category.categoryId = :categoryId";
+	        }
 
-	    	Query<HCMRealEstateModel> queryAll = session.createQuery(hqlAll, HCMRealEstateModel.class);
-	    	if (interest > 0) {
-	    	    queryAll.setParameter("interest", interest);
-	    	}
-	    	if (searchInput != null && !searchInput.trim().isEmpty()) {
-	    	    queryAll.setParameter("searchInput", "%" + searchInput.trim() + "%");
-	    	}
-	    	if (categoryId > 0) {
-	    		queryAll.setParameter("categoryId", categoryId);
-	    	}
+	        Query<HCMRealEstateModel> queryAll = session.createQuery(hqlAll, HCMRealEstateModel.class);
+	        if (interest > 0) {
+	            queryAll.setParameter("interest", interest);
+	        }
+	        if (searchInput != null && !searchInput.trim().isEmpty()) {
+	            queryAll.setParameter("searchInput", "%" + searchInput.trim() + "%");
+	        }
+	        if (categoryId > 0) {
+	            queryAll.setParameter("categoryId", categoryId);
+	        }
 	        realEstateList = queryAll.list();
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -143,32 +162,100 @@ public class SmartController {
 
 	    // Writing CSV data
 	    try (PrintWriter writer = response.getWriter()) {
-	        // CSV header
-	        writer.println("title,price,address,price_m2,rooms,toilets,direction,property_status,balcony_direction,property_legal_document,apartment_type,furnishing_sell,size,apartment_feature");
+	        // Custom CSV header based on categoryId
+	        switch (categoryId) {
+	            case 1: 
+	                writer.println("DistrictId,WardId,Size,Rooms,Toilets,Floors,Type,FurnishingSell,Characteristics,Urgent,Price");
+	                break;
+	            case 2: 
+	                writer.println("DistrictId,WardId,Size,Rooms,Toilets,Type,FurnishingSell,Urgent,Price");
+	                break;
+	            case 3: 
+	                writer.println("DistrictId,WardId,Size,Type,FurnishingSell,Urgent,Price");
+	                break;
+	            case 4: 
+	                writer.println("DistrictId,WardId,Size,Type,Characteristics,Urgent,Price");
+	                break;
+	            default:
+	                writer.println("DistrictId,WardId,Size,Rooms,Toilets,Floors,Type,FurnishingSell,Characteristics,Urgent,Price");
+	                break;
+	        }
 
-	        // CSV data rows
+	        // CSV data rows based on categoryId
 	        for (HCMRealEstateModel realEstate : realEstateList) {
-	            writer.printf("\"%s\",%d,\"%s\",%.2f,%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%.2f,\"%s\"%n",
-	                sanitizeCsvField(realEstate.getTitle()), // title
-	                realEstate.getPrice(), // price
-	                sanitizeCsvField(realEstate.getAddress()), // address
-	                realEstate.getSize() > 0 ? realEstate.getPrice() / realEstate.getSize() : 0, // price per square meter
-	                realEstate.getRooms(), // rooms, fallback to 0 if null
-	                realEstate.getToilets(), // toilets, fallback to 0 if null
-	                sanitizeCsvField(realEstate.getDirection()), // direction
-	                sanitizeCsvField(realEstate.getPropertyStatus()), // property status
-	                sanitizeCsvField(realEstate.getBalconyDirection()), // balcony direction
-	                sanitizeCsvField(realEstate.getPropertyLegalDocument()), // property legal document
-	                "", // apartment_type placeholder
-	                sanitizeCsvField(realEstate.getFurnishingSell()), // furnishing sell
-	                realEstate.getSize(), // size
-	                "" // apartment_feature placeholder
-	            );
+	            switch (categoryId) {
+	                case 1: 
+	                	 writer.printf("%d,%d,%.2f,%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d%n",
+	                             realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getWard().getWardId(), // WardId (int)
+	                             realEstate.getSize(), // Size (float)
+	                             realEstate.getRooms(), // Rooms (int)
+	                             realEstate.getToilets(), // Toilets (int)
+	                             realEstate.getFloors(), // Floors (int)
+	                             sanitizeCsvField(realEstate.getType()), // Type (String)
+	                             sanitizeCsvField(realEstate.getFurnishingSell()), // FurnishingSell (String)
+	                             sanitizeCsvField(realEstate.getCharacteristics()), // Characteristics (String)
+	                             realEstate.isUrgent() ? 1 : 0, // Urgent (1 if true, 0 if false)
+	                             realEstate.getPrice() // Price (Long)
+	                         );
+	                    break;
+	                case 2: 
+	                	 writer.printf("%d,%d,%.2f,%d,%d,\"%s\",\"%s\",%d,%d%n",
+	                             realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getWard().getWardId(), // WardId (int)
+	                             realEstate.getSize(), // Size (float)
+	                             realEstate.getRooms(), // Rooms (int)
+	                             realEstate.getToilets(), // Toilets (int)
+	                             sanitizeCsvField(realEstate.getType()), // Type (String)
+	                             sanitizeCsvField(realEstate.getFurnishingSell()), // FurnishingSell (String)
+	                             realEstate.isUrgent() ? 1 : 0, // Urgent (1 if true, 0 if false)
+	                             realEstate.getPrice() // Price (Long)
+	                         );
+	                    break;
+	                case 3: 
+	                	writer.printf("%d,%d,%.2f,\"%s\",\"%s\",%d,%d%n",
+	                            realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                            realEstate.getWard().getWardId(), // WardId (int)
+	                            realEstate.getSize(), // Size (float)
+	                            sanitizeCsvField(realEstate.getType()), // Type (String)
+	                            sanitizeCsvField(realEstate.getFurnishingSell()), // FurnishingSell (String)
+	                            realEstate.isUrgent() ? 1 : 0, // Urgent (1 if true, 0 if false)
+	                            realEstate.getPrice() // Price (Long)
+	                        );
+	                    break;
+	                case 4: 
+	                	writer.printf("%d,%d,%.2f,\"%s\",\"%s\",%d,%d%n",
+	                            realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                            realEstate.getWard().getWardId(), // WardId (int)
+	                            realEstate.getSize(), // Size (float)
+	                            sanitizeCsvField(realEstate.getType()), // Type (String)
+	                            sanitizeCsvField(realEstate.getCharacteristics()), // Characteristics (String)
+	                            realEstate.isUrgent() ? 1 : 0, // Urgent (1 if true, 0 if false)
+	                            realEstate.getPrice() // Price (Long)
+	                        );
+	                    break;
+	                default:
+	                	writer.printf("%d,%d,%.2f,%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d%n",
+	                             realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getWard().getWardId(), // WardId (int)
+	                             realEstate.getSize(), // Size (float)
+	                             realEstate.getRooms(), // Rooms (int)
+	                             realEstate.getToilets(), // Toilets (int)
+	                             realEstate.getFloors(), // Floors (int)
+	                             sanitizeCsvField(realEstate.getType()), // Type (String)
+	                             sanitizeCsvField(realEstate.getFurnishingSell()), // FurnishingSell (String)
+	                             sanitizeCsvField(realEstate.getCharacteristics()), // Characteristics (String)
+	                             realEstate.isUrgent() ? 1 : 0, // Urgent (1 if true, 0 if false)
+	                             realEstate.getPrice() // Price (Long)
+	                         );
+	                    break;
+	            }
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
+
 
 	// Utility method to handle nulls and escape quotes for CSV
 	private String sanitizeCsvField(String field) {
