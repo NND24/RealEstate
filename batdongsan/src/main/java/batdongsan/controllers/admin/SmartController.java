@@ -148,7 +148,7 @@ public class SmartController {
 
 	        // CSV data rows
 	        for (HCMRealEstateModel realEstate : realEstateList) {
-	            writer.printf("\"%s\",%.2f,\"%s\",%.2f,%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%.2f,\"%s\"%n",
+	            writer.printf("\"%s\",%d,\"%s\",%.2f,%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%.2f,\"%s\"%n",
 	                sanitizeCsvField(realEstate.getTitle()), // title
 	                realEstate.getPrice(), // price
 	                sanitizeCsvField(realEstate.getAddress()), // address

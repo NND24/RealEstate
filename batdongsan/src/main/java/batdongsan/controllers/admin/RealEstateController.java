@@ -110,7 +110,13 @@ public class RealEstateController {
 			query.setParameter("realEstateId", realEstateId);
 			HCMRealEstateModel deletedRealEstate = query.uniqueResult();
 			
-			session.delete(deletedRealEstate);
+			if  ( deletedRealEstate.getInterestedClick() <= 0 ) {
+				session.delete(deletedRealEstate);
+			}
+			else {
+				deletedRealEstate.setDeleteStatus(true);
+				session.update(deletedRealEstate);
+			}
 			t.commit();
 			return "redirect:/admin/quan-ly-bat-dong-san.html";
 		} catch (Exception e) {

@@ -382,7 +382,8 @@ public class PostController {
 
 	@RequestMapping(value = "chinh-sua/ban", method = RequestMethod.GET)
 	public String getEditSellREPage(ModelMap model, HttpServletRequest request,
-			@RequestParam(name = "realEstateId") Integer realEstateId) {
+			@RequestParam(name = "realEstateId") Integer realEstateId,
+            @RequestParam(name = "categoryId", required = false) Integer categoryId) {
 		Session session = factory.openSession();
 		Cookie[] cookies = request.getCookies();
 		UsersModel user = null;
@@ -422,7 +423,7 @@ public class PostController {
 		model.addAttribute("realEstate", RealEstate);
 		request.setAttribute("realEstate", RealEstate);
 		request.setAttribute("price", RealEstate.getPrice());
-		request.setAttribute("category", RealEstate.getCategory().getCategoryId());
+		request.setAttribute("category", categoryId);
 		return "client/sellernet/editSellPost";
 	}
 

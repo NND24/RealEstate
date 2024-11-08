@@ -876,7 +876,127 @@
 		             const result = await response.json();
 		             document.getElementById('textPrice').value =  result.predicted_price;
 		             const cleanPrice = result.predicted_price.replace(/[^\d]/g, '');
-			          	document.getElementById('price').value = cleanPrice;
+			         document.getElementById('price').value = cleanPrice;
+			          	
+			          	const fetchRealEstates = await fetch('http://localhost:5000/getRealEstates', {
+			                method: 'POST',
+			                headers: {
+			                    'Content-Type': 'application/json'
+			                },
+			                body: JSON.stringify({
+			                	categoryId: categoryId,
+			                    price: cleanPrice, 
+			                    districtId: districtId,
+			                    wardId: wardId,
+			                    size: parseFloat(size),
+			                    rooms: parseInt(rooms),
+			                    toilets: parseInt(toilets),
+				    			floors: parseInt(floors),
+				    			type: type,
+				    			furnishingSell: furnishingSell,
+				    			urgent: urgent,
+				    			characteristics: characteristics,
+			                })
+			            });
+			            
+			            const estates = await fetchRealEstates.json();		            
+			   
+			         // Check if there are any estates data
+			            if (estates && estates.length > 0) {
+			                const postElement = document.querySelector('.post');
+
+			                // Check if recommendListContainer already exists
+			                let recommendListContainer = document.querySelector('.recommend-list-container');
+
+			                // If it doesn't exist, create it
+			                if (!recommendListContainer) {
+			                    recommendListContainer = document.createElement('div');
+			                    recommendListContainer.classList.add('recommend-list-container');
+
+			                    recommendListContainer.innerHTML = `
+			                        <div class='swiper mySwiper3'>
+			                            <div class='recommend-list-header'>
+			                                <h5 class='recommend-title'>Bất động sản dành cho bạn</h5>
+			                            </div>
+			                            <div class='swiper-wrapper'>
+			                            </div>
+			                            <div class='swiper-button-next'></div>
+			                            <div class='swiper-button-prev'></div>
+			                        </div>
+			                    `;
+
+			                    // Append recommendListContainer after the .post element
+			                    postElement.appendChild(recommendListContainer);
+			                }
+
+			                // Get swiperWrapper inside the recommendListContainer
+			                const swiperWrapper = recommendListContainer.querySelector('.swiper-wrapper');
+
+			                // Clear previous slides before adding new ones
+			                swiperWrapper.innerHTML = '';
+
+			                // Loop through the fetched estates data and generate the slides
+			                estates.forEach(estate => {
+			                	  console.log(estate);
+			                	  const imageStr = estate.Images;
+			                	  const imgPaths = imageStr ? imageStr.substring(1, imageStr.length - 1).split(',') : [];
+
+			                	  // Tạo phần tử slide
+			                	  let slide = document.createElement('div');
+			                	  slide.classList.add('swiper-slide');
+			                			  
+			                	let priceText = ""
+			                	if(estate.Price < 1000000000) {
+			                		priceText = (estate.Price / 1000000) + " triệu"
+			                	} else {
+			                		priceText = (estate.Price / 1000000000) + " tỷ"
+			                	}
+
+			                	  slide.innerHTML = 
+			                	    "<div class='recommend-card'>" +
+			                	      "<div class='card-image'>" +
+			                	        "<a href='/batdongsan/chi-tiet.html?realEstateId=" + estate.RealEstateId + "'>" +
+			                	          "<img src='images/" + imgPaths[0].trim() + "' alt='' />" +
+			                	        "</a>" +
+			                	        "<div class='card-image-feature'>" +
+			                	          "<i class='fa-regular fa-image'></i> <span>" + imgPaths.length + "</span>" +
+			                	        "</div>" +
+			                	      "</div>" +
+			                	      "<div class='card-info-container'>" +
+			                	        "<a href='/batdongsan/chi-tiet.html?realEstateId=" + estate.RealEstateId + "'>" +
+			                	          "<div class='card-info__title'>" + estate.Title + "</div>" +
+			                	        "</a>" +
+			                	        "<div class='card-info__config'>" +
+			                	          "<span class='card-config__item card-config__price'>" + priceText + "</span>" +
+			                	          "<span class='card-config__item card-config__dot'>·</span>" +
+			                	          "<span class='card-config__item card-config__area'>" + estate.Size + " m²</span>" +
+			                	        "</div>" +
+			                	        "<div class='card-info__location'>" +
+			                	          "<i class='fa-solid fa-location-dot'></i> <span>" + estate.Address + "</span>" +
+			                	        "</div>" +
+			                	        "<div class='card-info__contact'>" +
+			                	          "<div class='card-published-info' value='" + estate.SubmittedDate + "'></div>" +
+			                	        "</div>" +
+			                	      "</div>" +
+			                	    "</div>";
+
+			                	  // Thêm slide vào swiper-wrapper
+			                	  swiperWrapper.appendChild(slide);
+			                	});
+
+			                	// Khởi tạo Swiper sau khi tất cả các slide đã được thêm
+			                	const swiper = new Swiper('.mySwiper3', {
+			                	  slidesPerView: 3,
+			                	  spaceBetween: 15,
+			                	  navigation: {
+			                	    nextEl: ".swiper-button-next",
+			                	    prevEl: ".swiper-button-prev",
+			                	  },
+			                	});
+
+			                	// Cập nhật Swiper nếu cần
+			                	swiper.update();
+			            }
 		         } catch (error) {
 		        	 document.getElementById('result').style.display = "none";
 		             console.error('Error predicting price:', error);
@@ -904,7 +1024,127 @@
 		             const result = await response.json();
 		             document.getElementById('textPrice').value = result.predicted_price;
 		             const cleanPrice = result.predicted_price.replace(/[^\d]/g, '');
-			          	document.getElementById('price').value = cleanPrice;
+		          	 document.getElementById('price').value = cleanPrice;
+		          	 
+		          	const fetchRealEstates = await fetch('http://localhost:5000/getRealEstates', {
+		                method: 'POST',
+		                headers: {
+		                    'Content-Type': 'application/json'
+		                },
+		                body: JSON.stringify({
+		                	categoryId: categoryId,
+		                    price: cleanPrice, 
+		                    districtId: districtId,
+		                    wardId: wardId,
+		                    size: parseFloat(size),
+		                    rooms: parseInt(rooms),
+		                    toilets: parseInt(toilets),
+			    			floors: parseInt(floors),
+			    			type: type,
+			    			furnishingSell: furnishingSell,
+			    			urgent: urgent,
+			    			characteristics: characteristics,
+		                })
+		            });
+		            
+		            const estates = await fetchRealEstates.json();		            
+		   
+		         // Check if there are any estates data
+		            if (estates && estates.length > 0) {
+		                const postElement = document.querySelector('.post');
+
+		                // Check if recommendListContainer already exists
+		                let recommendListContainer = document.querySelector('.recommend-list-container');
+
+		                // If it doesn't exist, create it
+		                if (!recommendListContainer) {
+		                    recommendListContainer = document.createElement('div');
+		                    recommendListContainer.classList.add('recommend-list-container');
+
+		                    recommendListContainer.innerHTML = `
+		                        <div class='swiper mySwiper3'>
+		                            <div class='recommend-list-header'>
+		                                <h5 class='recommend-title'>Bất động sản dành cho bạn</h5>
+		                            </div>
+		                            <div class='swiper-wrapper'>
+		                            </div>
+		                            <div class='swiper-button-next'></div>
+		                            <div class='swiper-button-prev'></div>
+		                        </div>
+		                    `;
+
+		                    // Append recommendListContainer after the .post element
+		                    postElement.appendChild(recommendListContainer);
+		                }
+
+		                // Get swiperWrapper inside the recommendListContainer
+		                const swiperWrapper = recommendListContainer.querySelector('.swiper-wrapper');
+
+		                // Clear previous slides before adding new ones
+		                swiperWrapper.innerHTML = '';
+
+		                // Loop through the fetched estates data and generate the slides
+		                estates.forEach(estate => {
+		                	  console.log(estate);
+		                	  const imageStr = estate.Images;
+		                	  const imgPaths = imageStr ? imageStr.substring(1, imageStr.length - 1).split(',') : [];
+
+		                	  // Tạo phần tử slide
+		                	  let slide = document.createElement('div');
+		                	  slide.classList.add('swiper-slide');
+		                			  
+		                	let priceText = ""
+		                	if(estate.Price < 1000000000) {
+		                		priceText = (estate.Price / 1000000) + " triệu"
+		                	} else {
+		                		priceText = (estate.Price / 1000000000) + " tỷ"
+		                	}
+
+		                	  slide.innerHTML = 
+		                	    "<div class='recommend-card'>" +
+		                	      "<div class='card-image'>" +
+		                	        "<a href='/batdongsan/chi-tiet.html?realEstateId=" + estate.RealEstateId + "'>" +
+		                	          "<img src='images/" + imgPaths[0].trim() + "' alt='' />" +
+		                	        "</a>" +
+		                	        "<div class='card-image-feature'>" +
+		                	          "<i class='fa-regular fa-image'></i> <span>" + imgPaths.length + "</span>" +
+		                	        "</div>" +
+		                	      "</div>" +
+		                	      "<div class='card-info-container'>" +
+		                	        "<a href='/batdongsan/chi-tiet.html?realEstateId=" + estate.RealEstateId + "'>" +
+		                	          "<div class='card-info__title'>" + estate.Title + "</div>" +
+		                	        "</a>" +
+		                	        "<div class='card-info__config'>" +
+		                	          "<span class='card-config__item card-config__price'>" + priceText + "</span>" +
+		                	          "<span class='card-config__item card-config__dot'>·</span>" +
+		                	          "<span class='card-config__item card-config__area'>" + estate.Size + " m²</span>" +
+		                	        "</div>" +
+		                	        "<div class='card-info__location'>" +
+		                	          "<i class='fa-solid fa-location-dot'></i> <span>" + estate.Address + "</span>" +
+		                	        "</div>" +
+		                	        "<div class='card-info__contact'>" +
+		                	          "<div class='card-published-info' value='" + estate.SubmittedDate + "'></div>" +
+		                	        "</div>" +
+		                	      "</div>" +
+		                	    "</div>";
+
+		                	  // Thêm slide vào swiper-wrapper
+		                	  swiperWrapper.appendChild(slide);
+		                	});
+
+		                	// Khởi tạo Swiper sau khi tất cả các slide đã được thêm
+		                	const swiper = new Swiper('.mySwiper3', {
+		                	  slidesPerView: 3,
+		                	  spaceBetween: 15,
+		                	  navigation: {
+		                	    nextEl: ".swiper-button-next",
+		                	    prevEl: ".swiper-button-prev",
+		                	  },
+		                	});
+
+		                	// Cập nhật Swiper nếu cần
+		                	swiper.update();
+		            }
 		         } catch (error) {
 		        	 document.getElementById('result').style.display = "none";
 		             console.error('Error predicting price:', error);
@@ -933,6 +1173,126 @@
 		             document.getElementById('textPrice').value =  result.predicted_price;
 		             const cleanPrice = result.predicted_price.replace(/[^\d]/g, '');
 			          	document.getElementById('price').value = cleanPrice;
+			          	
+			          	const fetchRealEstates = await fetch('http://localhost:5000/getRealEstates', {
+			                method: 'POST',
+			                headers: {
+			                    'Content-Type': 'application/json'
+			                },
+			                body: JSON.stringify({
+			                	categoryId: categoryId,
+			                    price: cleanPrice, 
+			                    districtId: districtId,
+			                    wardId: wardId,
+			                    size: parseFloat(size),
+			                    rooms: parseInt(rooms),
+			                    toilets: parseInt(toilets),
+				    			floors: parseInt(floors),
+				    			type: type,
+				    			furnishingSell: furnishingSell,
+				    			urgent: urgent,
+				    			characteristics: characteristics,
+			                })
+			            });
+			            
+			            const estates = await fetchRealEstates.json();		            
+			   
+			         // Check if there are any estates data
+			            if (estates && estates.length > 0) {
+			                const postElement = document.querySelector('.post');
+
+			                // Check if recommendListContainer already exists
+			                let recommendListContainer = document.querySelector('.recommend-list-container');
+
+			                // If it doesn't exist, create it
+			                if (!recommendListContainer) {
+			                    recommendListContainer = document.createElement('div');
+			                    recommendListContainer.classList.add('recommend-list-container');
+
+			                    recommendListContainer.innerHTML = `
+			                        <div class='swiper mySwiper3'>
+			                            <div class='recommend-list-header'>
+			                                <h5 class='recommend-title'>Bất động sản dành cho bạn</h5>
+			                            </div>
+			                            <div class='swiper-wrapper'>
+			                            </div>
+			                            <div class='swiper-button-next'></div>
+			                            <div class='swiper-button-prev'></div>
+			                        </div>
+			                    `;
+
+			                    // Append recommendListContainer after the .post element
+			                    postElement.appendChild(recommendListContainer);
+			                }
+
+			                // Get swiperWrapper inside the recommendListContainer
+			                const swiperWrapper = recommendListContainer.querySelector('.swiper-wrapper');
+
+			                // Clear previous slides before adding new ones
+			                swiperWrapper.innerHTML = '';
+
+			                // Loop through the fetched estates data and generate the slides
+			                estates.forEach(estate => {
+			                	  console.log(estate);
+			                	  const imageStr = estate.Images;
+			                	  const imgPaths = imageStr ? imageStr.substring(1, imageStr.length - 1).split(',') : [];
+
+			                	  // Tạo phần tử slide
+			                	  let slide = document.createElement('div');
+			                	  slide.classList.add('swiper-slide');
+			                			  
+			                	let priceText = ""
+			                	if(estate.Price < 1000000000) {
+			                		priceText = (estate.Price / 1000000) + " triệu"
+			                	} else {
+			                		priceText = (estate.Price / 1000000000) + " tỷ"
+			                	}
+
+			                	  slide.innerHTML = 
+			                	    "<div class='recommend-card'>" +
+			                	      "<div class='card-image'>" +
+			                	        "<a href='/batdongsan/chi-tiet.html?realEstateId=" + estate.RealEstateId + "'>" +
+			                	          "<img src='images/" + imgPaths[0].trim() + "' alt='' />" +
+			                	        "</a>" +
+			                	        "<div class='card-image-feature'>" +
+			                	          "<i class='fa-regular fa-image'></i> <span>" + imgPaths.length + "</span>" +
+			                	        "</div>" +
+			                	      "</div>" +
+			                	      "<div class='card-info-container'>" +
+			                	        "<a href='/batdongsan/chi-tiet.html?realEstateId=" + estate.RealEstateId + "'>" +
+			                	          "<div class='card-info__title'>" + estate.Title + "</div>" +
+			                	        "</a>" +
+			                	        "<div class='card-info__config'>" +
+			                	          "<span class='card-config__item card-config__price'>" + priceText + "</span>" +
+			                	          "<span class='card-config__item card-config__dot'>·</span>" +
+			                	          "<span class='card-config__item card-config__area'>" + estate.Size + " m²</span>" +
+			                	        "</div>" +
+			                	        "<div class='card-info__location'>" +
+			                	          "<i class='fa-solid fa-location-dot'></i> <span>" + estate.Address + "</span>" +
+			                	        "</div>" +
+			                	        "<div class='card-info__contact'>" +
+			                	          "<div class='card-published-info' value='" + estate.SubmittedDate + "'></div>" +
+			                	        "</div>" +
+			                	      "</div>" +
+			                	    "</div>";
+
+			                	  // Thêm slide vào swiper-wrapper
+			                	  swiperWrapper.appendChild(slide);
+			                	});
+
+			                	// Khởi tạo Swiper sau khi tất cả các slide đã được thêm
+			                	const swiper = new Swiper('.mySwiper3', {
+			                	  slidesPerView: 3,
+			                	  spaceBetween: 15,
+			                	  navigation: {
+			                	    nextEl: ".swiper-button-next",
+			                	    prevEl: ".swiper-button-prev",
+			                	  },
+			                	});
+
+			                	// Cập nhật Swiper nếu cần
+			                	swiper.update();
+			            }
    		         } catch (error) {
    		        	 document.getElementById('result').style.display = "none";
    		             console.error('Error predicting price:', error);

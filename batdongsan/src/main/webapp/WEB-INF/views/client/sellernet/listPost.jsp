@@ -139,7 +139,7 @@
 										<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span>
 										</a>
-										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
+										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>&categoryId=<%= r.getCategory().getCategoryId() %>" class='button-item'>
 											<i class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 										</a>
 										<div class='button-item' onclick="confirmDelete('<%= r.getRealEstateId() %>')">
@@ -159,7 +159,7 @@
 														<span>Chi tiết</span>
 												</a>
 												</li>
-												<li><a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>"> <i class='fa-solid fa-pencil'></i>
+												<li><a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>&categoryId=<%= r.getCategory().getCategoryId() %>"> <i class='fa-solid fa-pencil'></i>
 														<span>Sửa tin</span>
 												</a>
 												</li>
@@ -281,7 +281,7 @@
 										<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span>
 										</a>
-										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
+										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>&categoryId=<%= r.getCategory().getCategoryId() %>" class='button-item'>
 											<i class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 										</a>
 										<div class='button-item' onclick="confirmDelete('<%= r.getRealEstateId() %>')">
@@ -300,7 +300,7 @@
 														<span>Chi tiết</span>
 												</a>
 												</li>
-												<li><a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>"> <i class='fa-solid fa-pencil'></i>
+												<li><a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>&categoryId=<%= r.getCategory().getCategoryId() %>"> <i class='fa-solid fa-pencil'></i>
 														<span>Sửa tin</span>
 												</a>
 												</li>
@@ -423,7 +423,7 @@
 										<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span>
 										</a>
-										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
+										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>&categoryId=<%= r.getCategory().getCategoryId() %>" class='button-item'>
 											<i class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 										</a>
 										<div class='button-item' onclick="confirmDelete('<%= r.getRealEstateId() %>')">
@@ -442,7 +442,7 @@
 														<span>Chi tiết</span>
 												</a>
 												</li>
-												<li><a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>"> <i class='fa-solid fa-pencil'></i>
+												<li><a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>&categoryId=<%= r.getCategory().getCategoryId() %>"> <i class='fa-solid fa-pencil'></i>
 														<span>Sửa tin</span>
 												</a>
 												</li>
@@ -565,7 +565,7 @@
 										<a href="${pageContext.servletContext.contextPath}/chi-tiet.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
 											<i class='fa-solid fa-ranking-star'></i> <span>Chi tiết</span>
 										</a>
-										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>" class='button-item'>
+										<a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>&categoryId=<%= r.getCategory().getCategoryId() %>" class='button-item'>
 											<i class='fa-solid fa-pencil'></i> <span>Sửa tin</span>
 										</a>
 										<div class='button-item' onclick="confirmDelete('<%= r.getRealEstateId() %>')">
@@ -584,7 +584,7 @@
 														<span>Chi tiết</span>
 												</a>
 												</li>
-												<li><a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>"> <i class='fa-solid fa-pencil'></i>
+												<li><a href="${pageContext.servletContext.contextPath}/sellernet/<%if ("Nhà đất bán".equals(r.getCategory().getType())) {%>chinh-sua/ban<%} else {%>chinh-sua/cho-thue<%}%>.html?realEstateId=<%= r.getRealEstateId() %>&categoryId=<%= r.getCategory().getCategoryId() %>"> <i class='fa-solid fa-pencil'></i>
 														<span>Sửa tin</span>
 												</a>
 												</li>

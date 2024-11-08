@@ -57,7 +57,7 @@
 								    Integer category = (Integer) request.getAttribute("category");
 								    List<CategoryModel> categories = (List<CategoryModel>) request.getAttribute("categories");
 								%>
-								<select name="categoryId" onchange="window.location.href='<%= pageContext.getServletContext().getContextPath() %>/sellernet/dang-tin/ban.html?categoryId=' + this.value;">
+								<select name="categoryId" onchange="window.location.href='<%= pageContext.getServletContext().getContextPath() %>/sellernet/chinh-sua/ban.html?realEstateId=<%= realEstate.getRealEstateId() %>&categoryId=' + this.value;">
 								    <%
 								    for (CategoryModel cat : categories) {
 								        String selected = (cat.getCategoryId() == category) ? "selected" : "";
@@ -928,8 +928,10 @@
 		if (urgentElement && urgentElement.value) {
 			urgent = urgentElement.value;
 		}
-	    
+	    console.log(wardId)
+	    console.log(size)
 		if(wardId!=="" && size!=="0.0") {
+		    console.log(2)
 	    	if(categoryId === "1") {
 		    	 const data = {
 	    			 wardId: wardId,
