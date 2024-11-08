@@ -424,7 +424,7 @@
 			<div class='container'>
 				<div class='swiper mySwiper3'>
 					<div class='recommend-list-header'>
-						<h5 class='recommend-title'>Bất động sản dành cho bạn</h5>
+						<h5 class='recommend-title'>Tin tức dành cho bạn</h5>
 					</div>
 					<div class='swiper-wrapper'>
 						<%
