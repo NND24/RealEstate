@@ -120,7 +120,7 @@
 										<span class='card-config__item card-config__dot'>·</span>
 									</div>
 									<span class='card-location'><%=r.getWard().getName()%>,
-										<%=r.getDistrict().getName()%>, Thành Phố Hồ Chí Minh</span>
+										<%=r.getWard().getDistrict().getName()%>, Thành Phố Hồ Chí Minh</span>
 								</div>
 								<div class='card-description'></div>
 							</div>

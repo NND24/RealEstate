@@ -301,7 +301,7 @@
 											class='card-config-area'><%=r.getSize()%> m²</span>
 									</div>
 									<div class='card-location'>
-										<i class='fa-solid fa-location-dot'></i> <span><%=r.getDistrict().getName()%>,
+										<i class='fa-solid fa-location-dot'></i> <span><%=r.getWard().getDistrict().getName()%>,
 											Thành Phố Hồ Chí Minh</span>
 									</div>
 									<div class='card-contact'>

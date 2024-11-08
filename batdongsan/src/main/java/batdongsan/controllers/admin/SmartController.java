@@ -186,7 +186,7 @@ public class SmartController {
 	            switch (categoryId) {
 	                case 1: 
 	                	 writer.printf("%d,%d,%.2f,%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d%n",
-	                             realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
 	                             realEstate.getWard().getWardId(), // WardId (int)
 	                             realEstate.getSize(), // Size (float)
 	                             realEstate.getRooms(), // Rooms (int)
@@ -201,7 +201,7 @@ public class SmartController {
 	                    break;
 	                case 2: 
 	                	 writer.printf("%d,%d,%.2f,%d,%d,\"%s\",\"%s\",%d,%d%n",
-	                             realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
 	                             realEstate.getWard().getWardId(), // WardId (int)
 	                             realEstate.getSize(), // Size (float)
 	                             realEstate.getRooms(), // Rooms (int)
@@ -214,7 +214,7 @@ public class SmartController {
 	                    break;
 	                case 3: 
 	                	writer.printf("%d,%d,%.2f,\"%s\",\"%s\",%d,%d%n",
-	                            realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                            realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
 	                            realEstate.getWard().getWardId(), // WardId (int)
 	                            realEstate.getSize(), // Size (float)
 	                            sanitizeCsvField(realEstate.getType()), // Type (String)
@@ -225,7 +225,7 @@ public class SmartController {
 	                    break;
 	                case 4: 
 	                	writer.printf("%d,%d,%.2f,\"%s\",\"%s\",%d,%d%n",
-	                            realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                            realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
 	                            realEstate.getWard().getWardId(), // WardId (int)
 	                            realEstate.getSize(), // Size (float)
 	                            sanitizeCsvField(realEstate.getType()), // Type (String)
@@ -236,7 +236,7 @@ public class SmartController {
 	                    break;
 	                default:
 	                	writer.printf("%d,%d,%.2f,%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d%n",
-	                             realEstate.getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
 	                             realEstate.getWard().getWardId(), // WardId (int)
 	                             realEstate.getSize(), // Size (float)
 	                             realEstate.getRooms(), // Rooms (int)

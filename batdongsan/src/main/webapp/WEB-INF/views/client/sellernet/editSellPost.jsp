@@ -87,7 +87,7 @@
 								<%
 								for (HCMDistrictsModel district : districts) {
 								%>
-								<option <%= realEstate.getDistrict().getName()==district.getName() ? "selected" : "" %> value="<%=district.getDistrictId()%>"><%=district.getName()%></option>
+								<option <%= realEstate.getWard().getDistrict().getName()==district.getName() ? "selected" : "" %> value="<%=district.getDistrictId()%>"><%=district.getName()%></option>
 								<%
 								}
 								%>

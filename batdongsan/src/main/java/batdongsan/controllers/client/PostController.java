@@ -247,14 +247,12 @@ public class PostController {
 				Session currentSession = factory.getCurrentSession();
 
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-				HCMDistrictsModel district = currentSession.find(HCMDistrictsModel.class, districtId);
 				HCMWardsModel ward = currentSession.find(HCMWardsModel.class, wardId);
 
 				// Commit transaction and set success message
 				HCMRealEstateModel newRealEstate = new HCMRealEstateModel();
 
 				newRealEstate.setCategory(category);
-				newRealEstate.setDistrict(district);
 				newRealEstate.setWard(ward);
 				newRealEstate.setUser(user);
 				newRealEstate.setAddress(address);
@@ -579,11 +577,9 @@ public class PostController {
 				}
 
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-				HCMDistrictsModel district = currentSession.find(HCMDistrictsModel.class, districtId);
 				HCMWardsModel ward = currentSession.find(HCMWardsModel.class, wardId);
 
 				editedRealEstate.setCategory(category);
-				editedRealEstate.setDistrict(district);
 				editedRealEstate.setWard(ward);
 				editedRealEstate.setUser(user);
 				editedRealEstate.setAddress(address);

@@ -7,6 +7,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,7 +18,11 @@ public class HCMWardsModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int wardId;
-	private int districtId;
+	
+	@ManyToOne
+	@JoinColumn(name = "districtId")
+	private HCMDistrictsModel district;
+	
 	private String name;
 
 	@OneToMany(mappedBy = "ward", fetch = FetchType.EAGER)
@@ -30,12 +36,12 @@ public class HCMWardsModel {
 		this.wardId = wardId;
 	}
 
-	public int getDistrictId() {
-		return districtId;
+	public HCMDistrictsModel getDistrict() {
+		return district;
 	}
 
-	public void setDistrictId(int districtId) {
-		this.districtId = districtId;
+	public void setDistrict(HCMDistrictsModel district) {
+		this.district = district;
 	}
 
 	public String getName() {

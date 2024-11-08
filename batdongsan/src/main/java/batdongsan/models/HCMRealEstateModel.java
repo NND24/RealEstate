@@ -28,9 +28,7 @@ public class HCMRealEstateModel {
 	@JoinColumn(name = "categoryId")
 	private CategoryModel category;
 
-	@ManyToOne
-	@JoinColumn(name = "districtId")
-	private HCMDistrictsModel district;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "wardId")
@@ -251,14 +249,6 @@ public class HCMRealEstateModel {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public HCMDistrictsModel getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(HCMDistrictsModel district) {
-		this.district = district;
 	}
 
 	public HCMWardsModel getWard() {
