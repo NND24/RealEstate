@@ -52,105 +52,32 @@
 						
 						 if ("sell".equals(request.getAttribute("page"))) {
 						 	if (categoryIdsList1 != null) {
-						 		if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))) {
-						 	result.append("Tất cả BĐS trên toàn quốc");
+						 		if (categoryIdsList1.containsAll(Arrays.asList(1, 2, 3, 4))) {
+						 	result.append("Tất cả BĐS ở Tp Hồ Chí Minh");
 						 		} else {
 						 	if (categoryIdsList1.contains(1)) {
 						 		result.append("Nhà ở, ");
 						 	}
 						
-						 	if (categoryIdsList1.containsAll(Arrays.asList(2, 3, 4, 5))) {
-						 		result.append("Các loại nhà bán, ");
-						 	} else {
-						 		if (categoryIdsList1.contains(2)) {
-						 			result.append("Căn hộ chung cư, ");
-						 		}
-						 		if (categoryIdsList1.contains(3)) {
-						 			result.append("Nhà biệt thự, liền kề, ");
-						 		}
-						 		if (categoryIdsList1.contains(4)) {
-						 			result.append("Nhà mặt phố, ");
-						 		}
-						 		if (categoryIdsList1.contains(5)) {
-						 			result.append("Shophouse, nhà phố thương mại, ");
-						 		}
-						 	}
-						
-						 	if (categoryIdsList1.containsAll(Arrays.asList(6, 7))) {
-						 		result.append("Các loại đất bán, ");
-						 	} else {
-						 		if (categoryIdsList1.contains(6)) {
-						 			result.append("Đất nền dự án, ");
-						 		}
-						 		if (categoryIdsList1.contains(7)) {
-						 			result.append("Bán đất, ");
-						 		}
-						 	}
-						
-						 	if (categoryIdsList1.contains(8)) {
-						 		result.append("Trang trại, khu nghỉ dưỡng, ");
-						 	}
-						 	if (categoryIdsList1.contains(9)) {
-						 		result.append("Condotel, ");
-						 	}
-						 	if (categoryIdsList1.contains(10)) {
-						 		result.append("Kho, nhà xưởng, ");
-						 	}
-						 	if (categoryIdsList1.contains(11)) {
-						 		result.append("Bất động sản khác, ");
-						 	}
-						 	// Remove the trailing comma and space
-						 	if (result.length() > 0) {
-						 		result.setLength(result.length() - 2);
-						 	}
-						 		}
-						 	} else {
-						 		result.append("Tất cả BĐS trên toàn quốc");
-						 	}
-						 } else {
-						 	if (categoryIdsList1 != null) {
-						 		if (categoryIdsList1.containsAll(Arrays.asList(12, 13, 14, 15, 16, 17, 18, 19, 20, 21))) {
-						 	result.append("Tất cả BĐS trên toàn quốc");
-						 		} else {
-						 	if (categoryIdsList1.contains(12)) {
+						 	if (categoryIdsList1.contains(2)) {
 						 		result.append("Căn hộ chung cư, ");
 						 	}
-						 	if (categoryIdsList1.contains(13)) {
-						 		result.append("Nhà riêng, ");
+						 	if (categoryIdsList1.contains(3)) {
+						 		result.append("Văn phòng, mặt bằng kinh doanh, ");
 						 	}
-						 	if (categoryIdsList1.contains(14)) {
-						 		result.append("Nhà biệt thự, liền kề, ");
+						 	if (categoryIdsList1.contains(4)) {
+						 		result.append("Đất, ");
 						 	}
-						 	if (categoryIdsList1.contains(15)) {
-						 		result.append("Nhà mặt phố, ");
-						 	}
-						 	if (categoryIdsList1.contains(16)) {
-						 		result.append("Shophouse, nhà phố thương mại, ");
-						 	}
-						 	if (categoryIdsList1.contains(17)) {
-						 		result.append("Nhà trọ, phòng trọ, ");
-						 	}
-						 	if (categoryIdsList1.contains(18)) {
-						 		result.append("Văn phòng, ");
-						 	}
-						 	if (categoryIdsList1.contains(19)) {
-						 		result.append("Cửa hàng, ki ốt, ");
-						 	}
-						 	if (categoryIdsList1.contains(20)) {
-						 		result.append("Kho, nhà xưởng, đất, ");
-						 	}
-						 	if (categoryIdsList1.contains(21)) {
-						 		result.append("Bất động sản khác, ");
-						 	}
+
 						 	// Remove the trailing comma and space
 						 	if (result.length() > 0) {
 						 		result.setLength(result.length() - 2);
 						 	}
 						 		}
 						 	} else {
-						 		result.append("Tất cả BĐS trên toàn quốc");
+						 		result.append("Tất cả BĐS ở Tp Hồ Chí Minh");
 						 	}
-						 }
+						 } 
 						
 						 out.print(result.toString());
 						 %>
@@ -264,8 +191,7 @@
 										%>
 										<span class='card-config__item card-config__dot'>·</span>
 									</div>
-									<span class='card-location'><%=r.getWard().getName()%>,
-										<%=r.getWard().getDistrict().getName()%>, Thành Phố Hồ Chí Minh</span>
+									<span class='card-location'><%=r.getAddress()%></span>
 								</div>
 								<div class='card-description'></div>
 							</div>

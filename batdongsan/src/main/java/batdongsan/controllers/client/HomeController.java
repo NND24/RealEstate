@@ -77,19 +77,19 @@ public class HomeController {
 			int amountREDongNai = 0;
 			
 			for(HCMRealEstateModel re : listREForYou) {
-				if(re.getWard().getDistrict().getDistrictId()==1) {
+				if(re.getStreet().getWard().getDistrict().getDistrictId()==1) {
 					amountREHCM++;
 				}
-				if(re.getWard().getDistrict().getDistrictId()==2) {
+				if(re.getStreet().getWard().getDistrict().getDistrictId()==2) {
 					amountREHN++;
 				}
-				if(re.getWard().getDistrict().getDistrictId()==3) {
+				if(re.getStreet().getWard().getDistrict().getDistrictId()==3) {
 					amountREDaNang++;
 				}
-				if(re.getWard().getDistrict().getDistrictId()==4) {
+				if(re.getStreet().getWard().getDistrict().getDistrictId()==4) {
 					amountREBD++;
 				}
-				if(re.getWard().getDistrict().getDistrictId()==5) {
+				if(re.getStreet().getWard().getDistrict().getDistrictId()==5) {
 					amountREDongNai++;
 				}
 			}

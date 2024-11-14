@@ -324,7 +324,7 @@
 						                        <span class='card-config__item card-config__area'><%= r.getSize()%> m²</span>
 						                    </div>
 						                    <div class='card-info__location'>
-						                        <i class='fa-solid fa-location-dot'></i> <span><%=r.getWard().getDistrict().getName()%>, Thành phố Hồ Chí Minh</span>
+						                        <i class='fa-solid fa-location-dot'></i> <span><%=r.getAddress()%></span>
 						                    </div>
 						                    <div class='card-info__contact'>
 						                        <div class='card-published-info' value="<%=r.getSubmittedDate()%>"></div>

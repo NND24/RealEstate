@@ -157,38 +157,6 @@
 							checked <%}%> /> <span class="checkmark"></span>
 						</label>
 
-						<!-- 	<label for="2" id="check-type-of-house" class="type-item">
-							<div>
-								<i class="fa-solid fa-house-user"></i> <span>Nhà ở </span>
-							</div> <input type="checkbox" id="2"
-							<%if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(2, 3, 4, 5))) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label> 
-						<label for="3" class="type-item">
-							<div>
-								<i></i> <span>Nhà riêng</span>
-							</div> <input type="checkbox" id="3" value="2"
-							<%if (categoryIdsList != null && categoryIdsList.contains(2)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="4" class="type-item">
-							<div>
-								<i></i> <span>Nhà biệt thự, liền kề</span>
-							</div> <input type="checkbox" id="4" value="3"
-							<%if (categoryIdsList != null && categoryIdsList.contains(3)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="5" class="type-item">
-							<div>
-								<i></i> <span>Nhà mặt phố</span>
-							</div> <input type="checkbox" id="5" value="4"
-							<%if (categoryIdsList != null && categoryIdsList.contains(4)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="6" class="type-item">
-							<div>
-								<i></i> <span>Shophouse, nhà phố thương mại</span>
-							</div> <input type="checkbox" id="6" value="5"
-							<%if (categoryIdsList != null && categoryIdsList.contains(5)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label> -->
 						<div class="separate"></div>
 						
 						<label for="3" class="type-item" id="check-type-of-land">
@@ -209,62 +177,6 @@
 							<%if (categoryIdsList != null && categoryIdsList.contains(4)) {%>
 							checked <%}%> /> <span class="checkmark"></span>
 						</label>
-
-					<!--	<label for="7" class="type-item" id="check-type-of-land">
-							<div>
-								<i class="fa-solid fa-panorama"></i> <span>Các loại đất
-									bán</span>
-							</div> <input type="checkbox" id="7"
-							<%if (categoryIdsList != null && categoryIdsList.containsAll(Arrays.asList(6, 7))) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label>
-
-						 	<label for="8" class="type-item">
-							<div>
-								<i></i> <span>Đất nền dự án</span>
-							</div> <input type="checkbox" id="8" value="6"
-							<%if (categoryIdsList != null && categoryIdsList.contains(6)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="9" class="type-item">
-							<div>
-								<i></i> <span>Bán đất</span>
-							</div> <input type="checkbox" id="9" value="7"
-							<%if (categoryIdsList != null && categoryIdsList.contains(7)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label>  -->
-						<!-- 	<div class="separate"></div>
-						<label for="10" class="type-item" id="check-type-of-farm">
-							<div>
-								<i class="fa-solid fa-tractor"></i> <span>Trang trại, khu
-									nghỉ dưỡng</span>
-							</div> <input type="checkbox" id="10" value="8"
-							<%if (categoryIdsList != null && categoryIdsList.contains(8)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label> <label for="11" class="type-item">
-							<div>
-								<i></i> <span>Condotel</span>
-							</div> <input type="checkbox" id="11" value="9"
-							<%if (categoryIdsList != null && categoryIdsList.contains(9)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label>
-						<div class="separate"></div>
-						<label for="12" class="type-item">
-							<div>
-								<i class="fa-solid fa-warehouse"></i> <span>Kho, nhà
-									xưởng</span>
-							</div> <input type="checkbox" id="12" value="10"
-							<%if (categoryIdsList != null && categoryIdsList.contains(10)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label>
-						<div class="separate"></div>
-						<label for="13" class="type-item">
-							<div>
-								<i class="fa-solid fa-door-open"></i> <span>Bất động sản
-									khác</span>
-							</div> <input type="checkbox" id="13" value="11"
-							<%if (categoryIdsList != null && categoryIdsList.contains(11)) {%>
-							checked <%}%> /> <span class="checkmark"></span>
-						</label>  -->
 					</div>
 
 					<div class="list-search-select-footer">
@@ -912,10 +824,10 @@ $(document).ready(function() {
 			selectedTypes = [];
 		} else {
 			selectedTypes = [
-				type1.checked ? "Căn hộ chung cư" : "",
-				type2.checked ? "Nhà ở" : "",
-				type3.checked ? "Đất" : "",
-				type4.checked ? "Văn phòng, mặt bằng kinh doanh" : "",
+				type1.checked ? "Nhà ở" : "",
+				type2.checked ? "Căn hộ chung cư" : "",
+				type3.checked ? "Văn phòng, mặt bằng kinh doanh" : "",
+				type4.checked ? "Đất" : "",
 			];
 		}
 	}

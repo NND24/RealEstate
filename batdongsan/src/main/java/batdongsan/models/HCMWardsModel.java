@@ -24,9 +24,9 @@ public class HCMWardsModel {
 	private HCMDistrictsModel district;
 	
 	private String name;
-
+	
 	@OneToMany(mappedBy = "ward", fetch = FetchType.EAGER)
-	private Collection<HCMRealEstateModel> realEstates;
+	private Collection<HCMStreetsModel> streets;
 
 	public int getWardId() {
 		return wardId;
@@ -52,12 +52,11 @@ public class HCMWardsModel {
 		this.name = name;
 	}
 
-	public Collection<HCMRealEstateModel> getRealEstates() {
-		return realEstates;
+	public Collection<HCMStreetsModel> getStreets() {
+		return streets;
 	}
 
-	public void setRealEstates(Collection<HCMRealEstateModel> realEstates) {
-		this.realEstates = realEstates;
+	public void setStreets(Collection<HCMStreetsModel> streets) {
+		this.streets = streets;
 	}
-
 }

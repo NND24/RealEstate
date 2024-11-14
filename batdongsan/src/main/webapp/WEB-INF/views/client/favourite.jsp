@@ -119,8 +119,7 @@
 										%>
 										<span class='card-config__item card-config__dot'>·</span>
 									</div>
-									<span class='card-location'><%=r.getWard().getName()%>,
-										<%=r.getWard().getDistrict().getName()%>, Thành Phố Hồ Chí Minh</span>
+									<span class='card-location'><%=r.getAddress()%></span>
 								</div>
 								<div class='card-description'></div>
 							</div>

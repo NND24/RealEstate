@@ -87,7 +87,7 @@
 								<%
 								for (HCMDistrictsModel district : districts) {
 								%>
-								<option <%= realEstate.getWard().getDistrict().getName()==district.getName() ? "selected" : "" %> value="<%=district.getDistrictId()%>"><%=district.getName()%></option>
+								<option <%= realEstate.getStreet().getWard().getDistrict().getName()==district.getName() ? "selected" : "" %> value="<%=district.getDistrictId()%>"><%=district.getName()%></option>
 								<%
 								}
 								%>
@@ -108,6 +108,23 @@
 							%>
 							<p class="error" style="<%= (wardError != null && !wardError.isEmpty()) ? "display: block;" : "display: none;" %>">
 							    <%= wardError %>
+							</p>
+						</div>
+					</div>
+					
+					<div class='address-container'>
+						<div class='form-item'>
+							<p>
+								Đường <span>*</span>
+							</p>
+							<select name='streetId' id="streetId">
+								<option value="0">---Đường---</option>
+							</select>
+							<%
+							    String streetError = (String) request.getAttribute("streetError");
+							%>
+							<p class="error" style="<%= (streetError != null && !streetError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= streetError %>
 							</p>
 						</div>
 					</div>
@@ -842,216 +859,230 @@
 	    };
 	}
 	
-	$('.input-wrapper').on('mouseover', debounce(async function() {
-		const districtElement = document.getElementById('districtId');
-		const wardElement = document.getElementById('wardId');
-		const sizeElement = document.getElementById('size');
+	$(".input-wrapper").on(
+	        "mouseover",
+	        debounce(async function () {
+	          const districtElement = document.getElementById("districtId");
+	          const streetElement = document.getElementById("streetId");
+	          const sizeElement = document.getElementById("size");
 
-		let rooms = 0;
-		let toilets = 0;
-		let floors = 0;
-		let furnishingSell = "";
-		let characteristics = ""; 
-		let wardId = "";
-		let districtId;
-		let size = 0;
-		let type = "";
-		let urgent = "";
+	          let rooms = 0;
+	          let toilets = 0;
+	          let floors = 0;
+	          let furnishingSell = "";
+	          let characteristics = "";
+	          let streetId = "";
+	          let districtId;
+	          let size = 0;
+	          let type = "";
+	          let urgent = "";
 
-		let roomsElement, toiletsElement, floorsElement, furnishingSellElement, characteristicsElement;
+	          let roomsElement, toiletsElement, floorsElement, furnishingSellElement, characteristicsElement;
 
-		if (categoryId === "1" || categoryId === "2") {
-			roomsElement = document.getElementById('rooms');
-			toiletsElement = document.getElementById('toilets');
-		}
+	          if (categoryId === "1" || categoryId === "2") {
+	            roomsElement = document.getElementById("rooms");
+	            toiletsElement = document.getElementById("toilets");
+	          }
 
-		if (categoryId === "1") {
-			floorsElement = document.getElementById('floors');
-		}
+	          if (categoryId === "1") {
+	            floorsElement = document.getElementById("floors");
+	          }
 
-		const typeElement = document.getElementById('type');
+	          const typeElement = document.getElementById("type");
 
-		if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
-			furnishingSellElement = document.getElementById('furnishingSell');
-		}
+	          if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
+	            furnishingSellElement = document.getElementById("furnishingSell");
+	          }
 
-		if (categoryId === "1" || categoryId === "4") {
-			characteristicsElement = document.getElementById('characteristics');
-		}
+	          if (categoryId === "1" || categoryId === "4") {
+	            characteristicsElement = document.getElementById("characteristics");
+	          }
 
-		const urgentElement = document.getElementById('urgent');
+	          const urgentElement = document.getElementById("urgent");
 
-		if (wardElement && wardElement.selectedIndex !== -1) {
-			wardId = wardElement.options[wardElement.selectedIndex].textContent !== "---Phường, xã---" ? wardElement.options[wardElement.selectedIndex].value : "";
-		}
+	          if (streetElement && streetElement.selectedIndex !== -1) {
+	        	  streetId =
+	        		  streetElement.options[streetElement.selectedIndex].textContent !== "---Đường---"
+	                ? streetElement.options[streetElement.selectedIndex].value
+	                : "";
+	          }
 
-		if (districtElement && districtElement.selectedIndex !== -1) {
-			districtId = districtElement.options[districtElement.selectedIndex].value;
-		}
+	          if (districtElement && districtElement.selectedIndex !== -1) {
+	            districtId = districtElement.options[districtElement.selectedIndex].value;
+	          }
 
-		if (sizeElement && sizeElement.value) {
-			size = sizeElement.value;
-		}
+	          if (sizeElement && sizeElement.value) {
+	            size = sizeElement.value;
+	          }
 
-		if (categoryId === "1" || categoryId === "2") {
-			if (roomsElement && roomsElement.value) {
-				rooms = roomsElement.value;
-			}
+	          if (categoryId === "1" || categoryId === "2") {
+	            if (roomsElement && roomsElement.value) {
+	              rooms = roomsElement.value;
+	            }
 
-			if (toiletsElement && toiletsElement.value) {
-				toilets = toiletsElement.value;
-			}
-		}
+	            if (toiletsElement && toiletsElement.value) {
+	              toilets = toiletsElement.value;
+	            }
+	          }
 
-		if (categoryId === "1") {
-			if (floorsElement && floorsElement.value) {
-				floors = floorsElement.value;
-			}
-		}
+	          if (categoryId === "1") {
+	            if (floorsElement && floorsElement.value) {
+	              floors = floorsElement.value;
+	            }
+	          }
 
-		if (typeElement && typeElement.selectedIndex !== -1) {
-			type = typeElement.options[typeElement.selectedIndex].textContent;
-		}
+	          if (typeElement && typeElement.selectedIndex !== -1) {
+	            type = typeElement.options[typeElement.selectedIndex].textContent;
+	          }
 
-		if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
-			if (furnishingSellElement && furnishingSellElement.selectedIndex !== -1) {
-				furnishingSell = furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent !== "---Nội thất---" ? furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent : "";
-			}
-		}
+	          if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
+	            if (furnishingSellElement && furnishingSellElement.selectedIndex !== -1) {
+	              furnishingSell =
+	                furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent !== "---Nội thất---"
+	                  ? furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent
+	                  : "";
+	            }
+	          }
 
-		if (categoryId === "1" || categoryId === "4") {
-			if (characteristicsElement && characteristicsElement.selectedIndex !== -1) {
-				characteristics = characteristicsElement.options[characteristicsElement.selectedIndex].textContent !== "---Đặc điểm nhà/đất---" ? characteristicsElement.options[characteristicsElement.selectedIndex].textContent : "";
-			}
-		}
+	          if (categoryId === "1" || categoryId === "4") {
+	            if (characteristicsElement && characteristicsElement.selectedIndex !== -1) {
+	              characteristics =
+	                characteristicsElement.options[characteristicsElement.selectedIndex].textContent !==
+	                "---Đặc điểm nhà/đất---"
+	                  ? characteristicsElement.options[characteristicsElement.selectedIndex].textContent
+	                  : "";
+	            }
+	          }
 
-		if (urgentElement && urgentElement.value) {
-			urgent = urgentElement.value;
-		}
-	    console.log(wardId)
-	    console.log(size)
-		if(wardId!=="" && size!=="0.0") {
-		    console.log(2)
-	    	if(categoryId === "1") {
-		    	 const data = {
-	    			 wardId: wardId,
-	    			 districtId: districtId,
-	    			 size: parseFloat(size),
-	    			 rooms: parseInt(rooms),
-	    			 toilets: parseInt(toilets),
-	    			 floors: parseInt(floors),
-	    			 type: type,
-	    			 furnishingSell: furnishingSell,
-	    			 urgent: urgent,
-	    			 characteristics: characteristics,
-		         };
-	
-		         try {
-		             const response = await fetch('http://localhost:5000/housePredict', {
-		                 method: 'POST',
-		                 headers: {
-		                     'Content-Type': 'application/json'
-		                 },
-		                 body: JSON.stringify(data)
-		             });
-	
-		             const result = await response.json();
-		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
-		         } catch (error) {
-		        	 document.getElementById('result').style.display = "none";
-		             console.error('Error predicting price:', error);
-		             document.getElementById('result').innerText = 'Error predicting price.';
-		         }
-	         } else if(categoryId === "2") {
-	        	 const data = {
-	      			wardId: wardId,
-	      			districtId: districtId,
-	         		size: parseFloat(size),
-	         		rooms: parseInt(rooms),
-	         		toilets: parseInt(toilets),
-	         		type: type,
-	         		furnishingSell: furnishingSell,
-	         		urgent: urgent,
-		         };
-	
-		         try {
-		             const response = await fetch('http://localhost:5000/apartmentPredict', {
-		                 method: 'POST',
-		                 headers: {
-		                     'Content-Type': 'application/json'
-		                 },
-		                 body: JSON.stringify(data)
-		             });
-	
-		             const result = await response.json();
-		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
-		         } catch (error) {
-		        	 document.getElementById('result').style.display = "none";
-		             console.error('Error predicting price:', error);
-		             document.getElementById('result').innerText = 'Error predicting price.';
-		         }
-             } else if(categoryId === "3") {
-            	 const data = {
-          			wardId: wardId,
-          			districtId: districtId,
-	         		size: parseFloat(size),
-	         		type: type,
-	         		furnishingSell: furnishingSell,
-	         		urgent: urgent,
-		         };
-	
-		         try {
-		             const response = await fetch('http://localhost:5000/commercialPredict', {
-		                 method: 'POST',
-		                 headers: {
-		                     'Content-Type': 'application/json'
-		                 },
-		                 body: JSON.stringify(data)
-		             });
-	
-		             const result = await response.json();
-		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
-		         } catch (error) {
-		        	 document.getElementById('result').style.display = "none";
-		             console.error('Error predicting price:', error);
-		             document.getElementById('result').innerText = 'Error predicting price.';
-		         }
-             } else if(categoryId === "4") {
-            	 const data = {
-           			wardId: wardId,
-           			districtId: districtId,
-   	         		size: parseFloat(size),
-   	         		type: type,
-   	         		characteristics: characteristics,
-   	         		urgent: urgent,
-   		         };
-   	
-   		         try {
-   		             const response = await fetch('http://localhost:5000/landPredict', {
-   		                 method: 'POST',
-   		                 headers: {
-   		                     'Content-Type': 'application/json'
-   		                 },
-   		                 body: JSON.stringify(data)
-   		             });
-   	
-   		             const result = await response.json();
-   		             document.getElementById('result').style.display = "block";
-   		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
-   		         } catch (error) {
-   		        	 document.getElementById('result').style.display = "none";
-   		             console.error('Error predicting price:', error);
-   		             document.getElementById('result').innerText = 'Error predicting price.';
-   		         }
-             }
-	         
-	    } else {
-	    	document.getElementById('result').style.display = "none";
-	    }
-	}, 1000));
+	          if (urgentElement && urgentElement.value) {
+	            urgent = urgentElement.value;
+	          }
+
+	          if (streetId !== "" && size !== "0.0") {
+	            if (categoryId === "1") {
+	              const data = {
+	            	streetId: streetId,
+	                districtId: districtId,
+	                size: parseFloat(size),
+	                rooms: parseInt(rooms),
+	                toilets: parseInt(toilets),
+	                floors: parseInt(floors),
+	                type: type,
+	                furnishingSell: furnishingSell,
+	                urgent: urgent,
+	                characteristics: characteristics,
+	              };
+
+	              try {
+	                const response = await fetch("http://localhost:5000/housePredict", {
+	                  method: "POST",
+	                  headers: {
+	                    "Content-Type": "application/json",
+	                  },
+	                  body: JSON.stringify(data),
+	                });
+
+	                const result = await response.json();
+	                document.getElementById("result").style.display = "block";
+	                document.getElementById("result").innerText =
+	                  `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
+	              } catch (error) {
+	                document.getElementById("result").style.display = "none";
+	                console.error("Error predicting price:", error);
+	                document.getElementById("result").innerText = "Error predicting price.";
+	              }
+	            } else if (categoryId === "2") {
+	              const data = {
+	            	streetId: streetId,
+	                districtId: districtId,
+	                size: parseFloat(size),
+	                rooms: parseInt(rooms),
+	                toilets: parseInt(toilets),
+	                type: type,
+	                furnishingSell: furnishingSell,
+	                urgent: urgent,
+	              };
+
+	              try {
+	                const response = await fetch("http://localhost:5000/apartmentPredict", {
+	                  method: "POST",
+	                  headers: {
+	                    "Content-Type": "application/json",
+	                  },
+	                  body: JSON.stringify(data),
+	                });
+
+	                const result = await response.json();
+	                document.getElementById("result").style.display = "block";
+	                document.getElementById("result").innerText =
+	                  `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
+	              } catch (error) {
+	                document.getElementById("result").style.display = "none";
+	                console.error("Error predicting price:", error);
+	                document.getElementById("result").innerText = "Error predicting price.";
+	              }
+	            } else if (categoryId === "3") {
+	              const data = {
+	            	streetId: streetId,
+	                districtId: districtId,
+	                size: parseFloat(size),
+	                type: type,
+	                furnishingSell: furnishingSell,
+	                urgent: urgent,
+	              };
+
+	              try {
+	                const response = await fetch("http://localhost:5000/commercialPredict", {
+	                  method: "POST",
+	                  headers: {
+	                    "Content-Type": "application/json",
+	                  },
+	                  body: JSON.stringify(data),
+	                });
+
+	                const result = await response.json();
+	                document.getElementById("result").style.display = "block";
+	                document.getElementById("result").innerText =
+	                  `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
+	              } catch (error) {
+	                document.getElementById("result").style.display = "none";
+	                console.error("Error predicting price:", error);
+	                document.getElementById("result").innerText = "Error predicting price.";
+	              }
+	            } else if (categoryId === "4") {
+	              const data = {
+	            	streetId: streetId,
+	                districtId: districtId,
+	                size: parseFloat(size),
+	                type: type,
+	                characteristics: characteristics,
+	                urgent: urgent,
+	              };
+
+	              try {
+	                const response = await fetch("http://localhost:5000/landPredict", {
+	                  method: "POST",
+	                  headers: {
+	                    "Content-Type": "application/json",
+	                  },
+	                  body: JSON.stringify(data),
+	                });
+
+	                const result = await response.json();
+	                document.getElementById("result").style.display = "block";
+	                document.getElementById("result").innerText =
+	                  `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
+	              } catch (error) {
+	                document.getElementById("result").style.display = "none";
+	                console.error("Error predicting price:", error);
+	                document.getElementById("result").innerText = "Error predicting price.";
+	              }
+	            }
+	          } else {
+	            document.getElementById("result").style.display = "none";
+	          }
+	        }, 1000)
+	      );
 	
 	var images = [];
 	var edit_images = [];
@@ -1198,28 +1229,53 @@
 			
 			var districtId = $('#districtId').val();
 			$.ajax({
-                type: 'GET',
-                url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
-                data: { districtId: districtId },
-                dataType: 'text',
-                success: function(data) {
-                    $('#wardId').empty();
+		        type: 'GET',
+		        url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
+		        data: { districtId: districtId },
+		        dataType: 'text',
+		        success: function(data) {
+		        	$('#wardId').empty();
                     $('#wardId').append('<option value="">---Phường, xã---</option>');
                     var lines = data.split('\n');
-                    var currentWard = "<c:out value='${realEstate.ward.name}' />";
-                    $.each(lines, function(index, line) {
-                        if (index < lines.length - 1) {
-                            var parts = line.split(':');
-                            var isSelected = (currentWard === parts[1]) ? "selected" : "";
+                    var currentWard = "<c:out value='${realEstate.street.ward.name}' />";
+	                $.each(lines, function(index, line) {
+	                    if (index < lines.length - 1) {
+	                        var parts = line.split(':');
+	                        var isSelected = (currentWard === parts[1]) ? "selected" : "";
                             $('#wardId').append('<option ' + isSelected + ' value="' + parts[0] + '">' + parts[1] + '</option>');
-                        }
-                    });
-                },
-                error: function(data) {
-                    $('#wardId').empty();
-                    $('#wardId').append('<option value="">Error occurred while fetching wards</option>');
-                }
-            });
+	                    }
+	                });
+	                
+	                var wardId = $('#wardId').val();
+                    $.ajax({
+        	            type: "GET",
+        	            url: "${pageContext.servletContext.contextPath}/sellernet/getStreetsByWard.html",
+        	            data: { wardId: wardId },
+        	            dataType: "text",
+        	            success: function (data) {
+        	              $("#streetId").empty();
+        	              $("#streetId").append('<option value="0">---Đường---</option>');
+        	              var lines = data.split("\n");
+        	              var currentStreet = "<c:out value='${realEstate.street.name}' />";
+        	              $.each(lines, function (index, line) {
+        	                if (index < lines.length - 1) {
+        	                  var parts = line.split(":");
+        	                  var isSelected = (currentStreet === parts[1]) ? "selected" : "";
+        	                  $("#streetId").append('<option ' + isSelected + ' value="' + parts[0] + '">' + parts[1] + "</option>");
+        	                }
+        	              });
+        	            },
+        	            error: function (data) {
+        	              $("#streetId").empty();
+        	              $("#streetId").append('<option value="">Error occurred while fetching districts</option>');
+        	            },
+        	          });
+	            },
+	            error: function(data) {
+	                $('#wardId').empty();
+	                $('#wardId').append('<option value="">Error occurred while fetching districts</option>');
+	            }
+		    });
 		});
 		
 
@@ -1232,7 +1288,9 @@
 		        dataType: 'text',
 		        success: function(data) {
 	                $('#wardId').empty();
-	                $('#wardId').append('<option value="">---Phường, xã---</option>');
+	                $('#wardId').append('<option value="0">---Phường, xã---</option>');
+	                $("#street").empty();
+	                $("#street").append('<option value="0">---Đường---</option>');
 	                $("#detail-address").val("");
 	                var lines = data.split('\n');
 	                $.each(lines, function(index, line) {
@@ -1249,20 +1307,46 @@
 		    });
 		});
 	    
-        $('#wardId').change(function() {
-        	$("#detail-address").val("");
-            var province = $("#provinceId").children("option:selected").text();
-            var district = $("#districtId").children("option:selected").text();
-            var ward = $(this).children("option:selected").text();
+		$("#wardId").change(function () {
+	          var wardId = $(this).val();
+	          $.ajax({
+	            type: "GET",
+	            url: "${pageContext.servletContext.contextPath}/sellernet/getStreetsByWard.html",
+	            data: { wardId: wardId },
+	            dataType: "text",
+	            success: function (data) {
+	              $("#streetId").empty();
+	              $("#streetId").append('<option value="0">---Đường---</option>');
+	              $("#detail-address").val("");
+	              var lines = data.split("\n");
+	              $.each(lines, function (index, line) {
+	                if (index < lines.length - 1) {
+	                  var parts = line.split(":");
+	                  $("#streetId").append('<option value="' + parts[0] + '">' + parts[1] + "</option>");
+	                }
+	              });
+	            },
+	            error: function (data) {
+	              $("#streetId").empty();
+	              $("#streetId").append('<option value="">Error occurred while fetching districts</option>');
+	            },
+	          });
+	        });
 
-            if(district !== "---Quận, huyện---" && ward !== "---Phường, xã---") {
-            	// Construct the address
-	            var address = ward.trim() + ", " + district.trim() + ", Thành phố Hồ Chí Minh";                  
-	            
+	        $("#streetId").change(function () {
+	          $("#detail-address").val("");
+	          var district = $("#districtId").children("option:selected").text();
+	          var ward = $("#wardId").children("option:selected").text();
+	          var street = $(this).children("option:selected").text();
+
+	          if (district !== "---Quận, huyện---" && ward !== "---Phường, xã---" && street !== "---Đường---") {
+	            // Construct the address
+	            var address = street.trim() + ", " + ward.trim() + ", " + district.trim() + ", Thành phố Hồ Chí Minh";
+
 	            // Update the detail-address element
 	            $("#detail-address").val($("#detail-address").val() + address);
-            }
-        });
+	          }
+	        });
 
 	});
 

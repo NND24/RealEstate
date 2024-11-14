@@ -62,11 +62,11 @@ public class FavouriteController {
 			}
 
 			if (areaLowToHigh != null) {
-				orderByClause = " ORDER BY area ASC";
+				orderByClause = " ORDER BY size ASC";
 			}
 
 			if (areaHighToLow != null) {
-				orderByClause = " ORDER BY area DESC";
+				orderByClause = " ORDER BY size DESC";
 			}
 
 			// Append the ORDER BY clause to the HQL query

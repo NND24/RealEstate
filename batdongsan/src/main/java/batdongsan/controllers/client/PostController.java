@@ -35,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import batdongsan.models.CategoryModel;
 import batdongsan.models.HCMDistrictsModel;
 import batdongsan.models.HCMRealEstateModel;
+import batdongsan.models.HCMStreetsModel;
 import batdongsan.models.HCMWardsModel;
 import batdongsan.models.UsersModel;
 
@@ -87,7 +88,9 @@ public class PostController {
 	@RequestMapping(value = "addNewRealEstate", method = RequestMethod.POST)
 	public String addNewRealEstate(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "image") MultipartFile[] files, @RequestParam(name = "categoryId") Integer categoryId,
-			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
+			@RequestParam(name = "districtId") Integer districtId, 
+			@RequestParam(name = "wardId") Integer wardId,
+			@RequestParam(name = "streetId") Integer streetId,
 			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
 			@RequestParam(name = "description") String description, @RequestParam(name = "typePost") String typePost,
 			@RequestParam(name = "size") String size, @RequestParam(name = "price") String price,
@@ -134,8 +137,13 @@ public class PostController {
 				isError = true;
 			}
 
-			if (wardId == 0) {
+			if (wardId == null || wardId == 0) {
 				request.setAttribute("wardError", "Phường, xã không được bỏ trống!");
+				isError = true;
+			}
+			
+			if (streetId == 0) {
+				request.setAttribute("streetError", "Đường không được bỏ trống!");
 				isError = true;
 			}
 
@@ -247,13 +255,13 @@ public class PostController {
 				Session currentSession = factory.getCurrentSession();
 
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-				HCMWardsModel ward = currentSession.find(HCMWardsModel.class, wardId);
+				HCMStreetsModel street = currentSession.find(HCMStreetsModel.class, streetId);
 
 				// Commit transaction and set success message
 				HCMRealEstateModel newRealEstate = new HCMRealEstateModel();
 
 				newRealEstate.setCategory(category);
-				newRealEstate.setWard(ward);
+				newRealEstate.setStreet(street);
 				newRealEstate.setUser(user);
 				newRealEstate.setAddress(address);
 				newRealEstate.setTitle(title);
@@ -429,6 +437,7 @@ public class PostController {
 	public String editRealEstate(ModelMap model, HttpServletRequest request,
 			@RequestParam(name = "image") MultipartFile[] files, @RequestParam(name = "categoryId") Integer categoryId,
 			@RequestParam(name = "districtId") Integer districtId, @RequestParam(name = "wardId") Integer wardId,
+			@RequestParam(name = "streetId") Integer streetId,
 			@RequestParam(name = "address") String address, @RequestParam(name = "title") String title,
 			@RequestParam(name = "description") String description,
 			@RequestParam(name = "size") String size, @RequestParam(name = "price") String price,
@@ -443,7 +452,7 @@ public class PostController {
 			@RequestParam(name = "propertyStatus", required = false) String propertyStatus,
 			@RequestParam(name = "propertyLegalDocument", required = false) String propertyLegalDocument, 
 			@RequestParam(name = "characteristics", required = false) String characteristics,
-			@RequestParam(name = "urgent", required = false) String urgent,
+			@RequestParam(name = "urgent", required = false, defaultValue="0") String urgent,
 			@RequestParam(name = "contactName") String contactName,
 			@RequestParam(name = "phoneNumber") String phoneNumber, @RequestParam(name = "email") String email) {
 		Session session = factory.openSession();
@@ -477,6 +486,11 @@ public class PostController {
 
 			if (wardId == 0) {
 				request.setAttribute("wardError", "Phường, xã không được bỏ trống!");
+				isError = true;
+			}
+			
+			if (streetId == 0) {
+				request.setAttribute("streetError", "Đường không được bỏ trống!");
 				isError = true;
 			}
 
@@ -577,10 +591,10 @@ public class PostController {
 				}
 
 				CategoryModel category = currentSession.find(CategoryModel.class, categoryId);
-				HCMWardsModel ward = currentSession.find(HCMWardsModel.class, wardId);
+				HCMStreetsModel street = currentSession.find(HCMStreetsModel.class, streetId);
 
 				editedRealEstate.setCategory(category);
-				editedRealEstate.setWard(ward);
+				editedRealEstate.setStreet(street);
 				editedRealEstate.setUser(user);
 				editedRealEstate.setAddress(address);
 				editedRealEstate.setTitle(title);
@@ -739,6 +753,34 @@ public class PostController {
 			StringBuilder result = new StringBuilder();
 			for (HCMWardsModel ward : list) {
 				result.append(ward.getWardId()).append(":").append(ward.getName()).append("\n");
+			}
+
+			// Chuyển đổi chuỗi thành mảng byte sử dụng encoding UTF-8
+			byte[] data = result.toString().getBytes(StandardCharsets.UTF_8);
+
+			return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(data);
+		} catch (Exception e) {
+			System.out.println(e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error occurred while fetching districts".getBytes(StandardCharsets.UTF_8));
+		} finally {
+			session.close();
+		}
+	}
+	
+	@ResponseBody
+	@GetMapping("/getStreetsByWard")
+	public ResponseEntity<byte[]> getStreetsByWard(@RequestParam("wardId") int wardId) {
+		Session session = factory.openSession();
+		try {
+			String hql = "FROM HCMStreetsModel WHERE wardId = :wardId";
+			Query<HCMStreetsModel> query = session.createQuery(hql);
+			query.setParameter("wardId", wardId);
+			List<HCMStreetsModel> list = query.list();
+
+			StringBuilder result = new StringBuilder();
+			for (HCMStreetsModel street : list) {
+				result.append(street.getStreetId()).append(":").append(street.getName()).append("\n");
 			}
 
 			// Chuyển đổi chuỗi thành mảng byte sử dụng encoding UTF-8

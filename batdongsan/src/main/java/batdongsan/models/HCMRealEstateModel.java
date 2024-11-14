@@ -28,11 +28,9 @@ public class HCMRealEstateModel {
 	@JoinColumn(name = "categoryId")
 	private CategoryModel category;
 
-	
-
 	@ManyToOne
-	@JoinColumn(name = "wardId")
-	private HCMWardsModel ward;
+	@JoinColumn(name = "streetId")
+	private HCMStreetsModel street;
 
 	@ManyToOne
 	@JoinColumn(name = "userId")
@@ -251,12 +249,12 @@ public class HCMRealEstateModel {
 		this.email = email;
 	}
 
-	public HCMWardsModel getWard() {
-		return ward;
+	public HCMStreetsModel getStreet() {
+		return street;
 	}
 
-	public void setWard(HCMWardsModel ward) {
-		this.ward = ward;
+	public void setStreet(HCMStreetsModel street) {
+		this.street = street;
 	}
 
 	public String getTypePost() {

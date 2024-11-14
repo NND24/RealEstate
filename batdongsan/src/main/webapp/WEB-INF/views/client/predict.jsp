@@ -96,9 +96,17 @@
 							<select name='wardId' id="wardId">
 								<option value="0">---Phường, xã---</option>
 							</select>
-							<%
-							String wardError = (String) request.getAttribute("wardError");
-							%>
+						</div>
+					</div>
+					
+					<div class='address-container'>
+						<div class='form-item'>
+							<p>
+								Đường <span>*</span>
+							</p>
+							<select name='streetId' id="streetId">
+								<option value="0">---Đường---</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -614,7 +622,7 @@
 	
 	$('.input-wrapper').on('mouseover', debounce(async function() {
 		const districtElement = document.getElementById('districtId');
-		const wardElement = document.getElementById('wardId');
+		const streetElement = document.getElementById('streetId');
 		const sizeElement = document.getElementById('size');
 
 		let rooms = 0;
@@ -622,7 +630,7 @@
 		let floors = 0;
 		let furnishingSell = "";
 		let characteristics = ""; 
-		let wardId = "";
+		let streetId = "";
 		let districtId;
 		let size = 0;
 		let type = "";
@@ -651,8 +659,8 @@
 
 		const urgentElement = document.getElementById('urgent');
 
-		if (wardElement && wardElement.selectedIndex !== -1) {
-			wardId = wardElement.options[wardElement.selectedIndex].textContent !== "---Phường, xã---" ? wardElement.options[wardElement.selectedIndex].value : "";
+		if (streetElement && streetElement.selectedIndex !== -1) {
+			streetId = streetElement.options[streetElement.selectedIndex].textContent !== "---Đường---" ? streetElement.options[streetElement.selectedIndex].value : "";
 		}
 
 		if (districtElement && districtElement.selectedIndex !== -1) {
@@ -699,10 +707,10 @@
 			urgent = urgentElement.value;
 		}
 	    
-	    if(wardId!=="" && size!=="0.0") {
+	    if(streetId!=="" && size!=="0.0") {
 	    	if(categoryId === "1") {
 		    	 const data = {
-	    			 wardId: wardId,
+		    		 streetId: streetId,
 	    			 districtId: districtId,
 	    			 size: parseFloat(size),
 	    			 rooms: parseInt(rooms),
@@ -737,7 +745,7 @@
 		                	categoryId: categoryId,
 		                    price: cleanPrice, 
 		                    districtId: districtId,
-		                    wardId: wardId,
+		                    streetId: streetId,
 		                    size: parseFloat(size),
 		                    rooms: parseInt(rooms),
 		                    toilets: parseInt(toilets),
@@ -854,7 +862,7 @@
 		         }
 	         } else if(categoryId === "2") {
 	        	 const data = {
-	      			wardId: wardId,
+	        			 streetId: streetId,
 	      			districtId: districtId,
 	         		size: parseFloat(size),
 	         		rooms: parseInt(rooms),
@@ -887,7 +895,7 @@
 			                	categoryId: categoryId,
 			                    price: cleanPrice, 
 			                    districtId: districtId,
-			                    wardId: wardId,
+			                    streetId: streetId,
 			                    size: parseFloat(size),
 			                    rooms: parseInt(rooms),
 			                    toilets: parseInt(toilets),
@@ -1004,7 +1012,7 @@
 		         }
              } else if(categoryId === "3") {
             	 const data = {
-          			wardId: wardId,
+            			 streetId: streetId,
           			districtId: districtId,
 	         		size: parseFloat(size),
 	         		type: type,
@@ -1035,7 +1043,7 @@
 		                	categoryId: categoryId,
 		                    price: cleanPrice, 
 		                    districtId: districtId,
-		                    wardId: wardId,
+		                    streetId: streetId,
 		                    size: parseFloat(size),
 		                    rooms: parseInt(rooms),
 		                    toilets: parseInt(toilets),
@@ -1152,7 +1160,7 @@
 		         }
              } else if(categoryId === "4") {
             	 const data = {
-           			wardId: wardId,
+            			 streetId: streetId,
            			districtId: districtId,
    	         		size: parseFloat(size),
    	         		type: type,
@@ -1183,7 +1191,7 @@
 			                	categoryId: categoryId,
 			                    price: cleanPrice, 
 			                    districtId: districtId,
-			                    wardId: wardId,
+			                    streetId: streetId,
 			                    size: parseFloat(size),
 			                    rooms: parseInt(rooms),
 			                    toilets: parseInt(toilets),
@@ -1326,28 +1334,29 @@
 		
 			var districtId = $('#districtId').val();
 			$.ajax({
-                type: 'GET',
-                url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
-                data: { districtId: districtId },
-                dataType: 'text',
-                success: function(data) {
-                    $('#wardId').empty();
-                    $('#wardId').append('<option value="">---Phường, xã---</option>');
-                    var lines = data.split('\n');
-                    var currentWard = "<c:out value='${realEstate.ward.name}' />";
-                    $.each(lines, function(index, line) {
-                        if (index < lines.length - 1) {
-                            var parts = line.split(':');
-                            var isSelected = (currentWard === parts[1]) ? "selected" : "";
-                            $('#wardId').append('<option ' + isSelected + ' value="' + parts[0] + '">' + parts[1] + '</option>');
-                        }
-                    });
-                },
-                error: function(data) {
-                    $('#wardId').empty();
-                    $('#wardId').append('<option value="">Error occurred while fetching wards</option>');
-                }
-            });
+		        type: 'GET',
+		        url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
+		        data: { districtId: districtId },
+		        dataType: 'text',
+		        success: function(data) {
+	                $('#wardId').empty();
+	                $('#wardId').append('<option value="0">---Phường, xã---</option>');
+	                $("#street").empty();
+	                $("#street").append('<option value="0">---Đường---</option>');
+	                $("#detail-address").val("");
+	                var lines = data.split('\n');
+	                $.each(lines, function(index, line) {
+	                    if (index < lines.length - 1) {
+	                        var parts = line.split(':');
+	                        $('#wardId').append('<option value="' + parts[0] + '">' + parts[1] + '</option>');
+	                    }
+	                });
+	            },
+	            error: function(data) {
+	                $('#wardId').empty();
+	                $('#wardId').append('<option value="">Error occurred while fetching districts</option>');
+	            }
+		    });
 
 				
 				$('#districtId').change(function() {
@@ -1359,7 +1368,9 @@
 				        dataType: 'text',
 				        success: function(data) {
 			                $('#wardId').empty();
-			                $('#wardId').append('<option value="">---Phường, xã---</option>');
+			                $('#wardId').append('<option value="0">---Phường, xã---</option>');
+			                $("#street").empty();
+			                $("#street").append('<option value="0">---Đường---</option>');
 			                $("#detail-address").val("");
 			                var lines = data.split('\n');
 			                $.each(lines, function(index, line) {
@@ -1376,19 +1387,45 @@
 				    });
 				});
 			    
-		        $('#wardId').change(function() {
-		        	$("#detail-address").val("");
-		            var province = $("#provinceId").children("option:selected").text();
-		            var district = $("#districtId").children("option:selected").text();
-		            var ward = $(this).children("option:selected").text();
+				$("#wardId").change(function () {
+		          var wardId = $(this).val();
+		          $.ajax({
+		            type: "GET",
+		            url: "${pageContext.servletContext.contextPath}/sellernet/getStreetsByWard.html",
+		            data: { wardId: wardId },
+		            dataType: "text",
+		            success: function (data) {
+		              $("#streetId").empty();
+		              $("#streetId").append('<option value="0">---Đường---</option>');
+		              $("#detail-address").val("");
+		              var lines = data.split("\n");
+		              $.each(lines, function (index, line) {
+		                if (index < lines.length - 1) {
+		                  var parts = line.split(":");
+		                  $("#streetId").append('<option value="' + parts[0] + '">' + parts[1] + "</option>");
+		                }
+		              });
+		            },
+		            error: function (data) {
+		              $("#streetId").empty();
+		              $("#streetId").append('<option value="">Error occurred while fetching districts</option>');
+		            },
+		          });
+		        });
 
-		            if(district !== "---Quận, huyện---" && ward !== "---Phường, xã---") {
-		            	// Construct the address
-			            var address = ward.trim() + ", " + district.trim() + ", Thành phố Hồ Chí Minh";                  
-			            
-			            // Update the detail-address element
-			            $("#detail-address").val($("#detail-address").val() + address);
-		            }
+		        $("#streetId").change(function () {
+		          $("#detail-address").val("");
+		          var district = $("#districtId").children("option:selected").text();
+		          var ward = $("#wardId").children("option:selected").text();
+		          var street = $(this).children("option:selected").text();
+
+		          if (district !== "---Quận, huyện---" && ward !== "---Phường, xã---" && street !== "---Đường---") {
+		            // Construct the address
+		            var address = street.trim() + ", " + ward.trim() + ", " + district.trim() + ", Thành phố Hồ Chí Minh";
+
+		            // Update the detail-address element
+		            $("#detail-address").val($("#detail-address").val() + address);
+		          }
 		        });
 	});
 	});

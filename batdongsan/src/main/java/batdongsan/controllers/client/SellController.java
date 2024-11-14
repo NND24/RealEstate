@@ -69,7 +69,7 @@ public class SellController {
 	            session.merge(re);
 	        });
 
-	        String hql = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.ward ward JOIN ward.district dis WHERE re.status = :status AND cat.type LIKE :type";
+	        String hql = "SELECT re FROM HCMRealEstateModel re JOIN re.category cat JOIN re.street street JOIN street.ward ward JOIN ward.district dis WHERE re.status = :status AND cat.type LIKE :type";
 
 	        // Search by input
 	        if (searchInput != null && !searchInput.isEmpty()) {

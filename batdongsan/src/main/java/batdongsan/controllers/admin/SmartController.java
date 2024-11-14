@@ -165,19 +165,19 @@ public class SmartController {
 	        // Custom CSV header based on categoryId
 	        switch (categoryId) {
 	            case 1: 
-	                writer.println("DistrictId,WardId,Size,Rooms,Toilets,Floors,Type,FurnishingSell,Characteristics,Urgent,Price");
+	                writer.println("DistrictId,WardId,StreetId,Size,Rooms,Toilets,Floors,Type,FurnishingSell,Characteristics,Urgent,Price");
 	                break;
 	            case 2: 
-	                writer.println("DistrictId,WardId,Size,Rooms,Toilets,Type,FurnishingSell,Urgent,Price");
+	                writer.println("DistrictId,WardId,StreetId,Size,Rooms,Toilets,Type,FurnishingSell,Urgent,Price");
 	                break;
 	            case 3: 
-	                writer.println("DistrictId,WardId,Size,Type,FurnishingSell,Urgent,Price");
+	                writer.println("DistrictId,WardId,StreetId,Size,Type,FurnishingSell,Urgent,Price");
 	                break;
 	            case 4: 
-	                writer.println("DistrictId,WardId,Size,Type,Characteristics,Urgent,Price");
+	                writer.println("DistrictId,WardId,StreetId,Size,Type,Characteristics,Urgent,Price");
 	                break;
 	            default:
-	                writer.println("DistrictId,WardId,Size,Rooms,Toilets,Floors,Type,FurnishingSell,Characteristics,Urgent,Price");
+	                writer.println("DistrictId,WardId,StreetId,Size,Rooms,Toilets,Floors,Type,FurnishingSell,Characteristics,Urgent,Price");
 	                break;
 	        }
 
@@ -185,9 +185,10 @@ public class SmartController {
 	        for (HCMRealEstateModel realEstate : realEstateList) {
 	            switch (categoryId) {
 	                case 1: 
-	                	 writer.printf("%d,%d,%.2f,%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d%n",
-	                             realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
-	                             realEstate.getWard().getWardId(), // WardId (int)
+	                	 writer.printf("%d,%d,%d,%.2f,%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d%n",
+	                             realEstate.getStreet().getWard().getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getStreet().getWard().getWardId(), // WardId (int)
+	                             realEstate.getStreet().getStreetId(), // StreetId (int)
 	                             realEstate.getSize(), // Size (float)
 	                             realEstate.getRooms(), // Rooms (int)
 	                             realEstate.getToilets(), // Toilets (int)
@@ -200,9 +201,10 @@ public class SmartController {
 	                         );
 	                    break;
 	                case 2: 
-	                	 writer.printf("%d,%d,%.2f,%d,%d,\"%s\",\"%s\",%d,%d%n",
-	                             realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
-	                             realEstate.getWard().getWardId(), // WardId (int)
+	                	 writer.printf("%d,%d,%d,%.2f,%d,%d,\"%s\",\"%s\",%d,%d%n",
+	                             realEstate.getStreet().getWard().getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getStreet().getWard().getWardId(), // WardId (int)
+	                             realEstate.getStreet().getStreetId(), // StreetId (int)
 	                             realEstate.getSize(), // Size (float)
 	                             realEstate.getRooms(), // Rooms (int)
 	                             realEstate.getToilets(), // Toilets (int)
@@ -213,9 +215,10 @@ public class SmartController {
 	                         );
 	                    break;
 	                case 3: 
-	                	writer.printf("%d,%d,%.2f,\"%s\",\"%s\",%d,%d%n",
-	                            realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
-	                            realEstate.getWard().getWardId(), // WardId (int)
+	                	writer.printf("%d,%d,%d,%.2f,\"%s\",\"%s\",%d,%d%n",
+	                            realEstate.getStreet().getWard().getDistrict().getDistrictId(), // DistrictId (int)
+	                            realEstate.getStreet().getWard().getWardId(), // WardId (int)
+	                             realEstate.getStreet().getStreetId(), // StreetId (int)
 	                            realEstate.getSize(), // Size (float)
 	                            sanitizeCsvField(realEstate.getType()), // Type (String)
 	                            sanitizeCsvField(realEstate.getFurnishingSell()), // FurnishingSell (String)
@@ -224,9 +227,10 @@ public class SmartController {
 	                        );
 	                    break;
 	                case 4: 
-	                	writer.printf("%d,%d,%.2f,\"%s\",\"%s\",%d,%d%n",
-	                            realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
-	                            realEstate.getWard().getWardId(), // WardId (int)
+	                	writer.printf("%d,%d,%d,%.2f,\"%s\",\"%s\",%d,%d%n",
+	                            realEstate.getStreet().getWard().getDistrict().getDistrictId(), // DistrictId (int)
+	                            realEstate.getStreet().getWard().getWardId(), // WardId (int)
+	                             realEstate.getStreet().getStreetId(), // StreetId (int)
 	                            realEstate.getSize(), // Size (float)
 	                            sanitizeCsvField(realEstate.getType()), // Type (String)
 	                            sanitizeCsvField(realEstate.getCharacteristics()), // Characteristics (String)
@@ -235,9 +239,10 @@ public class SmartController {
 	                        );
 	                    break;
 	                default:
-	                	writer.printf("%d,%d,%.2f,%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d%n",
-	                             realEstate.getWard().getDistrict().getDistrictId(), // DistrictId (int)
-	                             realEstate.getWard().getWardId(), // WardId (int)
+	                	writer.printf("%d,%d,%d,%.2f,%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d%n",
+	                             realEstate.getStreet().getWard().getDistrict().getDistrictId(), // DistrictId (int)
+	                             realEstate.getStreet().getWard().getWardId(), // WardId (int)
+	                             realEstate.getStreet().getStreetId(), // StreetId (int)
 	                             realEstate.getSize(), // Size (float)
 	                             realEstate.getRooms(), // Rooms (int)
 	                             realEstate.getToilets(), // Toilets (int)

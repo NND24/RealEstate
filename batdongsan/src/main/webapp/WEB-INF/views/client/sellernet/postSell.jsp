@@ -107,6 +107,23 @@
 							</p>
 						</div>
 					</div>
+					
+					<div class='address-container'>
+						<div class='form-item'>
+							<p>
+								Đường <span>*</span>
+							</p>
+							<select name='streetId' id="streetId">
+								<option value="0">---Đường---</option>
+							</select>
+							<%
+							    String streetError = (String) request.getAttribute("streetError");
+							%>
+							<p class="error" style="<%= (streetError != null && !streetError.isEmpty()) ? "display: block;" : "display: none;" %>">
+							    <%= streetError %>
+							</p>
+						</div>
+					</div>
 
 					<div class='form-item'>
 						<p>
@@ -951,334 +968,353 @@
 	</div>
 
 	<script type="text/javascript">
-	const urlParams = new URLSearchParams(window.location.search);
-	const categoryId = urlParams.get('categoryId');
-	
-	function debounce(func, delay) {
-	    let debounceTimer;
-	    return function(...args) {
-	        clearTimeout(debounceTimer);
-	        debounceTimer = setTimeout(() => func.apply(this, args), delay);
-	    };
-	}
-	
-	$('.input-wrapper').on('mouseover', debounce(async function() {
-		const districtElement = document.getElementById('districtId');
-		const wardElement = document.getElementById('wardId');
-		const sizeElement = document.getElementById('size');
+      const urlParams = new URLSearchParams(window.location.search);
+      const categoryId = urlParams.get("categoryId");
 
-		let rooms = 0;
-		let toilets = 0;
-		let floors = 0;
-		let furnishingSell = "";
-		let characteristics = ""; 
-		let wardId = "";
-		let districtId;
-		let size = 0;
-		let type = "";
-		let urgent = "";
+      function debounce(func, delay) {
+        let debounceTimer;
+        return function (...args) {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => func.apply(this, args), delay);
+        };
+      }
 
-		let roomsElement, toiletsElement, floorsElement, furnishingSellElement, characteristicsElement;
+      $(".input-wrapper").on(
+        "mouseover",
+        debounce(async function () {
+          const districtElement = document.getElementById("districtId");
+          const streetElement = document.getElementById("streetId");
+          const sizeElement = document.getElementById("size");
 
-		if (categoryId === "1" || categoryId === "2") {
-			roomsElement = document.getElementById('rooms');
-			toiletsElement = document.getElementById('toilets');
-		}
+          let rooms = 0;
+          let toilets = 0;
+          let floors = 0;
+          let furnishingSell = "";
+          let characteristics = "";
+          let streetId = "";
+          let districtId;
+          let size = 0;
+          let type = "";
+          let urgent = "";
 
-		if (categoryId === "1") {
-			floorsElement = document.getElementById('floors');
-		}
+          let roomsElement, toiletsElement, floorsElement, furnishingSellElement, characteristicsElement;
 
-		const typeElement = document.getElementById('type');
+          if (categoryId === "1" || categoryId === "2") {
+            roomsElement = document.getElementById("rooms");
+            toiletsElement = document.getElementById("toilets");
+          }
 
-		if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
-			furnishingSellElement = document.getElementById('furnishingSell');
-		}
+          if (categoryId === "1") {
+            floorsElement = document.getElementById("floors");
+          }
 
-		if (categoryId === "1" || categoryId === "4") {
-			characteristicsElement = document.getElementById('characteristics');
-		}
+          const typeElement = document.getElementById("type");
 
-		const urgentElement = document.getElementById('urgent');
+          if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
+            furnishingSellElement = document.getElementById("furnishingSell");
+          }
 
-		if (wardElement && wardElement.selectedIndex !== -1) {
-			wardId = wardElement.options[wardElement.selectedIndex].textContent !== "---Phường, xã---" ? wardElement.options[wardElement.selectedIndex].value : "";
-		}
+          if (categoryId === "1" || categoryId === "4") {
+            characteristicsElement = document.getElementById("characteristics");
+          }
 
-		if (districtElement && districtElement.selectedIndex !== -1) {
-			districtId = districtElement.options[districtElement.selectedIndex].value;
-		}
+          const urgentElement = document.getElementById("urgent");
 
-		if (sizeElement && sizeElement.value) {
-			size = sizeElement.value;
-		}
+          if (streetElement && streetElement.selectedIndex !== -1) {
+        	  streetId =
+        		  streetElement.options[streetElement.selectedIndex].textContent !== "---Đường---"
+                ? streetElement.options[streetElement.selectedIndex].value
+                : "";
+          }
 
-		if (categoryId === "1" || categoryId === "2") {
-			if (roomsElement && roomsElement.value) {
-				rooms = roomsElement.value;
-			}
+          if (districtElement && districtElement.selectedIndex !== -1) {
+            districtId = districtElement.options[districtElement.selectedIndex].value;
+          }
 
-			if (toiletsElement && toiletsElement.value) {
-				toilets = toiletsElement.value;
-			}
-		}
+          if (sizeElement && sizeElement.value) {
+            size = sizeElement.value;
+          }
 
-		if (categoryId === "1") {
-			if (floorsElement && floorsElement.value) {
-				floors = floorsElement.value;
-			}
-		}
+          if (categoryId === "1" || categoryId === "2") {
+            if (roomsElement && roomsElement.value) {
+              rooms = roomsElement.value;
+            }
 
-		if (typeElement && typeElement.selectedIndex !== -1) {
-			type = typeElement.options[typeElement.selectedIndex].textContent;
-		}
+            if (toiletsElement && toiletsElement.value) {
+              toilets = toiletsElement.value;
+            }
+          }
 
-		if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
-			if (furnishingSellElement && furnishingSellElement.selectedIndex !== -1) {
-				furnishingSell = furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent !== "---Nội thất---" ? furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent : "";
-			}
-		}
+          if (categoryId === "1") {
+            if (floorsElement && floorsElement.value) {
+              floors = floorsElement.value;
+            }
+          }
 
-		if (categoryId === "1" || categoryId === "4") {
-			if (characteristicsElement && characteristicsElement.selectedIndex !== -1) {
-				characteristics = characteristicsElement.options[characteristicsElement.selectedIndex].textContent !== "---Đặc điểm nhà/đất---" ? characteristicsElement.options[characteristicsElement.selectedIndex].textContent : "";
-			}
-		}
+          if (typeElement && typeElement.selectedIndex !== -1) {
+            type = typeElement.options[typeElement.selectedIndex].textContent;
+          }
 
-		if (urgentElement && urgentElement.value) {
-			urgent = urgentElement.value;
-		}
-	    
-		if(wardId!=="" && size!=="0.0") {
-	    	if(categoryId === "1") {
-		    	 const data = {
-	    			 wardId: wardId,
-	    			 districtId: districtId,
-	    			 size: parseFloat(size),
-	    			 rooms: parseInt(rooms),
-	    			 toilets: parseInt(toilets),
-	    			 floors: parseInt(floors),
-	    			 type: type,
-	    			 furnishingSell: furnishingSell,
-	    			 urgent: urgent,
-	    			 characteristics: characteristics,
-		         };
-	
-		         try {
-		             const response = await fetch('http://localhost:5000/housePredict', {
-		                 method: 'POST',
-		                 headers: {
-		                     'Content-Type': 'application/json'
-		                 },
-		                 body: JSON.stringify(data)
-		             });
-	
-		             const result = await response.json();
-		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
-		         } catch (error) {
-		        	 document.getElementById('result').style.display = "none";
-		             console.error('Error predicting price:', error);
-		             document.getElementById('result').innerText = 'Error predicting price.';
-		         }
-	         } else if(categoryId === "2") {
-	        	 const data = {
-	      			wardId: wardId,
-	      			districtId: districtId,
-	         		size: parseFloat(size),
-	         		rooms: parseInt(rooms),
-	         		toilets: parseInt(toilets),
-	         		type: type,
-	         		furnishingSell: furnishingSell,
-	         		urgent: urgent,
-		         };
-	
-		         try {
-		             const response = await fetch('http://localhost:5000/apartmentPredict', {
-		                 method: 'POST',
-		                 headers: {
-		                     'Content-Type': 'application/json'
-		                 },
-		                 body: JSON.stringify(data)
-		             });
-	
-		             const result = await response.json();
-		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
-		         } catch (error) {
-		        	 document.getElementById('result').style.display = "none";
-		             console.error('Error predicting price:', error);
-		             document.getElementById('result').innerText = 'Error predicting price.';
-		         }
-             } else if(categoryId === "3") {
-            	 const data = {
-          			wardId: wardId,
-          			districtId: districtId,
-	         		size: parseFloat(size),
-	         		type: type,
-	         		furnishingSell: furnishingSell,
-	         		urgent: urgent,
-		         };
-	
-		         try {
-		             const response = await fetch('http://localhost:5000/commercialPredict', {
-		                 method: 'POST',
-		                 headers: {
-		                     'Content-Type': 'application/json'
-		                 },
-		                 body: JSON.stringify(data)
-		             });
-	
-		             const result = await response.json();
-		             document.getElementById('result').style.display = "block";
-		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
-		         } catch (error) {
-		        	 document.getElementById('result').style.display = "none";
-		             console.error('Error predicting price:', error);
-		             document.getElementById('result').innerText = 'Error predicting price.';
-		         }
-             } else if(categoryId === "4") {
-            	 const data = {
-           			wardId: wardId,
-           			districtId: districtId,
-   	         		size: parseFloat(size),
-   	         		type: type,
-   	         		characteristics: characteristics,
-   	         		urgent: urgent,
-   		         };
-   	
-   		         try {
-   		             const response = await fetch('http://localhost:5000/landPredict', {
-   		                 method: 'POST',
-   		                 headers: {
-   		                     'Content-Type': 'application/json'
-   		                 },
-   		                 body: JSON.stringify(data)
-   		             });
-   	
-   		             const result = await response.json();
-   		             document.getElementById('result').style.display = "block";
-   		             document.getElementById('result').innerText = `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
-   		         } catch (error) {
-   		        	 document.getElementById('result').style.display = "none";
-   		             console.error('Error predicting price:', error);
-   		             document.getElementById('result').innerText = 'Error predicting price.';
-   		         }
-             }
-	         
-	    } else {
-	    	document.getElementById('result').style.display = "none";
-	    }
-	}, 1000));
-	
-	var images = [];
-	function image_select() {
-		var image = document.getElementById("image").files;
-		 for (var i = 0; i < image.length; i++) {
-			 if(check_duplicate(image[i].name)) {
-				images.push({
-					"name": image[i].name,
-					"url": URL.createObjectURL(image[i]),
-					"file": image[i],
-				})
-		 	}
-		}
-		document.getElementById("container").innerHTML = image_show();
-	}
-	function image_show() {
-		var image = "";
-		images.forEach((i) => {
-			image += `
+          if (categoryId === "1" || categoryId === "2" || categoryId === "3") {
+            if (furnishingSellElement && furnishingSellElement.selectedIndex !== -1) {
+              furnishingSell =
+                furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent !== "---Nội thất---"
+                  ? furnishingSellElement.options[furnishingSellElement.selectedIndex].textContent
+                  : "";
+            }
+          }
+
+          if (categoryId === "1" || categoryId === "4") {
+            if (characteristicsElement && characteristicsElement.selectedIndex !== -1) {
+              characteristics =
+                characteristicsElement.options[characteristicsElement.selectedIndex].textContent !==
+                "---Đặc điểm nhà/đất---"
+                  ? characteristicsElement.options[characteristicsElement.selectedIndex].textContent
+                  : "";
+            }
+          }
+
+          if (urgentElement && urgentElement.value) {
+            urgent = urgentElement.value;
+          }
+
+          if (streetId !== "" && size !== "0.0") {
+            if (categoryId === "1") {
+              const data = {
+            	streetId: streetId,
+                districtId: districtId,
+                size: parseFloat(size),
+                rooms: parseInt(rooms),
+                toilets: parseInt(toilets),
+                floors: parseInt(floors),
+                type: type,
+                furnishingSell: furnishingSell,
+                urgent: urgent,
+                characteristics: characteristics,
+              };
+
+              try {
+                const response = await fetch("http://localhost:5000/housePredict", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                document.getElementById("result").style.display = "block";
+                document.getElementById("result").innerText =
+                  `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
+              } catch (error) {
+                document.getElementById("result").style.display = "none";
+                console.error("Error predicting price:", error);
+                document.getElementById("result").innerText = "Error predicting price.";
+              }
+            } else if (categoryId === "2") {
+              const data = {
+            	streetId: streetId,
+                districtId: districtId,
+                size: parseFloat(size),
+                rooms: parseInt(rooms),
+                toilets: parseInt(toilets),
+                type: type,
+                furnishingSell: furnishingSell,
+                urgent: urgent,
+              };
+
+              try {
+                const response = await fetch("http://localhost:5000/apartmentPredict", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                document.getElementById("result").style.display = "block";
+                document.getElementById("result").innerText =
+                  `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
+              } catch (error) {
+                document.getElementById("result").style.display = "none";
+                console.error("Error predicting price:", error);
+                document.getElementById("result").innerText = "Error predicting price.";
+              }
+            } else if (categoryId === "3") {
+              const data = {
+            	streetId: streetId,
+                districtId: districtId,
+                size: parseFloat(size),
+                type: type,
+                furnishingSell: furnishingSell,
+                urgent: urgent,
+              };
+
+              try {
+                const response = await fetch("http://localhost:5000/commercialPredict", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                document.getElementById("result").style.display = "block";
+                document.getElementById("result").innerText =
+                  `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
+              } catch (error) {
+                document.getElementById("result").style.display = "none";
+                console.error("Error predicting price:", error);
+                document.getElementById("result").innerText = "Error predicting price.";
+              }
+            } else if (categoryId === "4") {
+              const data = {
+            	streetId: streetId,
+                districtId: districtId,
+                size: parseFloat(size),
+                type: type,
+                characteristics: characteristics,
+                urgent: urgent,
+              };
+
+              try {
+                const response = await fetch("http://localhost:5000/landPredict", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                document.getElementById("result").style.display = "block";
+                document.getElementById("result").innerText =
+                  `Giá khuyến nghị cho bất động sản của bạn là: ` + result.predicted_price + " VND";
+              } catch (error) {
+                document.getElementById("result").style.display = "none";
+                console.error("Error predicting price:", error);
+                document.getElementById("result").innerText = "Error predicting price.";
+              }
+            }
+          } else {
+            document.getElementById("result").style.display = "none";
+          }
+        }, 1000)
+      );
+
+      var images = [];
+      function image_select() {
+        var image = document.getElementById("image").files;
+        for (var i = 0; i < image.length; i++) {
+          if (check_duplicate(image[i].name)) {
+            images.push({
+              name: image[i].name,
+              url: URL.createObjectURL(image[i]),
+              file: image[i],
+            });
+          }
+        }
+        document.getElementById("container").innerHTML = image_show();
+      }
+      function image_show() {
+        var image = "";
+        images.forEach((i) => {
+          image +=
+            `
 				<div class='img-wrapper'>
-					<img src="`+i.url+`" alt='' /> 
-					<i class='fa-solid fa-xmark' onclick="delete_image(`+images.indexOf(i)+`)"></i>
+					<img src="` +
+            i.url +
+            `" alt='' /> 
+					<i class='fa-solid fa-xmark' onclick="delete_image(` +
+            images.indexOf(i) +
+            `)"></i>
 				</div>
-			`
-		})
-		return image;
-	}
-	
-	function delete_image(index) {
-	    images.splice(index, 1); // Xóa ảnh khỏi mảng `images[]`
-	    
-	    // Reset lại input file
-	    document.getElementById("image").value = "";
+			`;
+        });
+        return image;
+      }
 
-	    // Tạo lại một input file mới với các ảnh còn lại
-	    let dataTransfer = new DataTransfer(); // Sử dụng DataTransfer API
+      function delete_image(index) {
+        images.splice(index, 1); // Xóa ảnh khỏi mảng `images[]`
 
-	    images.forEach(image => {
-	        dataTransfer.items.add(image.file); // Thêm lại ảnh còn lại
-	    });
+        // Reset lại input file
+        document.getElementById("image").value = "";
 
-	    document.getElementById("image").files = dataTransfer.files; // Cập nhật lại input file với các ảnh còn lại
+        // Tạo lại một input file mới với các ảnh còn lại
+        let dataTransfer = new DataTransfer(); // Sử dụng DataTransfer API
 
-	    document.getElementById("container").innerHTML = image_show(); // Cập nhật lại giao diện
-	}
-	
-	function check_duplicate(name) {
-		var image = true;
-		if(images.length > 0) {
-			for(e = 0; e < images.length; e++) {
-				if(images[e].name == name) {
-					image = false;
-					break;
-				}
-			}
-		}
-		return image
-	}
-	//
-	$(document).ready(function() {
-		ClassicEditor
-        .create( document.querySelector( '#editor' ) )
-        .catch( error => {
-            console.error( error );
-        } );
-		
-		$("input, select, textarea").on("change", () => {
-		    $(".error").hide(); 
-		});
-		
-		var currentDate = new Date();
+        images.forEach((image) => {
+          dataTransfer.items.add(image.file); // Thêm lại ảnh còn lại
+        });
 
-		var submittedDate = currentDate.toISOString().split('T')[0];
-		$('#submittedDate').val(submittedDate);
-		$('input[name="submittedDate"]').val(submittedDate);
+        document.getElementById("image").files = dataTransfer.files; // Cập nhật lại input file với các ảnh còn lại
 
-		// Tạo một đối tượng Date mới từ ngày hiện tại cộng thêm 10 ngày
-		var next10day = new Date(currentDate);
-		next10day.setDate(next10day.getDate() + 10);
+        document.getElementById("container").innerHTML = image_show(); // Cập nhật lại giao diện
+      }
 
-		// Định dạng thành chuỗi YYYY-MM-DD
-		var expirationDate = next10day.toISOString().split('T')[0];
-		$('#expirationDate').val(expirationDate);
-		$('input[name="expirationDate"]').val(expirationDate);
-			
-		$(".type-container").on("click", function() {
-		    $(".type-container").removeClass("active");
-		    $(".type-container .choose-btn").text("Chọn"); 
-		    
-		    $(this).addClass("active");
-		    $(this).find(".choose-btn").text("Đã chọn"); 
-		    
-		    var getDate = $('#submittedDate').val()
-			
-			var next7day = new Date(getDate);
-			next7day.setDate(next7day.getDate() + 7);
-			
-			var next10day = new Date(getDate);
-			next10day.setDate(next10day.getDate() + 10);
-			
-			var next15day = new Date(getDate);
-			next15day.setDate(next15day.getDate() + 15);
-			
-			var next30day = new Date(getDate);
-			next30day.setDate(next30day.getDate() + 30);
+      function check_duplicate(name) {
+        var image = true;
+        if (images.length > 0) {
+          for (e = 0; e < images.length; e++) {
+            if (images[e].name == name) {
+              image = false;
+              break;
+            }
+          }
+        }
+        return image;
+      }
+      //
+      $(document).ready(function () {
+        ClassicEditor.create(document.querySelector("#editor")).catch((error) => {
+          console.error(error);
+        });
 
-	    	if ($(this).hasClass("normal")) {
-		    	$(".dates-wrapper").html(
-					`
+        $("input, select, textarea").on("change", () => {
+          $(".error").hide();
+        });
+
+        var currentDate = new Date();
+
+        var submittedDate = currentDate.toISOString().split("T")[0];
+        $("#submittedDate").val(submittedDate);
+        $('input[name="submittedDate"]').val(submittedDate);
+
+        // Tạo một đối tượng Date mới từ ngày hiện tại cộng thêm 10 ngày
+        var next10day = new Date(currentDate);
+        next10day.setDate(next10day.getDate() + 10);
+
+        // Định dạng thành chuỗi YYYY-MM-DD
+        var expirationDate = next10day.toISOString().split("T")[0];
+        $("#expirationDate").val(expirationDate);
+        $('input[name="expirationDate"]').val(expirationDate);
+
+        $(".type-container").on("click", function () {
+          $(".type-container").removeClass("active");
+          $(".type-container .choose-btn").text("Chọn");
+
+          $(this).addClass("active");
+          $(this).find(".choose-btn").text("Đã chọn");
+
+          var getDate = $("#submittedDate").val();
+
+          var next7day = new Date(getDate);
+          next7day.setDate(next7day.getDate() + 7);
+
+          var next10day = new Date(getDate);
+          next10day.setDate(next10day.getDate() + 10);
+
+          var next15day = new Date(getDate);
+          next15day.setDate(next15day.getDate() + 15);
+
+          var next30day = new Date(getDate);
+          next30day.setDate(next30day.getDate() + 30);
+
+          if ($(this).hasClass("normal")) {
+            $(".dates-wrapper").html(
+              `
 					<div class="date-container active">
 						<h6>10 ngày</h6>
 						<p>2800 đ/ngày</p>
@@ -1292,27 +1328,27 @@
 						<p>2240 đ/ngày</p>
 					</div>
 					`
-		    	)
-		    	
-		    	var expirationDate = next10day.toISOString().split('T')[0];
-				$('#expirationDate').val(expirationDate);
-				$('input[name="expirationDate"]').val(expirationDate);
+            );
 
-				var selectedDate = $(".date-container.active").find("h6").text();
-			    var selectedMoney = $(".date-container.active").find("p").text();
+            var expirationDate = next10day.toISOString().split("T")[0];
+            $("#expirationDate").val(expirationDate);
+            $('input[name="expirationDate"]').val(expirationDate);
 
-			    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
-			    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
-				
-			    $("input[name='typePost']").val("Tin thường");
-			    $("input[name='amountDate']").val(selectedDate);
-			    $("input[name='pricePerDay']").val(moneyPerDay); 
-			    $("input[name='fee']").val(date * moneyPerDay); 
-			    $("input[name='totalMoney']").val(date * moneyPerDay); 
-		    }
-	    	if ($(this).hasClass("silver")) {
-	    		$(".dates-wrapper").html(
-						`
+            var selectedDate = $(".date-container.active").find("h6").text();
+            var selectedMoney = $(".date-container.active").find("p").text();
+
+            var date = parseInt(selectedDate.replace(/[^\d.]/g, ""));
+            var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ""));
+
+            $("input[name='typePost']").val("Tin thường");
+            $("input[name='amountDate']").val(selectedDate);
+            $("input[name='pricePerDay']").val(moneyPerDay);
+            $("input[name='fee']").val(date * moneyPerDay);
+            $("input[name='totalMoney']").val(date * moneyPerDay);
+          }
+          if ($(this).hasClass("silver")) {
+            $(".dates-wrapper").html(
+              `
 						<div class="date-container active">
 							<h6>7 ngày</h6>
 							<p>54600 đ/ngày</p>
@@ -1326,27 +1362,27 @@
 							<p>49140 đ/ngày</p>
 						</div>
 						`
-			    	)
-			    	
-			    var expirationDate = next7day.toISOString().split('T')[0];
-				$('#expirationDate').val(expirationDate);
-				$('input[name="expirationDate"]').val(expirationDate);
+            );
 
-				var selectedDate = $(".date-container.active").find("h6").text();
-			    var selectedMoney = $(".date-container.active").find("p").text();
+            var expirationDate = next7day.toISOString().split("T")[0];
+            $("#expirationDate").val(expirationDate);
+            $('input[name="expirationDate"]').val(expirationDate);
 
-			    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
-			    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
+            var selectedDate = $(".date-container.active").find("h6").text();
+            var selectedMoney = $(".date-container.active").find("p").text();
 
-			    $("input[name='typePost']").val("VIP Bạc");
-			    $("input[name='amountDate']").val(selectedDate);
-			    $("input[name='pricePerDay']").val(moneyPerDay); 
-			    $("input[name='fee']").val(date * moneyPerDay); 
-			    $("input[name='totalMoney']").val(date * moneyPerDay); 
-		    }
-	    	if ($(this).hasClass("gold")) {
-	    		$(".dates-wrapper").html(
-						`
+            var date = parseInt(selectedDate.replace(/[^\d.]/g, ""));
+            var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ""));
+
+            $("input[name='typePost']").val("VIP Bạc");
+            $("input[name='amountDate']").val(selectedDate);
+            $("input[name='pricePerDay']").val(moneyPerDay);
+            $("input[name='fee']").val(date * moneyPerDay);
+            $("input[name='totalMoney']").val(date * moneyPerDay);
+          }
+          if ($(this).hasClass("gold")) {
+            $(".dates-wrapper").html(
+              `
 						<div class="date-container active">
 							<h6>7 ngày</h6>
 							<p>118200 đ/ngày</p>
@@ -1360,27 +1396,27 @@
 							<p>106380 đ/ngày</p>
 						</div>
 						`
-			    	)
-			    	
-				    var expirationDate = next7day.toISOString().split('T')[0];
-					$('#expirationDate').val(expirationDate);
-					$('input[name="expirationDate"]').val(expirationDate);
+            );
 
-					var selectedDate = $(".date-container.active").find("h6").text();
-				    var selectedMoney = $(".date-container.active").find("p").text();
+            var expirationDate = next7day.toISOString().split("T")[0];
+            $("#expirationDate").val(expirationDate);
+            $('input[name="expirationDate"]').val(expirationDate);
 
-				    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
-				    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
+            var selectedDate = $(".date-container.active").find("h6").text();
+            var selectedMoney = $(".date-container.active").find("p").text();
 
-				    $("input[name='typePost']").val("VIP Vàng");
-				    $("input[name='amountDate']").val(selectedDate);
-				    $("input[name='pricePerDay']").val(moneyPerDay); 
-				    $("input[name='fee']").val(date * moneyPerDay); 
-				    $("input[name='totalMoney']").val(date * moneyPerDay); 
-		    }
-	    	if ($(this).hasClass("diamond")) {
-	    		$(".dates-wrapper").html(
-						`
+            var date = parseInt(selectedDate.replace(/[^\d.]/g, ""));
+            var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ""));
+
+            $("input[name='typePost']").val("VIP Vàng");
+            $("input[name='amountDate']").val(selectedDate);
+            $("input[name='pricePerDay']").val(moneyPerDay);
+            $("input[name='fee']").val(date * moneyPerDay);
+            $("input[name='totalMoney']").val(date * moneyPerDay);
+          }
+          if ($(this).hasClass("diamond")) {
+            $(".dates-wrapper").html(
+              `
 						<div class="date-container active">
 							<h6>7 ngày</h6>
 							<p>300000 đ/ngày</p>
@@ -1394,182 +1430,127 @@
 							<p>270000 đ/ngày</p>
 						</div>
 						`
-			    	)
-			    	
-				    var expirationDate = next7day.toISOString().split('T')[0];
-					$('#expirationDate').val(expirationDate);
-					$('input[name="expirationDate"]').val(expirationDate);
+            );
 
-					var selectedDate = $(".date-container.active").find("h6").text();
-				    var selectedMoney = $(".date-container.active").find("p").text();
+            var expirationDate = next7day.toISOString().split("T")[0];
+            $("#expirationDate").val(expirationDate);
+            $('input[name="expirationDate"]').val(expirationDate);
 
-				    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
-				    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
+            var selectedDate = $(".date-container.active").find("h6").text();
+            var selectedMoney = $(".date-container.active").find("p").text();
 
-				    $("input[name='typePost']").val("VIP Kim Cương");
-				    $("input[name='amountDate']").val(selectedDate);
-				    $("input[name='pricePerDay']").val(moneyPerDay); 
-				    $("input[name='fee']").val(date * moneyPerDay); 
-				    $("input[name='totalMoney']").val(date * moneyPerDay); 
-		    }
-		});
-		
-		$(".dates-wrapper").on("click", ".date-container", function() {
-		    // Remove 'active' class from all date containers
-		    $(".date-container").removeClass("active");
+            var date = parseInt(selectedDate.replace(/[^\d.]/g, ""));
+            var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ""));
 
-		    // Add 'active' class to the clicked date container
-		    $(this).addClass("active");
+            $("input[name='typePost']").val("VIP Kim Cương");
+            $("input[name='amountDate']").val(selectedDate);
+            $("input[name='pricePerDay']").val(moneyPerDay);
+            $("input[name='fee']").val(date * moneyPerDay);
+            $("input[name='totalMoney']").val(date * moneyPerDay);
+          }
+        });
 
-			 // Get the selected date text
-		    var selectedDate = $(this).find("h6").text();
-		    var selectedMoney = $(".date-container.active").find("p").text();
+        $(".dates-wrapper").on("click", ".date-container", function () {
+          // Remove 'active' class from all date containers
+          $(".date-container").removeClass("active");
 
-		    var date = parseInt(selectedDate.replace(/[^\d.]/g, ''));
-		    var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ''));
+          // Add 'active' class to the clicked date container
+          $(this).addClass("active");
 
-		    $("input[name='amountDate']").val(selectedDate); // Use .val() to set input value
-		    $("input[name='pricePerDay']").val(moneyPerDay); // Use .val() to set input value
-		    $("input[name='fee']").val(date * moneyPerDay); // Use .val() to set input value
-		    $("input[name='totalMoney']").val(date * moneyPerDay); // Use .val() to set input value
+          // Get the selected date text
+          var selectedDate = $(this).find("h6").text();
+          var selectedMoney = $(".date-container.active").find("p").text();
 
+          var date = parseInt(selectedDate.replace(/[^\d.]/g, ""));
+          var moneyPerDay = parseInt(selectedMoney.replace(/[^\d.]/g, ""));
 
-		    // Calculate expiration date based on selected date
-		    var getDate = $('#submittedDate').val();
-		    var expirationDate;
-		    var next7day = new Date(getDate);
-		    next7day.setDate(next7day.getDate() + 7);
-		    var next10day = new Date(getDate);
-		    next10day.setDate(next10day.getDate() + 10);
-		    var next15day = new Date(getDate);
-		    next15day.setDate(next15day.getDate() + 15);
-		    var next30day = new Date(getDate);
-		    next30day.setDate(next30day.getDate() + 30);
+          $("input[name='amountDate']").val(selectedDate); // Use .val() to set input value
+          $("input[name='pricePerDay']").val(moneyPerDay); // Use .val() to set input value
+          $("input[name='fee']").val(date * moneyPerDay); // Use .val() to set input value
+          $("input[name='totalMoney']").val(date * moneyPerDay); // Use .val() to set input value
 
-		    switch(selectedDate) {
-		        case "7 ngày":
-		            expirationDate = next7day.toISOString().split('T')[0];
-		            break;
-		        case "10 ngày":
-		            expirationDate = next10day.toISOString().split('T')[0];
-		            break;
-		        case "15 ngày":
-		            expirationDate = next15day.toISOString().split('T')[0];
-		            break;
-		        case "30 ngày":
-		            expirationDate = next30day.toISOString().split('T')[0];
-		            break;
-		    }
+          // Calculate expiration date based on selected date
+          var getDate = $("#submittedDate").val();
+          var expirationDate;
+          var next7day = new Date(getDate);
+          next7day.setDate(next7day.getDate() + 7);
+          var next10day = new Date(getDate);
+          next10day.setDate(next10day.getDate() + 10);
+          var next15day = new Date(getDate);
+          next15day.setDate(next15day.getDate() + 15);
+          var next30day = new Date(getDate);
+          next30day.setDate(next30day.getDate() + 30);
 
-		    // Set expiration date value
-		    $('#expirationDate').val(expirationDate);
-		    $('input[name="expirationDate"]').val(expirationDate);
-		});
+          switch (selectedDate) {
+            case "7 ngày":
+              expirationDate = next7day.toISOString().split("T")[0];
+              break;
+            case "10 ngày":
+              expirationDate = next10day.toISOString().split("T")[0];
+              break;
+            case "15 ngày":
+              expirationDate = next15day.toISOString().split("T")[0];
+              break;
+            case "30 ngày":
+              expirationDate = next30day.toISOString().split("T")[0];
+              break;
+          }
 
-		$('#submittedDate').on("change", () => {
-			var selectedDate = $(".date-container.active").find("h6").text();
-			
-			var getDate = $('#submittedDate').val();
-		    var expirationDate;
-		    var next7day = new Date(getDate);
-		    next7day.setDate(next7day.getDate() + 7);
-		    var next10day = new Date(getDate);
-		    next10day.setDate(next10day.getDate() + 10);
-		    var next15day = new Date(getDate);
-		    next15day.setDate(next15day.getDate() + 15);
-		    var next30day = new Date(getDate);
-		    next30day.setDate(next30day.getDate() + 30);
+          // Set expiration date value
+          $("#expirationDate").val(expirationDate);
+          $('input[name="expirationDate"]').val(expirationDate);
+        });
 
-		    switch(selectedDate) {
-		        case "7 ngày":
-		            expirationDate = next7day.toISOString().split('T')[0];
-		            break;
-		        case "10 ngày":
-		            expirationDate = next10day.toISOString().split('T')[0];
-		            break;
-		        case "15 ngày":
-		            expirationDate = next15day.toISOString().split('T')[0];
-		            break;
-		        case "30 ngày":
-		            expirationDate = next30day.toISOString().split('T')[0];
-		            break;
-		    }
-			
-			$('#expirationDate').val(expirationDate);
-			$('input[name="expirationDate"]').val(expirationDate);
-			 
-			var newDate = new Date(getDate);
-			var submittedDate = newDate.toISOString().split('T')[0];
-			$('#submittedDate').val(submittedDate);
-			$('input[name="submittedDate"]').val(submittedDate);
-			
-			
-		})
-				
-		$('#provinceId').change(function() {
-		    var provinceId = $(this).val();
-		    $.ajax({
+        $("#submittedDate").on("change", () => {
+          var selectedDate = $(".date-container.active").find("h6").text();
+
+          var getDate = $("#submittedDate").val();
+          var expirationDate;
+          var next7day = new Date(getDate);
+          next7day.setDate(next7day.getDate() + 7);
+          var next10day = new Date(getDate);
+          next10day.setDate(next10day.getDate() + 10);
+          var next15day = new Date(getDate);
+          next15day.setDate(next15day.getDate() + 15);
+          var next30day = new Date(getDate);
+          next30day.setDate(next30day.getDate() + 30);
+
+          switch (selectedDate) {
+            case "7 ngày":
+              expirationDate = next7day.toISOString().split("T")[0];
+              break;
+            case "10 ngày":
+              expirationDate = next10day.toISOString().split("T")[0];
+              break;
+            case "15 ngày":
+              expirationDate = next15day.toISOString().split("T")[0];
+              break;
+            case "30 ngày":
+              expirationDate = next30day.toISOString().split("T")[0];
+              break;
+          }
+
+          $("#expirationDate").val(expirationDate);
+          $('input[name="expirationDate"]').val(expirationDate);
+
+          var newDate = new Date(getDate);
+          var submittedDate = newDate.toISOString().split("T")[0];
+          $("#submittedDate").val(submittedDate);
+          $('input[name="submittedDate"]').val(submittedDate);
+        });
+
+        $(document).ready(function () {
+          var districtId = $("#districtId").val();
+          $.ajax({
 		        type: 'GET',
-		        url: '${pageContext.servletContext.contextPath}/sellernet/getDistrictsByProvince.html',
-		        data: { provinceId: provinceId },
+		        url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
+		        data: { districtId: districtId },
 		        dataType: 'text',
 		        success: function(data) {
-		            $('#districtId').empty();
-		            $('#wardId').empty(); // Empty the wardId select element
-		            $('#wardId').append('<option value="">---Phường, xã---</option>'); // Append the default option
-		            $("#detail-address").val("");
-		            var lines = data.split('\n');
-		            $.each(lines, function(index, line) {
-		                if (index < lines.length - 1) {
-		                    var parts = line.split(':');
-		                    $('#districtId').append('<option value="' + parts[0] + '">' + parts[1] + '</option>');
-		                }
-		            });
-		        },
-		        error: function(data) {
-		            $('#districtId').empty();
-		            $('#districtId').append('<option value="">Error occurred while fetching districts</option>');
-		        }
-		    });
-		});
-		
-		$(document).ready(function() {			
-			var districtId = $('#districtId').val();
-			$.ajax({
-                type: 'GET',
-                url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
-                data: { districtId: districtId },
-                dataType: 'text',
-                success: function(data) {
-                    $('#wardId').empty();
-                    $('#wardId').append('<option value="">---Phường, xã---</option>');
-                    var lines = data.split('\n');
-                    var currentWard = "<c:out value='${realEstate.ward.name}' />";
-                    $.each(lines, function(index, line) {
-                        if (index < lines.length - 1) {
-                            var parts = line.split(':');
-                            var isSelected = (currentWard === parts[1]) ? "selected" : "";
-                            $('#wardId').append('<option ' + isSelected + ' value="' + parts[0] + '">' + parts[1] + '</option>');
-                        }
-                    });
-                },
-                error: function(data) {
-                    $('#wardId').empty();
-                    $('#wardId').append('<option value="">Error occurred while fetching wards</option>');
-                }
-            });
-		});
-	    
-	    $('#districtId').change(function() {
-	        var districtId = $(this).val();
-	        $.ajax({
-	            type: 'GET',
-	            url: '${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html',
-	            data: { districtId: districtId },
-	            dataType: 'text',
-	            success: function(data) {
 	                $('#wardId').empty();
-	                $('#wardId').append('<option value="">---Phường, xã---</option>');
+	                $('#wardId').append('<option value="0">---Phường, xã---</option>');
+	                $("#street").empty();
+	                $("#street").append('<option value="0">---Đường---</option>');
 	                $("#detail-address").val("");
 	                var lines = data.split('\n');
 	                $.each(lines, function(index, line) {
@@ -1583,100 +1564,152 @@
 	                $('#wardId').empty();
 	                $('#wardId').append('<option value="">Error occurred while fetching districts</option>');
 	            }
-	        });
-	    });
-	    
-        $('#wardId').change(function() {
-        	$("#detail-address").val("");
-            var province = $("#provinceId").children("option:selected").text();
-            var district = $("#districtId").children("option:selected").text();
-            var ward = $(this).children("option:selected").text();
-
-            if(district !== "---Quận, huyện---" && ward !== "---Phường, xã---") {
-            	// Construct the address
-	            var address = ward.trim() + ", " + district.trim() + ", Thành phố Hồ Chí Minh";           
-	            
-	            // Update the detail-address element
-	            $("#detail-address").val($("#detail-address").val() + address);
-            }
+		    });
         });
-                
+
+        $("#districtId").change(function () {
+          var districtId = $(this).val();
+          $.ajax({
+            type: "GET",
+            url: "${pageContext.servletContext.contextPath}/sellernet/getWardsByDistrict.html",
+            data: { districtId: districtId },
+            dataType: "text",
+            success: function (data) {
+              $("#wardId").empty();
+              $("#wardId").append('<option value="0">---Phường, xã---</option>');
+              $("#street").empty();
+              $("#street").append('<option value="0">---Đường---</option>');
+              $("#detail-address").val("");
+              var lines = data.split("\n");
+              $.each(lines, function (index, line) {
+                if (index < lines.length - 1) {
+                  var parts = line.split(":");
+                  $("#wardId").append('<option value="' + parts[0] + '">' + parts[1] + "</option>");
+                }
+              });
+            },
+            error: function (data) {
+              $("#wardId").empty();
+              $("#wardId").append('<option value="">Error occurred while fetching districts</option>');
+            },
+          });
+        });
+
+        $("#wardId").change(function () {
+          var wardId = $(this).val();
+          $.ajax({
+            type: "GET",
+            url: "${pageContext.servletContext.contextPath}/sellernet/getStreetsByWard.html",
+            data: { wardId: wardId },
+            dataType: "text",
+            success: function (data) {
+              $("#streetId").empty();
+              $("#streetId").append('<option value="0">---Đường---</option>');
+              $("#detail-address").val("");
+              var lines = data.split("\n");
+              $.each(lines, function (index, line) {
+                if (index < lines.length - 1) {
+                  var parts = line.split(":");
+                  $("#streetId").append('<option value="' + parts[0] + '">' + parts[1] + "</option>");
+                }
+              });
+            },
+            error: function (data) {
+              $("#streetId").empty();
+              $("#streetId").append('<option value="">Error occurred while fetching districts</option>');
+            },
+          });
+        });
+
+        $("#streetId").change(function () {
+          $("#detail-address").val("");
+          var district = $("#districtId").children("option:selected").text();
+          var ward = $("#wardId").children("option:selected").text();
+          var street = $(this).children("option:selected").text();
+
+          if (district !== "---Quận, huyện---" && ward !== "---Phường, xã---" && street !== "---Đường---") {
+            // Construct the address
+            var address = street.trim() + ", " + ward.trim() + ", " + district.trim() + ", Thành phố Hồ Chí Minh";
+
+            // Update the detail-address element
+            $("#detail-address").val($("#detail-address").val() + address);
+          }
+        });
+
         // Format currency
         $(".post").on("mouseover", () => {
-      //  	formatCurrency($("input[name='pricePerDay']"));
-      //  	formatCurrency($("input[name='fee']"));
-      //  	formatCurrency($("input[name='totalMoney']"));
-        })
-        
-		function formatNumber(n) {
-		  // format number 1000000 to 1,234,567
-		  return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-		}
-		
-		
-		function formatCurrency(input, blur) {
-		  // appends $ to value, validates decimal side
-		  // and puts cursor back in right position.
-		  
-		  // get input value
-		  var input_val = input.val();
-		  
-		  // don't validate empty input
-		  if (input_val === "") { return; }
-		  
-		  // original length
-		  var original_len = input_val.length;
-		
-		  // initial caret position 
-		  var caret_pos = input.prop("selectionStart");
-		    
-		  // check for decimal
-		  if (input_val.indexOf(".") >= 0) {
-		
-		    // get position of first decimal
-		    // this prevents multiple decimals from
-		    // being entered
-		    var decimal_pos = input_val.indexOf(".");
-		
-		    // split number by decimal point
-		    var left_side = input_val.substring(0, decimal_pos);
-		    var right_side = input_val.substring(decimal_pos);
-		
-		    // add commas to left side of number
-		    left_side = formatNumber(left_side);
-		
-		    // validate right side
-		    right_side = formatNumber(right_side);
-		    
-		    // On blur make sure 2 numbers after decimal
-		    if (blur === "blur") {
-		      right_side += "00";
-		    }
-		    
-		    // Limit decimal to only 2 digits
-		    right_side = right_side.substring(0, 2);
-		
-		    // join number by .
-		    input_val = left_side + "." + right_side;
-		
-		  } else {
-		    // no decimal entered
-		    // add commas to number
-		    // remove all non-digits
-		    input_val = formatNumber(input_val);
-		    input_val = input_val;
-		    
-		  }
-		  
-		  // send updated string to input
-		  input.val(input_val);
-		
-		  // put caret back in the right position
-		  var updated_len = input_val.length;
-		  caret_pos = updated_len - original_len + caret_pos;
-		  input[0].setSelectionRange(caret_pos, caret_pos);
-		}
-	});
-	</script>
+          //  	formatCurrency($("input[name='pricePerDay']"));
+          //  	formatCurrency($("input[name='fee']"));
+          //  	formatCurrency($("input[name='totalMoney']"));
+        });
+
+        function formatNumber(n) {
+          // format number 1000000 to 1,234,567
+          return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function formatCurrency(input, blur) {
+          // appends $ to value, validates decimal side
+          // and puts cursor back in right position.
+
+          // get input value
+          var input_val = input.val();
+
+          // don't validate empty input
+          if (input_val === "") {
+            return;
+          }
+
+          // original length
+          var original_len = input_val.length;
+
+          // initial caret position
+          var caret_pos = input.prop("selectionStart");
+
+          // check for decimal
+          if (input_val.indexOf(".") >= 0) {
+            // get position of first decimal
+            // this prevents multiple decimals from
+            // being entered
+            var decimal_pos = input_val.indexOf(".");
+
+            // split number by decimal point
+            var left_side = input_val.substring(0, decimal_pos);
+            var right_side = input_val.substring(decimal_pos);
+
+            // add commas to left side of number
+            left_side = formatNumber(left_side);
+
+            // validate right side
+            right_side = formatNumber(right_side);
+
+            // On blur make sure 2 numbers after decimal
+            if (blur === "blur") {
+              right_side += "00";
+            }
+
+            // Limit decimal to only 2 digits
+            right_side = right_side.substring(0, 2);
+
+            // join number by .
+            input_val = left_side + "." + right_side;
+          } else {
+            // no decimal entered
+            // add commas to number
+            // remove all non-digits
+            input_val = formatNumber(input_val);
+            input_val = input_val;
+          }
+
+          // send updated string to input
+          input.val(input_val);
+
+          // put caret back in the right position
+          var updated_len = input_val.length;
+          caret_pos = updated_len - original_len + caret_pos;
+          input[0].setSelectionRange(caret_pos, caret_pos);
+        }
+      });
+    </script>
 </body>
 </html>
