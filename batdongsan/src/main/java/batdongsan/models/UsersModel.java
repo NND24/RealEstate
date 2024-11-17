@@ -45,7 +45,7 @@ public class UsersModel {
 		this.phonenumber = phonenumber;
 	}
 
-	public UsersModel(String name, String email, String password, String avatar, String taxCode, String phonenumber) {
+	public UsersModel(String name, String email, String password, String avatar, String taxCode, String phonenumber, boolean status) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -53,6 +53,7 @@ public class UsersModel {
 		this.avatar = avatar;
 		this.taxCode = taxCode;
 		this.phonenumber = phonenumber;
+		this.status = status;
 	}
 
 	public int getUserId() {

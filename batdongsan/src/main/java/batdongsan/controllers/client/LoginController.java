@@ -244,8 +244,8 @@ public class LoginController {
 				String randomUsername = "user" + generateRandomNumber();
 
 				String hashPassword = PasswordHashing.hashPassword(password);
-				UsersModel user = new UsersModel(randomUsername, registerEmail, hashPassword, "images/avatar-mac-dinh.jpg",
-						"", "");
+				UsersModel user = new UsersModel(randomUsername, registerEmail, hashPassword, "1ff0ed72-9b76-45eb-a174-353c6a8d08d2.jpg",
+						"", "", true);
 
 				session.save(user);
 				t.commit();
